@@ -1,0 +1,62 @@
+<div class="container">
+
+  <!-- MODIFICA VOCE DI GLOSSARIO -->
+  <div  id="modifVoceGlossario" class="modal fade ui-draggable"
+        tabindex="-1"
+        role="dialog" data-backdrop="static"
+        style="padding-top:35px; display:none;">
+       
+     <div class="modal-dialog" role="document">
+     <div class="modal-content shadow-lg">
+     <div class="modal-header ui-draggable-handle"
+         style="background-color:rgb(90,90,170);cursor:move">
+        <h3 class="modal-title">Modifica voce</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+
+     
+     <div class="modal-body" style="overflow:auto;margin-right:1px;">
+        <form #modifVoceForm="ngForm" role="form" id="modifVoceForm" name="modifVoceForm" novalidate>
+           
+           <div class="form-group" >
+              <label for="voce_glossario">Voce&nbsp;*</label>
+                <div>
+                  <input type="text" class="form-control" id="voce_glossario"  name="voce_glossario" placeholder="Voce"
+                  required [(ngModel)]="voce_glossario.voce"
+                  #voce="ngModel">
+                </div>
+                <div [hidden]="voce.valid || voce.pristine"
+                  class="alert alert-danger">
+                    Il campo <b>Voce</b> è richiesto
+                </div>
+           </div>
+
+           <div class="form-group">
+               <label for="def_voce_glossario">Definizione&nbsp;*</label>
+               <div>
+                 <textarea class="form-control" id="def_voce_glossario" name="def_voce_glossario"  placeholder="Definizione" rows="5"
+                 required [(ngModel)]="voce_glossario.def"
+                 #def="ngModel">
+                 </textarea>
+               </div>
+               <div [hidden]="def.valid || def.pristine"
+                  class="alert alert-danger">
+                    Il campo <b>Definizione</b> è richiesto
+                </div>
+           </div>
+        </form>
+        
+     </div>
+     <div class="modal-footer">  
+        <button title="Salva voce" class="btn btn-info text-white" 
+            (click)="salvaGlossarioModificato(modifVoceForm)"
+            [disabled]="modifVoceForm.invalid">
+        <i class="fas fa-save" aria-hidden="true"></i>&nbsp;Salva&nbsp;</button>
+     </div>
+     </div>
+     </div>
+  </div>
+  <!-- MODIFICA VOCE GLOSSARIO -->
+</div>

@@ -1,0 +1,42 @@
+<div class="container">
+
+    <div class="card" *ngIf="glossario.length>0">
+    
+        <div class="card-header">
+          <h3 style="color:rgb(34,67,136);">Voci del glossario</h3>
+        </div>
+        
+        <div class="card-body" style="max-height:550px;overflow:auto;">
+          <table id="tableGlossario">
+            
+             <tr *ngFor="let rec of glossario">
+                
+                <td class='nowrap'><strong>{{rec.voce}}:</strong></td>
+              
+                <td>{{rec.short_def}}</td>
+                
+                <td (click)="formModifVoceGlossario(rec)">
+                   <i class="fas fa-edit"></i>
+                </td>
+                
+                <td (click)="confermaCancellaGlossario(rec)">
+                   <i class="fas fa-trash-alt"></i>
+                </td>
+             </tr>
+          </table>
+        </div>
+        
+        <div class="card-footer">
+          <button title="Aggiungi nuova voce" class="btn btn-danger" style="margin-right:4px;"
+          (click)="formNuovaVoceGlossario()">
+             <i class="fas fa-plus"></i>
+          </button>
+
+          <button title="Aggiorna glossario" class="btn btn-danger"
+          (click)="refreshGlossario()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div> <!-- panel footer -->
+    </div>
+    
+</div>
