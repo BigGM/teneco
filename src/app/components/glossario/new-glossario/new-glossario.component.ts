@@ -24,12 +24,14 @@ export class NewGlossarioComponent implements OnInit {
     this.voce_glossario = {
       id: -1,  voce: "", def:"", short_def: ""
     }
+    this.glossSubscr = null
     $('#nuovaVoceGlossario').draggable({handle:'.modal-header'});
   }
 
   ngOnDestroy() {
     console.log( "NewGlossarioComponent => onDestroy" )
-    this.glossSubscr.unsubscribe()
+    if (this.glossSubscr)
+      this.glossSubscr.unsubscribe()
   }
 
   /**
@@ -51,10 +53,12 @@ export class NewGlossarioComponent implements OnInit {
         NeuroApp.custom_info(`Voce di glossario modificata`)
         // Aggiorna la lista delle voci di glossario
         this.listaGlossario.loadGlossario()
+        this.glossSubscr.unsubscribe()
       },
       error => {
         NeuroApp.hideWait()
         NeuroApp.custom_error(error,"Error")
+        this.glossSubscr.unsubscribe()
       }
     )
   }

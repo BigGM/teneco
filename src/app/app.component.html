@@ -1,12 +1,13 @@
 <!-- Il div con la gif di wait visualizzato nel caricamento di una pagina -->
 <div id='waitDiv' style='display:none;z-index:1000'>
-  <img id='waitImage' src='../assets/' alt='Loading'/>
+  <img id='waitImage' src='../assets/images/wait.gif' alt='Loading'/>
 </div>
 
 <nav class="navbar navbar-expand-sm navbar-dark fixed-top navbar-shadow" >
 
     <span class='navbar-brand'>
-        <img src='../assets/images/human-brain-2.jpg' style="width:56px;" />
+        <img src='../assets/images/human-brain-2.jpg' 
+        style="width:60px;position:relative;left:-8px" />
     </span>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_appMenu">
@@ -58,6 +59,7 @@
 
 <!-- class="container-fluid first-panel-position" -->
 
-<div [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''" >
+<div  class="container first-panel-position"
+[@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
 <router-outlet #o="outlet"></router-outlet>
 </div>

@@ -21,9 +21,12 @@ import { ListaGlossarioComponent } from './components/glossario/lista-glossario/
 import { ModGlossarioComponent } from './components/glossario/mod-glossario/mod-glossario.component';
 import { NewGlossarioComponent } from './components/glossario/new-glossario/new-glossario.component';
 
+import { AngularFileUploaderModule } from "angular-file-uploader";
 
 // Servizi di progetto
-import { GlossarioService } from './services/glossario/glossario.service';
+import { NeuroAppService } from './services/neuro-app.service'
+import { GlossarioService } from './services/glossario/glossario.service'
+import { ResourceDocsService } from './services/resource-docs/resource-docs.service'
 
 @NgModule({
   declarations: [
@@ -45,9 +48,13 @@ import { GlossarioService } from './services/glossario/glossario.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AngularFileUploaderModule
   ],
-  providers: [GlossarioService],
+  providers: [
+    NeuroAppService,
+    GlossarioService,
+    ResourceDocsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

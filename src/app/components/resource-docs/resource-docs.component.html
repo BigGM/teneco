@@ -1,8 +1,39 @@
-<DIV class="container-fluid">
+<DIV id="div_dict_controller" class="container-fluid">
 
-    <div class="jumbotron text-center" >
-       <h1>Pagina Risorse Documenti</h1>
-       <img src="../../../assets/images/non-disturbare.jpg">
-    </div>
   
-  </DIV>
+  <table style="margin-bottom:6px;">
+    <tr>
+      <td><button title="Aggiorna la lista dei documenti" type="button" class="btn btn-info btn-md" (click)="loadDocs()">
+       <i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+    </td>
+    
+    <td><label class="title-doc">&nbsp;Documenti inseriti</label></td>
+    </tr>
+  </table>
+    
+    <div class="row py-4"
+          style="background-color:rgb(246,246,250);
+                 border-radius:4px;
+                 border:1px solid rgb(235,235,235);">
+
+          <div class="container">
+             <div class="row">
+ 
+                <div *ngFor="let doc of lista_docs" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-4 ow">
+                  <div class="thumbnail thumbnail-docs p-2">
+                    <div class="media">
+                    <img [src]="docIcon(doc.url_media)" class="align-self-start m-1 mr-2" style="height:65px;">
+                    <div class="media-body">
+                        <a><h5 class="media-heading">{{docName(doc.url_media)}}</h5></a>
+                        <p>{{doc.descr_media}}</p>
+                    </div>
+                    </div>
+                    <p><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaDoc(doc)"></i></p>
+                  </div>
+                </div>
+
+             </div>
+          </div>
+    </div>
+
+</DIV>

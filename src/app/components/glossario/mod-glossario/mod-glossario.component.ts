@@ -20,19 +20,26 @@ export class ModGlossarioComponent implements OnInit {
   @Input() listaGlossario: ListaGlossarioComponent;
   
   constructor(private glossarioService : GlossarioService) {
+    this.voce_glossario = {id:-1, voce:"", def:"", short_def:""}
   }
 
   ngOnInit() {
     console.log( "ModGlossarioComponent => ngOnInit" )
-    this.voce_glossario = {
-      id: -1,  voce: "", def:"", short_def: ""
-    }
-    $('#modifVoceGlossario').draggable({handle:'.modal-header'});
+    this.glossSubscr = null
+    
+    // Si registra sul servizio per ricevere il record di glossario
+    // da modificare
+    this.glossarioService.change_glos.subscribe(rec_glos => {
+      this.voce_glossario = Object.assign({}, rec_glos);
+    })
+
+    //$('#modifVoceGlossario').draggable({handle:'.modal-header'});
   }
   
   ngOnDestroy() {
     console.log( "NewGlossarioComponent => onDestroy" )
-    this.glossSubscr.unsubscribe()
+    if (this.glossSubscr)
+      this.glossSubscr.unsubscribe()
   }
 
   /**

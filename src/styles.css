@@ -1,15 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
 body, html {
-   font-family: Verdana, Tahoma, Calibri !important;
-   font-size:16px !important;
-   font-weight:normal !important;
-   background-color:rgb(252,252,255);
-   padding-bottom:30px !important;
-}
+    font-family: Verdana, Tahoma, Calibri !important;
+    font-size:16px !important;
+    font-weight:normal !important;
+    background-color:rgb(252,252,255) !important;
+  }
 
 router-outlet ~ * {
     position: absolute;
     top:75px;
     height: 100%;
     width: 100%;
+}
+
+.my-icon-color {
+    color:rgb(235, 83, 96) !important;
+}
+
+.navbar-brand {
+    padding: 0px;
 }

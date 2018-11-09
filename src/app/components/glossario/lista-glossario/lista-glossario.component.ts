@@ -72,10 +72,8 @@ export class ListaGlossarioComponent implements OnInit {
    */
   formModifVoceGlossario(voce_glossario:RecordGlossario) {
     let self = this
-    this.voce_glossario = voce_glossario
     $('#modifVoceGlossario').modal('show')
-    let form = $('#modifVoceForm')
-    console.log(form)
+    this.glossarioService.sendRecordToModal(voce_glossario)
   }
 
   refreshGlossario() {

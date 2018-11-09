@@ -7,12 +7,14 @@
 }
 @media (max-width: 767px) {
    .first-panel-position {
-     top:75px;
+     top:6px;
+     padding-bottom:30px;
    }
 }
 @media (min-width: 768px) {
    .first-panel-position {
-     top:75px;
+     top:6px;
+     padding-bottom:30px;
    }
 }
 

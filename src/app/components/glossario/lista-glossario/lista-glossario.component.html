@@ -3,7 +3,7 @@
     <div class="card" *ngIf="glossario.length>0">
     
         <div class="card-header">
-          <h3 style="color:rgb(34,67,136);">Voci del glossario</h3>
+          <h3 style="color:rgb(208, 39, 39);">Voci del glossario</h3>
         </div>
         
         <div class="card-body" style="max-height:550px;overflow:auto;">
@@ -16,11 +16,11 @@
                 <td>{{rec.short_def}}</td>
                 
                 <td (click)="formModifVoceGlossario(rec)">
-                   <i class="fas fa-edit"></i>
+                   <i class="fas fa-edit my-icon-color font-weight-normal"></i>
                 </td>
                 
                 <td (click)="confermaCancellaGlossario(rec)">
-                   <i class="fas fa-trash-alt"></i>
+                   <i class="fas fa-trash-alt my-icon-color font-weight-normal"></i>
                 </td>
              </tr>
           </table>
