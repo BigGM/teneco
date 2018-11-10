@@ -66,7 +66,15 @@ export class NeuroAppService {
   } // listamedia
 
 
-  private handleError(error: HttpErrorResponse) {
+  /**
+   * Metodo centralizzato per la gestione dell'errore; lancia una eccezione 
+   * passando il messaggio di errore che viene mostrato sulla finestra di
+   * popup. Viene utilizzato da tutti i servizi che effettuano una chiamata
+   * http verso/da il server.
+   * 
+   * @param error il messaggio di errore ricevuto dal server http
+   */
+  public handleError(error: HttpErrorResponse) {
     console.log("handleError", error.message)
 
     if (error.error instanceof ErrorEvent) {

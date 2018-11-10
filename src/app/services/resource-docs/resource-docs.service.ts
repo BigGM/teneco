@@ -7,9 +7,7 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 import { NeuroApp } from '../../neuro-app'
 import { RecordMedia } from '../../record-media'
 import { Outcome } from '../../outcome'
-
-//import { RecordError } from '../../record-error'
-//import { NeuroAppService } from '../neuro-app.service'
+import { NeuroAppService } from '../neuro-app.service'
 
 declare var $: any;
 
@@ -20,7 +18,10 @@ export class ResourceDocsService {
   
   private G_URL_ROOT:string;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private neuroService : NeuroAppService
+  ) {
     this.G_URL_ROOT = this.G_URL_ROOT = NeuroApp.G_URL_ROOT
   }
 
@@ -58,28 +59,8 @@ export class ResourceDocsService {
         tap( outcome => {
           console.log('** outcome **', outcome)
         }),
-        catchError( this.handleError )
+        catchError( this.neuroService.handleError )
     )
   } //cancellaGlossario()
-
-
-
-  private handleError(error: HttpErrorResponse) {
-    //console.log("handleError", error.message)
-
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      //console.error(
-      //  `Backend returned code ${error.status}, ` +
-      //  `body was: ${error.error}`);
-    }
-   
-    // return an observable with a user-facing error message
-    return throwError(error.message);
-  }
 
 }
