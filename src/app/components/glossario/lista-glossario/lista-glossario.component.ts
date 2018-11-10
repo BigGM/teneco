@@ -14,13 +14,14 @@ declare var bootbox: any;
 })
 export class ListaGlossarioComponent implements OnInit {
 
-  glossario:   RecordGlossario[];
-  glossSubscr: Subscription;
-  voce_glossario:RecordGlossario 
+  glossario     : RecordGlossario[];
+  glossSubscr   : Subscription;
+  voce_glossario: RecordGlossario 
 
   constructor( private glossarioService : GlossarioService) {
     console.log( "ListaGlossarioComponent costruttore" )
     this.glossario = []
+    this.glossSubscr = null
   }
 
   ngOnInit() {
@@ -73,9 +74,15 @@ export class ListaGlossarioComponent implements OnInit {
   formModifVoceGlossario(voce_glossario:RecordGlossario) {
     let self = this
     $('#modifVoceGlossario').modal('show')
+    
+    // Invia alla modale l record da modificare tramite il servizio
     this.glossarioService.sendRecordToModal(voce_glossario)
   }
 
+
+  /**
+   * Ricarica la lista delle voci di glossario
+   */
   refreshGlossario() {
     console.log("refreshGlossario")
     this.glossario = []
@@ -91,7 +98,7 @@ export class ListaGlossarioComponent implements OnInit {
     let self = this;
     bootbox.dialog ({
         title: "<h3>Cancella voce glossario</h3>", 
-        message: "<h5 p-4>Conferma rimozione della voce <label class='text-danger'>\""+voce_glossario.voce+"\"</label></h5>",
+        message: "<h6 p-4 style='line-height:1.6;'>Conferma rimozione della voce <label class='text-danger'>\""+voce_glossario.voce+"\"</label></h6>",
         draggable:true,
         buttons:{
           "Annulla":{
@@ -105,7 +112,8 @@ export class ListaGlossarioComponent implements OnInit {
           } // end Rimuovi
        } // end buttons
     }); // bootbox.dialog
-  } // this.confermaCancellaGlossario
+
+  } // confermaCancellaGlossario()
 
 
   /**
@@ -134,5 +142,4 @@ export class ListaGlossarioComponent implements OnInit {
         }
     )
   }
- 
 }

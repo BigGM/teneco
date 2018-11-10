@@ -21,7 +21,6 @@ import { ListaGlossarioComponent } from './components/glossario/lista-glossario/
 import { ModGlossarioComponent } from './components/glossario/mod-glossario/mod-glossario.component';
 import { NewGlossarioComponent } from './components/glossario/new-glossario/new-glossario.component';
 
-import { AngularFileUploaderModule } from "angular-file-uploader";
 
 // Servizi di progetto
 import { NeuroAppService } from './services/neuro-app.service'
@@ -48,8 +47,7 @@ import { ResourceDocsService } from './services/resource-docs/resource-docs.serv
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    AngularFileUploaderModule
+    FormsModule
   ],
   providers: [
     NeuroAppService,

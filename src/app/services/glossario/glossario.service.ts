@@ -4,8 +4,8 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../../neuro-app'
-//import { RecordError } from '../../record-error'
 import { Outcome } from '../../outcome'
+
 
 // La struttura del record del glossario
 export class RecordGlossario {
@@ -27,12 +27,14 @@ export class RecordGlossario {
       })
       return records
     }
-}
+} //RecordGlossario
 
 
-// il tipo restituito dalla procedura php, puo essere:
-//  RecordGlossario (array), oppure
-//  RecordError (array di un solo elemento)
+/**
+ * Il tipo restituito dalla procedura php, puo essere:
+ * RecordGlossario (array), oppure
+ * Outcome per segnalare un errore di database
+ */ 
 type out_glossario =  RecordGlossario[] | Outcome;
 
 
@@ -69,8 +71,8 @@ export class GlossarioService {
    */
   loadGlossario() : Observable<RecordGlossario[]> {
     let db_proc = "NeuroApp.lista_glossario"
-    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_glossario.php?proc="+db_proc
-    let url = this.G_URL_ROOT+"/cgi-bin/lista_glossario2.php?proc="+db_proc
+    let url = this.G_URL_ROOT+"/cgi2-bin/lista_glossario.php?proc="+db_proc
+    //let url = this.G_URL_ROOT+"/cgi-bin/lista_glossario2.php?proc="+db_proc
     
     console.log("** loadGlossario: ", url)
     
@@ -79,9 +81,9 @@ export class GlossarioService {
         retry(1),
         //catchError( this.handleError('fetchAll',[]) )
         map ( records => {
-          if (records[0].status==="exception") {
-              let error = (<Outcome>records[0]).message
-              throw new Error(`Exception: ${error}`)
+          let outcome = <Outcome>records
+          if ( outcome.status==="exception") {
+              throw new Error(`Exception: ${outcome.message}`)
           }
           else
             return RecordGlossario.setShortDef(records as RecordGlossario[])

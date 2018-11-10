@@ -8,8 +8,8 @@ declare var $:any;
  */
 export class NeuroApp {
    
-   //static G_URL_ROOT = "http://localhost:8080/"
-   static G_URL_ROOT = "http://192.168.2.63:47000/"
+   static G_URL_ROOT = "http://localhost:8080/"
+   //static G_URL_ROOT = "http://192.168.2.63:47000/"
 
    /**
    * Popup per i messaggi di errore

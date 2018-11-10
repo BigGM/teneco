@@ -3,7 +3,7 @@ export class RecordMedia {
     url_media   : string
     descr_media : string
     usato_media : number    // 0: non collegato
-                            // 1: collegatoa qualche esercizio
+                            // 1: collegato a qualche esercizio
 }
 
 export class RecordMediaError {

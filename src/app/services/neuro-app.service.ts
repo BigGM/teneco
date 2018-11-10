@@ -5,16 +5,16 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../neuro-app'
 import { RecordMedia, RecordMediaError } from '../record-media'
-//import { RecordError } from '../record-error'
 import { Outcome } from '../outcome'
 
 
-
-
-// il tipo restituito dalla procedura php che recupera la lista degli elementi
-//  multimediali, puo essere:
-//  RecordMedia (array), oppure
-//  RecordError (array di un solo elemento)
+/**
+ * out_media
+ *  Tipo restituito procedura php che recupera la lista degli elementi
+ *  multimediali. Puo essere:
+ *  un array di oggetti RecordMedia, oppure
+ *  un oggetto Outcome per segnalare un errore
+ */
 type out_media =  RecordMedia[] | Outcome;
 
 
@@ -37,11 +37,12 @@ export class NeuroAppService {
    * @param tipo_media - video, audio, image, doc
    */
   listaMedia(lista_id, tipo_media) : Observable<RecordMedia[]> {
-
-    let url = this.G_URL_ROOT+"/cgi-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    let url = this.G_URL_ROOT+"/cgi2-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    //let url = this.G_URL_ROOT+"/cgi-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    
     if (lista_id != "")
        url += lista_id;
-     else
+    else
        url += "-1"; // non ci sono id negativi nella tabella percio' questo funziona
         
     console.log("** listaMedia: ", url)
@@ -51,9 +52,9 @@ export class NeuroAppService {
         retry(1),
         map ( records => {
           console.log(records)
-          if (records[0].status === "exception") {
-              let error = (<Outcome>records[0]).message
-              throw new Error(error)
+          let outcome = records as Outcome
+          if (outcome.status === "exception") {
+              throw new Error(outcome.message)
           }
           return records as RecordMedia[]
         }),

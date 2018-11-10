@@ -16,11 +16,14 @@ declare var bootbox: any;
 })
 export class ResourceDocsComponent implements OnInit {
 
+  // lista dei documenti presenti nel DB
   lista_docs :  RecordMedia[];
+
+  // per la registrazione al servizio di accesso alle procedure del DB
   mediaSubscr:  Subscription;
   
   // l'array 'icons' associa una icona ad un estensione
-  icons : {
+  readonly icons: { [id: string]: string } = {
     '.txt'  :  "txt-icon.png",
     '.doc'  :  "word-icon.png",
     '.docx' :  "word-icon.png",
@@ -30,6 +33,9 @@ export class ResourceDocsComponent implements OnInit {
     '.xls'  :  "xls-icon.png",
     '.xlsx' :  "xls-icon.png"
   }
+
+  // path delle immagini
+  readonly root_images = "../../../assets/images/"
 
 
   /**
@@ -63,20 +69,18 @@ export class ResourceDocsComponent implements OnInit {
   
 
   /**
-   * Carica le voci di glossario sull'array this.glossario o
-   * emette una popup di errore.
-   */
+  * Carica la lista dei documenti presenti sul database 
+  */
   loadDocs() {
-
     console.log("ResourceDocsService.loadDocs")
+    
     $('#waitDiv').show();
-
     this.lista_docs = []
-    let lista_id    = ''
+    let exclude_id  = '' // nessun id viene escluso 
     let tipo_media  = 'doc'
     NeuroApp.showWait();
     
-    let serv = this.neuroAppService.listaMedia(lista_id, tipo_media)
+    let serv = this.neuroAppService.listaMedia(exclude_id, tipo_media)
     this.mediaSubscr = serv.subscribe(
         result => {
           NeuroApp.hideWait()
@@ -109,14 +113,14 @@ export class ResourceDocsComponent implements OnInit {
 
   /**
    * Restituise l'icona da inserire sulla pagina html in base all'estensione del documento. 
-   * @param url 
+   * @param url
    */
   docIcon(url) {
-    let root = "../../../assets/images/"
+    //console.log("docIcon", url)
     if ( this.icons[this.docExt(url)] == undefined )
-        return root + "generic-doc-icon.png"
+      return this.root_images + "generic-doc-icon.png"
     else
-        return root + this.icons[ this.docExt(url) ]
+      return this.root_images + this.icons[ this.docExt(url) ]
   }
 
 
@@ -127,10 +131,9 @@ export class ResourceDocsComponent implements OnInit {
   confermaCancellaDoc(doc:RecordMedia) {
     let self = this
 
-      let msg= "<h6 style='line-height:1.6'>Conferma rimozione del documento <label style='color:rgb(180,0,0);font-weight:bold'>"+this.docName(doc.url_media)+"</label> ?</h6>";
-      if ( doc.usato_media == 1) {
-        msg =  "<h6><b>Il documento viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
-      }
+      let msg= "<h6 style='line-height:1.6'>Conferma rimozione del documento <label style='color:rgb(180,0,0);'>\""+this.docName(doc.url_media)+"\"</label> ?</h6>";
+      if ( doc.usato_media == 1)
+        msg = "<h6><b>Il documento viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
       bootbox.dialog ({
         title: "<h4>Cancella Documento</h4>", 
@@ -139,7 +142,7 @@ export class ResourceDocsComponent implements OnInit {
         buttons: {
           "Annulla":{
               className: "btn-secondary btn-md"
-          }, 
+          },
           "Rimuovi" : { 
               className: "btn-danger btn-md",
               callback: function() {
