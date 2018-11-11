@@ -75,8 +75,8 @@ export class GlossarioService {
    */
   loadGlossario() : Observable<RecordGlossario[]> {
     let db_proc = "NeuroApp.lista_glossario"
-    let url = this.G_URL_ROOT+"/cgi2-bin/lista_glossario.php?proc="+db_proc
-    //let url = this.G_URL_ROOT+"/cgi-bin/lista_glossario2.php?proc="+db_proc
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_glossario.php?proc="+db_proc
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_glossario2.php?proc="+db_proc
     
     console.log("** loadGlossario: ", url)
     
