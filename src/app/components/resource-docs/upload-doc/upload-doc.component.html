@@ -1,0 +1,128 @@
+<div class="mb-5">
+
+  <label class="title-doc">Upload Documenti</label>
+
+  <div class="row" style="background-color:rgb(246,246,250);border-radius:4px;border:1px solid rgb(235,235,235);padding:10px;">
+
+      <!--
+      <div class="col">
+
+          <h3>Select files</h3>
+
+          <div ng2FileDrop
+               [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+               (fileOver)="fileOverBase($event)"
+               [uploader]="uploader"
+               class="well my-drop-zone">
+              Base drop zone
+          </div>
+
+          <div ng2FileDrop
+               [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}"
+               (fileOver)="fileOverAnother($event)"
+               [uploader]="uploader"
+               class="well my-drop-zone">
+              Another drop zone
+          </div>
+
+          Multiple
+          <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+          
+          
+          Single
+          <input type="file" ng2FileSelect [uploader]="uploader" />
+          
+      </div> -->
+
+      <div class="col-sm-12" style="margin-bottom: 40px">
+
+        <label for="file-doc-upload" class="custom-file-upload">Sfoglia</label><br/>
+        <input [hidden]="true" id="file-doc-upload"
+            type="file" 
+            ng2FileSelect [uploader]="uploader" 
+            multiple 
+            accept=".xlsx,.xls,.doc,.docx,.txt,.pdf, .rtf" />
+        
+          <p style="font-size:14px"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
+
+          <table class="table">
+              <thead>
+              <tr>
+                  <th width="30%">Nome file</th>
+                  <th width="20%">Descrizione</th>
+                  <th *ngIf="uploader.options.isHTML5">Dimensione</th>
+                  <th *ngIf="uploader.options.isHTML5">Avanzamento</th>
+                  <th>Stato</th>
+                  <th class="text-center">Azioni</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of uploader.queue">
+                  <td class="font-weight-bold">{{ item?.file?.name }}</td>
+
+                  <td><input type="text" class="form-control" [(ngModel)]="item.formData['imagesdesc']" /></td>
+                  
+                  <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.3' }} MB</td>
+                  
+                  <td *ngIf="uploader.options.isHTML5">
+                      <div class="progress height-24">
+                          <div class="progress-bar progress-bar-striped height-24" role="progressbar"
+                          [ngStyle]="{ 'width': item.progress + '%' }">{{item.progress}}%</div>
+                      </div>
+                  </td>
+                  
+                  <td class="text-center">
+                      <span *ngIf="item.isSuccess"><i class="far fa-check-circle icon-stato icon-green"></i></span>
+                      <span *ngIf="item.isCancel"><i class="fas fa-ban icon-stato icon-blue"></i></span>
+                      <span *ngIf="item.isError"><i class="far fa-trash-alt icon-stato icon-red"></i></span>
+                  </td>
+                  
+                  <td nowrap>
+                      <button type="button" class="btn btn-success btn-sm p-1 px-2 mr-1 text-smaller"
+                              (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                              <i class="fas fa-upload"></i> Upload
+                      </button>
+
+                      <button type="button" class="btn btn-warning btn-sm p-1 px-2 mr-1 text-smaller"
+                              (click)="item.cancel()" [disabled]="!item.isUploading">
+                              <i class="fas fa-ban"></i> Cancel
+                      </button>
+
+                      <button type="button" class="btn btn-danger btn-sm p-1 px-2 text-smaller"
+                              (click)="item.remove()">
+                              <i class="far fa-trash-alt"></i> Remove
+                      </button>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+
+          <div>
+              <div id="doc-progress-bar" class="mb-3">
+                  <div class="progress height-24">
+                      <div class="progress-bar progress-bar-striped height-24" role="progressbar"
+                      [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
+                  </div>
+              </div>
+
+              <button type="button" class="btn btn-success btn-sm p-2 mr-1"
+                      (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                      <i class="fas fa-upload"></i> Upload all
+              </button>
+
+              <button type="button" class="btn btn-warning btn-sm p-2 mr-1"
+                      (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                      <i class="fas fa-ban"></i> Cancel all
+              </button>
+
+              <button type="button" class="btn btn-danger btn-sm p-2"
+                      (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                  <i class="far fa-trash-alt"></i> Remove all
+              </button>
+          </div>
+
+      </div>
+
+  </div>
+
+</div>

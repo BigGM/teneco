@@ -36,7 +36,6 @@ export class ResourceDocsService {
     return url.substring(k)
   }
  
-  
   /**
    * Cancella un documento dal DB
    * @param doc 
@@ -44,7 +43,7 @@ export class ResourceDocsService {
   rimuoviDocumento (doc:RecordMedia) {
     let db_proc = 'NeuroApp.rimuovi_media'
     var nome = this.docName(doc.url_media)
-    var url = this.G_URL_ROOT+"cgi-bin/rimuovi_media2.php?proc="+db_proc+"&id_media="+doc.id_media+"&nome_media="+nome+"&tipo_media=doc"
+    var url = this.G_URL_ROOT+"/cgi-bin/rimuovi_media.php?proc="+db_proc+"&id_media="+doc.id_media+"&nome_media="+nome+"&tipo_media=doc"
     console.log(url);
 
     return this.http.get<Outcome>(url)

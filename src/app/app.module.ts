@@ -5,11 +5,15 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
+// Librerie
+import { FileUploadModule } from 'ng2-file-upload';
 
 // Componenti di progetto
 import { AppComponent } from './app.component';
 import { PktRiabilitativiComponent } from './components/pkt-riabilitativi/pkt-riabilitativi.component';
 import { AppRoutingModule } from './app-routing.module';
+
+
 import { PktCognitiviComponent } from './components/pkt-cognitivi/pkt-cognitivi.component';
 import { ResourceVideoComponent } from './components/resource-video/resource-video.component';
 import { ResourceAudioComponent } from './components/resource-audio/resource-audio.component';
@@ -25,7 +29,8 @@ import { NewGlossarioComponent } from './components/glossario/new-glossario/new-
 // Servizi di progetto
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
-import { ResourceDocsService } from './services/resource-docs/resource-docs.service'
+import { ResourceDocsService } from './services/resource-docs/resource-docs.service';
+import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component'
 
 @NgModule({
   declarations: [
@@ -40,14 +45,16 @@ import { ResourceDocsService } from './services/resource-docs/resource-docs.serv
     GlossarioComponent,
     ListaGlossarioComponent,
     ModGlossarioComponent,
-    NewGlossarioComponent
+    NewGlossarioComponent,
+    UploadDocComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    FileUploadModule
   ],
   providers: [
     NeuroAppService,

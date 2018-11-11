@@ -1,6 +1,11 @@
 <DIV id="div_dict_controller" class="container-fluid">
 
-  
+  <!--
+    La componente UploadDocComponent invia al parent la richiesta di
+    ricaricare la lista dei documenti alla fine di un upload.
+  -->
+  <app-upload-doc (reloadDocsEvent)="reloadDocsList($event)" ></app-upload-doc>
+
   <table style="margin-bottom:6px;">
     <tr>
       <td><button title="Aggiorna la lista dei documenti" type="button" class="btn btn-info btn-md" (click)="loadDocs()">

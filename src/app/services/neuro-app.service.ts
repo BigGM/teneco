@@ -37,8 +37,9 @@ export class NeuroAppService {
    * @param tipo_media - video, audio, image, doc
    */
   listaMedia(lista_id, tipo_media) : Observable<RecordMedia[]> {
-    let url = this.G_URL_ROOT+"/cgi2-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
     //let url = this.G_URL_ROOT+"/cgi-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_media.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
     
     if (lista_id != "")
        url += lista_id;

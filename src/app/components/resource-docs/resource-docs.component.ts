@@ -9,13 +9,14 @@ import { RecordMedia } from '../../record-media'
 declare var $ : any;
 declare var bootbox: any;
 
+
 @Component({
   selector: 'app-resource-docs',
   templateUrl: './resource-docs.component.html',
   styleUrls: ['./resource-docs.component.css']
 })
 export class ResourceDocsComponent implements OnInit {
-
+  
   // lista dei documenti presenti nel DB
   lista_docs :  RecordMedia[];
 
@@ -72,7 +73,7 @@ export class ResourceDocsComponent implements OnInit {
   * Carica la lista dei documenti presenti sul database 
   */
   loadDocs() {
-    console.log("ResourceDocsService.loadDocs")
+    console.log("ResourceDocsComponent.loadDocs")
     
     $('#waitDiv').show();
     this.lista_docs = []
@@ -94,6 +95,17 @@ export class ResourceDocsComponent implements OnInit {
         }
       )
   } // loadDocs()
+
+
+  /**
+   * Ricarica la lista dei documenti. Il metodo viene richiamato quando la componente
+   * child UploadDocComponent invia l'evento reloadDocsEvent
+   * @param msg 
+   */
+  reloadDocsList(msg) {
+    console.log("ResourceDocsComponent.reloadDocsList => reloadDocsEvent ", msg)
+    this.loadDocs()
+  }
 
 
   /**

@@ -8,8 +8,10 @@ declare var $:any;
  */
 export class NeuroApp {
    
-   static G_URL_ROOT = "http://localhost:8080/"
+   //static G_URL_ROOT = "http://localhost:8080/"
    //static G_URL_ROOT = "http://192.168.2.63:47000/"
+   
+   static G_URL_ROOT = "http://81.29.176.113:47000/"
 
    /**
    * Popup per i messaggi di errore
@@ -21,7 +23,7 @@ export class NeuroApp {
       bootbox.alert({  
          size: 'large', 
          title: '<H3 style="color:white;">'+title_msg+"</H3>", 
-         message: '<h5><label class="alert alert-danger p-4" style="width:100%;font-weight:normal;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-danger p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true,
          buttons : {
             ok: {
@@ -39,7 +41,7 @@ export class NeuroApp {
       bootbox.alert({
          size: 'large', 
          title: '<H3 style="color:white;">Success</H3>', 
-         message: '<h5><label class="alert alert-success p-4" style="width:100%;font-weight:normal;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-success p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true
       })
    }
@@ -52,7 +54,7 @@ export class NeuroApp {
       bootbox.alert({  
          size: 'large', 
          title: '<H3 style="color:white;">Info</H3>', 
-         message: '<h5><label class="alert alert-info p-4" style="width:100%;font-weight:normal;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-info p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true,
          buttons : {
           ok: {
