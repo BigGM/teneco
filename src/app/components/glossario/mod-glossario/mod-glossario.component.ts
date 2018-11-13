@@ -1,10 +1,14 @@
+
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
+
+
+// import di progetto
 import { GlossarioService, RecordGlossario} from '../../../services/glossario/glossario.service'
 import { NeuroApp } from '../../../neuro-app';
-
 import { ListaGlossarioComponent } from '../lista-glossario/lista-glossario.component';
 
+// jQuery
 declare var $:any;
 
 @Component({
@@ -42,18 +46,19 @@ export class ModGlossarioComponent implements OnInit {
       this.glossSubscr.unsubscribe()
   }
 
+
   /**
-   * Salva su db la nuova voce di glossario inserita via form
-   * @param form 
+   * Salva su db la voce di glossario modificata.
+   * @param form
    */
-  salvaGlossario(form) {
+  salvaGlossarioModificato(form) {
     console.log(form.value)
     console.log(this.voce_glossario)
 
-    console.log("ModGlossarioComponent.salvaGlossario")
+    console.log("ModGlossarioComponent.salvaGlossarioModificato")
     NeuroApp.showWait();
     
-    let serv = this.glossarioService.salvaGlossario(this.voce_glossario)
+    let serv = this.glossarioService.salvaGlossarioModificato(this.voce_glossario)
     
     this.glossSubscr = serv.subscribe (
         result => {
@@ -69,6 +74,10 @@ export class ModGlossarioComponent implements OnInit {
     )
   }
 
+  /**
+   * Apre la finestra modale di modifica.
+   * @param voce_glossario la voce di glossario da modificare
+   */
   openModal(voce_glossario:RecordGlossario) {
     this.voce_glossario = voce_glossario
     $('#modifVoceGlossario').modal('show')

@@ -106,7 +106,7 @@ export class GlossarioService {
   salvaGlossario(glossario:RecordGlossario) : Observable<Outcome> {
     let db_proc = "NeuroApp.salva_glossario"
     //let url = this.G_URL_ROOT+"/cgi2-bin/salva_glossario.php?proc="+db_proc+"&voce="+glossario.voce+"&definizione="+glossario.def;
-    let url = this.G_URL_ROOT+"/cgi-bin/salva_glossario.php?proc="+db_proc+"&voce="+glossario.voce+"&definizione="+glossario.def;
+    let url = this.G_URL_ROOT+"/cgi-bin/salva_glossario2.php?proc="+db_proc+"&voce="+glossario.voce+"&definizione="+glossario.def;
     console.log("** salvaGlossario: ", url)
 
     return this.http.get<Outcome>(url)
@@ -126,6 +126,37 @@ export class GlossarioService {
   } // salvaGlossario()
 
 
+
+  /**
+   * Salva sul una voce di glossario modificata
+   * @param glossario 
+   */
+  salvaGlossarioModificato(glossario:RecordGlossario) : Observable<Outcome> {
+    let db_proc = "NeuroApp.salva_glossario_modificato"
+    var url = this.G_URL_ROOT+"/cgi-bin/salva_glossario_modificato2.php?proc="+db_proc+"&id_voce="+glossario.id+"&voce="+glossario.voce+"&definizione="+glossario.def;
+    
+    console.log("** salvaGlossario: ", url)
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`Exception: ${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  } // salvaGlossarioModificato()
+
+
+
+
+
   /**
    * Rimuove una voce del glossario dal db.
    * @param id_voce id della voce di glossario da cancellare
@@ -133,7 +164,7 @@ export class GlossarioService {
   cancellaGlossario(id_voce:number) {
     let db_proc = "NeuroApp.cancella_glossario"
     //let url = this.G_URL_ROOT+"/cgi2-bin/cancella_glossario.php?proc="+db_proc+"&id_voce="+id_voce;
-    let url = this.G_URL_ROOT+"/cgi-bin/cancella_glossario.php?proc="+db_proc+"&id_voce="+id_voce;
+    let url = this.G_URL_ROOT+"/cgi-bin/cancella_glossario2.php?proc="+db_proc+"&id_voce="+id_voce;
     console.log("** cancellaGlossario: ", url)
 
     return this.http.get<Outcome>(url)

@@ -1,0 +1,7 @@
+
+Insert into GCA_PACCHETTI
+   (ID_PACCHETTO, NOME_PACCHETTO, DESCR_PACCHETTO, ID_AMBITO, CONTROINDICAZIONI, 
+    PREREQUISITI, ALERT, ID_PATOLOGIA)
+ Values
+   (3, 'Esercizi per l''arto inferiore', 'Gli arti inferiori sono collegati al tronco dal cingolo pelvico, formato dalle due ossa dell’anca articolate saldamente con l’osso sacro e con il coccige. Ciascun arto si può considerare diviso dal tronco per mezzo di una linea che dalla spina iliaca posterosuperiore segue il margine superiore della cresta iliaca, poi la piega inguinale, fino a raggiungere il tubercolo pubico. L’arto inferiore si può suddividere in sei regioni: anca, coscia, ginocchio, gamba, collo del piede e piede. La struttura ossea degli arti inferiori è robusta e, per ciascun arto, è rappresentata dall’osso dell’anca, dal femore, che forma la coscia, dalla tibia, che con il perone costituisce la gamba, e dalle ossa del piede. A differenza di quanto avviene negli arti superiori, per motivi ontogenetici e per adattamenti funzionali i muscoli flessori sono situati anteriormente e gli estensori posteriormente. Gli arti inferiori rappresentano la struttura principale cui è affidata la funzione statica e dinamica dell’intero corpo umano.', 1, 'sezione testuale controindicazioni per tutti gli esercizi per l''arto inferiore', 
+    'sezione testuale prerequisiti per tutti gli esercizi per l''arto inferiore', 'ALERT per tutti gli esercizi per l''arto inferiore', 44);

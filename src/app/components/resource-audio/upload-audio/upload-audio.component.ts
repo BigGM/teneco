@@ -1,21 +1,20 @@
+
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 import { NeuroApp} from '../../../neuro-app'
-
-import { ResourceDocsComponent } from '../resource-docs.component'
-
+import { ResourceAudioComponent } from '../resource-audio.component'
 
 declare var $ : any;
 
 
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
+const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
 
 @Component({
-  selector: 'app-upload-doc',
-  templateUrl: './upload-doc.component.html',
-  styleUrls: ['./upload-doc.component.css']
+  selector: 'app-upload-audio',
+  templateUrl: './upload-audio.component.html',
+  styleUrls: ['./upload-audio.component.css']
 })
-export class UploadDocComponent implements OnInit {
+export class UploadAudioComponent implements OnInit {
 
   public uploader:FileUploader = new FileUploader({url: URL_UPLOAD})
 
@@ -24,20 +23,20 @@ export class UploadDocComponent implements OnInit {
 
   // Evento per il parent per aggiornare la lista dei documenti dopo un inserimento
   // o una cancellazione
-  @Output() reloadDocsEvent = new EventEmitter();
+  @Output() reloadAudioEvent = new EventEmitter();
 
   constructor() {
   }
 
 
   /**
-   * L'evento reloadDocsEvent viene emesso verso il parent per ricaricare la
-   * la lista dei documenti dopo l'upload. Il messaggio inviato vien usato
+   * L'evento reloadAudioEvent viene emesso verso il parent per ricaricare la
+   * la lista dei file dopo l'upload. Il messaggio inviato vien usato
    * solo per un eventuale messaggio di log, non ha un significato specifico.
    */
-   reloadDocs() {
-      this.reloadDocsEvent.emit('Ricarica lista documenti');
-   }
+  reloadAudio() {
+    this.reloadAudioEvent.emit('Ricarica lista audio');
+  }
  
   ngOnInit() {
     //console.log(this.uploader.options)
@@ -48,19 +47,19 @@ export class UploadDocComponent implements OnInit {
     }
     this.uploader.onAfterAddingFile = (fileItem) => {
         fileItem.withCredentials = false
-        //console.info('onAfterAddingFile', fileItem)
+        console.info('onAfterAddingFile', fileItem)
         
     }
     this.uploader.onAfterAddingAll = (addedFileItems) => {
         console.info('onAfterAddingAll', addedFileItems)
     }
     this.uploader.onBeforeUploadItem = (fileItem) => {    
-        fileItem.formData.push({docdesc: fileItem.formData['docdesc']})
+        fileItem.formData.push({descrizione: fileItem.formData['descrizione']})
         console.info('onBeforeUploadItem', fileItem)
     }
     this.uploader.onProgressItem = (fileItem, progress) => {
         //console.info('onProgressItem', fileItem, progress)
-        $('#doc-progress-bar').css('opacity', 1)
+        $('#audio-progress-bar').css('opacity', 1)
     }
     this.uploader.onProgressAll = (progress) => {
         //console.info('onProgressAll', progress);
@@ -93,9 +92,9 @@ export class UploadDocComponent implements OnInit {
     }
     this.uploader.onCompleteAll = () => {
         console.info('onCompleteAll');
-        $('#doc-progress-bar').animate({'opacity':0}, 600)
+        $('#audio-progress-bar').animate({'opacity':0}, 600)
         // Aggiorna la lista dei documenti
-        this.reloadDocs()
+        this.reloadAudio()
     }
   }
 
@@ -108,3 +107,4 @@ export class UploadDocComponent implements OnInit {
   }
 
 }
+

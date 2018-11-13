@@ -2,7 +2,9 @@
 
   <label class="title-doc">Upload Documenti</label>
 
-  <div class="row" style="background-color:rgb(246,246,250);border-radius:4px;border:1px solid rgb(235,235,235);padding:10px;">
+  <div class="row pt-3 pb-3 card"
+  style="background-color:rgb(243,243,247)"
+    >
 
       <!--
       <div class="col">
@@ -34,7 +36,7 @@
           
       </div> -->
 
-      <div class="col-sm-12" style="margin-bottom: 40px">
+      <div class="col-sm-12">
 
         <label for="file-doc-upload" class="custom-file-upload">Sfoglia</label><br/>
         <input [hidden]="true" id="file-doc-upload"
@@ -60,7 +62,7 @@
               <tr *ngFor="let item of uploader.queue">
                   <td class="font-weight-bold">{{ item?.file?.name }}</td>
 
-                  <td><input type="text" class="form-control" [(ngModel)]="item.formData['imagesdesc']" /></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="item.formData['docdesc']" /></td>
                   
                   <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.3' }} MB</td>
                   
@@ -73,8 +75,8 @@
                   
                   <td class="text-center">
                       <span *ngIf="item.isSuccess"><i class="far fa-check-circle icon-stato icon-green"></i></span>
-                      <span *ngIf="item.isCancel"><i class="fas fa-ban icon-stato icon-blue"></i></span>
-                      <span *ngIf="item.isError"><i class="far fa-trash-alt icon-stato icon-red"></i></span>
+                      <span *ngIf="item.isCancel"><i class="fas fa-minus-circle icon-stato icon-blue"></i></span>
+                      <span *ngIf="item.isError"><i class="fas fa-ban icon-stato icon-red"></i></span>
                   </td>
                   
                   <td nowrap>

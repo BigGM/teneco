@@ -13,6 +13,9 @@ export class NeuroApp {
    
    static G_URL_ROOT = "http://81.29.176.113:47000/"
 
+   // la directory con le icone di progetto
+   static ROOT_ICONS = "../../../assets/images"
+
    /**
    * Popup per i messaggi di errore
    **/
@@ -75,30 +78,42 @@ export class NeuroApp {
    }
 
 
-   /**
-    * Tronca la stringa in input ai primi max_chars caratteri aggiungendo 3 punti.
-    * @param descr 
-    * @param max_chars 
-    */
-   static truncString(descr:string, max_chars:number) {
-      if (descr!=null && descr.length > max_chars-3) {
-         return descr.substring(0,max_chars) + "...";
-      } else {
-         return descr;
-      }
-   }
+  /**
+  * Tronca la stringa in input ai primi max_chars caratteri aggiungendo 3 punti.
+  * @param descr 
+  * @param max_chars 
+  */
+  static truncString(descr:string, max_chars:number) {
+    if (descr!=null && descr.length > max_chars-3) {
+        return descr.substring(0,max_chars) + "...";
+    } else {
+        return descr;
+    }
+  }
 
-   /**
-    * Mostra l'immagine di loading ..
-    */
-   static showWait() {
-      $('#waitDiv').show();
-   }
+  /**
+   * Mostra l'immagine di loading ..
+   */
+  static showWait() {
+    $('#waitDiv').show();
+  }
    
-   /**
-    * Nasconde l'immagine di loading
-    */
-   static hideWait() {
+  /**
+   * Nasconde l'immagine di loading
+   */
+  static hideWait() {
     $('#waitDiv').hide();
   }
+
+
+  static fileName(url:string) {
+    let k = url.lastIndexOf("/")
+    return decodeURI ( url.substring(k+1) )
+  }
+ 
+  static fileExt(url):string {
+    var k = url.lastIndexOf(".")
+    return url.substring(k)
+  }
+ 
 }

@@ -38,8 +38,7 @@ export class NeuroAppService {
    */
   listaMedia(lista_id, tipo_media) : Observable<RecordMedia[]> {
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
-    //let url = this.G_URL_ROOT+"/cgi-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
-    let url = this.G_URL_ROOT+"/cgi-bin/lista_media.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_media2.php?proc=NeuroApp.lista_media&tipo_media="+tipo_media+"&lista_id=";
     
     if (lista_id != "")
        url += lista_id;
@@ -65,6 +64,45 @@ export class NeuroAppService {
         catchError( this.handleError ),
     )
   } // listamedia
+
+
+  /**
+   * Estrae il nome del file multimediale dalla url.
+   * @param url 
+   */
+  private mediaName(url:string) : string {
+    console.log("NeuroAppService.mediaName",url)
+    var k = url.lastIndexOf("/")
+    return url.substring(k+1)
+  }
+
+
+  /**
+   * Cancella un elemento multimediale dal DB
+   * @param doc
+   * @param tipo_media - video, audio, image, doc
+   */
+  rimuoviMedia (doc:RecordMedia, tipo_media:string) {
+    let db_proc = 'NeuroApp.rimuovi_media'
+    var nome = this.mediaName(doc.url_media)
+    var url = this.G_URL_ROOT+"/cgi-bin/rimuovi_media2.php?proc="+db_proc+"&id_media="+doc.id_media+"&nome_media="+nome+"&tipo_media="+tipo_media
+    console.log(url);
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(outcome.message) 
+            return outcome
+        }),
+        tap( outcome => {
+          console.log('** outcome **', outcome)
+        }),
+        catchError( this.handleError )
+    )
+  } //cancellaGlossario()
 
 
   /**

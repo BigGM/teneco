@@ -36,7 +36,7 @@ export class ResourceDocsComponent implements OnInit {
   }
 
   // path delle immagini
-  readonly root_images = "../../../assets/images/"
+  readonly root_images = NeuroApp.ROOT_ICONS
 
 
   /**
@@ -112,15 +112,15 @@ export class ResourceDocsComponent implements OnInit {
    * Nome del documento dalla url in input
    */
   docName(url) {
-    return this.docService.docName(url)
+    return NeuroApp.fileName(url)
   }
 
   /**
   * Estensione del documento (compreso il '.') dalla url in input
   */
   docExt(url) {
-    return this.docService.docExt(url)
-  }  
+    return NeuroApp.fileExt(url)
+  }
 
 
   /**
@@ -128,11 +128,10 @@ export class ResourceDocsComponent implements OnInit {
    * @param url
    */
   docIcon(url) {
-    //console.log("docIcon", url)
-    if ( this.icons[this.docExt(url)] == undefined )
-      return this.root_images + "generic-doc-icon.png"
+    if ( this.icons[NeuroApp.fileExt(url)] == undefined )
+      return this.root_images + "/generic-doc-icon.png"
     else
-      return this.root_images + this.icons[ this.docExt(url) ]
+      return this.root_images + "/" + this.icons[ NeuroApp.fileExt(url) ]
   }
 
 
@@ -143,7 +142,7 @@ export class ResourceDocsComponent implements OnInit {
   confermaCancellaDoc(doc:RecordMedia) {
     let self = this
 
-      let msg= "<h6 style='line-height:1.6'>Conferma rimozione del documento <label style='color:rgb(180,0,0);'>\""+this.docName(doc.url_media)+"\"</label> ?</h6>";
+      let msg= "<h6 style='line-height:1.6'>Conferma rimozione del documento <label style='color:rgb(180,0,0);'>\""+NeuroApp.fileName(doc.url_media)+"\"</label> ?</h6>";
       if ( doc.usato_media == 1)
         msg = "<h6><b>Il documento viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
@@ -166,14 +165,17 @@ export class ResourceDocsComponent implements OnInit {
     } // confermaCancellaDoc()
 
 
-
+    /**
+     * Rimuove un documento dal DB.
+     * @param doc il documento da cancellare
+     */
     cancellaDocumento(doc:RecordMedia) {
       console.log("ListaGlossarioComponent.cancellaDocumento")
       $('#waitDiv').show()
     
       NeuroApp.showWait()
     
-      let serv = this.docService.rimuoviDocumento(doc)
+      let serv = this.neuroAppService.rimuoviMedia(doc,'doc')
       this.mediaSubscr = serv.subscribe (
         result => {
           this.mediaSubscr.unsubscribe()

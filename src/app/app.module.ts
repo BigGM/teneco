@@ -30,7 +30,8 @@ import { NewGlossarioComponent } from './components/glossario/new-glossario/new-
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
 import { ResourceDocsService } from './services/resource-docs/resource-docs.service';
-import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component'
+import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component';
+import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component'
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { UploadDocComponent } from './components/resource-docs/upload-doc/upload
     ListaGlossarioComponent,
     ModGlossarioComponent,
     NewGlossarioComponent,
-    UploadDocComponent
+    UploadDocComponent,
+    UploadAudioComponent
   ],
   imports: [
     BrowserModule,

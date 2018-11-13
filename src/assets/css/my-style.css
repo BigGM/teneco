@@ -110,7 +110,7 @@ button.close2 {
 /* mod. bootstrap: i campi di ricerca nella tabella sotto i nomi delle colonne */
 .form-control {
    font-family: Tahoma, calibri, sans-serif, Helvetica, Arial, Tahoma;
-   font-size:14px !important;
+   font-size:16px !important;
    /*height:30px;*/
    /*padding:2px 6px;*/
    background-color:rgb(252,252,253);

@@ -1,0 +1,88 @@
+  .embed-responsive-doc {
+    padding-bottom:50px;
+   }
+      
+   #doc-progress-bar {
+      opacity:0;
+   }
+   
+   .title-doc {
+      width:100%;
+      font-family: verdana,tahoma,calibri;
+      font-weight: normal;
+      font-size: 28px;
+      color: rgb(0,143,213);
+      margin-bottom: 0px;
+   }
+     
+   input[type="file"] {
+       display: none;
+   }
+   .custom-file-upload {
+       color:white;
+       background-color: rgb(0,193,234);
+       border-color: rgb(0,167,202);
+       border-radius:4px;
+       display: inline-block;
+       padding: 6px 16px;
+       cursor: pointer;
+       font-weight:normal;
+   }
+
+   .thumbnail-audio {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: rgb(250,250,253);
+      -webkit-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+         -moz-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+              box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+   }
+   
+   .media-heading {
+      font-family: Calibri,Tahoma,Verdana;
+      color: rgb(50,50,100);
+      font-size:20px;
+      font-weight:600;
+   }
+   
+   .word-break {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
+      word-break: break-all;
+   }
+   
+   .my-trash {
+      position:absolute;
+      bottom:16px;
+      right:30px;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:normal;
+   }
+
+   .descr-audio {
+       font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       font-size: 17px;
+       font-weight: bold;
+   }
+   .descr-audio-on-lista {
+    font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    /*color:rgb(20,30,80);*/
+    color:rgb(240, 240, 243);
+}
+
+   .icon-list {
+        cursor:pointer;
+        font-size:26px;
+        font-weight:normal;
+        color:rgb(228, 192, 30);
+   }
+   .icon-list-grid {
+        cursor:pointer;
+        font-size:32px;
+        color:rgb(231, 41, 82);
+        float:right;
+   }

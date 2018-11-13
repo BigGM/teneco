@@ -1,0 +1,56 @@
+
+.title-doc {
+    width:100%;
+    font-family: verdana,tahoma,calibri;
+    font-weight: normal;
+    font-size: 28px;
+    color: rgb(0,143,213);
+    margin-bottom: 0px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    color:white;
+    background-color: rgb(0,193,234);
+    border-color: rgb(0,167,202);
+    border-radius:4px;
+    display: inline-block;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-weight:normal;
+    font-size: 14px;
+}
+
+#audio-progress-bar {
+    opacity:0;
+}
+
+.height-24 {
+    height:24px;
+}
+
+.table {
+    font-family: Verdana;
+    font-size:14px;
+}
+
+.icon-stato {
+    font-size:24px !important;
+}
+.icon-red {
+    color:red !important;
+}
+.icon-green {
+    color:rgb(73, 194, 36) !important;
+}
+.icon-blue {
+    color: rgb(0,143,213) !important;
+}
+
+.text-smaller {
+   font-family: Calibri, Tahoma;
+   font-size:16px;
+}
