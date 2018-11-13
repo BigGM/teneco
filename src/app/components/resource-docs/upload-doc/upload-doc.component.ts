@@ -1,8 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileItem } from 'ng2-file-upload';
 import { NeuroApp} from '../../../neuro-app'
-
-import { ResourceDocsComponent } from '../resource-docs.component'
+import { Common } from '../../../common'
 
 
 declare var $ : any;
@@ -18,13 +17,13 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
 export class UploadDocComponent implements OnInit {
 
   public uploader:FileUploader = new FileUploader({url: URL_UPLOAD})
-
   public hasBaseDropZoneOver:boolean = false
   public hasAnotherDropZoneOver:boolean = false
 
   // Evento per il parent per aggiornare la lista dei documenti dopo un inserimento
   // o una cancellazione
   @Output() reloadDocsEvent = new EventEmitter();
+
 
   constructor() {
   }
@@ -38,6 +37,24 @@ export class UploadDocComponent implements OnInit {
    reloadDocs() {
       this.reloadDocsEvent.emit('Ricarica lista documenti');
    }
+
+  /**
+   * Esegue l'upload sul server del FileItem in input usando il metodo comune della
+   * classe Common.
+   * 
+   * @param item item da inviare al server
+   */
+  upload(item:FileItem) {
+    Common.upload(item)
+  }
+
+  /**
+   * Upload di tutti i file usando il metodo corrispondente della classe Common.
+   */
+  uploadAll() {
+    Common.uploadAll(this.uploader)
+  } // uploadAll()
+
  
   ngOnInit() {
     //console.log(this.uploader.options)

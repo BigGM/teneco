@@ -1,8 +1,9 @@
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core'
+import { FileUploader, FileItem } from 'ng2-file-upload'
 import { NeuroApp} from '../../../neuro-app'
-import { ResourceAudioComponent } from '../resource-audio.component'
+import { Common } from '../../../common'
+
 
 declare var $ : any;
 
@@ -17,13 +18,13 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
 export class UploadAudioComponent implements OnInit {
 
   public uploader:FileUploader = new FileUploader({url: URL_UPLOAD})
-
   public hasBaseDropZoneOver:boolean = false
   public hasAnotherDropZoneOver:boolean = false
 
   // Evento per il parent per aggiornare la lista dei documenti dopo un inserimento
   // o una cancellazione
   @Output() reloadAudioEvent = new EventEmitter();
+
 
   constructor() {
   }
@@ -37,6 +38,24 @@ export class UploadAudioComponent implements OnInit {
   reloadAudio() {
     this.reloadAudioEvent.emit('Ricarica lista audio');
   }
+
+  /**
+   * Esegue l'upload sul server del FileItem in input usando il metodo comune della
+   * classe Common.
+   * 
+   * @param item item da inviare al server
+   */
+  upload(item:FileItem) {
+    Common.upload(item)
+  }
+
+  /**
+   * Upload di tutti i file usando il metodo corrispondente della classe Common.
+   */
+  uploadAll() {
+    Common.uploadAll(this.uploader)
+  } // uploadAll()
+
  
   ngOnInit() {
     //console.log(this.uploader.options)
@@ -53,7 +72,7 @@ export class UploadAudioComponent implements OnInit {
     this.uploader.onAfterAddingAll = (addedFileItems) => {
         console.info('onAfterAddingAll', addedFileItems)
     }
-    this.uploader.onBeforeUploadItem = (fileItem) => {    
+    this.uploader.onBeforeUploadItem = (fileItem) => {
         fileItem.formData.push({descrizione: fileItem.formData['descrizione']})
         console.info('onBeforeUploadItem', fileItem)
     }
