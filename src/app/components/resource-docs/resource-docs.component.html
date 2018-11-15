@@ -3,8 +3,13 @@
   <!--
     La componente UploadDocComponent invia al parent la richiesta di
     ricaricare la lista dei documenti alla fine di un upload.
-  -->
-  <app-upload-doc (reloadDocsEvent)="reloadDocsList($event)" ></app-upload-doc>
+  <app-upload-doc (reloadDocsEvent)="reloadDocsList($event)" ></app-upload-doc> -->
+
+    <!--
+      Componente dinamica per l'upload
+    -->
+    <ng-template #dynamic_file_uploader>  </ng-template>
+
 
   <table style="margin-bottom:6px;">
     <tr>
@@ -28,7 +33,7 @@
                   <div class="thumbnail thumbnail-docs p-2">
                     <div class="media">
                     <img [src]="docIcon(doc.url_media)" class="align-self-start m-1 mr-2" style="height:65px;">
-                    <div class="media-body">
+                    <div class="media-body" style="cursor:pointer" (click)="open(doc.url_media)">
                         <a><h5 class="media-heading">{{docName(doc.url_media)}}</h5></a>
                         <p>{{doc.descr_media}}</p>
                     </div>

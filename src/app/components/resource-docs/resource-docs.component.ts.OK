@@ -1,20 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver
-}  from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { ResourceDocsService } from '../../services/resource-docs/resource-docs.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
-import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var $ : any;
 declare var bootbox: any;
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
 
 
 @Component({
@@ -44,12 +37,6 @@ export class ResourceDocsComponent implements OnInit {
 
   // path delle immagini
   readonly root_images = NeuroApp.ROOT_ICONS
-  
-  // Accesso al tag ng-template referenziato come dynamic_container
-  @ViewChild('dynamic_file_uploader', { read: ViewContainerRef }) entry: ViewContainerRef;
-  
-  componentUploadRef: any
-
 
 
   /**
@@ -59,8 +46,7 @@ export class ResourceDocsComponent implements OnInit {
    */
   constructor (
       private neuroAppService : NeuroAppService,
-      private docService      : ResourceDocsService,
-      private resolver        : ComponentFactoryResolver
+      private docService      : ResourceDocsService
   ) {
     console.log( "ResourceDocsComponent=> constructor" )
     this.lista_docs = []
@@ -73,47 +59,13 @@ export class ResourceDocsComponent implements OnInit {
     if (this.lista_docs)
       console.log( this.lista_docs.length )
     this.loadDocs()
-
-    this.componentUploadRef = null;
-    this.createComponentUpload (
-      "Upload Documenti",
-      "file-doc-upload",
-      ".xlsx,.xls,.doc,.docx,.txt,.pdf, .rtf")
   }
+
 
   ngOnDestroy() {
     console.log( "ResourceDocsComponent => OnDestroy" )
     if (this.mediaSubscr)
       this.mediaSubscr.unsubscribe()
-    
-      if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-  }
-
-  createComponentUpload (
-    title:string,
-    id_file_upload:string,
-    accept:string) {
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-    
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(DynamicUploadComponent);
-    this.componentUploadRef = this.entry.createComponent(factory);
-    let component = <DynamicUploadComponent>this.componentUploadRef.instance
-    component.title = title;
-    component.id_file_upload = id_file_upload
-    component.accept = accept
-    component.uploader.options.url = URL_UPLOAD
-
-    // Si sottoscrive al componente per ricevere messaggi emessi dal child
-    component.messageEvent.subscribe( event => {
-      console.log("Messaggio ricevuto dal child =>", event)
-      this.reloadDocsList(event)
-    })
   }
 
   open(url:string) {

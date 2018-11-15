@@ -2,11 +2,15 @@
 
   <!--
     La componente UploadAudioComponent invia al parent la richiesta di
-    ricaricare la lista dei documenti alla fine di un upload. -->
+    ricaricare la lista dei documenti alla fine di un upload.
+  <app-upload-audio (reloadAudioEvent)="reloadAudioList($event)"></app-upload-audio> -->
 
-  <app-upload-audio (reloadAudioEvent)="reloadAudioList($event)"></app-upload-audio>
+    <!--
+      Componente dinamica per l'upload
+    -->
+  <ng-template #dynamic_file_uploader>  </ng-template>
 
-
+  
   <table style="margin-bottom:6px;width:100%">
     <tr>
       <td style="width:55px;margin:0;">
@@ -26,27 +30,32 @@
     </tr>
   </table>
 
-    <!-- Presentazione a griglia -->
-    <div id="div-view-audio-as-grid" *ngIf="view_audio_as_grid" 
-      class="row py-3 px-1" 
-      style="background-color:rgb(246,246,250); border-radius:4px; border:1px solid rgb(235,235,235);">
+    <!-- Presentazione a griglia 
+    style="background-color:rgb(246,246,250); border-radius:4px; border:1px solid rgb(235,235,235);">
+    -->
+    <div id="div-view-audio-as-grid" *ngIf="view_audio_as=='grid'" 
+      class="row py-3 px-1 my-bg-secondary" 
+      style="border-radius:4px;">
         <div *ngFor="let audio of lista_audio" class="col-sm-6 col-md-4 mb-3">
-            <div class="thumbnail thumbnail-audio p-3 word-break">
+            <div class="thumbnail thumbnail-audio my-bg-dark p-3 word-break">
                 <audio controls style="width:100%"> <source [src]="audio.url_media"></audio>
-                <table><tr>
+                <table style="color:white"><tr>
                 <td class="descr-audio">{{audio.descr_media}}</td>
                 <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaAudio(audio)"></i></td>
                 </tr></table>
-              </div>
+            </div>
         </div>
     </div>
 
-    <!-- Presentazione a Lista -->
-    <div id="div-view-audio-as-list" *ngIf="view_audio_as_list"
-      class="row py-3"
-      style="background-color:rgb(246,246,250); border-radius:4px; border:1px solid rgb(235,235,235);">
+    <!-- Presentazione a Lista 
+    style="background-color:rgb(246,246,250); border-radius:4px; border:1px solid rgb(235,235,235);">
+      
+    -->
+    <div id="div-view-audio-as-list" *ngIf="view_audio_as=='list'"
+      class="row py-3 my-bg-secondary"
+      style="border-radius:4px;">
           <div *ngFor="let audio of lista_audio" class="col-12 mb-3 word-break">
-            <div class="thumbnail thumbnail-audio p-3 bg-dark">
+            <div class="thumbnail thumbnail-audio p-3 my-bg-dark">
                 <table><tr>
 
                     <td class="col-11 descr-audio-on-lista">{{audio.descr_media}}</td>
@@ -60,6 +69,25 @@
                 </tr></table>
             </div>
           </div>
+    </div>
+
+
+    <!-- Finestra modale per presentare l'audio e avviarlo -->
+    <div *ngIf="curr_audio" id='modalAudioList' class='modal fade' role='dialog' data-backdrop="static">
+      <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content shadow-lg'>
+      <div class='modal-header'>
+          <h4 class='modal-title'>{{curr_audio.descr_media}}</h4>
+          <button type='button' class='close' (click)="closeModalAudio()">&times;</button>
+      </div>
+      <div class='modal-body col-12'>
+         <audio controls style='width:90%;margin:auto;'> <source [src]="curr_audio.url_media"></audio>
+      </div>
+        <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' (click)="closeModalAudio()">Chiudi</button>
+        </div>
+      </div>
+      </div>
     </div>
 
 </DIV>

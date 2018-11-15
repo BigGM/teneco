@@ -13,12 +13,12 @@ export class Common {
    * Ritorna true se e' vuoto, altrimenti false.
    * @param item FileItem
    */
-  static descrIsEmpty(item:FileItem) : boolean  {
+  static descrIsEmpty(item:FileItem) : boolean {
     let descr = item.formData['descrizione']
     if (descr==null || descr=='undefined' || descr.trim()=="" )
       return true
     else
-      return true
+      return false
   }
 
 

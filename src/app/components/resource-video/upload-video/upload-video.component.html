@@ -1,18 +1,18 @@
+
 <div class="mb-5">
 
-    <label class="title-doc">Upload File audio</label>
+    <label class="title-doc">Upload Video</label>
   
-    <div class="row pt-3 pb-3 card my-bg-secondary"
-    style="background-color:rgb(243,243,247)">
+    <div class="row pt-3 pb-3 card my-bg-secondary">
 
         <div class="col-sm-12">
   
-          <label for="file-audio-upload" class="custom-file-upload">Sfoglia</label><br/>
-          <input [hidden]="true" id="file-audio-upload"
+          <label for="file-video-upload" class="custom-file-upload">Sfoglia</label><br/>
+          <input [hidden]="true" id="file-video-upload"
               type="file" 
               ng2FileSelect [uploader]="uploader" 
               multiple 
-              accept="audio/*" />
+              accept="video/*" />
           
             <p style="font-size:14px;color:white"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
   
@@ -69,7 +69,7 @@
             </table>
   
             <div>
-                <div id="audio-progress-bar" class="mb-3">
+                <div id="video-progress-bar" class="mb-3">
                     <div class="progress height-24">
                         <div class="progress-bar progress-bar-striped height-24" role="progressbar"
                         [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
@@ -91,9 +91,6 @@
                     <i class="far fa-trash-alt"></i> Remove all
                 </button>
             </div>
-  
         </div>
-  
     </div>
-  
   </div>

@@ -1,22 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver
-}  from '@angular/core';
-
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { ResourceAudioService } from '../../services/resource-audio/resource-audio.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
-import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var $ : any;
 declare var bootbox: any;
-
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
 
 @Component({
   selector: 'app-resource-audio',
@@ -40,11 +31,6 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
   // il file audio presentato sulla finestra modale
   curr_audio : RecordMedia = null
 
-  // Accesso al tag ng-template referenziato come dynamic_container
-  @ViewChild('dynamic_file_uploader', { read: ViewContainerRef }) entry: ViewContainerRef;
-  
-  componentUploadRef: any
-
   
   /**
    * Costruttore
@@ -53,8 +39,7 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
    */
   constructor (
     private neuroAppService : NeuroAppService,
-    private audioService    : ResourceAudioService,
-    private resolver        : ComponentFactoryResolver
+    private audioService    : ResourceAudioService
   ) {
     console.log( "ResourceAudioComponent=> constructor" )
     this.lista_audio = []
@@ -68,47 +53,12 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
     if (this.lista_audio)
       console.log( this.lista_audio.length )
     this.listaFileAudio()
-
-    this.componentUploadRef = null;
-    this.createComponentUpload (
-      "Upload Audio",
-      "file-audio-upload",
-      "audio/*")
   }
     
   ngOnDestroy() {
     console.log( "ResourceAudioComponent => OnDestroy" )
     if (this.mediaSubscr)
       this.mediaSubscr.unsubscribe()
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-  }
-
-  createComponentUpload (
-    title:string,
-    id_file_upload:string,
-    accept:string) {
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-    
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(DynamicUploadComponent);
-    this.componentUploadRef = this.entry.createComponent(factory);
-    let component = <DynamicUploadComponent>this.componentUploadRef.instance
-    component.title = title;
-    component.id_file_upload = id_file_upload
-    component.accept = accept
-    component.uploader.options.url = URL_UPLOAD
-
-    // Si sottoscrive al componente per ricevere messaggi emessi dal child
-    component.messageEvent.subscribe( event => {
-      console.log("Messaggio ricevuto dal child =>", event)
-      this.reloadAudioList(event)
-    })
   }
 
   /**

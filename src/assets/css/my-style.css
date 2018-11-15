@@ -6,6 +6,12 @@
    top: 80px;
 }
 
+.alert-info {
+   color: #ffffff;
+   background-color: #75bad5;
+   border-color: #63a6c9;
+}
+
 /****
  * Ver.0.1
  * Personalizzazione di alcuni stili bootstrap e aggiunta di nuovi stili.

@@ -23,7 +23,7 @@ input[type="file"] {
     font-size: 14px;
 }
 
-#audio-progress-bar {
+#video-progress-bar {
     opacity:0;
 }
 
@@ -55,7 +55,7 @@ input[type="file"] {
 }
 
 .my-bg-secondary {
-    background-color: rgb(49, 113, 157)!important;
+    background-color: rgb(155, 178, 195)!important;
 }
 
 .my-bg-dark {

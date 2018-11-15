@@ -1,8 +1,101 @@
-<DIV class="container-fluid">
+<DIV id="div_image_component" class="container-fluid mb-5">  
 
-    <div class="jumbotron text-center" >
-       <h1>Pagina Risorse Immagini</h1>
-       <img src="../../../assets/images/non-disturbare.jpg">
+    <!--
+      La componente UploadImageComponent invia al parent la richiesta di
+      ricaricare la lista delle immagini alla fine di un upload.   
+  <app-upload-image (reloadImageEvent)="reloadImages($event)"></app-upload-image> -->
+
+    <!--
+      Componente dinamica per l'upload
+    -->
+    <ng-template #dynamic_file_uploader>  </ng-template>
+
+  <table style="margin-bottom:6px;width:100%">
+    <tr>
+      <td style="width:55px;margin:0;">
+          <button title="Aggiorna la lista delle immagini"
+            type="button"
+            class="btn btn-info btn-md"
+            (click)="listaImmagini()">
+            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+            </button>
+      </td>
+      <td><label class="title-image">Immagini inserite</label></td>
+    
+      <td nowrap>
+          <i class="fas fa-list-ul icon-list-grid mx-1" (click)="viewAsList()"></i>
+          <i class="fas fa-th-large icon-list-grid mx-1" (click)="viewAsGrid()"></i>
+      </td>
+    </tr>
+  </table>
+
+
+    <!-- Presentazione a griglia -->
+    <div id="div-view-images-as-grid" *ngIf="view_images_as=='grid'" 
+      class="row py-3 px-1" 
+      style="background-color:rgb(123, 157, 181); border-radius:4px;">
+        <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
+            <div class="thumbnail thumbnail-image p-3 word-break">
+                <img [src]="image.url_media" class="img-fluid"
+                    data-toggle="modal"
+                    data-target="#modalImageList" 
+                    (click)="openModalImage(image)"
+                    style="cursor:pointer"
+                >
+                <table ><tr>
+                <td class="descr-image">{{image.descr_media}}</td>
+                <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaImage(image)"></i></td>
+                </tr></table>
+              </div>
+        </div>
     </div>
-  
+
+
+    <!-- Presentazione a Lista -->
+    <div id="div-view-images-as-list" *ngIf="view_images_as=='list'"
+      class="row py-3 my-bg-secondary"
+      style="border-radius:4px;"
+    >
+          <div *ngFor="let image of lista_images" class="col-12 mb-3 word-break">
+            <div class="thumbnail thumbnail-image p-2 my-bg-dark">
+                <table >
+                  <tr>
+                    <td class="descr-image-on-lista"
+                        data-toggle="modal"
+                        data-target="#modalImageList" 
+                        (click)="openModalImage(image)"
+                        style="cursor:pointer"
+                    ><img [src]="image.url_media" class="img-small">{{image.descr_media}}</td>
+                    <td nowrap style="width:40px;">
+                        <i class="fas fa-trash-alt icon-list" (click)="confermaCancellaImage(image)"></i>
+                    </td>
+                </tr></table>
+            </div>
+          </div>
+    </div>
+
+
+   <!-- 
+     -- Finestra modale per inserire una immagine allargata
+     -->
+   <div *ngIf="curr_image" id='modalImageList' class='modal fade' role='dialog' data-backdrop="static">
+      <div class='modal-dialog modal-dialog-centered modal-lg'>
+      <div class='modal-content shadow-lg'>
+         <div class='modal-header'>
+            <h4 class='modal-title'>{{curr_image.descr_media}}</h4>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+         </div>
+
+         <div class='modal-body col-12 text-center'>
+            <img [src]="curr_image.url_media" class='img-fluid'>
+         </div>
+    
+        <div class='modal-footer'>
+            <button type='button' class='btn btn-primary' data-dismiss='modal'>Chiudi</button>
+        </div>
+      </div>
+      </div>
+   </div>
+
 </DIV>
+

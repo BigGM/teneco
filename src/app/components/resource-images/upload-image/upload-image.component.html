@@ -1,18 +1,18 @@
 <div class="mb-5">
 
-    <label class="title-doc">Upload File audio</label>
+    <label class="title-doc">Upload Immagine</label>
   
     <div class="row pt-3 pb-3 card my-bg-secondary"
     style="background-color:rgb(243,243,247)">
 
         <div class="col-sm-12">
   
-          <label for="file-audio-upload" class="custom-file-upload">Sfoglia</label><br/>
-          <input [hidden]="true" id="file-audio-upload"
+          <label for="file-image-upload" class="custom-file-upload">Sfoglia</label><br/>
+          <input [hidden]="true" id="file-image-upload"
               type="file" 
               ng2FileSelect [uploader]="uploader" 
               multiple 
-              accept="audio/*" />
+              accept="image/*" />
           
             <p style="font-size:14px;color:white"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
   

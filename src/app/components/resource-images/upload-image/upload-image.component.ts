@@ -1,40 +1,39 @@
-
 import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { FileUploader, FileItem } from 'ng2-file-upload'
 import { NeuroApp} from '../../../neuro-app'
 import { Common } from '../../../common'
 
-
+// per jQuery
 declare var $ : any;
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
+
+const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php";
 
 @Component({
-  selector: 'app-upload-audio',
-  templateUrl: './upload-audio.component.html',
-  styleUrls: ['./upload-audio.component.css']
+  selector: 'app-upload-image',
+  templateUrl: './upload-image.component.html',
+  styleUrls: ['./upload-image.component.css']
 })
-export class UploadAudioComponent implements OnInit {
+export class UploadImageComponent implements OnInit {
 
   public uploader:FileUploader = new FileUploader({url: URL_UPLOAD})
   public hasBaseDropZoneOver:boolean = false
   public hasAnotherDropZoneOver:boolean = false
 
-  // Evento per il parent per aggiornare la lista dei file audio dopo un inserimento
+  // Evento per il parent per aggiornare la lista delle immagini dopo un inserimento
   // o una cancellazione
-  @Output() reloadAudioEvent = new EventEmitter();
+  @Output() reloadImageEvent = new EventEmitter();
 
-  
+
   constructor() {
   }
 
-
-  /**
-   * L'evento reloadAudioEvent viene emesso verso il parent per ricaricare la
-   * la lista dei file dopo l'upload. Il messaggio inviato vien usato
+    /**
+   * L'evento reloadIMageEvent viene emesso verso il parent per ricaricare la
+   * la lista dei file dopo l'upload. Il messaggio inviato viene usato
    * solo per un eventuale messaggio di log, non ha un significato specifico.
    */
-  reloadAudio() {
-    this.reloadAudioEvent.emit('Ricarica lista audio');
+  reloadImages() {
+    this.reloadImageEvent.emit('Ricarica lista immagini');
   }
 
   /**
@@ -44,6 +43,7 @@ export class UploadAudioComponent implements OnInit {
    * @param item item da inviare al server
    */
   upload(item:FileItem) {
+    console.log("upload image", item)
     Common.upload(item)
   }
 
@@ -54,7 +54,7 @@ export class UploadAudioComponent implements OnInit {
     Common.uploadAll(this.uploader)
   } // uploadAll()
 
- 
+
   ngOnInit() {
     //console.log(this.uploader.options)
     
@@ -104,14 +104,14 @@ export class UploadAudioComponent implements OnInit {
           NeuroApp.custom_error(response,'Errore')
         }
         else {
-          NeuroApp.custom_info("File audio inserito nel sistema");
+          NeuroApp.custom_info("Immagine inserita nel sistema");
         }
     }
     this.uploader.onCompleteAll = () => {
         console.info('onCompleteAll');
         $('#audio-progress-bar').animate({'opacity':0}, 600)
-        // Aggiorna la lista dei file audio
-        this.reloadAudio()
+        // Aggiorna la lista delle immagini
+        this.reloadImages()
     }
   }
 
@@ -124,4 +124,5 @@ export class UploadAudioComponent implements OnInit {
   }
 
 }
+
 

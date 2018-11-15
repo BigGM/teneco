@@ -30,8 +30,14 @@ import { NewGlossarioComponent } from './components/glossario/new-glossario/new-
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
 import { ResourceDocsService } from './services/resource-docs/resource-docs.service';
+import { ResourceAudioService } from './services/resource-audio/resource-audio.service';
+import { ResourceImagesService } from './services/resource-images/resource-images.service';
 import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component';
-import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component'
+import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component';
+import { UploadImageComponent } from './components/resource-images/upload-image/upload-image.component';
+import { UploadVideoComponent } from './components/resource-video/upload-video/upload-video.component';
+import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-upload.component';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +54,10 @@ import { UploadAudioComponent } from './components/resource-audio/upload-audio/u
     ModGlossarioComponent,
     NewGlossarioComponent,
     UploadDocComponent,
-    UploadAudioComponent
+    UploadAudioComponent,
+    UploadImageComponent,
+    UploadVideoComponent,
+    DynamicUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +70,11 @@ import { UploadAudioComponent } from './components/resource-audio/upload-audio/u
   providers: [
     NeuroAppService,
     GlossarioService,
-    ResourceDocsService],
-  bootstrap: [AppComponent]
+    ResourceDocsService,
+    ResourceAudioService,
+    ResourceImagesService
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [DynamicUploadComponent]
 })
 export class AppModule { }

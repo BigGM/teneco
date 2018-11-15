@@ -1,21 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver
-}  from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { ResourceImagesService } from '../../services/resource-images/resource-images.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
-import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var $ : any;
 declare var bootbox: any;
-
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php";
 
 @Component({
   selector: 'app-resource-images',
@@ -40,11 +32,6 @@ export class ResourceImagesComponent implements OnInit {
   // l'imagine da mostrare sulla finetra modale
   curr_image: RecordMedia = null
 
-  // Accesso al tag ng-template referenziato come dynamic_container
-  @ViewChild('dynamic_file_uploader', { read: ViewContainerRef }) entry: ViewContainerRef;
-  
-  componentUploadRef: any
-
   
   /**
    * Costruttore
@@ -53,8 +40,7 @@ export class ResourceImagesComponent implements OnInit {
    */
   constructor (
     private neuroAppService : NeuroAppService,
-    private imageService    : ResourceImagesService,
-    private resolver        : ComponentFactoryResolver
+    private imageService    : ResourceImagesService
   ) {
     console.log( "ResourceImagesComponent=> constructor" )
     this.lista_images = []
@@ -67,48 +53,14 @@ export class ResourceImagesComponent implements OnInit {
     if (this.lista_images)
       console.log( this.lista_images.length )
     this.listaImmagini()
-
-    this.componentUploadRef = null;
-    this.createComponentUpload (
-      "Upload Immagini",
-      "file-image-upload",
-      "image/*")
   }
     
   ngOnDestroy() {
     console.log( "ResourceImagesComponent => OnDestroy" )
     if (this.mediaSubscr)
       this.mediaSubscr.unsubscribe()
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
   }
 
-  createComponentUpload (
-    title:string,
-    id_file_upload:string,
-    accept:string) {
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-    
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(DynamicUploadComponent);
-    this.componentUploadRef = this.entry.createComponent(factory);
-    let component = <DynamicUploadComponent>this.componentUploadRef.instance
-    component.title = title;
-    component.id_file_upload = id_file_upload
-    component.accept = accept
-    component.uploader.options.url = URL_UPLOAD
-
-    // Si sottoscrive al componente per ricevere messaggi emessi dal child
-    component.messageEvent.subscribe( event => {
-      console.log("Messaggio ricevuto dal child =>", event)
-      this.reloadImages(event)
-    })
-  }
 
   /**
    * Attiva la visualizzazione a lista
@@ -122,6 +74,7 @@ export class ResourceImagesComponent implements OnInit {
       this.view_images_as = "list"
     })
   }
+
 
   /**
    * Attiva la visualizzazione a griglia

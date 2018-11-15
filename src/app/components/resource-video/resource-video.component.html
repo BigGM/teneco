@@ -1,8 +1,103 @@
-<DIV class="container-fluid">
+<DIV id="div_video_component" class="container-fluid mb-5">
 
-    <div class="jumbotron text-center" >
-       <h1>Pagina Risorse Video</h1>
-       <img src="../../../assets/images/non-disturbare.jpg">
-    </div>
-  
-  </DIV>
+    <!--
+      La componente UploadVideoComponent invia al parent la richiesta di
+      ricaricare la lista delle immagini alla fine di un upload.   
+     <app-upload-video (reloadVideoEvent)="reloadVideoList($event)"></app-upload-video> -->
+
+    <!--
+      Componente dinamica per l'upload
+    -->
+    <ng-template #dynamic_file_uploader>  </ng-template>
+
+      <table style="margin-bottom:6px;width:100%">
+         <tr>
+            <td style="width:55px;margin:0;">
+               <button title="Aggiorna la lista dei file video"
+                  type="button"
+                  class="btn btn-info btn-md"
+                  (click)="listaFileVideo()">
+                  <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                  </button>
+            </td>
+            <td><label class="title-doc">Video inseriti</label></td>
+         
+            <td nowrap>
+               <i class="fas fa-list-ul icon-list-grid mx-1" (click)="viewAsList()"></i>
+               <i class="fas fa-th-large icon-list-grid mx-1" (click)="viewAsGrid()"></i>
+            </td>
+         </tr>
+      </table>
+
+
+      <!-- Presentazione a griglia 
+         style="background-color:rgb(246,246,250); border-radius:4px; border:1px solid rgb(235,235,235);">
+      -->
+      <div id="div-view-video-as-grid" *ngIf="view_video_as=='grid'" 
+         class="row py-3 px-1 my-bg-secondary" 
+         style="border-radius:4px;">
+         <div *ngFor="let video of lista_video" class="col-sm-6 col-md-4  col-lg-3 mb-3">
+            <div class="thumbnail thumbnail-video my-bg-dark p-3 word-break">
+               <div class="embed-responsive embed-responsive-16by9">
+                  <video controls> <source class="embed-responsive-item" [src]="video.url_media"></video>
+               </div>
+               <p>
+               
+               <table style="color:white"><tr>
+               <td class="descr-video">{{video.descr_media}}</td>
+               <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaVideo(video)"></i></td>
+               </tr></table>
+            </div>
+         </div>
+      </div>
+
+
+      <!-- Presentazione a Lista -->
+      <div id="div-view-video-as-list" *ngIf="view_video_as=='list'"
+         class="row py-3 my-bg-secondary"
+         style="border-radius:4px;"
+      >
+        <div *ngFor="let video of lista_video" class="col-12 mb-3 word-break">
+          <div class="thumbnail thumbnail-video p-3 my-bg-dark">
+              <table >
+                <tr>
+                  <td class="descr-video-on-lista"
+                      data-toggle="modal"
+                      data-target="#modalVideoList" 
+                      (click)="openModalVideo(video)"
+                      style="cursor:pointer"
+                  >{{video.descr_media}}</td>
+                  <td nowrap style="width:40px;">
+                      <i class="fas fa-trash-alt icon-list" (click)="confermaCancellaVideo(video)"></i>
+                  </td>
+              </tr></table>
+          </div>
+        </div>
+      </div>
+
+
+     <!-- 
+     -- Finestra modale per avviare un video
+     -->
+      <div *ngIf="curr_video" id='modalVideoList' class='modal fade' role='dialog' data-backdrop="static">
+         <div class='modal-dialog modal-dialog-centered modal-lg'>
+         <div class='modal-content shadow-lg'>
+            <div class='modal-header'>
+               <h4 class='modal-title'>{{curr_video.descr_media}}</h4>
+               <button type='button' class='close' (click)="closeModalVideo()">&times;</button>
+            </div>
+   
+            <div class='modal-body col-12 text-center'>
+               <div class="embed-responsive embed-responsive-16by9">
+                  <video controls> <source class="embed-responsive-item" [src]="curr_video.url_media"></video>
+               </div>
+            </div>
+       
+           <div class='modal-footer'>
+               <button type='button' class='btn btn-primary' (click)="closeModalVideo()">Chiudi</button>
+           </div>
+         </div>
+         </div>
+      </div>
+
+</DIV>

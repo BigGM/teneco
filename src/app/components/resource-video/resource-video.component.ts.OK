@@ -1,22 +1,13 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import {
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver
-}  from '@angular/core';
-
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { ResourceVideoService } from '../../services/resource-video/resource-video.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
-import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var $ : any;
 declare var bootbox: any;
-
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/video_upload.php";
 
 @Component({
   selector: 'app-resource-video',
@@ -37,10 +28,6 @@ export class ResourceVideoComponent implements OnInit {
   // il file video presentato sulla finestra modale
   curr_video : RecordMedia = null
 
-  // Accesso al tag ng-template referenziato come dynamic_container
-  @ViewChild('dynamic_file_uploader', { read: ViewContainerRef }) entry: ViewContainerRef;
-  
-  componentUploadRef: any
   
   /**
    * Costruttore
@@ -49,8 +36,7 @@ export class ResourceVideoComponent implements OnInit {
    */
   constructor (
     private neuroAppService : NeuroAppService,
-    private videoService    : ResourceVideoService,
-    private resolver        : ComponentFactoryResolver
+    private videoService    : ResourceVideoService
   ) {
     console.log( "ResourceVideoComponent=> constructor" )
     this.lista_video = []
@@ -64,47 +50,12 @@ export class ResourceVideoComponent implements OnInit {
     if (this.lista_video)
       console.log( this.lista_video.length )
     this.listaFileVideo()
-
-    this.componentUploadRef = null;
-    this.createComponentUpload (
-      "Upload Video",
-      "file-video-upload",
-      "video/*")
   }
     
   ngOnDestroy() {
     console.log( "ResourceVideoComponent => OnDestroy" )
     if (this.mediaSubscr)
       this.mediaSubscr.unsubscribe()
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-  }
-
-  createComponentUpload (
-    title:string,
-    id_file_upload:string,
-    accept:string) {
-
-    if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
-    
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(DynamicUploadComponent);
-    this.componentUploadRef = this.entry.createComponent(factory);
-    let component = <DynamicUploadComponent>this.componentUploadRef.instance
-    component.title = title;
-    component.id_file_upload = id_file_upload
-    component.accept = accept
-    component.uploader.options.url = URL_UPLOAD
-
-    // Si sottoscrive al componente per ricevere messaggi emessi dal child
-    component.messageEvent.subscribe( event => {
-      console.log("Messaggio ricevuto dal child =>", event)
-      this.reloadVideoList(event)
-    })
   }
 
   /**

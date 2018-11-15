@@ -1,11 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { NeuroApp} from '../../../neuro-app'
 import { Common } from '../../../common'
 
 
 declare var $ : any;
-
 
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
 
