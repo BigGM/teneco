@@ -18,6 +18,22 @@ router-outlet ~ * {
     color:rgb(235, 83, 96) !important;
 }
 
+.my-icon-size-22 {
+    font-size:22px;
+}
+
+.my-icon-size-24 {
+    font-size:24px;
+}
+
+.my-icon-size-26 {
+    font-size:26px;
+}
+
+.my-icon-size-28 {
+    font-size:28px;
+}
+
 .navbar-brand {
     padding: 0px;
 }

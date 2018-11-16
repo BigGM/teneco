@@ -3,6 +3,7 @@
     color:rgb(34,67,136);
     cursor:pointer;
   }
+
   #tableGlossario tr > td {
     padding: 6px 10px;
     font-family: Calibri, Geneva, Tahoma, sans-serif,Verdana;
@@ -10,6 +11,7 @@
     border:1px solid transparent;
     border-bottom:1px solid rgba(200, 200, 200,0.3);
   }
+  
   #tableGlossario > tbody > tr:hover {
     /*color:white;*/
     background-color: rgb(132, 218, 255);

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { GlossarioService, RecordGlossario} from '../../../services/glossario/glossario.service'
 import { Subscription } from 'rxjs';
-
 import { NeuroApp } from '../../../neuro-app';
 
 declare var $ : any;

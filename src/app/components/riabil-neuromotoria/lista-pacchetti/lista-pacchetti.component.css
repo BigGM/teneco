@@ -1,0 +1,47 @@
+.marked-row {
+    background:rgba(176, 210, 248, 0.2) !important;
+    text-shadow: 1px 1px 2px white;
+    color: rgb(16,95,133);
+  }
+
+  .marked-row-first-col {
+     border-left: 5px solid rgb(255, 61, 93) !important;
+  }
+
+  .marked-row-last-col {
+     border-right:  5px solid rgb(255, 61, 93) !important;
+  }
+
+  #tablePacchetti {
+    width:100%;
+    color:rgb(34,67,136);
+    cursor:pointer;
+  }
+
+  #tablePacchetti tr > td {
+    padding: 6px 10px;
+    font-family: Calibri,Tahoma,verdana;
+    font-size:20px;
+    border:1px solid transparent;
+    border-bottom:1px solid rgba(200,200,200,0.1);
+  }
+
+  #tablePacchetti tr> td:first-child {
+    vertical-align: text-top;
+  }
+  
+  #tablePacchetti:last-child {
+    border-radius:4px;
+  }
+
+  #tablePacchetti tr > td:nth-child(1) {
+     font-weight: bold;
+  }
+
+
+  #tablePacchetti > tbody > tr:hover {
+    background-color: rgb(193, 221, 253);
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  

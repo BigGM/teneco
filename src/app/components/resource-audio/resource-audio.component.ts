@@ -8,7 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
-import { ResourceAudioService } from '../../services/resource-audio/resource-audio.service'
+//import { ResourceAudioService } from '../../services/resource-audio/resource-audio.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
@@ -53,7 +53,7 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
    */
   constructor (
     private neuroAppService : NeuroAppService,
-    private audioService    : ResourceAudioService,
+    //private audioService    : ResourceAudioService,
     private resolver        : ComponentFactoryResolver
   ) {
     console.log( "ResourceAudioComponent=> constructor" )

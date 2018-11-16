@@ -8,10 +8,10 @@ declare var $:any;
  */
 export class NeuroApp {
    
-   //static G_URL_ROOT = "http://localhost:8080/"
+   static G_URL_ROOT = "http://localhost:8080/"
    //static G_URL_ROOT = "http://192.168.2.63:47000/"
    
-   static G_URL_ROOT = "http://81.29.176.113:47000/"
+   //static G_URL_ROOT = "http://81.29.176.113:47000/"
 
    // la directory con le icone di progetto
    static ROOT_ICONS = "../../../assets/images"

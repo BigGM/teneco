@@ -1,0 +1,50 @@
+<!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
+<div id="divListaPacchetti" class="row" *ngIf="pacchetti.length>0">
+        
+  <div class="col-12">
+  <div class="card">
+      
+    <div class="card-header">
+        <h3 style="color:rgb(208, 39, 39);">Pacchetti</h3>
+    </div>
+      
+      <div class="card-body" style="max-height:550px;overflow:auto;">
+        <table id="tablePacchetti">
+          
+          <!-- 
+            [textContent] corrisponde a ng-bind di angularJS 
+            [innerHtml]   corrisponde a ng-bind-html di angularJS
+            NB. textContent e innerHTML sono PROPRIO le property del DOM, NON attributi creati da angular
+          -->
+
+           <tr *ngFor="let pkt of pacchetti"  (click)='onForeground(row)' #row>
+              <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto(pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
+              
+              <td [innerHtml]="pkt.descr" (click)="loadEserciziPacchetto(pkt)"></td>    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
+              
+              <td (click)="formModifPacchetto($event,pkt)">
+                <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
+             </td>
+             
+             <td (click)="confermaCancellaPacchetto($event,pkt)">
+                <i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
+             </td>
+
+           </tr>
+        </table>
+      </div> <!-- card body -->
+      
+      <div class="card-footer">
+          <button title="Aggiungi un nuovo pacchetto" class="btn btn-primary" style="margin-right:4px;"
+          (click)="formNuovoPacchetto()">
+             <i class="fas fa-plus"></i>
+          </button>
+
+          <button title="Aggiorna la lista dei pacchetti" class="btn btn-primary"
+          (click)="reloadPacchetti()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+      </div> <!-- card footer -->
+  </div>
+  </div>
+  </div>

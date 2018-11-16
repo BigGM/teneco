@@ -10,11 +10,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 
 // Componenti di progetto
 import { AppComponent } from './app.component';
-import { PktRiabilitativiComponent } from './components/pkt-riabilitativi/pkt-riabilitativi.component';
 import { AppRoutingModule } from './app-routing.module';
-
-
-import { PktCognitiviComponent } from './components/pkt-cognitivi/pkt-cognitivi.component';
 import { ResourceVideoComponent } from './components/resource-video/resource-video.component';
 import { ResourceAudioComponent } from './components/resource-audio/resource-audio.component';
 import { ResourceImagesComponent } from './components/resource-images/resource-images.component';
@@ -24,26 +20,21 @@ import { GlossarioComponent } from './components/glossario/glossario.component';
 import { ListaGlossarioComponent } from './components/glossario/lista-glossario/lista-glossario.component';
 import { ModGlossarioComponent } from './components/glossario/mod-glossario/mod-glossario.component';
 import { NewGlossarioComponent } from './components/glossario/new-glossario/new-glossario.component';
+import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-upload.component';
+import { RiabilNeuromotoriaComponent } from './components/riabil-neuromotoria/riabil-neuromotoria.component';
+import { RiabilCognitivaComponent } from './components/riabil-cognitiva/riabil-cognitiva.component';
+import { ListaPacchettiComponent } from './components/riabil-neuromotoria/lista-pacchetti/lista-pacchetti.component'
 
 
 // Servizi di progetto
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
-import { ResourceDocsService } from './services/resource-docs/resource-docs.service';
-import { ResourceAudioService } from './services/resource-audio/resource-audio.service';
-import { ResourceImagesService } from './services/resource-images/resource-images.service';
-import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component';
-import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component';
-import { UploadImageComponent } from './components/resource-images/upload-image/upload-image.component';
-import { UploadVideoComponent } from './components/resource-video/upload-video/upload-video.component';
-import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-upload.component';
+import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service'
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PktRiabilitativiComponent,
-    PktCognitiviComponent,
     ResourceVideoComponent,
     ResourceAudioComponent,
     ResourceImagesComponent,
@@ -53,11 +44,10 @@ import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-uplo
     ListaGlossarioComponent,
     ModGlossarioComponent,
     NewGlossarioComponent,
-    UploadDocComponent,
-    UploadAudioComponent,
-    UploadImageComponent,
-    UploadVideoComponent,
     DynamicUploadComponent,
+    RiabilNeuromotoriaComponent,
+    RiabilCognitivaComponent,
+    ListaPacchettiComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,9 +60,7 @@ import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-uplo
   providers: [
     NeuroAppService,
     GlossarioService,
-    ResourceDocsService,
-    ResourceAudioService,
-    ResourceImagesService
+    RiabilNeuromotoriaService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DynamicUploadComponent]

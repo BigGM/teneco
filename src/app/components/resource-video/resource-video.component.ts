@@ -8,7 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
-import { ResourceVideoService } from '../../services/resource-video/resource-video.service'
+//import { ResourceVideoService } from '../../services/resource-video/resource-video.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
@@ -49,7 +49,7 @@ export class ResourceVideoComponent implements OnInit {
    */
   constructor (
     private neuroAppService : NeuroAppService,
-    private videoService    : ResourceVideoService,
+    //private videoService    : ResourceVideoService,
     private resolver        : ComponentFactoryResolver
   ) {
     console.log( "ResourceVideoComponent=> constructor" )
