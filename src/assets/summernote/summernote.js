@@ -139,18 +139,14 @@ var palette = renderer.create('<div class="note-color-palette"/>', function ($no
     }
 });
 
-
-// un contatore globali delle finestre modali create
+var modal_id = "";
 var modalCounter = 0;
-var dialog = renderer.create('<div id="modal-1" class="modal fade ui-draggable" role="dialog" data-backdrop="static" aria-hidden="false" style="overflow:hidden" tabindex="-1"/>', 
-   function ($node, options) {
-
-    // incrementa il contatore
-    modalCounter ++;
-    
-    // e lo usa per assegnare un id univoco alla finestra
-    $node[0].id= "modal-" + modalCounter;
-
+function startModal() {
+   modalCounter ++;
+   modal_id = 'modal-' + modalCounter;
+   return '<div id="'+modal_id+'" class="modal fade ui-draggable" role="dialog" data-backdrop="static" aria-hidden="false" tabindex="-1"/>'
+}
+var dialog = renderer.create(startModal(), function ($node, options) {
     if (options.fade) {
         $node.addClass('fade');
     }
@@ -158,16 +154,16 @@ var dialog = renderer.create('<div id="modal-1" class="modal fade ui-draggable" 
         '<div class="modal-dialog modal-md">',
         '  <div class="modal-content">',
         (options.title
-            ? '    <div class="modal-header" style="border-bottom:0px; background-color:rgb(216,62,16) !important;">' +
+            ? '    <div class="modal-header" style="border-bottom:0px; background-color:rgb(0,170,162) !important;">' +
                 '      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                '      <h3 class="modal-title">' + options.title + '</h3>' +
+                '      <h4 class="modal-title">' + options.title + '</h4>' +
                 '    </div>' : ''),
         '    <div class="modal-body">' + options.body + '</div>',
         (options.footer
             ? '    <div class="modal-footer">' + options.footer + '</div>' : ''),
         '  </div>',
-        '</div>',
-        "<script>$('#modal-"+modalCounter+"').draggable({handle:'.modal-header'});</script>"
+        '</div>'
+        //"<script>$('#"+modal_id+"').draggable({handle:'.modal-header'});</script>"
     ].join(''));
 });
 
@@ -332,6 +328,7 @@ var idCounter = 12345;
  */
 function uniqueId(prefix) {
     var id = idCounter+1;
+    console.log('id ' + id);
     return prefix ? prefix + id : id;
 }
 /**
@@ -5986,8 +5983,12 @@ var LinkDialog = /** @class */ (function ()
         context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
     }
     
-    LinkDialog.prototype.initialize = function () {        
+    LinkDialog.prototype.initialize = function () {
+       
+        console.log("Link Dialog initialize ");
+        
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        
         var body = [
             '<div class="form-group note-form-group">',
             "<label class=\"note-form-label\">" + this.lang.link.textToDisplay + "</label>",
@@ -6122,7 +6123,7 @@ var LinkDialog = /** @class */ (function ()
         this.context.invoke('editor.saveRange');
         this.showLinkDialog(linkInfo).then(function (linkInfo) {
            
-            //console.log(linkInfo);
+            console.log(linkInfo);
            
             if (_this.options.hrefTarget)
                linkInfo.target = _this.options.hrefTarget;  /** -MODIF- il target per href **/
@@ -6162,11 +6163,12 @@ var VideoLinkDialog = /** @class */ (function ()
          
          var _this_ = this;
          var $container = this.options.dialogsInBody ? this.$body : this.$editor;
-         var _id_ = this.options.uniqueId;
+         
+         var _id_ = this.options.uniqueID;
          
          $.get( this.options.videoLinkFunction )
             .done(function(data) {
-               //console.log('Video dialog init => create dialog ');
+               console.log('Video dialog init => create dialog ');
                data = JSON.parse(data);
                
                var table_video = "<div id='div_tableMedia'> <table id='tableMedia' style='width:100%'>";
@@ -6200,6 +6202,8 @@ var VideoLinkDialog = /** @class */ (function ()
                   body: body,
                   footer: footer,
                }).render().appendTo($container);
+               
+               //console.log( _this_.$dialog );
             })
             .fail(function(error) {
                alert( error );
@@ -6233,9 +6237,13 @@ var VideoLinkDialog = /** @class */ (function ()
      * @return {Promise}
      */
     VideoLinkDialog.prototype.showLinkDialog = function (linkInfo) {
-        //console.log("*** VideoLinkDialog.prototype.showVideoLinkDialog ***");
+       
+        console.log("*** VideoLinkDialog.prototype.showVideoLinkDialog ***");
+        
         var _this = this;
+        
         return $$1.Deferred(function (deferred) {
+            console.log( _this.$dialog );
             var $linkText = _this.$dialog.find('.note-link-text');
             var $linkUrl = _this.$dialog.find('.note-link-url');
             var $linkBtn = _this.$dialog.find('.note-link-btn');
@@ -6305,13 +6313,16 @@ var VideoLinkDialog = /** @class */ (function ()
      */
     VideoLinkDialog.prototype.show = function () {
         var _this = this;
+        
         //console.log('VideoLinkDialog.prototype.show');
+        //console.log ( this.options.popover.air );
+
         var linkInfo = this.context.invoke('editor.getLinkInfo');
         this.context.invoke('editor.saveRange');
         this.showLinkDialog(linkInfo).then(function (linkInfo) {
             linkInfo.target = ""; 
             linkInfo.urlOnClick = false;
-            //console.log(linkInfo);
+            console.log(linkInfo);
             _this.context.invoke('editor.restoreRange');
             _this.context.invoke('editor.createLink', linkInfo);
         }).fail(function () {
@@ -6341,18 +6352,17 @@ var AudioLinkDialog = /** @class */ (function ()
          
          var _this_ = this;
          var $container = this.options.dialogsInBody ? this.$body : this.$editor;
-         var _id_ = this.options.uniqueId;
          
          $.get( this.options.audioLinkFunction )
             .done(function(data) {
-               //console.log('Audio dialog init => create dialog ');
+               console.log('Audio dialog init => create dialog ');
                data = JSON.parse(data);
                
                var table_video = "<div id='div_tableMedia'> <table id='tableMedia' style='width:100%'>";
                for (var j=0; j<data.length; j++) {
                   var item = data[j];
                   
-                  table_video += "<tr><td style='cursor:pointer' onclick=\"$('#node-audio-link-"+_id_+"').val('"+item.url_media+"');$('#video-audio-btn-"+_id_+"').removeAttr('disabled');$('#audio-link-btn-"+_id_+"').removeClass('disabled');\">"+item.descr_media+"</td><td><audio controls> <source src='"+item.url_media+"'></audio></td></tr>";
+                  table_video += "<tr><td style='cursor:pointer' onclick=\"$('#node-audio-link').val('"+item.url_media+"');$('#video-audio-btn').removeAttr('disabled');$('#audio-link-btn').removeClass('disabled');\">"+item.descr_media+"</td><td><audio controls> <source src='"+item.url_media+"'></audio></td></tr>";
                }
                table_video += "</table></div>";
                
@@ -6365,13 +6375,13 @@ var AudioLinkDialog = /** @class */ (function ()
                      "<label class=\"note-form-label\">Lista degli audio</label>",
                      table_video,
                      "<label class=\"note-form-label\">URL Audio</label>",
-                     '<input id="node-audio-link-'+_id_+'" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
+                     '<input id="node-audio-link" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
                      '</div>'
                ].join('');
                  
 
                var buttonClass = 'btn btn-info note-btn note-btn-primary note-link-btn';
-               var footer = "<button id='audio-link-btn-"+_id_+"' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci audio</button>";
+               var footer = "<button id='audio-link-btn' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci audio</button>";
                
                _this_.$dialog = _this_.ui.dialog({
                   title: _this_.lang.audioLink.title,
@@ -6379,6 +6389,8 @@ var AudioLinkDialog = /** @class */ (function ()
                   body: body,
                   footer: footer
                }).render().appendTo($container);
+               
+               //console.log( _this_.$dialog );
             })
             .fail(function(error) {
                alert( error );
@@ -6412,10 +6424,13 @@ var AudioLinkDialog = /** @class */ (function ()
      * @return {Promise}
      */
     AudioLinkDialog.prototype.showLinkDialog = function (linkInfo) {
+       
         console.log("*** VideoLinkDialog.prototype.showVideoLinkDialog ***");
+        
         var _this = this;
         
         return $$1.Deferred(function (deferred) {
+            console.log( _this.$dialog );
             var $linkText = _this.$dialog.find('.note-link-text');
             var $linkUrl = _this.$dialog.find('.note-link-url');
             var $linkBtn = _this.$dialog.find('.note-link-btn');
@@ -6485,13 +6500,16 @@ var AudioLinkDialog = /** @class */ (function ()
      */
     AudioLinkDialog.prototype.show = function () {
         var _this = this;
+        
         //console.log('AudioLinkDialog.prototype.show');
+        //console.log ( this.options.popover.air );
+
         var linkInfo = this.context.invoke('editor.getLinkInfo');
         this.context.invoke('editor.saveRange');
         this.showLinkDialog(linkInfo).then(function (linkInfo) {
             linkInfo.target = ""; 
             linkInfo.urlOnClick = false;
-            //console.log(linkInfo);  
+            console.log(linkInfo);  
             _this.context.invoke('editor.restoreRange');
             _this.context.invoke('editor.createLink', linkInfo);
         }).fail(function () {
@@ -6516,21 +6534,22 @@ var ImageLinkDialog = /** @class */ (function ()
     }
     
     ImageLinkDialog.prototype.initialize = function () {
+       
          console.log("Image Dialog initialize ");
+         
          var _this_ = this;
          var $container = this.options.dialogsInBody ? this.$body : this.$editor;
-         var _id_ = this.options.uniqueId;
          
          $.get( this.options.imageLinkFunction )
             .done(function(data) {
-               //console.log('Image dialog init => create dialog ');
+               console.log('Image dialog init => create dialog ');
                data = JSON.parse(data);
                
                var table_image = "<div id='div_tableMedia'> <table id='tableMedia' style='width:100%'>";
                for (var j=0; j<data.length; j++) {
                   var item = data[j];
                   
-                  table_image += "<tr style='cursor:pointer' onclick=\"$('#node-image-link-"+_id_+"').val('"+item.url_media+"');$('#image-link-btn-"+_id_+"').removeAttr('disabled');$('#image-link-btn-"+_id_+"').removeClass('disabled');\"><td >"+item.descr_media+"</td><td><img style='width:150px;float:right;border-radius:4px;border:2px solid rgb(237,237,237)' src='"+item.url_media+"'></td></tr>";
+                  table_image += "<tr style='cursor:pointer' onclick=\"$('#node-image-link').val('"+item.url_media+"');$('#image-link-btn').removeAttr('disabled');$('#image-link-btn').removeClass('disabled');\"><td >"+item.descr_media+"</td><td><img style='width:150px;float:right' src='"+item.url_media+"'></td></tr>";
                }
                table_image += "</table></div>";
                
@@ -6543,12 +6562,13 @@ var ImageLinkDialog = /** @class */ (function ()
                      "<label class=\"note-form-label\">Lista dei video</label>",
                      table_image,
                      "<label class=\"note-form-label\">URL Immagine</label>",
-                     '<input id="node-image-link-'+_id_+'" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
+                     '<input id="node-image-link" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
                      '</div>'
                ].join('');
+ 
                
                var buttonClass = 'btn btn-info note-btn note-btn-primary note-link-btn';
-               var footer = "<button id='image-link-btn-"+_id_+"' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci immagine</button>";
+               var footer = "<button id='image-link-btn' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci immagine</button>";
                
                _this_.$dialog = _this_.ui.dialog({
                   title: _this_.lang.imageLink.insert,
@@ -6556,7 +6576,7 @@ var ImageLinkDialog = /** @class */ (function ()
                   body: body,
                   footer: footer,
                }).render().appendTo($container);
-
+               
                //console.log( _this_.$dialog );
             })
             .fail(function(error) {
@@ -6701,13 +6721,15 @@ var GlossarioLinkDialog = /** @class */ (function()
     
     GlossarioLinkDialog.prototype.initialize = function () {
         console.log("Glossario Dialog initialize ");
+
         var _this_ = this;
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;    
-        var _id_ = this.options.uniqueId;
 
         $.get( this.options.glossarioLinkFunction )
          .done(function(data) {
+            
             console.log('Glossario dialog init => create dialog ');
+            
             var glossario = [];    
             data = JSON.parse(data);
             for (var j=0; j<data.length; j++) {
@@ -7891,10 +7913,17 @@ var Context = /** @class */ (function () {
         var methodName = hasSeparator ? lists.last(splits) : lists.head(splits);
         var module = this.modules[moduleName || 'editor'];
 
+        /*if ( arguments[0]=='buttons.build') { 
+            console.log(' MODULE ');
+            console.log(module); 
+            console.log(methodName);
+        }*/
+        
         if (!moduleName && this[methodName]) {
             return this[methodName].apply(this, args);
         }
         else if (module && module[methodName] && module.shouldInitialize()) {
+            //console.log( module[methodName] );
             return module[methodName].apply(module, args);
         }
     };

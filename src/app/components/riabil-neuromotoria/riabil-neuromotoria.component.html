@@ -2,6 +2,10 @@
 
 
     <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
-    <app-lista-pacchetti></app-lista-pacchetti>
+    <app-lista-pacchetti #listaPacchetti></app-lista-pacchetti>
+
+     <!-- FORM AGGIUNTA PACCHETTO -->
+     <app-new-pacchetto
+     [listaPacchetti]="listaPacchetti"></app-new-pacchetto>
 
 </DIV>

@@ -1,12 +1,12 @@
 
 /** 
- * La classe Common contiene metodi statici comuni a piu' componenti.
+ * La classe CommonUpload contiene metodi statici comuni alle componenti di upload.
  */
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { NeuroApp } from './neuro-app'
 
 
-export class Common {
+export class CommonUpload {
 
   /**
    * Controlla se il campo desrizione dell'item in input e' vuoto.
@@ -30,7 +30,7 @@ export class Common {
    * @param item item da inviare al server
    */
   static upload(item:FileItem) {
-    if ( Common.descrIsEmpty(item) ) {
+    if ( CommonUpload.descrIsEmpty(item) ) {
         NeuroApp.custom_error("La descrizione non può essere vuota: upload annullato.", "Errore")
         return
     }

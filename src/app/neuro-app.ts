@@ -8,10 +8,9 @@ declare var $:any;
  */
 export class NeuroApp {
    
-   static G_URL_ROOT = "http://localhost:8080/"
+   //static G_URL_ROOT = "http://localhost:8080/"
    //static G_URL_ROOT = "http://192.168.2.63:47000/"
-   
-   //static G_URL_ROOT = "http://81.29.176.113:47000/"
+   static G_URL_ROOT = "http://81.29.176.113:47000/"
 
    // la directory con le icone di progetto
    static ROOT_ICONS = "../../../assets/images"
@@ -26,7 +25,7 @@ export class NeuroApp {
       bootbox.alert({  
          size: 'large', 
          title: '<H3 style="color:white;">'+title_msg+"</H3>", 
-         message: '<h5><label class="alert alert-danger p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-danger p-4" style="line-height:1.5em;width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true,
          buttons : {
             ok: {
@@ -44,7 +43,7 @@ export class NeuroApp {
       bootbox.alert({
          size: 'large', 
          title: '<H3 style="color:white;">Success</H3>', 
-         message: '<h5><label class="alert alert-success p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-success p-4" style="line-height:1.5em;width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true
       })
    }
@@ -57,7 +56,7 @@ export class NeuroApp {
       bootbox.alert({  
          size: 'large', 
          title: '<H3 style="color:white;">Info</H3>', 
-         message: '<h5><label class="alert alert-info p-4" style="width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
+         message: '<h5><label class="alert alert-info p-4" style="line-height:1.5em;width:100%;font-weight:normal;word-break:break-all;">'+output_msg+'</label></h5>',
          draggable:true,
          buttons : {
           ok: {
@@ -106,14 +105,18 @@ export class NeuroApp {
   }
 
 
-  static fileName(url:string) {
+  static fileName(url:string) : string {
     let k = url.lastIndexOf("/")
     return decodeURI ( url.substring(k+1) )
   }
  
-  static fileExt(url):string {
+  static fileExt(url:string) :string {
     var k = url.lastIndexOf(".")
     return url.substring(k)
   }
+
+   static trim_nbsp(s:string) : string {
+      return s.replace(/^(&nbsp;)+|(&nbsp;)+$/gm,'');
+   }
  
 }

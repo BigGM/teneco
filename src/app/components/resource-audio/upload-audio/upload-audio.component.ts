@@ -2,7 +2,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { FileUploader, FileItem } from 'ng2-file-upload'
 import { NeuroApp} from '../../../neuro-app'
-import { Common } from '../../../common'
+import { CommonUpload } from '../../../common-upload'
 
 
 declare var $ : any;
@@ -44,14 +44,14 @@ export class UploadAudioComponent implements OnInit {
    * @param item item da inviare al server
    */
   upload(item:FileItem) {
-    Common.upload(item)
+    CommonUpload.upload(item)
   }
 
   /**
    * Upload di tutti i file usando il metodo corrispondente della classe Common.
    */
   uploadAll() {
-    Common.uploadAll(this.uploader)
+    CommonUpload.uploadAll(this.uploader)
   } // uploadAll()
 
  

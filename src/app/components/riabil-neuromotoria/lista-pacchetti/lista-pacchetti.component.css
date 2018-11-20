@@ -1,6 +1,6 @@
-.marked-row {
+  .marked-row {
     background:rgba(176, 210, 248, 0.2) !important;
-    text-shadow: 1px 1px 2px white;
+    /*text-shadow: 1px 1px 2px white;*/
     color: rgb(16,95,133);
   }
 
@@ -43,5 +43,6 @@
     background-color: rgb(193, 221, 253);
     transition: background-color 0.3s ease-in-out;
   }
+
 
   

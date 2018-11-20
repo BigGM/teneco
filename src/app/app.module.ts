@@ -29,7 +29,11 @@ import { ListaPacchettiComponent } from './components/riabil-neuromotoria/lista-
 // Servizi di progetto
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
-import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service'
+import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service';
+import { NewPacchettoComponent } from './components/riabil-neuromotoria/new-pacchetto/new-pacchetto.component';
+import { SafePipe } from './pipes/safe.pipe';
+import { TruncatePipe } from './pipes/truncate.pipe';
+import { PlaintextPipe } from './pipes/plaintext.pipe'
 
 
 @NgModule({
@@ -48,6 +52,10 @@ import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil
     RiabilNeuromotoriaComponent,
     RiabilCognitivaComponent,
     ListaPacchettiComponent,
+    NewPacchettoComponent,
+    SafePipe,
+    TruncatePipe,
+    PlaintextPipe,
   ],
   imports: [
     BrowserModule,

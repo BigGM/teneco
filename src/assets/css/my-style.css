@@ -8,7 +8,7 @@
 
 .alert-info {
    color: #ffffff;
-   background-color: #75bad5;
+   background-color: rgb(39, 166, 209);
    border-color: #63a6c9;
 }
 
@@ -67,7 +67,7 @@
 /* mod. bootstrap */
 .modal-header {
    /*background-color:rgba(28,100,150,1.0) !important;*/
-   background-color:rgb(179,0,45) !important;
+   background-color:rgb(222,33,33) !important;
    border-bottom: 0px;
 }
 

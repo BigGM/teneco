@@ -1,4 +1,5 @@
 /**
+/**
  * Super simple wysiwyg editor v0.8.9
  * https://summernote.org
  *
@@ -7,16 +8,29 @@
  *
  * Date: 2017-12-25T06:39Z
  */
+ 
+
+ 
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
 	typeof define === 'function' && define.amd ? define(['jquery'], factory) :
 	(factory(global.jQuery));
 }(this, (function ($$1) { 'use strict';
 
+var GLOBAL_ID = 100;
+var UniqueId = {
+   create : function() {
+      GLOBAL_ID ++;
+      return  GLOBAL_ID;
+   }
+}
+
 $$1 = $$1 && $$1.hasOwnProperty('default') ? $$1['default'] : $$1;
 
 var Renderer = /** @class */ (function () {
+   
     function Renderer(markup, children, options, callback) {
+       
         this.markup = markup;
         this.children = children;
         this.options = options;
@@ -24,6 +38,7 @@ var Renderer = /** @class */ (function () {
     }
     Renderer.prototype.render = function ($parent) {
         var $node = $$1(this.markup);
+
         if (this.options && this.options.contents) {
             $node.html(this.options.contents);
         }
@@ -57,6 +72,8 @@ var Renderer = /** @class */ (function () {
     };
     return Renderer;
 }());
+
+
 var renderer = {
     create: function (markup, callback) {
         return function () {
@@ -70,11 +87,11 @@ var renderer = {
     }
 };
 
-var editor = renderer.create('<div class="note-editor note-frame panel"/>');
-var toolbar = renderer.create('<div class="note-toolbar-wrapper panel-default"><div class="note-toolbar panel-heading"></div></div>');
+var editor = renderer.create('<div class="note-editor note-frame card"/>');
+var toolbar = renderer.create('<div class="note-toolbar-wrapper"><div class="note-toolbar card-header"></div></div>');
 var editingArea = renderer.create('<div class="note-editing-area"/>');
 var codable = renderer.create('<textarea class="note-codable"/>');
-var editable = renderer.create('<div class="note-editable" contentEditable="true"/>');
+var editable = renderer.create('<div class="note-editable card-block" contentEditable="true"/>');
 var statusbar = renderer.create([
     '<div class="note-statusbar">',
     '  <div class="note-resizebar">',
@@ -84,8 +101,20 @@ var statusbar = renderer.create([
     '  </div>',
     '</div>'
 ].join(''));
-var airEditor = renderer.create('<div class="note-editor"/>');  /** -MODIF- **/
-var airEditable = renderer.create('<div class="note-editable note-editable-plus form-control" contentEditable="true"/>');
+var airEditor = renderer.create('<div class="note-editor"/>');
+
+/*** ---MODIF BIG.GM--- 
+ aggiunta funzione di callback per inserire l'attributo "required" sul div, se richiesto
+***/
+var airEditable = renderer.create('<div class="note-editable" contentEditable="true"/>', function ($node, required) {
+   //console.log("var airEditable = renderer.create", required)
+   if (required===true) {
+      $node.attr('required',true)
+      //console.log( $node );
+   }
+});
+/*** ---MODIF BIG.GM--- ***/
+
 var buttonGroup = renderer.create('<div class="note-btn-group btn-group">');
 var dropdown = renderer.create('<div class="dropdown-menu">', function ($node, options) {
     var markup = $$1.isArray(options.items) ? options.items.map(function (item) {
@@ -94,18 +123,18 @@ var dropdown = renderer.create('<div class="dropdown-menu">', function ($node, o
         var option = (typeof item === 'object') ? item.option : undefined;
         var dataValue = 'data-value="' + value + '"';
         var dataOption = (option !== undefined) ? ' data-option="' + option + '"' : '';
-        return '<li><a href="#" ' + (dataValue + dataOption) + '>' + content + '</a></li>';
+        return '<a class="dropdown-item" href="#" ' + (dataValue + dataOption) + '>' + content + '</a>';
     }).join('') : options.items;
     $node.html(markup);
 });
-var dropdownButtonContents = function (contents, options) {
-    return contents + ' ' + icon(options.icons.caret, 'span');
+var dropdownButtonContents = function (contents) {
+    return contents;
 };
 var dropdownCheck = renderer.create('<div class="dropdown-menu note-check">', function ($node, options) {
     var markup = $$1.isArray(options.items) ? options.items.map(function (item) {
         var value = (typeof item === 'string') ? item : (item.value || '');
         var content = options.template ? options.template(item) : item;
-        return '<li><a href="#" data-value="' + value + '">' + icon(options.checkClassName) + ' ' + content + '</a></li>';
+        return '<a class="dropdown-item" href="#" data-value="' + value + '">' + icon(options.checkClassName) + ' ' + content + '</a>';
     }).join('') : options.items;
     $node.html(markup);
 });
@@ -138,26 +167,26 @@ var palette = renderer.create('<div class="note-color-palette"/>', function ($no
     }
 });
 
-var dialog = renderer.create('<div id="modalAddLink" class="modal fade ui-draggable" role="dialog" data-backdrop="static" aria-hidden="false" tabindex="-1"/>', function ($node, options) {
+var dialog = renderer.create('<div class="modal" data-backdrop="static" aria-hidden="false" tabindex="-1"/>', function ($node, options) {
     if (options.fade) {
         $node.addClass('fade');
     }
     $node.html([
-        '<div class="modal-dialog modal-sm">',
-        '  <div class="modal-content">',
+        '<div class="modal-dialog ">',
+        '  <div class="modal-content" style="border:1px solid rgba(100,100,100,0.2);border-radius:6px;box-shadow:0 1rem 3rem rgba(0, 0, 0, 0.175) !important;">',
         (options.title
-            ? '    <div class="modal-header" style="background-color:rgb(80,133,220) !important;">' +
+            ? '    <div class="modal-header" style="border-radius:6px;border-bottom:0px;background-color:rgb(216,62,16) !important;">' +
+                '      <h4 class="modal-title text-white">' + options.title + '</h4>' +
                 '      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                '      <h4 class="modal-title">' + options.title + '</h4>' +
                 '    </div>' : ''),
-        '    <div class="modal-body">' + options.body + '</div>',
+        '    <div class="modal-body" style="background-color:rgb(250,250,255);">' + options.body + '</div>',
         (options.footer
-            ? '    <div class="modal-footer">' + options.footer + '</div>' : ''),
+            ? '<div class="modal-footer" style="border-top: 1px solid rgba(150,150,150,0.2);background-color:rgb(216,218,222);border-radius:6px;">' + options.footer + '</div>' : ''),
         '  </div>',
-        '</div>',
-        "<script>$('#modalAddLink').draggable({handle:'.modal-header'});</script>"
+        '</div>'
     ].join(''));
 });
+
 
 var popover = renderer.create([
     '<div class="note-popover popover in">',
@@ -165,18 +194,22 @@ var popover = renderer.create([
     '  <div class="popover-content note-children-container"/>',
     '</div>'
 ].join(''), function ($node, options) {
+    //console.log("CREA POPOVER SUL NODO", $node)
     var direction = typeof options.direction !== 'undefined' ? options.direction : 'bottom';
     $node.addClass(direction);
     if (options.hideArrow) {
         $node.find('.arrow').hide();
     }
 });
-var checkbox = renderer.create('<div class="checkbox"></div>', function ($node, options) {
+var checkbox = renderer.create('<label class="custom-control custom-checkbox"></label>', function ($node, options) {
+    if (options.id) {
+        $node.attr('for', options.id);
+    }
     $node.html([
-        ' <label' + (options.id ? ' for="' + options.id + '"' : '') + '>',
-        ' <input type="checkbox"' + (options.id ? ' id="' + options.id + '"' : ''),
+        ' <input type="checkbox" class="custom-control-input"' + (options.id ? ' id="' + options.id + '"' : ''),
         (options.checked ? ' checked' : '') + '/>',
-        (options.text ? options.text : ''),
+        ' <span class="custom-control-indicator"></span>',
+        ' <span class="custom-control-description">' + (options.text ? options.text : '') + '</span>',
         '</label>'
     ].join(''));
 });
@@ -200,11 +233,11 @@ var ui = {
     palette: palette,
     dialog: dialog,
     popover: popover,
-    checkbox: checkbox,
     icon: icon,
+    checkbox: checkbox,
     options: {},
     button: function ($node, options) {
-        return renderer.create('<button type="button" class="note-btn btn btn-default btn-sm" tabindex="-1">', function ($node, options) {
+        return renderer.create('<button type="button" class="note-btn btn btn-light btn-sm" tabindex="-1">', function ($node, options) {
             if (options && options.tooltip) {
                 $node.attr({
                     title: options.tooltip
@@ -238,7 +271,7 @@ var ui = {
     createLayout: function ($note, options) {
         var $editor = (options.airMode ? ui.airEditor([
             ui.editingArea([
-                ui.airEditable()
+                ui.airEditable(options.required) /*** ---MODIF BIG.GM--- : passato il valore options.required ***/
             ])
         ]) : ui.editor([
             ui.toolbar(),
@@ -1741,14 +1774,36 @@ $$1.extend($$1.summernote.lang, {
             url: 'Video URL',
             providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)'
         },
+        
+        /*** ---MODIF BIG.GM--- ***/       
+        videoLink: {
+            title : "Scelta file video",
+            videoLink: 'File video',
+            insert: 'Scelta video',
+        },
+        audioLink: {
+            title: 'Scelta file audio',
+            audio: 'File audio',
+        },
+        imageLink: {
+            title : "Scelta immagine",
+            image: 'File immagine',
+            insert: 'Scelta immagine',
+        },
+        glossary: {
+            title: 'Scelta voce glossario',
+            glossary: 'Glossario',
+        },
+        /*** ---MODIF BIG.GM--- ***/
+        
         link: {
             link: 'Link',
-            insert: 'Inserisci link',
+            insert: 'Insert Link',
             unlink: 'Unlink',
-            edit: 'Create link',
-            textToDisplay: 'Testo',
-            url: 'Indirizzo del link',
-            openInNewWindow: 'Apri in una nuova finestra'
+            edit: 'Edit',
+            textToDisplay: 'Text to display',
+            url: 'To what URL should this link go?',
+            openInNewWindow: 'Open in new window'
         },
         table: {
             table: 'Table',
@@ -3695,6 +3750,12 @@ var KEY_BOGUS = 'bogus';
  */
 var Editor = /** @class */ (function () {
     function Editor(context) {
+       
+       //document.getElementById(context.$note.context.id).setAttributeNode('required'
+       //let id = context.$note.context.id
+       //$("#"+id).prop('required',true);
+       //console.log ( "context.$note.context.attributes", context.$note.context)
+       
         var _this = this;
         this.context = context;
         this.$note = context.layoutInfo.note;
@@ -3721,6 +3782,7 @@ var Editor = /** @class */ (function () {
         this.context.memo('help.formatPara', this.lang.help.formatPara);
         this.context.memo('help.insertHorizontalRule', this.lang.help.insertHorizontalRule);
         this.context.memo('help.fontName', this.lang.help.fontName);
+
         // native commands(with execCommand), generate function for execCommand
         var commands = [
             'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript',
@@ -3841,12 +3903,15 @@ var Editor = /** @class */ (function () {
          * @param {Object} linkInfo
          */
         this.createLink = this.wrapCommand(function (linkInfo) {
-            console.log('this.createLink ' + linkInfo.target);
             var linkUrl = linkInfo.url;
             var linkText = linkInfo.text;
+            var isNewWindow = linkInfo.isNewWindow;
+            
+            /** --MODIF-- **/
             var linkTarget = linkInfo.target;
             var urlOnClick = linkInfo.urlOnClick;
-            var isNewWindow = linkInfo.isNewWindow;
+            /** --MODIF-- **/
+            
             var rng = linkInfo.range || _this.createRange();
             var isTextChanged = rng.toString() !== linkText;
             
@@ -3865,6 +3930,7 @@ var Editor = /** @class */ (function () {
                     ? linkUrl : 'http://' + linkUrl;
             }
             **/
+            
             var anchors = [];
             if (isTextChanged) {
                 rng = rng.deleteContents();
@@ -3878,18 +3944,21 @@ var Editor = /** @class */ (function () {
                     onlyPartialContains: true
                 });
             }
-            
+
             $$1.each(anchors, function (idx, anchor) {
                
+               /** --MODIF-- **/
                if (urlOnClick ) {
-                   $$1(anchor).attr('href', "#");
+                   //$$1(anchor).attr('href', "");
                    $$1(anchor).attr('onclick', linkUrl);
+                   $$1(anchor).attr('tabindex', "0");            // questo e' per il popover di Bootstrap 4
+                   $$1(anchor).attr('data-trigger', "click");    // e pure questo
                }
                else {
                   $$1(anchor).attr('href', linkUrl);   
                }
                 
-               /** -MODIF- **/
+               
                if (linkTarget != "" ) {
                   $$1(anchor).attr('target', linkTarget);
                }
@@ -3901,14 +3970,27 @@ var Editor = /** @class */ (function () {
                      $$1(anchor).removeAttr('target');
                   }
                }
+               /** --MODIF-- **/
+                
+                
+               /************** ORIG CODE  *************
+                $$1(anchor).attr('href', linkUrl);
+                if (isNewWindow) {
+                    $$1(anchor).attr('target', '_blank');
+                }
+                else {
+                    $$1(anchor).removeAttr('target');
+                } 
+                ************** ORIG CODE  *************/
             });
+            
+            
             var startRange = range.createFromNodeBefore(lists.head(anchors));
             var startPoint = startRange.getStartPoint();
             var endRange = range.createFromNodeAfter(lists.last(anchors));
             var endPoint = endRange.getEndPoint();
             range.create(startPoint.node, startPoint.offset, endPoint.node, endPoint.offset).select();
         });
-        
         /**
          * setting color
          *
@@ -4016,29 +4098,35 @@ var Editor = /** @class */ (function () {
             _this.context.triggerEvent('paste', event);
         });
         // init content before set event
+        
         this.$editable.html(dom.html(this.$note) || dom.emptyPara);
+        
         this.$editable.on(env.inputEventName, func.debounce(function () {
             _this.context.triggerEvent('change', _this.$editable.html());
         }, 100));
+        
         this.$editor.on('focusin', function (event) {
             _this.context.triggerEvent('focusin', event);
         }).on('focusout', function (event) {
             _this.context.triggerEvent('focusout', event);
         });
-        if (!this.options.airMode) {
+        
+        //if (!this.options.airMode) {  ==>  /*** ---MODIF BIG.GM--- ***/
             if (this.options.width) {
                 this.$editor.outerWidth(this.options.width);
             }
             if (this.options.height) {
-                this.$editable.outerHeight(this.options.height);
+               //console.log("this.options.height", this.options.height);
+               this.$editable.outerHeight(this.options.height);
             }
             if (this.options.maxHeight) {
                 this.$editable.css('max-height', this.options.maxHeight);
             }
             if (this.options.minHeight) {
                 this.$editable.css('min-height', this.options.minHeight);
-            }
-        }
+            }            
+        //}
+        
         this.history.recordUndo();
     };
     Editor.prototype.destroy = function () {
@@ -4359,7 +4447,6 @@ var Editor = /** @class */ (function () {
             this.afterCommand();
         }
     };
-    
     /**
      * returns link info
      *
@@ -4373,21 +4460,17 @@ var Editor = /** @class */ (function () {
         var rng = this.createRange().expand(dom.isAnchor);
         // Get the first anchor on range(for edit).
         var $anchor = $$1(lists.head(rng.nodes(dom.isAnchor)));
-       
         var linkInfo = {
             range: rng,
             text: rng.toString(),
             url: $anchor.length ? $anchor.attr('href') : ''
         };
-        
         // Define isNewWindow when anchor exists.
         if ($anchor.length) {
             linkInfo.isNewWindow = $anchor.attr('target') === '_blank';
         }
-       
         return linkInfo;
     };
-    
     Editor.prototype.addRow = function (position) {
         var rng = this.createRange(this.$editable);
         if (rng.isCollapsed() && rng.isOnCell()) {
@@ -4483,6 +4566,32 @@ var Editor = /** @class */ (function () {
     return Editor;
 }());
 
+
+/** --MODIF-- */
+var Brand = /** @class */ (function () {
+ 
+   function Brand(context) {
+      console.log("*** Brand this ***")
+      this.$editor = context.layoutInfo.editor;
+      this.$brand = $$1([
+            '<div class="summernote-brand"><i class="fas fa-sun" style="color:rgb(250,120,0)"></i></div>'
+        ].join('')).prependTo(this.$editor);
+   }
+   
+   Brand.prototype.initialize = function () {
+      console.log("*** Brand initialize ***")
+   }
+   
+   Brand.prototype.destroy = function () {
+      console.log("*** Brand destroy ***")
+   }
+   
+   return Brand;
+   
+}());
+/** --MODIF-- */
+
+
 var Clipboard = /** @class */ (function () {
     function Clipboard(context) {
         this.context = context;
@@ -4520,7 +4629,7 @@ var Dropzone = /** @class */ (function () {
         this.documentEventHandlers = {};
         this.$dropzone = $$1([
             '<div class="note-dropzone">',
-            '  <div class="note-dropzone-message"/>',
+            '  <div class="note-dropzone-message">',
             '</div>'
         ].join('')).prependTo(this.$editor);
     }
@@ -5001,39 +5110,74 @@ var AutoSync = /** @class */ (function () {
     return AutoSync;
 }());
 
+
 var Placeholder = /** @class */ (function () {
+   
     function Placeholder(context) {
+        //console.log("Placeholder ", context.$note.context.attributes.placeholder.nodeValue)
+        //console.log("Placeholder ", context.$note.context.attributes.required)
         var _this = this;
         this.context = context;
         this.$editingArea = context.layoutInfo.editingArea;
         this.options = context.options;
+        
+        
+        /*** ---MODIF BIG.GM--- ***/ // qui acchiappa l'attributo placeholder
+        // campo di testo obbligatorio
+        //if (context.$note.context.attributes.required)
+        //    this.options.text_required = true;
+        
+        this.options.placeholder = context.$note.context.attributes.placeholder.nodeValue;
+        /*** ---MODIF BIG.GM--- ***/ // qui acchiappa l'attributo placeholder
+        
         this.events = {
-            'summernote.init summernote.change': function () {
-                _this.update();
+            'summernote.init': function () {
+                _this.update(true);
+            },
+            'summernote.change': function () {
+                _this.update(false);
             },
             'summernote.codeview.toggled': function () {
-                _this.update();
+                _this.update(false);
             }
         };
     }
+    
     Placeholder.prototype.shouldInitialize = function () {
         return !!this.options.placeholder;
-    };
+    }
+    
     Placeholder.prototype.initialize = function () {
         var _this = this;
-        this.$placeholder = $$1('<div class="note-placeholder note-placeholder-fix">');  /** -MODIF- **/
+        this.$placeholder = $$1('<div class="note-placeholder">');
         this.$placeholder.on('click', function () {
             _this.context.invoke('focus');
         }).text(this.options.placeholder).prependTo(this.$editingArea);
-        this.update();
-    };
+        
+        this.update(true);
+    }
+    
     Placeholder.prototype.destroy = function () {
         this.$placeholder.remove();
-    };
-    Placeholder.prototype.update = function () {
+    }
+    
+    Placeholder.prototype.update = function (onInit) {
         var isShow = !this.context.invoke('codeview.isActivated') && this.context.invoke('editor.isEmpty');
+        
+        /**
+        console.log("Placeholder.prototype.update, isShow, text_required, onInit", isShow, this.options.text_required, onInit)
+        
+        if ( !onInit && this.options.text_required===true) {
+           
+           if ( isShow )
+               $('#alert_descr_newpkt').show();
+           else
+               $('#alert_descr_newpkt').hide();
+        }**/
+
         this.$placeholder.toggle(isShow);
-    };
+    }
+    
     return Placeholder;
 }());
 
@@ -5458,6 +5602,47 @@ var Buttons = /** @class */ (function () {
                 click: _this.context.createInvokeHandler('videoDialog.show')
             }).render();
         });
+        
+
+        /*** ---MODIF BIG.GM--- ***/
+        this.context.memo('button.linkVideo', function () {
+           //console.log('*** this.context.memo(button.linkVideo) ***', _this.options );
+           return _this.button({
+                contents: _this.ui.icon(_this.options.icons.videoLink),
+                tooltip: _this.lang.video.videoLink,
+                click: _this.context.createInvokeHandler('videoLinkDialog.show')
+            }).render();
+        });
+        
+        this.context.memo('button.linkAudio', function () {
+           //console.log('*** this.context.memo(button.linkAudio) ***');           
+           return _this.button({
+                contents: _this.ui.icon(_this.options.icons.audioLink),
+                tooltip: _this.lang.audioLink.audio,
+                click: _this.context.createInvokeHandler('audioLinkDialog.show')
+            }).render();
+        });
+        
+        this.context.memo('button.linkImage', function () {
+           //console.log('*** this.context.memo(button.linkImage) ***');           
+           return _this.button({
+                contents: _this.ui.icon(_this.options.icons.imageLink),
+                tooltip: _this.lang.imageLink.image,
+                click: _this.context.createInvokeHandler('imageLinkDialog.show')
+            }).render();
+        });
+        
+        this.context.memo('button.linkGlossario', function () {
+           //console.log('*** this.context.memo(button.linkGlossario) ***');           
+           return _this.button({
+                contents: _this.ui.icon(_this.options.icons.glossary),
+                tooltip: _this.lang.glossary.glossary,
+                click: _this.context.createInvokeHandler('glossarioLinkDialog.show')
+            }).render();
+        });
+        /*** ---MODIF BIG.GM--- ***/
+        
+
         this.context.memo('button.hr', function () {
             return _this.button({
                 contents: _this.ui.icon(_this.options.icons.minus),
@@ -5888,10 +6073,7 @@ var Toolbar = /** @class */ (function () {
     return Toolbar;
 }());
 
-
-var LinkDialog = /** @class */ (function ()
-{
-   
+var LinkDialog = /** @class */ (function () {
     function LinkDialog(context) {
         this.context = context;
         this.ui = $$1.summernote.ui;
@@ -5901,32 +6083,8 @@ var LinkDialog = /** @class */ (function ()
         this.lang = this.options.langInfo;
         context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
     }
-    
     LinkDialog.prototype.initialize = function () {
-       
-        console.log("Dialog initialize ");
-        console.log("select-options ==>");
-        
-        /** -MODIF- **/
-        // Inizialemente: campo del tipo input
-        var input_text = '<input class="note-link-url form-control note-form-control note-input" type="text" value="http://" />';
-
-        /** -MODIF- **/
-        // Inserite opzioni: campo di tipo select
-        if ( this.options.select_options && this.options.select_options.length > 0 )
-        {
-            console.log(this.options.select_options);
-            input_text = "<select class='note-link-url form-control note-form-control note-input'>"
-            for (var j=0; j< this.options.select_options.length; j++) {
-               var opt = this.options.select_options[j];
-               input_text += "<option value='"+opt.value+"'>"+opt.label+"</option>";
-            }
-            input_text += "</select>";
-        }
-        
-
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
-        
         var body = [
             '<div class="form-group note-form-group">',
             "<label class=\"note-form-label\">" + this.lang.link.textToDisplay + "</label>",
@@ -5934,7 +6092,7 @@ var LinkDialog = /** @class */ (function ()
             '</div>',
             '<div class="form-group note-form-group">',
             "<label class=\"note-form-label\">" + this.lang.link.url + "</label>",
-            input_text,    /** -MODIF- **/
+            '<input class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
             '</div>',
             !this.options.disableLinkTarget
                 ? $$1('<div/>').append(this.ui.checkbox({
@@ -5944,26 +6102,20 @@ var LinkDialog = /** @class */ (function ()
                 }).render()).html()
                 : ''
         ].join('');
-        
-        var buttonClass = 'btn btn-info note-btn note-btn-primary note-link-btn';
-        
+        var buttonClass = 'btn btn-sm btn-primary note-btn note-btn-primary note-link-btn';
         var footer = "<button type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" disabled>" + this.lang.link.insert + "</button>";
-        
-        // Finestra di dialogo per la specifica del link
         this.$dialog = this.ui.dialog({
             className: 'link-dialog',
             title: this.lang.link.insert,
             fade: this.options.dialogsFade,
             body: body,
             footer: footer
-        }).render().appendTo($container );   /** -MODIF- **/
+        }).render().appendTo($container);
     };
-    
     LinkDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
         this.$dialog.remove();
     };
-    
     LinkDialog.prototype.bindEnterKey = function ($input, $btn) {
         $input.on('keypress', function (event) {
             if (event.keyCode === key.code.ENTER) {
@@ -5978,7 +6130,6 @@ var LinkDialog = /** @class */ (function ()
     LinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
         this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
     };
-    
     /**
      * Show link dialog and set event handlers on dialog controls.
      *
@@ -6051,7 +6202,6 @@ var LinkDialog = /** @class */ (function ()
             _this.ui.showDialog(_this.$dialog);
         }).promise();
     };
-    
     /**
      * @param {Object} layoutInfo
      */
@@ -6061,25 +6211,798 @@ var LinkDialog = /** @class */ (function ()
         this.context.invoke('editor.saveRange');
         this.showLinkDialog(linkInfo).then(function (linkInfo) {
            
-             console.log(linkInfo);
-           
+            /** --MODIF-- il target per href **/
             if (_this.options.hrefTarget)
-               linkInfo.target = _this.options.hrefTarget;  /** -MODIF- il target per href **/
+               linkInfo.target = _this.options.hrefTarget; 
             else
                linkInfo.target = "";
-             
-             
+
             if (_this.options.linkUrlOnClick)
-               linkInfo.urlOnClick = true;  /** -MODIF- il target per href **/
-             
+               linkInfo.urlOnClick = true; 
+            /** --MODIF-- il target per href **/
+            
+            _this.context.invoke('editor.restoreRange');
+            _this.context.invoke('editor.createLink', linkInfo);
+
+        }).fail(function () {
+            _this.context.invoke('editor.restoreRange');
+        });
+    };
+    
+    return LinkDialog;
+}());
+
+
+
+/*** ---MODIF BIG.GM--- ***/
+var VideoLinkDialog = /** @class */ (function ()
+{
+    function VideoLinkDialog(context) {
+        this.context = context;
+        this.ui = $$1.summernote.ui;
+        this.$body = $$1(document.body);
+        this.$editor = context.layoutInfo.editor;
+        this.options = context.options;
+        this.lang = this.options.langInfo;
+        this.$dialog = null;
+        this.ID = UniqueId.create();   // qui assegna un id univoco a questa istanza 
+        context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
+    }
+    
+    VideoLinkDialog.prototype.initialize = function () {
+      //console.log("Video Dialog initialize");
+
+      var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+      var buttonClass = 'btn btn-sm btn-info note-btn note-btn-primary note-link-btn';
+      var footer = "<button id='video-link-btn-"+this.ID+"' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci video</button>";
+
+      var body = [
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Testo</label>",
+            '<input class="note-link-text form-control note-form-control  note-input" type="text" disabled/>',
+            '</div>',
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Lista dei video</label>",
+            
+            // qui prepara il container per la tabella html, che ora e' vuota; la tabella verra' costruita
+            // quando questa finestra modale viene richiesta (see VideoLinkDialog.prototype.showLinkDialog)
+            
+            "<div class='div_tableMedia'> <table id='table-media-"+this.ID+"' class='tableMedia' style='width:100%'></table></div>",
+            
+            "<label class=\"note-form-label\">URL Video</label>",
+            '<input disabled id="node-video-link-'+this.ID+'" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
+            '</div>'
+      ].join('');
+      
+      this.$dialog = this.ui.dialog({
+         title: this.lang.videoLink.insert,
+         fade: this.options.dialogsFade,
+         body: body,
+         footer: footer,
+      }).render().appendTo($container);
+      
+    }; // VideoLinkDialog.prototype.initialize
+    
+    VideoLinkDialog.prototype.destroy = function () {
+        this.ui.hideDialog(this.$dialog);
+        this.$dialog.remove();
+    };
+    
+    VideoLinkDialog.prototype.bindEnterKey = function ($input, $btn) {
+        $input.on('keypress', function (event) {
+            if (event.keyCode === key.code.ENTER) {
+                event.preventDefault();
+                $btn.trigger('click');
+            }
+        });
+    };
+    /**
+     * toggle update button
+     */
+    VideoLinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
+        this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
+    };
+    
+    /**
+     * Show link dialog and set event handlers on dialog controls.
+     *
+     * @param {Object} linkInfo
+     * @return {Promise}
+     */
+   VideoLinkDialog.prototype.showLinkDialog = function (linkInfo) {
+       
+      //console.log("*** VideoLinkDialog.prototype.showVideoLinkDialog *** ID => ", this.ID);
+      var _this = this;
+      
+      // Legge dal server la lista dei video, costruisce la tabella html e la inserisce nella finestra
+      $.get( this.options.videoLinkFunction )
+         .done(function(data) {
+            
+            data = JSON.parse(data);
+            var _id_ = _this.ID;
+            var table = "<table id='table-media-"+_id_+"' class='tableMedia' style='width:100%'>";
+            
+            data.forEach ( item => {
+               let url = "NeuroAppJS.prepareVideoPopover(this,\\'"+item.url_media+"\\',\\'"+item.descr_media+"\\')"
+               console.log(url);
+               
+               table += "<tr><td style='cursor:pointer' onclick=\"$('#node-video-link-"+_id_+"').val('"+url+"');$('#video-link-btn-"+_id_+"').removeAttr('disabled');$('#video-link-btn-"+_id_+"').removeClass('disabled');\">"+item.descr_media+"</td><td><video style='width:150px' controls> <source src='"+item.url_media+"'></video></td></tr>";
+               
+               //<td><video style='width:150px' controls> <source src='"+item.url_media+"'></video></td></tr>";
+            })
+            table += "</table>";
+            document.getElementById("table-media-"+_id_).innerHTML = table;
+         })
+         .fail(function(error) {
+            alert( error );
+         });
+         
+            
+      return $$1.Deferred(function (deferred) {
+         var $linkText = _this.$dialog.find('.note-link-text');
+         var $linkUrl = _this.$dialog.find('.note-link-url');
+         var $linkBtn = _this.$dialog.find('.note-link-btn');
+         //var $openInNewWindow = _this.$dialog.find('input[type=checkbox]');
+         _this.ui.onDialogShown(_this.$dialog, function () {
+             _this.context.triggerEvent('dialog.shown');
+             // if no url was given, copy text to url
+             if (!linkInfo.url) {
+                 linkInfo.url = linkInfo.text;
+             }
+             $linkText.val(linkInfo.text);
+             var handleLinkTextUpdate = function () {
+                 _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                 // if linktext was modified by keyup,
+                 // stop cloning text from linkUrl
+                 linkInfo.text = $linkText.val();
+             };
+             $linkText.on('input', handleLinkTextUpdate).on('paste', function () {
+                 setTimeout(handleLinkTextUpdate, 0);
+             });
+             var handleLinkUrlUpdate = function () {
+                 _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                 // display same link on `Text to display` input
+                 // when create a new link
+                 if (!linkInfo.text) {
+                     $linkText.val($linkUrl.val());
+                 }
+             };
+             $linkUrl.on('input', handleLinkUrlUpdate).on('paste', function () {
+                 setTimeout(handleLinkUrlUpdate, 0);
+             }).val(linkInfo.url);
+             if (!env.isSupportTouch) {
+                 $linkUrl.trigger('focus');
+             }
+             _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+             _this.bindEnterKey($linkUrl, $linkBtn);
+             _this.bindEnterKey($linkText, $linkBtn);
+             //var isChecked = linkInfo.isNewWindow !== undefined
+             //    ? linkInfo.isNewWindow : _this.context.options.linkTargetBlank;
+             //$openInNewWindow.prop('checked', isChecked);
+             $linkBtn.one('click', function (event) {
+                 event.preventDefault();
+                 deferred.resolve({
+                     range: linkInfo.range,
+                     url: $linkUrl.val(),
+                     text: $linkText.val(),
+                     isNewWindow: false //$openInNewWindow.is(':checked')
+                 });
+                 _this.ui.hideDialog(_this.$dialog);
+             });
+         });
+         _this.ui.onDialogHidden(_this.$dialog, function () {
+             // detach events
+             $linkText.off('input paste keypress');
+             $linkUrl.off('input paste keypress');
+             $linkBtn.off('click');
+             if (deferred.state() === 'pending') {
+                 deferred.reject();
+             }
+         });
+         _this.ui.showDialog(_this.$dialog);
+      }).promise();
+
+   };
+    
+    /**
+     * @param {Object} layoutInfo
+     */
+    VideoLinkDialog.prototype.show = function () {
+        var _this = this;
+        //console.log('VideoLinkDialog.prototype.show');
+        var linkInfo = this.context.invoke('editor.getLinkInfo');
+        this.context.invoke('editor.saveRange');
+        this.showLinkDialog(linkInfo).then(function (linkInfo) {
+            linkInfo.target = ""; 
+            linkInfo.urlOnClick = true;
+            //linkInfo.urlOnClick = false;
+            //console.log(linkInfo);
             _this.context.invoke('editor.restoreRange');
             _this.context.invoke('editor.createLink', linkInfo);
         }).fail(function () {
             _this.context.invoke('editor.restoreRange');
         });
     };
-    return LinkDialog;
+    return VideoLinkDialog;
 }());
+
+
+
+var AudioLinkDialog = /** @class */ (function ()
+{
+    function AudioLinkDialog(context) {
+        this.context = context;
+        this.ui = $$1.summernote.ui;
+        this.$body = $$1(document.body);
+        this.$editor = context.layoutInfo.editor;
+        this.options = context.options;
+        this.lang = this.options.langInfo;
+        this.$dialog = null;
+        this.ID = UniqueId.create();   // qui assegna un id univoco a questa istanza 
+        context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
+    }
+    
+    AudioLinkDialog.prototype.initialize = function () {
+       
+         //console.log("Audio Dialog initialize ");
+
+         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+         var buttonClass = 'btn btn-sm btn-info note-btn note-btn-primary note-link-btn';
+         var footer = "<button id='audio-link-btn-"+this.ID+"' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci audio</button>";
+         
+         var body = [
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Testo</label>",
+            '<input class="note-link-text form-control note-form-control  note-input" type="text" disabled/>',
+            '</div>',
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Lista degli audio</label>",
+            
+            // qui prepara il container per la tabella html, che ora e' vuota; la tabella verra' costruita
+            // quando questa finestra modale viene richiesta (see VideoLinkDialog.prototype.showLinkDialog)
+            "<div class='div_tableMedia'> <table id='table-media-"+this.ID+"' class='tableMedia' style='width:100%'></table></div>",
+            
+            "<label class=\"note-form-label\">URL Audio</label>",
+            '<input disabled id="node-audio-link-'+this.ID+'" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
+            '</div>'
+         ].join('');
+
+         this.$dialog = this.ui.dialog({
+            title: this.lang.audioLink.title,
+            fade: this.options.dialogsFade,
+            body: body,
+            footer: footer
+         }).render().appendTo($container);
+    };
+    
+    AudioLinkDialog.prototype.destroy = function () {
+        this.ui.hideDialog(this.$dialog);
+        this.$dialog.remove();
+    };
+    
+    AudioLinkDialog.prototype.bindEnterKey = function ($input, $btn) {
+        $input.on('keypress', function (event) {
+            if (event.keyCode === key.code.ENTER) {
+                event.preventDefault();
+                $btn.trigger('click');
+            }
+        });
+    };
+    /**
+     * toggle update button
+     */
+    AudioLinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
+        this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
+    };
+   
+   
+    /**
+     * Show link dialog and set event handlers on dialog controls.
+     *
+     * @param {Object} linkInfo
+     * @return {Promise}
+     */
+    AudioLinkDialog.prototype.showLinkDialog = function (linkInfo) {
+        console.log("*** AudioLinkDialog.prototype.showLinkDialog ***", "GLOBAL_ID=", GLOBAL_ID);
+        var _this = this;
+        
+         $.get( this.options.audioLinkFunction )
+         .done(function(data) {
+            
+            data = JSON.parse(data);
+            
+            var _id_ = _this.ID;
+            var table = "<table id='table-media-"+_id_+"' class='tableMedia' style='width:100%'>";
+
+            data.forEach ( item => {
+               let url = "NeuroAppJS.prepareAudioPopover(this,\\'"+item.url_media+"\\',\\'"+item.descr_media+"\\')"
+               table += "<tr><td class='word-break' onclick=\"$('#node-audio-link-"+_id_+"').val('"+url+"');$('#video-audio-btn-"+_id_+"').removeAttr('disabled');$('#audio-link-btn-"+_id_+"').removeClass('disabled');\">"+item.descr_media+"</td>";
+               //<td><audio controls> <source src='"+item.url_media+"'></audio></td></tr>";
+            })
+            
+            table += "</table></div>";
+            document.getElementById("table-media-"+_id_).innerHTML = table;
+         })
+         .fail(function(error) {
+            alert( error );
+         });
+        
+        return $$1.Deferred(function (deferred) {
+            var $linkText = _this.$dialog.find('.note-link-text');
+            var $linkUrl = _this.$dialog.find('.note-link-url');
+            var $linkBtn = _this.$dialog.find('.note-link-btn');
+            //var $openInNewWindow = _this.$dialog.find('input[type=checkbox]');
+            _this.ui.onDialogShown(_this.$dialog, function () {
+                _this.context.triggerEvent('dialog.shown');
+                // if no url was given, copy text to url
+                if (!linkInfo.url) {
+                    linkInfo.url = linkInfo.text;
+                }
+                $linkText.val(linkInfo.text);
+                var handleLinkTextUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // if linktext was modified by keyup,
+                    // stop cloning text from linkUrl
+                    linkInfo.text = $linkText.val();
+                };
+                $linkText.on('input', handleLinkTextUpdate).on('paste', function () {
+                    setTimeout(handleLinkTextUpdate, 0);
+                });
+                var handleLinkUrlUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // display same link on `Text to display` input
+                    // when create a new link
+                    if (!linkInfo.text) {
+                        $linkText.val($linkUrl.val());
+                    }
+                };
+                $linkUrl.on('input', handleLinkUrlUpdate).on('paste', function () {
+                    setTimeout(handleLinkUrlUpdate, 0);
+                }).val(linkInfo.url);
+                if (!env.isSupportTouch) {
+                    $linkUrl.trigger('focus');
+                }
+                _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                _this.bindEnterKey($linkUrl, $linkBtn);
+                _this.bindEnterKey($linkText, $linkBtn);
+                //var isChecked = linkInfo.isNewWindow !== undefined
+                //    ? linkInfo.isNewWindow : _this.context.options.linkTargetBlank;
+                //$openInNewWindow.prop('checked', isChecked);
+                $linkBtn.one('click', function (event) {
+                    event.preventDefault();
+                    deferred.resolve({
+                        range: linkInfo.range,
+                        url: $linkUrl.val(),
+                        text: $linkText.val(),
+                        isNewWindow: false //$openInNewWindow.is(':checked')
+                    });
+                    _this.ui.hideDialog(_this.$dialog);
+                });
+            });
+            _this.ui.onDialogHidden(_this.$dialog, function () {
+                // detach events
+                $linkText.off('input paste keypress');
+                $linkUrl.off('input paste keypress');
+                $linkBtn.off('click');
+                if (deferred.state() === 'pending') {
+                    deferred.reject();
+                }
+            });
+            _this.ui.showDialog(_this.$dialog);
+        }).promise();
+        
+    }; // AudioLinkDialog.prototype.showLinkDialog
+    
+    
+    /**
+     * @param {Object} layoutInfo
+     */
+    AudioLinkDialog.prototype.show = function () {
+        var _this = this;
+        //console.log('AudioLinkDialog.prototype.show');
+        var linkInfo = this.context.invoke('editor.getLinkInfo');
+        this.context.invoke('editor.saveRange');
+        this.showLinkDialog(linkInfo).then(function (linkInfo) {
+            linkInfo.target = "";
+            linkInfo.urlOnClick = true;
+            //console.log(linkInfo);  
+            _this.context.invoke('editor.restoreRange');
+            _this.context.invoke('editor.createLink', linkInfo);
+        }).fail(function () {
+            _this.context.invoke('editor.restoreRange');
+        });
+    };
+    return AudioLinkDialog;
+}());
+
+
+var ImageLinkDialog = /** @class */ (function ()
+{
+    function ImageLinkDialog(context) {
+        this.context = context;
+        this.ui = $$1.summernote.ui;
+        this.$body = $$1(document.body);
+        this.$editor = context.layoutInfo.editor;
+        this.options = context.options;
+        this.lang = this.options.langInfo;
+        this.$dialog = null;
+        this.ID = UniqueId.create();   // qui assegna un id univoco a questa istanza 
+        context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
+    }
+    
+    ImageLinkDialog.prototype.initialize = function () {
+         //console.log("Image Dialog initialize ");
+         
+         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        
+         var buttonClass = 'btn btn-sm btn-info note-btn note-btn-primary note-link-btn';
+         var footer = "<button id='image-link-btn-"+this.ID+"' type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" >Inserisci immagine</button>";
+         var body = [
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Testo</label>",
+            '<input class="note-link-text form-control note-form-control  note-input" type="text" disabled/>',
+            '</div>',
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Lista immagini</label>",
+            
+            // qui prepara il container per la tabella html, che ora e' vuota; la tabella verra' costruita
+            // quando questa finestra modale viene richiesta (see VideoLinkDialog.prototype.showLinkDialog)
+            "<div class='div_tableMedia'> <table id='table-media-"+this.ID+"' class='tableMedia' style='width:100%'></table></div>",
+            
+            "<label class=\"note-form-label\">URL Immagine</label>",
+            '<input disabled id="node-image-link-'+this.ID+'" class="note-link-url form-control note-form-control note-input" type="text" value="http://" />',
+            '</div>'
+         ].join('');
+               
+              
+         this.$dialog = this.ui.dialog({
+            title: this.lang.imageLink.insert,
+            fade: this.options.dialogsFade,
+            body: body,
+            footer: footer,
+         }).render().appendTo($container);
+    };
+    
+    ImageLinkDialog.prototype.destroy = function () {
+        this.ui.hideDialog(this.$dialog);
+        this.$dialog.remove();
+    };
+    
+    ImageLinkDialog.prototype.bindEnterKey = function ($input, $btn) {
+        $input.on('keypress', function (event) {
+            if (event.keyCode === key.code.ENTER) {
+                event.preventDefault();
+                $btn.trigger('click');
+            }
+        });
+    };
+    /**
+     * toggle update button
+     */
+    ImageLinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
+        this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
+    };
+    
+    /**
+     * Show link dialog and set event handlers on dialog controls.
+     *
+     * @param {Object} linkInfo
+     * @return {Promise}
+     */
+    ImageLinkDialog.prototype.showLinkDialog = function (linkInfo) {
+       
+        console.log("*** ImageLinkDialog.prototype.showImageLinkDialog ***");
+ 
+        var _this = this;
+   
+        $.get( this.options.imageLinkFunction )
+         .done(function(data) {
+            //console.log('Image dialog init => create dialog ');
+            data = JSON.parse(data);
+            
+            var _id_ = _this.ID;
+            var table = "<table id='table-media-"+_id_+"' class='tableMedia' style='width:100%'>";
+            
+            data.forEach ( item =>{
+               let url = "NeuroAppJS.prepareImagePopover(this,\\'"+item.url_media+"\\',\\'"+item.descr_media+"\\')"
+               table += "<tr onclick=\"$('#node-image-link-"+_id_+"').val('"+url+"');$('#image-link-btn-"+_id_+"').removeAttr('disabled');$('#image-link-btn-"+_id_+"').removeClass('disabled');\"><td class='word-break'>"+item.descr_media+"</td><td><img style='width:150px;float:right;border-radius:4px;border:2px solid rgb(237,237,237)' src='"+item.url_media+"'></td></tr>";
+            })
+            table += "</table></div>";
+            document.getElementById("table-media-"+_id_).innerHTML = table;
+         })
+         .fail(function(error) {
+            alert( error );
+         });
+        
+        return $$1.Deferred(function (deferred) {
+            //console.log( _this.$dialog );
+            var $linkText = _this.$dialog.find('.note-link-text');
+            var $linkUrl = _this.$dialog.find('.note-link-url');
+            var $linkBtn = _this.$dialog.find('.note-link-btn');
+            //var $openInNewWindow = _this.$dialog.find('input[type=checkbox]');
+            _this.ui.onDialogShown(_this.$dialog, function () {
+                _this.context.triggerEvent('dialog.shown');
+                // if no url was given, copy text to url
+                if (!linkInfo.url) {
+                    linkInfo.url = linkInfo.text;
+                }
+                $linkText.val(linkInfo.text);
+                var handleLinkTextUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // if linktext was modified by keyup,
+                    // stop cloning text from linkUrl
+                    linkInfo.text = $linkText.val();
+                };
+                $linkText.on('input', handleLinkTextUpdate).on('paste', function () {
+                    setTimeout(handleLinkTextUpdate, 0);
+                });
+                var handleLinkUrlUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // display same link on `Text to display` input
+                    // when create a new link
+                    if (!linkInfo.text) {
+                        $linkText.val($linkUrl.val());
+                    }
+                };
+                $linkUrl.on('input', handleLinkUrlUpdate).on('paste', function () {
+                    setTimeout(handleLinkUrlUpdate, 0);
+                }).val(linkInfo.url);
+                if (!env.isSupportTouch) {
+                    $linkUrl.trigger('focus');
+                }
+                _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                _this.bindEnterKey($linkUrl, $linkBtn);
+                _this.bindEnterKey($linkText, $linkBtn);
+                //var isChecked = linkInfo.isNewWindow !== undefined
+                //    ? linkInfo.isNewWindow : _this.context.options.linkTargetBlank;
+                //$openInNewWindow.prop('checked', isChecked);
+                $linkBtn.one('click', function (event) {
+                    event.preventDefault();
+                    deferred.resolve({
+                        range: linkInfo.range,
+                        url: $linkUrl.val(),
+                        text: $linkText.val(),
+                        isNewWindow: false //$openInNewWindow.is(':checked')
+                    });
+                    _this.ui.hideDialog(_this.$dialog);
+                });
+            });
+            _this.ui.onDialogHidden(_this.$dialog, function () {
+                // detach events
+                $linkText.off('input paste keypress');
+                $linkUrl.off('input paste keypress');
+                $linkBtn.off('click');
+                if (deferred.state() === 'pending') {
+                    deferred.reject();
+                }
+            });
+            _this.ui.showDialog(_this.$dialog);
+        }).promise();
+    };
+    
+    /**
+     * @param {Object} layoutInfo
+     */
+    ImageLinkDialog.prototype.show = function () {
+        var _this = this;
+        
+        //console.log('ImageLinkDialog.prototype.show');
+        //console.log ( this.options.popover.air );
+
+        var linkInfo = this.context.invoke('editor.getLinkInfo');
+        this.context.invoke('editor.saveRange');
+        this.showLinkDialog(linkInfo).then(function (linkInfo) {
+            linkInfo.target = ""; 
+            linkInfo.urlOnClick = true;
+            //console.log(linkInfo);
+            _this.context.invoke('editor.restoreRange');
+            _this.context.invoke('editor.createLink', linkInfo);
+        }).fail(function () {
+            _this.context.invoke('editor.restoreRange');
+        });
+    };
+    return ImageLinkDialog;
+}());
+
+
+var GlossarioLinkDialog = /** @class */ (function()
+{
+    function GlossarioLinkDialog(context) {
+        this.context = context;
+        this.ui = $$1.summernote.ui;
+        this.$body = $$1(document.body);
+        this.$editor = context.layoutInfo.editor;
+        this.options = context.options;
+        this.lang = this.options.langInfo;
+        this.ID = UniqueId.create();   // qui assegna un id univoco a questa istanza 
+        context.memo('help.linkDialog.show', this.options.langInfo.help['linkDialog.show']);
+    }
+    
+    GlossarioLinkDialog.prototype.initialize = function () {
+       
+        //console.log("Glossario Dialog initialize ");
+        
+        var _this_ = this;
+        var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+
+        var buttonClass = 'btn btn-sm btn-info note-btn note-btn-primary note-link-btn';
+        var footer = "<button type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" disabled>Inserisci voce</button>";
+        
+        var body = [
+            '<div class="form-group note-form-group">',
+            "<label class=\"note-form-label\">Testo</label>",
+            '<input class="note-link-text form-control note-form-control  note-input" type="text" disabled/>',
+            '</div>',
+            '<div class="form-group note-form-group">',
+            "<label for='glossario-"+this.ID+"' class=\"note-form-label\">Voci del glossario</label>",
+            "<select id='glossario-"+this.ID+"' class='note-link-url form-control note-form-control note-input'></select>",
+            '</div>'
+        ].join('');
+    
+         // Finestra di dialogo per la specifica del link
+         _this_.$dialog = _this_.ui.dialog({
+            className: 'link-dialog',
+            title: _this_.lang.glossary.title,
+            fade: _this_.options.dialogsFade,
+            body: body,
+            footer: footer
+         }).render().appendTo($container );
+        
+    };
+
+    
+    GlossarioLinkDialog.prototype.destroy = function () {
+        this.ui.hideDialog(this.$dialog);
+        this.$dialog.remove();
+    };
+    
+    GlossarioLinkDialog.prototype.bindEnterKey = function ($input, $btn) {
+        $input.on('keypress', function (event) {
+            if (event.keyCode === key.code.ENTER) {
+                event.preventDefault();
+                $btn.trigger('click');
+            }
+        });
+    };
+    /**
+     * toggle update button
+     */
+    GlossarioLinkDialog.prototype.toggleLinkBtn = function ($linkBtn, $linkText, $linkUrl) {
+        this.ui.toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
+    };
+    
+    /**
+     * Show link dialog and set event handlers on dialog controls.
+     *
+     * @param {Object} linkInfo
+     * @return {Promise}
+     */
+    GlossarioLinkDialog.prototype.showLinkDialog = function (linkInfo) {
+       
+       //console.log("GlossarioLinkDialog.prototype.showLinkDialog ", document.getElementById('glossario-'+this.ID));
+       
+       var _this = this;
+        
+        $.get( this.options.glossarioLinkFunction )
+         .done(function(data) {
+            let glossario = [];
+            
+            data = JSON.parse(data);
+            data.forEach ( item => {
+               //console.log(item)
+               glossario.push ({
+                  value : "NeuroAppJS.loadDefGlossario(this,"+item.id+")",
+                  label: item.voce
+               })
+            })
+            
+            //let input_text = "<select id='glossario-"+this.ID+"' class='note-link-url form-control note-form-control note-input'>"
+            let input_text = ""
+            glossario.forEach (opt => {
+               input_text += "<option value='"+opt.value+"'>"+opt.label+"</option>";
+            })
+            //input_text += "</select>";
+            document.getElementById('glossario-'+_this.ID).innerHTML = input_text;
+         })
+         .fail(function(error) {
+            alert( error );
+         })
+         
+         
+        return $$1.Deferred(function (deferred) {
+           
+           //console.log(_this.$dialog);
+           
+            var $linkText = _this.$dialog.find('.note-link-text');
+            var $linkUrl = _this.$dialog.find('.note-link-url');
+            var $linkBtn = _this.$dialog.find('.note-link-btn');
+            var $openInNewWindow = _this.$dialog.find('input[type=checkbox]');
+            _this.ui.onDialogShown(_this.$dialog, function () {
+                _this.context.triggerEvent('dialog.shown');
+                // if no url was given, copy text to url
+                if (!linkInfo.url) {
+                    linkInfo.url = linkInfo.text;
+                }
+                $linkText.val(linkInfo.text);
+                var handleLinkTextUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // if linktext was modified by keyup,
+                    // stop cloning text from linkUrl
+                    linkInfo.text = $linkText.val();
+                };
+                $linkText.on('input', handleLinkTextUpdate).on('paste', function () {
+                    setTimeout(handleLinkTextUpdate, 0);
+                });
+                var handleLinkUrlUpdate = function () {
+                    _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                    // display same link on `Text to display` input
+                    // when create a new link
+                    if (!linkInfo.text) {
+                        $linkText.val($linkUrl.val());
+                    }
+                };
+                $linkUrl.on('input', handleLinkUrlUpdate).on('paste', function () {
+                    setTimeout(handleLinkUrlUpdate, 0);
+                }).val(linkInfo.url);
+                if (!env.isSupportTouch) {
+                    $linkUrl.trigger('focus');
+                }
+                _this.toggleLinkBtn($linkBtn, $linkText, $linkUrl);
+                _this.bindEnterKey($linkUrl, $linkBtn);
+                _this.bindEnterKey($linkText, $linkBtn);
+                //var isChecked = linkInfo.isNewWindow !== undefined
+                //    ? linkInfo.isNewWindow : _this.context.options.linkTargetBlank;
+                //$openInNewWindow.prop('checked', isChecked);
+                $linkBtn.one('click', function (event) {
+                    event.preventDefault();
+                    deferred.resolve({
+                        range: linkInfo.range,
+                        url: $linkUrl.val(),
+                        text: $linkText.val(),
+                        isNewWindow: false // $openInNewWindow.is(':checked')
+                    });
+                    _this.ui.hideDialog(_this.$dialog);
+                });
+            });
+            _this.ui.onDialogHidden(_this.$dialog, function () {
+                // detach events
+                $linkText.off('input paste keypress');
+                $linkUrl.off('input paste keypress');
+                $linkBtn.off('click');
+                if (deferred.state() === 'pending') {
+                    deferred.reject();
+                }
+            });
+            _this.ui.showDialog(_this.$dialog);
+        }).promise();
+    };
+    
+    /**
+     * @param {Object} layoutInfo
+     */
+    GlossarioLinkDialog.prototype.show = function () {
+        console.log("GlossarioLinkDialog.prototype.show");
+        var _this = this;
+        
+        var linkInfo = this.context.invoke('editor.getLinkInfo');
+        this.context.invoke('editor.saveRange');
+        this.showLinkDialog(linkInfo).then(function (linkInfo) {
+            //console.log(linkInfo);
+            linkInfo.target = ""; 
+            linkInfo.urlOnClick = true;
+            _this.context.invoke('editor.restoreRange');
+            _this.context.invoke('editor.createLink', linkInfo);
+        }).fail(function () {
+            _this.context.invoke('editor.restoreRange');
+        });
+    };
+    
+    return GlossarioLinkDialog;
+}());  // GlossarioLinkDialog
+
+/*** ---MODIF BIG.GM--- ***/
+
+
 
 var LinkPopover = /** @class */ (function () {
     function LinkPopover(context) {
@@ -6114,6 +7037,9 @@ var LinkPopover = /** @class */ (function () {
         this.$popover.remove();
     };
     LinkPopover.prototype.update = function () {
+       
+       console.log("LinkPopover.prototype.update", this.options);
+       
         // Prevent focusing on editable when invoke('code') is executed
         if (!this.context.invoke('editor.hasFocus')) {
             this.hide();
@@ -6172,7 +7098,7 @@ var ImageDialog = /** @class */ (function () {
             ' col-md-12" type="text" />',
             '</div>'
         ].join('');
-        var buttonClass = 'btn btn-primary note-btn note-btn-primary note-image-btn';
+        var buttonClass = 'btn btn-sm btn-primary note-btn note-btn-primary note-image-btn';
         var footer = "<button type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" disabled>" + this.lang.image.insert + "</button>";
         this.$dialog = this.ui.dialog({
             title: this.lang.image.insert,
@@ -6382,7 +7308,7 @@ var VideoDialog = /** @class */ (function () {
             '<input class="note-video-url form-control note-form-control note-input" type="text" />',
             '</div>'
         ].join('');
-        var buttonClass = 'btn btn-primary note-btn note-btn-primary note-video-btn';
+        var buttonClass = 'btn btn-sm btn-primary note-btn note-btn-primary note-video-btn';
         var footer = "<button type=\"submit\" href=\"#\" class=\"" + buttonClass + "\" disabled>" + this.lang.video.insert + "</button>";
         this.$dialog = this.ui.dialog({
             title: this.lang.video.insert,
@@ -7055,6 +7981,7 @@ var Context = /** @class */ (function () {
     };
     Context.prototype.createInvokeHandler = function (namespace, value) {
         var _this = this;
+        
         return function (event) {
             event.preventDefault();
             var $target = $$1(event.target);
@@ -7126,7 +8053,8 @@ $$1.summernote = $$1.extend($$1.summernote, {
         modules: {
             'editor': Editor,
             'clipboard': Clipboard,
-            'dropzone': Dropzone,
+            //'dropzone': Dropzone,          /** --MODIF-- **/
+            'brand'     : Brand,             /** --MODIF-- **/
             'codeview': CodeView,
             'statusbar': Statusbar,
             'fullscreen': Fullscreen,
@@ -7146,7 +8074,15 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'tablePopover': TablePopover,
             'videoDialog': VideoDialog,
             'helpDialog': HelpDialog,
-            'airPopover': AirPopover
+            'airPopover': AirPopover,
+            
+            /*** ---MODIF BIG.GM--- ***/
+            'videoLinkDialog': VideoLinkDialog,
+            'audioLinkDialog': AudioLinkDialog,
+            'imageLinkDialog': ImageLinkDialog,
+            'glossarioLinkDialog': GlossarioLinkDialog,
+            /*** ---MODIF BIG.GM--- ***/
+            
         },
         buttons: {},
         lang: 'en-US',
@@ -7200,7 +8136,11 @@ $$1.summernote = $$1.extend($$1.summernote, {
         tooltip: 'auto',
         container: 'body',
         maxTextLength: 0,
-        styleTags: ['p', 'blockquote', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+        styleTags: [
+            'p',
+            { title: 'Blockquote', tag: 'blockquote', className: 'blockquote', value: 'blockquote' },
+            'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+        ],
         fontNames: [
             'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
             'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
@@ -7227,7 +8167,6 @@ $$1.summernote = $$1.extend($$1.summernote, {
         dialogsInBody: false,
         dialogsFade: false,
         maximumImageFileSize: null,
-        select_options : null,    /** -MODIF- **/
         callbacks: {
             onInit: null,
             onFocus: null,
@@ -7348,10 +8287,16 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'underline': 'note-icon-underline',
             'undo': 'note-icon-undo',
             'unorderedlist': 'note-icon-unorderedlist',
-            'video': 'note-icon-video'
-        }
+            'video': 'note-icon-video',
+            /*** ---MODIF BIG.GM--- ***/
+            'videoLink' : 'note-icon-video',
+            'audioLink' : 'fas fa-headphones-alt',
+            'imageLink' : 'note-icon-picture',
+            'glossary'  : 'fas fa-book-open'
+            /*** ---MODIF BIG.GM--- ***/
+        } // icons
     }
 });
 
 })));
-//# sourceMappingURL=summernote.js.map
+//# sourceMappingURL=summernote-bs4.js.map
