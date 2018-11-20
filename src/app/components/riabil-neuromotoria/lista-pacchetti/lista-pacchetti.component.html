@@ -17,11 +17,13 @@
             NB. textContent e innerHTML sono PROPRIO le property del DOM, NON attributi creati da angular
           -->
 
-           <tr *ngFor="let pkt of pacchetti"  (click)='onForeground(row)' #row>
-              <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto(pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
+           <tr *ngFor="let pkt of pacchetti"  (click)='onForeground(row,$event)' #row>
+              <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto($event,pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
               
-              <td [innerHtml]="pkt.descr" (click)="loadEserciziPacchetto(pkt)"></td>    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
+              <!-- <td [innerHtml]="pkt.descr | truncate:80 | safe:'html'"></td> -->    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
               
+              <td [textContent]="pkt.descr | plaintext | truncate:80"></td>
+
               <td (click)="formModifPacchetto($event,pkt)">
                 <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
              </td>
@@ -41,7 +43,7 @@
           </button>
 
           <button title="Aggiorna la lista dei pacchetti" class="btn btn-primary"
-          (click)="reloadPacchetti()">
+          (click)="reloadPacchetti(1)">
             <i class="fas fa-sync-alt"></i>
           </button>
       </div> <!-- card footer -->

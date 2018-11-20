@@ -12,23 +12,16 @@ header('Access-Control-Allow-Origin: *');
  * Parsa la query string. Restituisce questi attributi:
 /**
  * Parsa la query string. Restituisce questi attributi:
- * $proc    - la procedura del DB di lettura
- * $id_voce - id voce glossario
- * $voce    - voce di glossario
- * $definizione   - definizione voce di glossario 
+ * $proc    - la procedura pl/sql di cancellazione
+ * $id_pkt  - id del pacchetto da cancellare
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc   = rawurldecode($proc);
-$id_voce = rawurldecode($id_voce);
-$voce   = rawurldecode($voce);
-$definizione  = rawurldecode($definizione);
+$proc  = rawurldecode($proc);
+$id_pkt = rawurldecode($id_pkt);
 
 /*****
-echo $proc . "\n";
-echo $id_voce . "\n";
-echo $voce. "\n";
-echo $definizione . "\n";
+echo $id_pkt . "\n";
 die();
 *****/
 
@@ -54,7 +47,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_voce, :voce, :definizione, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -65,16 +58,15 @@ if (!$stmt) {
 
 oci_set_prefetch($stmt,1000);
 
+
+
 /**
  * Imposta i parametri della procedura 
  **/
-$refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':id_voce'     , $id_voce, 255);
-oci_bind_by_name($stmt, ':voce'        , $voce, 512);
-oci_bind_by_name($stmt, ':definizione' , $definizione, 4000);
-oci_bind_by_name($stmt, ':outcome'     , $outcome, 4000);
+oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
+oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 
 
 /**

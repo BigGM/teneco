@@ -74,7 +74,7 @@ export class ListaGlossarioComponent implements OnInit {
     let self = this
     $('#modifVoceGlossario').modal('show')
     
-    // Invia alla modale l record da modificare tramite il servizio
+    // Invia alla modale il record da modificare tramite il servizio
     this.glossarioService.sendRecordToModal(voce_glossario)
   }
 

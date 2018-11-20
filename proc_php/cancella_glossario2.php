@@ -83,7 +83,7 @@ if (!$exec) {
  * un messaggio di errore che inizia con "Exception" 
  **/
 if ( substr($outcome,0,9)==="Exception") { 
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = htmlentities($outcome, ENT_QUOTES);
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }

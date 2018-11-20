@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+
 body, html {
     font-family: Verdana, Tahoma, Calibri !important;
     font-size:16px !important;
@@ -37,3 +38,57 @@ router-outlet ~ * {
 .navbar-brand {
     padding: 0px;
 }
+
+
+/**
+ * ------------------------------------------------------------------------------------------------------
+ * Stili per le finestre modali della libreria summernote.
+ * E' necessario metterli nello stile globale, perche' se inseriti
+ * negli stili locali non vengono assegnati
+ * ------------------------------------------------------------------------------------------------------
+ */
+.note-placeholder {
+    top: 8px;
+    left: 13px;
+    font-family: Tahoma, calibri, sans-serif, Helvetica, Arial, Tahoma;
+    font-size: 16px !important;
+}
+.note-form-label {
+   font-weight:bold;
+   color:rgb(20,30,70);
+}
+.word-break {
+   word-break: break-word;
+}
+.div_tableMedia {
+   width:100%;
+   height:300px;
+   overflow:auto;
+   margin-bottom:10px;
+   border: 4px solid rgb(210, 210, 210);
+   border-radius:6px;
+   background-color: rgb(243,243,245);
+}
+.tableMedia {
+  /*width:100%;*/
+  cursor:pointer;
+}
+.tableMedia > tbody > tr > td {
+  padding: 10px 8px;
+  font-family: Calibri, Tahoma, Verdana;
+  font-size: 20px;
+  font-weight: normal;
+  border-bottom: 1px solid rgba(200,200,200,0.5);
+  color: rgb(20,40,90);
+}
+.tableMedia > tbody > tr:hover {
+  background-color: rgb(220,222,224);
+  transition: background-color 0.3s ease-in-out;
+}
+.tableMedia tr:nth-child(odd) {
+   background-color: rgb(248, 248, 250);
+}
+.tableMedia tr:nth-child(even) {
+ background-color: rgb(248, 248, 250);
+}
+/** Fine fogli di stile per finestra modale summernote **/

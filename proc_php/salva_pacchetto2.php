@@ -1,6 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin: *'); 
+header('Content-Type: text/plain; charset=utf-8');
 
 
 //print_r($_GET);
@@ -13,22 +14,34 @@ header('Access-Control-Allow-Origin: *');
 /**
  * Parsa la query string. Restituisce questi attributi:
  * $proc    - la procedura del DB di lettura
- * $id_voce - id voce glossario
- * $voce    - voce di glossario
- * $definizione   - definizione voce di glossario 
+ * $nome    - il nome del nuovo pacchetto 
+ * $descr   - la descrizione del pacchetto 
+ * $pre_req - pre requisiti
+ * $contro_ind - contro indicazioni 
+ * $alert_msg  - messaggio di alert 
  **/
+
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc   = rawurldecode($proc);
-$id_voce = rawurldecode($id_voce);
-$voce   = rawurldecode($voce);
-$definizione  = rawurldecode($definizione);
+$entity = array('0x26', '0x23');
+$replace_with = array('&', '#');
+
+$proc  = rawurldecode($proc);
+$nome  = rawurldecode($nome);
+$descr = str_replace($entity,$replace_with,rawurldecode($descr));
+$pre_req    = rawurldecode($pre_req);
+$contro_ind = rawurldecode($contro_ind);
+$alert_msg  = rawurldecode($alert_msg);
+$alert_msg_visibile  = rawurldecode($alert_msg_visibile);
+$bibliografia  = rawurldecode($bibliografia);
+$patologie_secondarie  = rawurldecode($patologie_secondarie);
+$valutazione  = rawurldecode($valutazione);
+$ambito     = rawurldecode($ambito);
 
 /*****
 echo $proc . "\n";
-echo $id_voce . "\n";
-echo $voce. "\n";
-echo $definizione . "\n";
+echo $nome. "\n";
+echo $descr . "\n";
 die();
 *****/
 
@@ -54,7 +67,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_voce, :voce, :definizione, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:nome, :descr, :pre_req, :contro_ind, :alert_msg, :alert_msg_visibile,  :bibliografia, :patologie_secondarie, :valutazione, :ambito, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -65,16 +78,25 @@ if (!$stmt) {
 
 oci_set_prefetch($stmt,1000);
 
+
+
 /**
  * Imposta i parametri della procedura 
  **/
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':id_voce'     , $id_voce, 255);
-oci_bind_by_name($stmt, ':voce'        , $voce, 512);
-oci_bind_by_name($stmt, ':definizione' , $definizione, 4000);
-oci_bind_by_name($stmt, ':outcome'     , $outcome, 4000);
+oci_bind_by_name($stmt, ':nome'    , $nome, 255);
+oci_bind_by_name($stmt, ':descr'   , $descr, 4000);
+oci_bind_by_name($stmt, ':pre_req' , $pre_req, 4000);
+oci_bind_by_name($stmt, ':contro_ind' , $contro_ind, 4000);
+oci_bind_by_name($stmt, ':alert_msg'  , $alert_msg, 255);
+oci_bind_by_name($stmt, ':alert_msg_visibile' , $alert_msg_visibile, 4000);
+oci_bind_by_name($stmt, ':bibliografia' , $bibliografia, 4000);
+oci_bind_by_name($stmt, ':patologie_secondarie' , $patologie_secondarie, 4000);
+oci_bind_by_name($stmt, ':valutazione' , $valutazione, 4000);
+oci_bind_by_name($stmt, ':ambito'     , $ambito, 10);
+oci_bind_by_name($stmt, ':outcome'    , $outcome, 4000);
 
 
 /**

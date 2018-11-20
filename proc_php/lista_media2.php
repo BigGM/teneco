@@ -2,7 +2,6 @@
 
 header('Access-Control-Allow-Origin: *'); 
 
-
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
@@ -10,25 +9,18 @@ header('Access-Control-Allow-Origin: *');
 
 /**
  * Parsa la query string. Restituisce questi attributi:
-/**
- * Parsa la query string. Restituisce questi attributi:
- * $proc    - la procedura del DB di lettura
- * $id_voce - id voce glossario
- * $voce    - voce di glossario
- * $definizione   - definizione voce di glossario 
+ * $proc      - la procedura del DB di lettura
+ * $lista_id  - la lista dei video gia' inseriti e quindi da escludere nella select 
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc   = rawurldecode($proc);
-$id_voce = rawurldecode($id_voce);
-$voce   = rawurldecode($voce);
-$definizione  = rawurldecode($definizione);
+$proc       = rawurldecode($proc);
+$tipo_media = rawurldecode($tipo_media);
+$lista_id   = rawurldecode($lista_id);
 
 /*****
-echo $proc . "\n";
-echo $id_voce . "\n";
-echo $voce. "\n";
-echo $definizione . "\n";
+echo $lista_id . "\n";
+echo $tipo_media . "\n";
 die();
 *****/
 
@@ -40,7 +32,6 @@ $db_conn_string=getenv('ORACLE_CONN_STRING');
 /**
  * Connessione al data base 
  **/
-//$conn = oci_connect("telecom", "hp01pvv", 'hpdev01.tandi.it:1521/dbtest', 'AL32UTF8');
 $conn = oci_pconnect($db_user, $db_pwd, $db_conn_string, 'AL32UTF8');
 
 if (!$conn) {
@@ -54,7 +45,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_voce, :voce, :definizione, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:tipo_media, :lista_id, :outcome, :cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -65,17 +56,16 @@ if (!$stmt) {
 
 oci_set_prefetch($stmt,1000);
 
+
 /**
  * Imposta i parametri della procedura 
  **/
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
-
-oci_bind_by_name($stmt, ':id_voce'     , $id_voce, 255);
-oci_bind_by_name($stmt, ':voce'        , $voce, 512);
-oci_bind_by_name($stmt, ':definizione' , $definizione, 4000);
-oci_bind_by_name($stmt, ':outcome'     , $outcome, 4000);
-
+oci_bind_by_name($stmt, ':cursor'  , $refcur, -1, OCI_B_CURSOR);
+oci_bind_by_name($stmt, ':lista_id' , $lista_id, 200);
+oci_bind_by_name($stmt, ':tipo_media' , $tipo_media, 100);
+oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 
 /**
  * Lancia la procedura 
@@ -88,19 +78,31 @@ if (!$exec) {
    die();
 }
 
+// NB. controllo esito DOPO il controllo ritorno procedura
+$exec = oci_execute($refcur);
+
 /**
  * Check esito della procedura via $outcome: ogni procedura PL/SQL dovra restituire
  * un messaggio di errore che inizia con "Exception" 
- **/
-if ( substr($outcome,0,9)==="Exception") { 
+ */
+if ( substr($outcome,0,9)==="Exception") {
    $msg = htmlentities($outcome, ENT_QUOTES);
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
  
-// Successo
-echo '{"status":"ok", "message":"'.$outcome.'"}'; 
+//$outp = $outcome . "|";
+$start = "[";
+$outp  = $start;
+while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
+{
+   if ($outp != $start) {$outp .= ",";}
+   $outp .= '{"id_media":' . $row[0] .',' . '"url_media":"' . $row[1].'", "descr_media":'. '"'.$row[2].'", "usato_media":'.$row[3].'}' ;
+}
+$outp .="]";
+echo($outp);
 
+oci_free_statement($refcur);
 oci_free_statement($stmt);
 oci_close($conn);
 

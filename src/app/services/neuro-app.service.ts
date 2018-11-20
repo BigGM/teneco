@@ -7,6 +7,8 @@ import { NeuroApp } from '../neuro-app'
 import { RecordMedia, RecordMediaError } from '../record-media'
 import { Outcome } from '../outcome'
 
+// jQuery
+declare var $ : any;
 
 /**
  * out_media
@@ -103,6 +105,8 @@ export class NeuroAppService {
         catchError( this.handleError )
     )
   } //cancellaGlossario()
+
+
 
 
   /**

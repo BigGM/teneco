@@ -24,11 +24,10 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-             
               "./node_modules/fontawesome-free-5.5.0-web/css/all.min.css",
               "./src/assets/css/my-style.css",
               "./src/assets/css/neuro-app.css",
-              "./src/assets/summernote/summernote.css",
+              "./src/assets/summernote/summernote-bs4.css",
               "./src/styles.css",
               "./src/assets/css/forms.css"
             ],
@@ -38,7 +37,7 @@
               "./src/assets/js/lib/popper-1.14.3.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./src/assets/js/lib/bootbox2.js",
-              "./src/assets/summernote/summernote.js",
+              "./src/assets/summernote/summernote-bs4-modif.js",
               "./src/assets/summernote/lang/summernote-it-IT.js",
               "./src/assets/js/neuro-app.js"
             ]

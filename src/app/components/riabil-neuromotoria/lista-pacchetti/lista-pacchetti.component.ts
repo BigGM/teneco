@@ -3,6 +3,7 @@ import { RiabilNeuromotoriaService, RecordPacchetto} from '../../../services/ria
 import { Subscription } from 'rxjs';
 import { NeuroApp } from '../../../neuro-app';
 
+
 declare var $ : any;
 declare var bootbox: any;
 
@@ -13,7 +14,7 @@ declare var bootbox: any;
 })
 export class ListaPacchettiComponent implements OnInit {
 
-
+  readonly ambito = "1"
   pacchetti     : RecordPacchetto[]
   pktSubscr     : Subscription;
   pacchetto     : RecordPacchetto
@@ -28,7 +29,7 @@ export class ListaPacchettiComponent implements OnInit {
 
   ngOnInit() {
     //console.log( this.pacchetti.length )
-    this.loadPacchetti()
+    this.loadPacchetti(this.ambito)
   }
 
   ngOnDestroy() {
@@ -43,8 +44,8 @@ export class ListaPacchettiComponent implements OnInit {
  * Assegna una classe di stile per evidenziare una riga selezionata col mouse.
  * @param row riferimento alla riga cliccata della tabella HTML
  */
-onForeground(row) {
-  
+onForeground(row,event:MouseEvent) {
+  event.preventDefault()
   $('#tablePacchetti tr td').removeClass('marked-row');
   $('#tablePacchetti tr td').removeClass('marked-row-first-col');
   $('#tablePacchetti tr td').removeClass('marked-row-last-col');
@@ -58,16 +59,30 @@ onForeground(row) {
 }
 
 
+/**
+ * rimuove qualunque popover sia aperta 
+ */
+private removePopover() {
+  console.log("removePopover")
+  $('.my-popover-glossario').remove()
+  $('.my-popover-video').remove()
+  $('.my-popover-audio').remove()
+  $('.my-popover-image').remove()
+}
+
 
   /**
    * Carica le voci di glossario sull'array this.glossario o
    * emette una popup di errore.
+   * @ambito -  1: riabilitazione neuromotoria
+   *            2: riabilitazione cognitiva
    */
-  loadPacchetti() {
+  loadPacchetti(ambito) {
     console.log("ListaPacchettiComponent.loadPacchetti")
+    
     NeuroApp.showWait();
     
-    let serv = this.pktService.loadPacchetti()
+    let serv = this.pktService.loadPacchetti(ambito)
     
     this.pktSubscr = serv.subscribe (
         result => {
@@ -84,16 +99,18 @@ onForeground(row) {
   } // loadPacchetti()
 
 
-  reloadPacchetti() {
+  reloadPacchetti(ambito) {
     console.log("** reloadPacchetti **")
+    this.removePopover()
     this.pacchetto = null
     this.pacchetti = []
-    this.loadPacchetti();
+    this.loadPacchetti(ambito);
   }
 
 
-  loadEserciziPacchetto(pkt) {
-
+  loadEserciziPacchetto(event:MouseEvent, pkt) {
+    console.log("** loadEserciziPacchetto **")
+    this.removePopover()
   }
 
 
@@ -104,6 +121,7 @@ onForeground(row) {
    */
   confermaCancellaPacchetto(mouseEvent:MouseEvent, pkt:RecordPacchetto)
   {
+    this.removePopover()
     mouseEvent.preventDefault()
 
     let self = this;
@@ -133,7 +151,7 @@ onForeground(row) {
    * @param pkt pacchetto da cancellare
    */
   cancellaPacchetto(pkt:RecordPacchetto) {
-    console.log("ListaPacchettiComponent.cancellaGlossario")
+    console.log("ListaPacchettiComponent.cancellaPacchetto")
     NeuroApp.showWait();
     
     let serv = this.pktService.cancellaPacchetto(pkt)
@@ -144,7 +162,7 @@ onForeground(row) {
           NeuroApp.hideWait()
           NeuroApp.custom_info(`Pacchetto "<b>${pkt.nome}</b>" cancellato`)
           // Aggiorna la lista dei pacchetti
-          this.reloadPacchetti()
+          this.reloadPacchetti(this.ambito)
         },
         error => {
           this.pktSubscr.unsubscribe()
@@ -154,13 +172,17 @@ onForeground(row) {
     )
   }
 
-  formNuovoPacchetto(pkt) {
-    alert("formNuovoPacchetto")
+  /**
+   * Apre il modulo per la definizione di un nuovo pacchetto
+   */
+  formNuovoPacchetto() {
+    this.removePopover()
+    $('#nuovoPacchetto').modal('show')
   }
 
   formModifPacchetto(mouseEvent, pkt) {
+    this.removePopover()
     mouseEvent.stopPropagation()
     alert("formModifPacchetto")
   }
-
 }

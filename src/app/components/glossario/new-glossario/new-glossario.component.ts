@@ -12,9 +12,10 @@ declare var $:any;
   templateUrl: './new-glossario.component.html',
   styleUrls: ['./new-glossario.component.css']
 })
-export class NewGlossarioComponent implements OnInit {
+export class NewGlossarioComponent implements OnInit, OnDestroy {
+
   voce_glossario : RecordGlossario;
-  glossSubscr  : Subscription;
+  glossSubscr    : Subscription;
   @Input() listaGlossario: ListaGlossarioComponent;
   
   constructor(private glossarioService : GlossarioService) {
@@ -25,7 +26,7 @@ export class NewGlossarioComponent implements OnInit {
       id: -1,  voce: "", def:"", short_def: ""
     }
     this.glossSubscr = null
-    $('#nuovaVoceGlossario').draggable({handle:'.modal-header'});
+    //$('#nuovaVoceGlossario').draggable({handle:'.modal-header'});
   }
 
   ngOnDestroy() {
@@ -50,7 +51,7 @@ export class NewGlossarioComponent implements OnInit {
     this.glossSubscr = serv.subscribe (
       result => {
         NeuroApp.hideWait()
-        NeuroApp.custom_info(`Voce di glossario modificata`)
+        NeuroApp.custom_info('Voce di glossario aggiunta')
         // Aggiorna la lista delle voci di glossario
         this.listaGlossario.loadGlossario()
         this.glossSubscr.unsubscribe()
@@ -73,10 +74,5 @@ export class NewGlossarioComponent implements OnInit {
         id: -1,  voce: "", def:"", short_def: ""
       }
       form.reset()
-  }
-
-  openModal(voce_glossario:RecordGlossario) {
-    this.voce_glossario = voce_glossario
-    $('#modifVoceGlossario').modal('show')
   }
 }
