@@ -5,7 +5,7 @@
   <div class="card">
       
     <div class="card-header">
-        <h3 style="color:rgb(208, 39, 39);">Pacchetti</h3>
+        <h3 style="color:rgb(208, 39, 39);">Riabilitazione neuromotoria</h3>
     </div>
       
       <div class="card-body" style="max-height:550px;overflow:auto;">
@@ -15,15 +15,15 @@
             [textContent] corrisponde a ng-bind di angularJS 
             [innerHtml]   corrisponde a ng-bind-html di angularJS
             NB. textContent e innerHTML sono PROPRIO le property del DOM, NON attributi creati da angular
+            (click)='onForeground(row,$event)'
           -->
 
-           <tr *ngFor="let pkt of pacchetti"  (click)='onForeground(row,$event)' #row>
+           <tr *ngFor="let pkt of pacchetti"  #row (click)='onForeground(row,$event)'>
               <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto($event,pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
               
               <!-- <td [innerHtml]="pkt.descr | truncate:80 | safe:'html'"></td> -->    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
+              <td [textContent]="pkt.descr | plaintext | truncate:80" (click)="loadEserciziPacchetto($event,pkt)"></td>
               
-              <td [textContent]="pkt.descr | plaintext | truncate:80"></td>
-
               <td (click)="formModifPacchetto($event,pkt)">
                 <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
              </td>

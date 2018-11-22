@@ -1,10 +1,12 @@
 
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { RiabilNeuromotoriaService, RecordPacchetto} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
+import { RiabilNeuromotoriaService } from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { NeuroApp } from '../../../neuro-app';
-
 import { ListaPacchettiComponent } from '../lista-pacchetti/lista-pacchetti.component';
+import { ActionPacchetto } from '../action-pacchetto'
+import { RecordPacchetto } from '../../../classes/record-pacchetto'
+
 
 // questo e' per jQuery
 declare var $: any;
@@ -14,28 +16,22 @@ declare var $: any;
   templateUrl: './new-pacchetto.component.html',
   styleUrls: ['./new-pacchetto.component.css']
 })
-export class NewPacchettoComponent implements OnInit, OnDestroy {
+export class NewPacchettoComponent extends ActionPacchetto implements OnInit, OnDestroy {
 
-  readonly ambito = "1";
-
-  pacchetto : RecordPacchetto
-  pktSubscr : Subscription;
   @Input() listaPacchetti: ListaPacchettiComponent;
 
   constructor(private pktService : RiabilNeuromotoriaService) {
+    super()
   }
 
   ngOnInit() {
-    this.pacchetto = new RecordPacchetto()
-    this.pacchetto.reset()
-    this.pktSubscr = null
+    super.init()
     this.initSummernote()
   }
 
   ngOnDestroy() {
     console.log( "NewPacchettoComponent => onDestroy" )
-    if (this.pktSubscr)
-      this.pktSubscr.unsubscribe()
+    super.unsubscribe()
   
     // Cancella i codice html creato da summernote
     $('#summernote-newpkt-descr').summernote('destroy')
@@ -47,44 +43,8 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
    * Inizializza i campi di testo ricoperti dalla libreria summernote
    */
   initSummernote() {
-    let URL_ROOT = NeuroApp.G_URL_ROOT + "/cgi-bin";
+    let note_options = super.getSummernoteOptions()
 
-    let note_options = {
-      lang: "it-IT",
-      height: "110px",
-      minHeight: "110px",
-      maxHeight: "110px",
-      dialogsInBody: true,
-      dialogsFade: true,
-      airMode:true,
-      required: false,
-      //disableLinkTarget: true, non usato dalle dialog video, audio e glossario aggiunte
-      videoLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=video&lista_id=-1",
-      audioLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=audio&lista_id=-1",
-      imageLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=image&lista_id=-1",
-      glossarioLinkFunction: URL_ROOT + "/lista_glossario2.php?proc=NeuroApp.glossario",
-      popover: {
-         air: [
-            /*['color', ['color']],*/
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            /*['fontsize', ['fontsize']],
-            ['fontname', ['fontname']],*/
-            ['linkVideo', ['linkVideo']],
-            ['linkAudio', ['linkAudio']],
-            ['linkImage', ['linkImage']],
-            ['linkGlossario', ['linkGlossario']],
-            ['link', ['unlink']],
-         ]
-      },
-      callbacks: {
-         onInit: function() {
-            console.log('Summernote is launched');
-            $('.note-editable').addClass('form-control');
-            $('.note-editable').css('height', '300px'); 
-         }
-      }
-    }
-    
     // imposta la descrizione come campo obbligatorio (serve per cambiare lo stile del campo di testo)
     note_options.required = true
     $('#summernote-newpkt-descr').summernote(note_options)
@@ -93,26 +53,8 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
     note_options.required = false
     $('#summernote-newpkt-prereq').summernote(note_options)
 
-
   } // initSummernote()
 
-
-
-  /**
-   * Controlla se il campo in input e' vuoto, se e' così restituisce una stringa
-   * formattata da presentare nel messaggio di errore; se e' valorizzata ritorna
-   * una stringa vuota.
-   * 
-   * @param field_name nome del campo
-   * @param field_value valore definito nell'interfaccia
-   */
-  private checkMandatory(field_name:string, field_value:string) : string {
-    //console.log (field_name, field_value)
-    if ( field_value==null || field_value=="undefined" || field_value==="" || field_value=="<p><br></p>") {
-      return `<b>${field_name}</b><br>`
-    }
-    return ""
-  }
 
 
   /**
@@ -123,7 +65,7 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
     console.log("NewPacchettoComponent.salvaPacchetto")
 
     // Rimuove popover che puo' essere stato aperto
-    this.removePopover()
+    NeuroApp.removePopover()
     
     //console.log(form.value)
     this.pacchetto.descr = $('#summernote-newpkt-descr').summernote('code')
@@ -132,12 +74,10 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
     // trim dei campi
     this.pacchetto.trim()
 
-    //console.log(this.pacchetto)
-
     // e controllo dei campi obbligatori
     let fields_empty = "";
-    fields_empty += this.checkMandatory("Nome",this.pacchetto.nome)
-    fields_empty += this.checkMandatory("Descrizione",this.pacchetto.descr)
+    fields_empty += super.checkMandatory("Nome",this.pacchetto.nome)
+    fields_empty += super.checkMandatory("Descrizione",this.pacchetto.descr)
 
     // Manca qualche campo => messaggio di errore ed esce
     if (fields_empty.length > 0 ) {
@@ -145,11 +85,9 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
       return
     }
 
-    //return;
     NeuroApp.showWait();
     
-    let serv = this.pktService.salvaPacchetto(this.pacchetto,this.ambito)
-    
+    let serv = this.pktService.salvaPacchetto(this.pacchetto,this.ambito)    
     this.pktSubscr = serv.subscribe (
       result => {
         NeuroApp.hideWait()
@@ -164,31 +102,18 @@ export class NewPacchettoComponent implements OnInit, OnDestroy {
         this.pktSubscr.unsubscribe()
       }
     )
-  }
+  } // salvaPacchetto(form)
+
 
   /**
-   * Ripulisce i campi della form
+   * Ripulisce i campi della form.
+   * Richiama il metodo corrispondente della superclasse.
    * @param form 
    */
   reset(form) {
-      console.log(form)
-      this.pacchetto.reset()
-      form.reset()
-      this.removePopover()
-      $('#summernote-newpkt-descr').summernote('reset')
-      $('#summernote-newpkt-prereq').summernote('reset')
+    super.reset(form)
+    console.log(this.pacchetto)
+    $('#summernote-newpkt-descr').summernote('reset')
+    $('#summernote-newpkt-prereq').summernote('reset')
   }
-
-
-  /**
-   * Questo serve a rimuovere una eventuale popover aperta
-   */
-  private removePopover() {
-    console.log("removePopover")
-    $('.my-popover-glossario').remove()
-    $('.my-popover-video').remove()
-    $('.my-popover-audio').remove()
-    $('.my-popover-image').remove()
-  }
-  
 }

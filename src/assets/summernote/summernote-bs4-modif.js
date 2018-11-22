@@ -3953,6 +3953,7 @@ var Editor = /** @class */ (function () {
                    $$1(anchor).attr('onclick', linkUrl);
                    $$1(anchor).attr('tabindex', "0");            // questo e' per il popover di Bootstrap 4
                    $$1(anchor).attr('data-trigger', "click");    // e pure questo
+                   $$1(anchor).attr('id', "anchor-"+Date.now());
                }
                else {
                   $$1(anchor).attr('href', linkUrl);   
@@ -4571,19 +4572,19 @@ var Editor = /** @class */ (function () {
 var Brand = /** @class */ (function () {
  
    function Brand(context) {
-      console.log("*** Brand this ***")
-      this.$editor = context.layoutInfo.editor;
+      //console.log("*** Brand this ***")
+      this.$editingArea = context.layoutInfo.editingArea;
       this.$brand = $$1([
-            '<div class="summernote-brand"><i class="fas fa-sun" style="color:rgb(250,120,0)"></i></div>'
-        ].join('')).prependTo(this.$editor);
+         '<label class="summernote-brand"><i class="fas fa-sun" style="color:rgb(255,120,0)"></i></label>'
+      ].join('')).prependTo(this.$editingArea);
    }
    
    Brand.prototype.initialize = function () {
-      console.log("*** Brand initialize ***")
+      //console.log("*** Brand initialize ***")
    }
    
    Brand.prototype.destroy = function () {
-      console.log("*** Brand destroy ***")
+      //console.log("*** Brand destroy ***")
    }
    
    return Brand;
@@ -6324,9 +6325,9 @@ var VideoLinkDialog = /** @class */ (function ()
             
             data.forEach ( item => {
                let url = "NeuroAppJS.prepareVideoPopover(this,\\'"+item.url_media+"\\',\\'"+item.descr_media+"\\')"
-               console.log(url);
+               //console.log(url);
                
-               table += "<tr><td style='cursor:pointer' onclick=\"$('#node-video-link-"+_id_+"').val('"+url+"');$('#video-link-btn-"+_id_+"').removeAttr('disabled');$('#video-link-btn-"+_id_+"').removeClass('disabled');\">"+item.descr_media+"</td><td><video style='width:150px' controls> <source src='"+item.url_media+"'></video></td></tr>";
+               table += "<tr><td style='cursor:pointer' onclick=\"$('#node-video-link-"+_id_+"').val('"+url+"');$('#video-link-btn-"+_id_+"').removeAttr('disabled');$('#video-link-btn-"+_id_+"').removeClass('disabled');\">"+item.descr_media+"</td></tr>";
                
                //<td><video style='width:150px' controls> <source src='"+item.url_media+"'></video></td></tr>";
             })

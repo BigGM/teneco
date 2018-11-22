@@ -13,7 +13,7 @@
                 
                 <td class='nowrap'><strong>{{rec.voce}}:</strong></td>
               
-                <td>{{rec.short_def}}</td>
+                <td>{{rec.def | truncate:100}}</td>
                 
                 <td (click)="formModifVoceGlossario(rec)">
                    <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>

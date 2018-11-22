@@ -2,10 +2,24 @@
 
 
     <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
-    <app-lista-pacchetti #listaPacchetti></app-lista-pacchetti>
+    <app-lista-pacchetti #listaPacchettiRef></app-lista-pacchetti>
+
+    
+    <!-- PANNELLO CON LA LISTA DEGLI ESERCIZI DI UN PACCHETTO  -->
+    <app-lista-esercizi #listaEserciziRef
+    [listaPacchetti]="listaPacchettiRef" ></app-lista-esercizi>
 
      <!-- FORM AGGIUNTA PACCHETTO -->
      <app-new-pacchetto
-     [listaPacchetti]="listaPacchetti"></app-new-pacchetto>
+     [listaPacchetti]="listaPacchettiRef"></app-new-pacchetto>
+
+
+     <!-- FORM MODIFICA PACCHETTO -->
+     <app-mod-pacchetto
+     [listaPacchetti]="listaPacchettiRef"></app-mod-pacchetto>
+
+     <!-- FORM AGGIUNTA ESERCIZIO -->
+     <app-new-esercizio
+     [listaEsercizi]="listaEserciziRef"></app-new-esercizio>
 
 </DIV>

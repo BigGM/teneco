@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { RiabilNeuromotoriaService, RecordPacchetto} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { RiabilNeuromotoriaService} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { NeuroApp } from '../../../neuro-app';
+import { RecordPacchetto } from '../../../classes/record-pacchetto'
 
 
 declare var $ : any;
@@ -15,9 +16,11 @@ declare var bootbox: any;
 export class ListaPacchettiComponent implements OnInit {
 
   readonly ambito = "1"
-  pacchetti     : RecordPacchetto[]
-  pktSubscr     : Subscription;
-  pacchetto     : RecordPacchetto
+  pacchetti  : RecordPacchetto[]
+  pktSubscr  : Subscription
+  pacchetto  : RecordPacchetto
+
+  @Output() selectedPkt = new EventEmitter();
 
 
   constructor( private pktService : RiabilNeuromotoriaService) {
@@ -58,22 +61,9 @@ onForeground(row,event:MouseEvent) {
   }
 }
 
-
-/**
- * rimuove qualunque popover sia aperta 
- */
-private removePopover() {
-  console.log("removePopover")
-  $('.my-popover-glossario').remove()
-  $('.my-popover-video').remove()
-  $('.my-popover-audio').remove()
-  $('.my-popover-image').remove()
-}
-
-
   /**
-   * Carica le voci di glossario sull'array this.glossario o
-   * emette una popup di errore.
+   * Carica dal DB i pacchetti configurati sul sistema.
+   * In caso di errore emette una popup.
    * @ambito -  1: riabilitazione neuromotoria
    *            2: riabilitazione cognitiva
    */
@@ -88,6 +78,7 @@ private removePopover() {
         result => {
           NeuroApp.hideWait()
           this.pacchetti = result
+          //console.log(this.pacchetti)
           this.pktSubscr.unsubscribe()
         },
         error => {
@@ -101,16 +92,28 @@ private removePopover() {
 
   reloadPacchetti(ambito) {
     console.log("** reloadPacchetti **")
-    this.removePopover()
+    NeuroApp.removePopover()
     this.pacchetto = null
     this.pacchetti = []
     this.loadPacchetti(ambito);
   }
 
 
+  /**
+   * 
+   * @param event evento di click che lancia questo metodo
+   * @param pkt   il pacchetto selezionato
+   */
   loadEserciziPacchetto(event:MouseEvent, pkt) {
     console.log("** loadEserciziPacchetto **")
-    this.removePopover()
+    NeuroApp.removePopover()
+    
+    /**
+     * Emette l'evento per la componente ListaEsercizi che riceve il
+     * pacchetto da mostrare in dettaglio, carica la lista degli esercizi di
+     * questo paccheto e li visualizza
+     */
+    this.selectedPkt.emit(pkt)
   }
 
 
@@ -121,7 +124,7 @@ private removePopover() {
    */
   confermaCancellaPacchetto(mouseEvent:MouseEvent, pkt:RecordPacchetto)
   {
-    this.removePopover()
+    NeuroApp.removePopover()
     mouseEvent.preventDefault()
 
     let self = this;
@@ -172,17 +175,28 @@ private removePopover() {
     )
   }
 
+
   /**
    * Apre il modulo per la definizione di un nuovo pacchetto
    */
   formNuovoPacchetto() {
-    this.removePopover()
+    NeuroApp.removePopover()
     $('#nuovoPacchetto').modal('show')
   }
 
-  formModifPacchetto(mouseEvent, pkt) {
-    this.removePopover()
+
+  /**
+   * Apre il modulo per la modifica di un pacchetto esistente
+   * @param mouseEvent l'evento di click che apre questa finestra
+   * @param pkt il pacchetto da modificare
+   */
+  formModifPacchetto(mouseEvent, pkt:RecordPacchetto) {
+    console.log("formModifPacchetto", pkt)
+    NeuroApp.removePopover()
     mouseEvent.stopPropagation()
-    alert("formModifPacchetto")
+    $('#modPacchetto').modal('show')
+
+    // Invia alla modale il record da modificare tramite il servizio
+    this.pktService.sendRecordToModal(pkt)
   }
 }

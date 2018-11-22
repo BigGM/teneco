@@ -2,6 +2,12 @@
 
 header('Access-Control-Allow-Origin: *'); 
 
+//header('Content-Type: text/plain');
+
+//print_r($_GET);
+//$keys = array_keys($_GET);
+//print_r($keys);
+
 
 /**
  * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
@@ -17,27 +23,37 @@ function msg_fmt( $e ) {
 }
 
 
-//print_r($_GET);
-//$keys = array_keys($_GET);
-//print_r($keys);
-
-
 /**
  * Parsa la query string. Restituisce questi attributi:
 /**
  * Parsa la query string. Restituisce questi attributi:
- * $proc    - la procedura pl/sql di cancellazione
- * $id_pkt  - id del pacchetto da cancellare
+ * $proc    - la procedura del DB di lettura
+ * $id_pkt  - l'id del pacchetto in modifica 
+ * $nome    - il nuovo nome da assegnar al pacchetto 
+ * $descr   - la descrizione del pacchetto 
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc  = rawurldecode($proc);
+$proc   = rawurldecode($proc);
 $id_pkt = rawurldecode($id_pkt);
+$nome   = rawurldecode($nome);
+$descr  = rawurldecode($descr);
+$pre_req  = rawurldecode($pre_req);
+$contro_ind  = rawurldecode($contro_ind);
+$alert_msg  = rawurldecode($alert_msg);
+$alert_msg_visibile  = rawurldecode($alert_msg_visibile);
+$bibliografia  = rawurldecode($bibliografia);
+$patologie_secondarie  = rawurldecode($patologie_secondarie);
+$valutazione  = rawurldecode($valutazione);
 
 /*****
+echo $proc . "\n";
 echo $id_pkt . "\n";
+echo $nome. "\n";
+echo $descr . "\n";
 die();
 *****/
+
 
 // Variabili accesso al DB
 $db_user=getenv('ANA_DB_USERNAME');
@@ -57,11 +73,10 @@ if (!$conn) {
    die();
 }
 
-
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :nome, :descr, :pre_req, :contro_ind, :alert_msg, :alert_msg_visibile, :bibliografia, :patologie_secondarie, :valutazione, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -77,9 +92,19 @@ oci_set_prefetch($stmt,1000);
 /**
  * Imposta i parametri della procedura 
  **/
+$refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
 oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
+oci_bind_by_name($stmt, ':nome'    , $nome, 255);
+oci_bind_by_name($stmt, ':descr'   , $descr, 4000);
+oci_bind_by_name($stmt, ':pre_req' , $pre_req, 4000);
+oci_bind_by_name($stmt, ':contro_ind' , $contro_ind, 4000);
+oci_bind_by_name($stmt, ':alert_msg' , $alert_msg, 4000);
+oci_bind_by_name($stmt, ':alert_msg_visibile' , $alert_msg_visibile, 4000);
+oci_bind_by_name($stmt, ':bibliografia' , $bibliografia, 4000);
+oci_bind_by_name($stmt, ':patologie_secondarie' , $patologie_secondarie, 4000);
+oci_bind_by_name($stmt, ':valutazione' , $valutazione, 4000);
 oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 
 
@@ -94,20 +119,23 @@ if (!$exec) {
    die();
 }
 
+
 /**
  * Check esito della procedura via $outcome: ogni procedura PL/SQL dovra restituire
  * un messaggio di errore che inizia con "Exception" 
  **/
-if ( substr($outcome,0,9)==="Exception") { 
+
+if ( substr($outcome,0,9)==="Exception") {
    $msg = msg_fmt( $outcome );
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
  
 // Successo
-echo '{"status":"ok", "message":"'. msg_fmt($outcome).'"}';
+echo '{"status":"ok", "message":"'. msg_fmt($outcome) .'"}';
 
 oci_free_statement($stmt);
 oci_close($conn);
+
 
 ?>

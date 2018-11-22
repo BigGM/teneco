@@ -2,7 +2,6 @@
 
 header('Access-Control-Allow-Origin: *'); 
 
-
 /**
  * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
  * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
@@ -24,18 +23,14 @@ function msg_fmt( $e ) {
 
 /**
  * Parsa la query string. Restituisce questi attributi:
-/**
- * Parsa la query string. Restituisce questi attributi:
- * $proc    - la procedura pl/sql di cancellazione
- * $id_pkt  - id del pacchetto da cancellare
+ * $proc   - la procedura del DB di lettura
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc  = rawurldecode($proc);
-$id_pkt = rawurldecode($id_pkt);
+$proc = rawurldecode($proc);
 
 /*****
-echo $id_pkt . "\n";
+echo $proc . "\n";
 die();
 *****/
 
@@ -47,7 +42,6 @@ $db_conn_string=getenv('ORACLE_CONN_STRING');
 /**
  * Connessione al data base 
  **/
-//$conn = oci_connect("telecom", "hp01pvv", 'hpdev01.tandi.it:1521/dbtest', 'AL32UTF8');
 $conn = oci_pconnect($db_user, $db_pwd, $db_conn_string, 'AL32UTF8');
 
 if (!$conn) {
@@ -61,7 +55,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:outcome,:cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -73,15 +67,13 @@ if (!$stmt) {
 oci_set_prefetch($stmt,1000);
 
 
-
 /**
  * Imposta i parametri della procedura 
  **/
+$refcur   = oci_new_cursor($conn);
 $outcome  = "";
-
-oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
+oci_bind_by_name($stmt, ':cursor'  , $refcur, -1, OCI_B_CURSOR);
 oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
-
 
 /**
  * Lancia la procedura 
@@ -94,19 +86,31 @@ if (!$exec) {
    die();
 }
 
+// NB. controllo esito DOPO il controllo ritorno procedura
+$exec = oci_execute($refcur);
+
 /**
  * Check esito della procedura via $outcome: ogni procedura PL/SQL dovra restituire
  * un messaggio di errore che inizia con "Exception" 
- **/
-if ( substr($outcome,0,9)==="Exception") { 
+ */
+if ( substr($outcome,0,9)==="Exception") {    
    $msg = msg_fmt( $outcome );
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
  
-// Successo
-echo '{"status":"ok", "message":"'. msg_fmt($outcome).'"}';
+//$outp = $outcome . "|";
+$start = "[";
+$outp  = $start;
+while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
+{
+   if ($outp != $start) {$outp .= ",";}
+   $outp .= '{"id":' . $row[0] .',' . '"nome":"' . $row[1].'", "descr":'. '"'. $row[2]. '"}' ;
+}
+$outp .="]";
+echo($outp);
 
+oci_free_statement($refcur);
 oci_free_statement($stmt);
 oci_close($conn);
 

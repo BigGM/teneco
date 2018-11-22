@@ -13,13 +13,13 @@ export class RecordGlossario {
     id:         number;
     voce:       string;
     def:        string;
-    short_def?: string;
+    //short_def?: string;
 
     /**
      * Imposta il valore della proprieta short_def per ogni record
      * dell'array in input
      * @param records  array di oggetti RecordGlossario
-     */
+     *
     static setShortDef(records: RecordGlossario[]) {  
       console.log("setShortDef", records)
 
@@ -27,7 +27,7 @@ export class RecordGlossario {
           element.short_def = NeuroApp.truncString(element.def,100)
       })
       return records
-    }
+    }*/
 } //RecordGlossario
 
 
@@ -90,7 +90,8 @@ export class GlossarioService {
               throw new Error(`Exception: ${outcome.message}`)
           }
           else
-            return RecordGlossario.setShortDef(records as RecordGlossario[])
+            return  records as RecordGlossario[]
+            //return RecordGlossario.setShortDef(records as RecordGlossario[])
         }),
         tap( records => {
           console.log('** fetched records **', records)

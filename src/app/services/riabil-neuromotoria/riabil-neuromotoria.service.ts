@@ -6,96 +6,38 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 import { NeuroApp } from '../../neuro-app'
 import { Outcome } from '../../outcome'
 import { NeuroAppService } from '../neuro-app.service';
+import { RecordPacchetto } from '../../classes/record-pacchetto'
+import { RecordEsercizio } from '../../classes/record-esercizio'
+import { Gruppo } from '../../classes/gruppo';
 
-
-// La struttura del record del pacchetto
-export class RecordPacchetto {
-
-  id           : number
-  nome         : string
-  descr        : string
-  short_descr? : string
-  pre_req      : string
-  contro_ind   : string
-  alert_msg    : string
-  patologia?   : string
-
-  
-  /**
-   * Imposta il valore della proprieta short_descr per ogni record
-   * dell'array in input
-   * @param records  array di oggetti RecordPacchetto
-   */
-  static setShortDescr(records: RecordPacchetto[]) {  
-    //console.log("setShortDescr", records)
-
-    records.forEach(element => {
-        element.short_descr = NeuroApp.truncString(element.descr,100)
-    })
-    return records
-  }
-
-  public reset() {
-    this. id = -1
-    this.nome         = ""
-    this.descr        = ""
-    this.short_descr  = ""
-    this.pre_req      = ""
-    this.contro_ind   = ""
-    this.alert_msg    = ""
-    this.patologia    = ""
-  }
-
-
-  /**
-   * Elimina gli spazi bianchi laterali dalla stringa in input considerando
-   * che la stringa puo' essere contenuta tra i tag <p>...</p>.
-   * @param s 
-   */
-  public trimField (s:string) {
-    if (s==null || s=="undefined" || s==="")
-      return s;
-
-    let start_s = "";
-    let end_s   = "";
-    
-    if (s.startsWith("<p>" ) ) {
-      start_s = "<p>"
-    	s = s.substring(3)
-    }
-    if (s.endsWith("</p>" ) ) {
-      end_s = "</p>"
-    	s = s.substring(0,s.length-4)
-    }
-    // il metodo trim_nbsp() toglie gli spazi laterali scritti come "&nbsp;"
-    s = NeuroApp.trim_nbsp(s)
-
-    // rimette tutto insieme
-    return (start_s + s + end_s).trim();
-  }
-
-
-  /**
-   * Elimina gli spazi laterari dai campi del record.
-   */
-  public trim() {
-    this.nome         = this.trimField ( this.nome )
-    this.descr        = this.trimField ( this.descr )
-    this.short_descr  = this.trimField ( this.short_descr )
-    this.pre_req      = this.trimField ( this.pre_req )
-    this.contro_ind   = this.trimField ( this.contro_ind )
-    this.alert_msg    = this.trimField ( this.alert_msg )
-    this.patologia    = this.trimField ( this.patologia )
-  } 
-} //RecordPacchetto
 
 
 /**
- * Il tipo restituito dalla procedura php, puo' essere:
- * RecordGlossario (array), oppure
+ * Il tipo restituito dalla procedura php che carica i pacchetti puo' essere:
+ * RecordPacchetto (array), oppure
  * Outcome per segnalare un errore di database
- */ 
+ */
 type out_pacchetto =  RecordPacchetto[] | Outcome;
+
+
+/**
+ * Il tipo restituito dalla procedura php che carica gli esercizi di un pacchetto puo' essere:
+ * RecordEsercizio (array), oppure
+ * Outcome per segnalare un errore di database
+ */
+type out_esercizio =  RecordEsercizio[] | Outcome;
+
+
+/**
+ * Il tipo restituito dalla procedura php che carica le tipologie di gruppi di esercizi,
+ * il valore restituito puo' essere:
+ * Gruppo (array), oppure
+ * Outcome per segnalare un errore di database
+ */
+type out_gruppo =  Gruppo[] | Outcome;
+
+
+
 
 
 @Injectable({
@@ -150,7 +92,8 @@ export class RiabilNeuromotoriaService {
               throw new Error(`Exception: ${outcome.message}`)
           }
           else
-            return RecordPacchetto.setShortDescr(records as RecordPacchetto[])
+            return (records as RecordPacchetto[])
+            //RecordPacchetto.setShortDescr(records as RecordPacchetto[])
         }),
         tap( records => {
           console.log('** fetched records **', records)
@@ -185,12 +128,19 @@ export class RiabilNeuromotoriaService {
     )
   } //cancellaPacchetto()
 
-  
+
+
+  /**
+   * Nella stringa in input sostituisce i caratteri di new-line con <br>.
+   */
   private protectNewLine = function(s) {
-    s = s.replace(/(?:\r\n|\r|\n)/g, '<br>');
     console.log("protectNewLine " + s );
+    if (s==null||s=="")
+      return "";
+    s = s.replace(/(?:\r\n|\r|\n)/g, '<br>');
     return s;
   }
+
 
   /**
    * Salva un pacchetto nel DB.
@@ -200,13 +150,18 @@ export class RiabilNeuromotoriaService {
    */
   salvaPacchetto(pkt:RecordPacchetto, ambito:string) {
     let db_proc = "NeuroApp.salva_pacchetto"
-    var url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+"&nome="+pkt.nome +
+    var url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+
+                   "&nome="+pkt.nome +
                    "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
                    "&pre_req="+this.protectNewLine(pkt.pre_req) +
                    "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
                    "&alert_msg="+pkt.alert_msg +
+                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
+                   "&bibliografia="+pkt.bibliografia +
+                   "&patologie_secondarie="+pkt.patologie_secondarie +
+                   "&valutazione="+pkt.valutazione+
                    "&ambito="+ambito;
-    
+
     return this.http.get<Outcome>(url)
     .pipe(
         retry(1),
@@ -221,6 +176,101 @@ export class RiabilNeuromotoriaService {
         }),
         catchError( this.neuroService.handleError )
     )
-  } //cancellaPacchetto()
+  } //salvaPacchetto()
+
+
+  /**
+   * Salva nel DB un pacchetto modificato.
+   * @param pkt pacchetto
+   * @param ambito  - 1 ( riabilitazione neuromotoria )
+   *                  2 ( riabilitazione cognitiva )
+   */
+  salvaPacchettoModificato(pkt:RecordPacchetto, ambito:string) {
+    let db_proc = "NeuroApp.salva_pacchetto_modificato"
+    var url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto_modificato2.php?proc="+db_proc+
+                   "&id_pkt="+pkt.id +
+                   "&nome="+pkt.nome +
+                   "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
+                   "&pre_req="+this.protectNewLine(pkt.pre_req) +
+                   "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
+                   "&alert_msg="+pkt.alert_msg +
+                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
+                   "&bibliografia="+pkt.bibliografia +
+                   "&patologie_secondarie="+pkt.patologie_secondarie +
+                   "&valutazione="+pkt.valutazione+
+                   "&ambito="+ambito;
+    
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`Exception: ${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  } //salvaPacchettoModificato()
+
+
+
+ /**
+   * Carica la lista degli esercizi del pacchetto specificato in input.
+   */
+  loadEserciziPacchetto(pkt: RecordPacchetto) : Observable<RecordEsercizio[]> {
+    let db_proc = "NeuroApp.lista_esercizi"
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;
+    var url = this.G_URL_ROOT+"/cgi-bin/lista_esercizi_pacchetto2.php?proc="+db_proc+"&id_pkt="+pkt.id
+    
+    console.log("** loadEserciziPacchetto: ", url)
+    
+    return this.http.get<out_esercizio>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          let outcome = <Outcome>records
+          if ( outcome.status==="exception") {
+              throw new Error(`Exception: ${outcome.message}`)
+          }
+          else
+            return (records as RecordEsercizio[])
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.neuroService.handleError ),
+    )
+  }
+
+
+  loadGruppi() : Observable<Gruppo[]> {
+    let db_proc = "NeuroApp.lista_gruppi"
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_gruppi2.php?proc="+db_proc;
+    
+    console.log("** loadGruppi: ", url)
+    
+    return this.http.get<out_gruppo>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          let outcome = <Outcome>records
+          if ( outcome.status==="exception") {
+              throw new Error(`Exception: ${outcome.message}`)
+          }
+          else
+            return (records as Gruppo[])
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.neuroService.handleError ),
+    )
+  }
+
 
 }

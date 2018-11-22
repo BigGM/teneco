@@ -2,15 +2,16 @@
 declare var bootbox:any;
 declare var $:any;
 
+declare var NeuroAppJS:any;
+
 /**
  * Classe di utilita'. 
  * Espone  metodi e attributi statici.
  */
 export class NeuroApp {
    
-   //static G_URL_ROOT = "http://localhost:8080/"
-   //static G_URL_ROOT = "http://192.168.2.63:47000/"
-   static G_URL_ROOT = "http://81.29.176.113:47000/"
+   // la ROOT del progetto e' definita nell'oggetto NeuroAppJS (source: assets/js/neuro-app.js)
+   static G_URL_ROOT = NeuroAppJS.G_URL_ROOT;
 
    // la directory con le icone di progetto
    static ROOT_ICONS = "../../../assets/images"
@@ -115,8 +116,20 @@ export class NeuroApp {
     return url.substring(k)
   }
 
-   static trim_nbsp(s:string) : string {
+  static trim_nbsp(s:string) : string {
       return s.replace(/^(&nbsp;)+|(&nbsp;)+$/gm,'');
-   }
+  }
+
+
+  /**
+   * Questo serve a rimuovere eventuali popover aperte
+   */
+  static removePopover() {
+      console.log("removePopover")
+      $('.my-popover-glossario').remove()
+      $('.my-popover-video').remove()
+      $('.my-popover-audio').remove()
+      $('.my-popover-image').remove()
+ }
  
 }

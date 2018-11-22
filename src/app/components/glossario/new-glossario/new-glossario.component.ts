@@ -23,8 +23,8 @@ export class NewGlossarioComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.voce_glossario = {
-      id: -1,  voce: "", def:"", short_def: ""
-    }
+      id: -1,  voce: "", def:""} //, short_def: ""
+    
     this.glossSubscr = null
     //$('#nuovaVoceGlossario').draggable({handle:'.modal-header'});
   }
@@ -71,8 +71,7 @@ export class NewGlossarioComponent implements OnInit, OnDestroy {
   reset(form) {
       console.log(form)
       this.voce_glossario = {
-        id: -1,  voce: "", def:"", short_def: ""
-      }
+        id: -1,  voce: "", def:"" } //, short_def: ""
       form.reset()
   }
 }

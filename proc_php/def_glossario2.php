@@ -4,6 +4,20 @@ header('Access-Control-Allow-Origin: *');
 header('Content-Type: text/html; charset=utf-8');
 
 
+/**
+ * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
+ * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
+ */
+function msg_fmt( $e ) {
+   $replace_what = array('&quot;');
+   $replace_with = array(' ');
+   $msg = htmlentities($e, ENT_QUOTES);
+   $msg = str_replace($replace_what,$replace_with,$msg);
+   $msg = preg_replace('#\R+#', '<br>', $msg);
+   return $msg;
+}
+
+
 
 //print_r($_GET);
 //$keys = array_keys($_GET);
@@ -36,7 +50,7 @@ $conn = oci_pconnect($db_user, $db_pwd, $db_conn_string, 'AL32UTF8');
 
 if (!$conn) {
    $e = oci_error();
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = msg_fmt( $e['message'] );
    echo '{"voce":"exception", "descr":"'.$msg.'"}';
    die();
 }
@@ -48,7 +62,7 @@ if (!$conn) {
 $cmd  = 'BEGIN ' . $proc . '(:id_voce, :outcome, :cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = msg_fmt( $e['message'] );
    echo '{"voce":"exception", "descr":"'.$msg.'"}';
    die();
 }
@@ -71,7 +85,7 @@ oci_bind_by_name($stmt, ':cursor'  , $refcur, -1, OCI_B_CURSOR);
 $exec = oci_execute($stmt);
 if (!$exec) {
    $e = oci_error($stmt);
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = msg_fmt( $e['message'] );
    echo '{"voce":"exception", "descr":"'.$msg.'"}';
    die();
 }
@@ -84,7 +98,7 @@ $exec = oci_execute($refcur);
  * un messaggio di errore che inizia con "Exception" 
  */
 if ( substr($outcome,0,9)==="Exception") { 
-   $msg = htmlentities($outcome, ENT_QUOTES);
+   $msg = msg_fmt( $outcome );
    echo '{"voce":"exception", "descr":"'.$msg.'"}';
    die();
 }

@@ -2,6 +2,20 @@
 
 header('Access-Control-Allow-Origin: *'); 
 
+/**
+ * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
+ * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
+ */
+function msg_fmt( $e ) {
+   $replace_what = array('&quot;');
+   $replace_with = array(' ');
+   $msg = htmlentities($e, ENT_QUOTES);
+   $msg = str_replace($replace_what,$replace_with,$msg);
+   $msg = preg_replace('#\R+#', '<br>', $msg);
+   return $msg;
+}
+
+
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
@@ -47,7 +61,7 @@ $cmd  = 'BEGIN ' . $proc . '(:ambito, :outcome,:cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = msg_fmt( $e['message'] );
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
@@ -70,7 +84,7 @@ oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 $exec = oci_execute($stmt);
 if (!$exec) {
    $e = oci_error($stmt);
-   $msg = htmlentities($e['message'], ENT_QUOTES);
+   $msg = msg_fmt( $e['message'] );
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
@@ -83,7 +97,7 @@ $exec = oci_execute($refcur);
  * un messaggio di errore che inizia con "Exception" 
  */
 if ( substr($outcome,0,9)==="Exception") { 
-   $msg = htmlentities($outcome, ENT_QUOTES);
+   $msg = msg_fmt( $outcome );
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
