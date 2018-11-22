@@ -91,7 +91,7 @@ var NeuroAppJS = {
          if ( data.voce==="exception" ) 
             return;
 
-         //id_popover = "this-popover-glossario-"+ Date.now()
+         id_popover = "this-popover-glossario-"+ Date.now()
 
          close_btn =
             "<button type='button' class='close' aria-label='Close' " +
