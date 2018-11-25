@@ -1,4 +1,7 @@
 
+import { Gruppo } from './classes/gruppo'
+
+
 declare var bootbox:any;
 declare var $:any;
 
@@ -16,13 +19,46 @@ export class NeuroApp {
    // la directory con le icone di progetto
    static ROOT_ICONS = "../../../assets/images"
 
+
+   // Gruppi di esercizi (passivi, autonomi, etc.).
+   // La lista viene caricata dal componente main (AppComponent.ts) richiamando
+   // nel suo costruttore il metodo loadGruppi del servizio NeuroAppService
+   static gruppi : Gruppo[]
+   
+   
+   
+   /**
+    * Scrolla la pagina alla posizione dell'elemento specificato.
+    */
+   static scrollTo(id_element) {
+      console.log("scrollTo ", id_element )
+      
+      let retries = 0
+      
+      let checkExist = setInterval( () => {
+         ++retries
+         let elem = $('#'+id_element).offset()
+         if ( elem ) {
+            clearInterval(checkExist)
+            $('html,body').animate({
+               scrollTop: elem.top
+            },'slow')
+         }
+         else if (retries >= 10 ) {
+            clearInterval(checkExist)
+         }
+      }, 200) // check every 200ms
+   }
+
+
+
    /**
    * Popup per i messaggi di errore
    **/
    static custom_error (output_msg:string, title_msg:string) { 
       title_msg = title_msg.trim()
       if (!title_msg) 
-         title_msg = 'Error';
+         title_msg = 'Errore';
       bootbox.alert({  
          size: 'large', 
          title: '<H3 style="color:white;">'+title_msg+"</H3>", 
@@ -130,6 +166,48 @@ export class NeuroApp {
       $('.my-popover-video').remove()
       $('.my-popover-audio').remove()
       $('.my-popover-image').remove()
- }
- 
+   }
+
+
+   /**
+    * Elimina gli spazi bianchi laterali dalla stringa in input considerando
+    * che la stringa puo' essere contenuta tra i tag <p>...</p>.
+    * @param s 
+    */
+   static trimField (s:string) {
+      if (s==null || s=="undefined" || s==="")
+        return s;
+  
+      let start_s = "";
+      let end_s   = "";
+      
+      if (s.startsWith("<p>" ) ) {
+        start_s = "<p>"
+          s = s.substring(3)
+      }
+      if (s.endsWith("</p>" ) ) {
+        end_s = "</p>"
+          s = s.substring(0,s.length-4)
+      }
+      // il metodo trim_nbsp() toglie gli spazi laterali scritti come "&nbsp;"
+      s = NeuroApp.trim_nbsp(s)
+  
+      // rimette tutto insieme
+      return (start_s + s + end_s).trim();
+   }
+
+
+   /**
+    * Restituisce il nome del gruppo con l'id specificato
+    */
+   static nomeGruppo (id_gruppo:number) {
+      //console.log("nome gruppo per l'id " + id_gruppo)
+      if ( id_gruppo==-1 )
+         return "";
+
+      for (let j=0; j< this.gruppi.length; j++)
+         if ( NeuroApp.gruppi[j].id == id_gruppo )
+            return "(" + NeuroApp.gruppi[j].nome+ ")";
+      return "(Nessun gruppo)";
+   }
 }

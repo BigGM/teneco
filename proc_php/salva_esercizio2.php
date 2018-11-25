@@ -3,7 +3,6 @@
 header('Access-Control-Allow-Origin: *'); 
 
 
-
 /**
  * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
  * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
@@ -17,6 +16,7 @@ function msg_fmt( $e ) {
    return $msg;
 }
 
+
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
@@ -26,22 +26,30 @@ function msg_fmt( $e ) {
  * Parsa la query string. Restituisce questi attributi:
 /**
  * Parsa la query string. Restituisce questi attributi:
- * $proc        - la procedura del DB di lettura
- * $voce        - voce di glossario
- * $definizione - definizione della voce di glossario
+ * $proc  - la procedura del DB di lettura
+ * $nome  - il nome del nuovo pacchetto 
+ * $descr - la descrizione del pacchetto 
  **/
-
 parse_str($_SERVER['QUERY_STRING']);
 
-
 $proc  = rawurldecode($proc);
-$voce  = rawurldecode($voce);
-$definizione = rawurldecode($definizione);
+$id_pkt  = rawurldecode($id_pkt);
+$nome  = rawurldecode($nome);
+$descr = rawurldecode($descr);
+$testo = rawurldecode($testo);
+$alert = rawurldecode($alert);
+$limitazioni = rawurldecode($limitazioni);
+$id_grp = rawurldecode($id_grp);
 
 /*****
 echo $proc . "\n";
-echo $voce. "\n";
-echo $$definizione . "\n";
+echo $id_pkt . "\n";
+echo $nome. "\n";
+echo $descr . "\n";
+echo $testo . "\n";
+echo $alert . "\n";
+echo $limitazioni . "\n";
+echo $id_grp . "\n";
 die();
 *****/
 
@@ -67,7 +75,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:voce, :definizione, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :nome, :descr, :testo, :alert, :limitazioni, :id_grp, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -86,9 +94,15 @@ oci_set_prefetch($stmt,1000);
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':voce'       , $voce, 512);
-oci_bind_by_name($stmt, ':definizione', $definizione, 4000);
-oci_bind_by_name($stmt, ':outcome'    , $outcome, 4000);
+oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
+oci_bind_by_name($stmt, ':nome'    , $nome, 255);
+oci_bind_by_name($stmt, ':descr'   , $descr, 4000);
+oci_bind_by_name($stmt, ':testo'   , $testo, 4000);
+oci_bind_by_name($stmt, ':alert'   , $alert, 4000);
+oci_bind_by_name($stmt, ':limitazioni'   , $limitazioni, 4000);
+oci_bind_by_name($stmt, ':id_grp'  , $id_grp, 255);
+oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
+
 
 /**
  * Lancia la procedura 
@@ -110,9 +124,10 @@ if ( substr($outcome,0,9)==="Exception") {
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
-
+ 
 // Successo
 echo '{"status":"ok", "message":"'. msg_fmt( $outcome ) .'"}'; 
+
 
 oci_free_statement($stmt);
 oci_close($conn);

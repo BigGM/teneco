@@ -36,7 +36,9 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { ModPacchettoComponent } from './components/riabil-neuromotoria/mod-pacchetto/mod-pacchetto.component';
 import { ListaEserciziComponent } from './components/riabil-neuromotoria/lista-esercizi/lista-esercizi.component';
-import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-esercizio/new-esercizio.component'
+import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-esercizio/new-esercizio.component';
+import { DettaglioEsercizioComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/dettaglio-esercizio.component';
+import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/media-collegati/media-collegati.component';
 
 
 @NgModule({
@@ -62,6 +64,8 @@ import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-eser
     ModPacchettoComponent,
     ListaEserciziComponent,
     NewEsercizioComponent,
+    DettaglioEsercizioComponent,
+    MediaCollegatiComponent
   ],
   imports: [
     BrowserModule,

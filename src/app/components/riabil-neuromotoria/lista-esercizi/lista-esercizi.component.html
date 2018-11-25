@@ -1,123 +1,123 @@
-<div id="divListaEserciziPacchetto" class="row mt-4 mb-5" *ngIf="view_esercizi_visible">
+<div id="divListaEserciziPacchetto" class="container mt-4 mb-3"
+   *ngIf="view_esercizi_visible">
 
-    <div class="col-sm-12">
-        <div class="card">
-           
-           <!-- NOME DEL PACCHETTO  -->         
-           <div class="card-header" style="font-size:22px; color:rgb(208, 39, 39)">
-              {{pacchetto.nome}}
-           </div>
-            
-           <!-- AREA DESCRIZIONE -->
-           <div class="card-body px-3 py-2" style="overflow:auto;" >
-              <a class="this-anchor" data-toggle="collapse" data-target="#descr" href="#">Descrizione<i *ngIf="pacchetto.descr.length>0" class="fas fa-caret-down"></i></a>
-              <div id="descr" class="collapse collapse2">
-                 <span [innerHTML]="pacchetto.descr | safe:'html'"></span>
-              </div>
-           </div>
-
-           <!-- AREA PREREQUISITI -->
-         <div class="car-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#prereq" href="#">Prerequisiti<i *ngIf="pacchetto.pre_req.length>0" class="fas fa-caret-down"></i></a>
-            <div id="prereq" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.pre_req | safe:'html'"></span>
-            </div>
+      <div class="card ">
+         
+         <!-- NOME DEL PACCHETTO  -->         
+         <div class="card-header my-bg-dark text-white text-center" 
+         style="font-size:22px;">
+            {{pacchetto.nome}}
          </div>
          
-         <!-- AREA CONTROINDICAZIONI -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#controind" href="#">Contro Indicazioni<i *ngIf="pacchetto.contro_ind.length>0" class="fas fa-caret-down"></i></a>
-            <div id="controind" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.contro_ind | safe:'html'"></span>
+         <!-- AREA DESCRIZIONE -->
+         <div class="card-body px-3 py-2" style="overflow:auto;" >
+            <a class="this-anchor" data-toggle="collapse" data-target="#descr" href="#">Descrizione<i *ngIf="pacchetto.descr.length>0" class="fas fa-caret-down"></i></a>
+            <div id="descr" class="collapse collapse2">
+               <span [innerHTML]="pacchetto.descr | safe:'html'"></span>
             </div>
          </div>
 
-         <!-- PATOLOGIE SECONDARIE -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#patologie" href="#">Patologie secondarie<i *ngIf="pacchetto.patologie_secondarie.length>0" class="fas fa-caret-down"></i></a>
-            <div id="patologie" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.patologie_secondarie | safe:'html'"></span>
-            </div>
+         <!-- AREA PREREQUISITI -->
+      <div class="car-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#prereq" href="#">Prerequisiti<i *ngIf="pacchetto.pre_req.length>0" class="fas fa-caret-down"></i></a>
+         <div id="prereq" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.pre_req | safe:'html'"></span>
          </div>
-
-         <!-- VALUTAZIONE -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#valutazione" href="#">Valutazione<i *ngIf="pacchetto.valutazione.length>0" class="fas fa-caret-down"></i></a>
-            <div id="valutazione" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.valutazione | safe:'html'"></span>
-            </div>
+      </div>
+      
+      <!-- AREA CONTROINDICAZIONI -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#controind" href="#">Contro Indicazioni<i *ngIf="pacchetto.contro_ind.length>0" class="fas fa-caret-down"></i></a>
+         <div id="controind" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.contro_ind | safe:'html'"></span>
          </div>
+      </div>
 
-
-         <!-- BIBLIOGRAFIA -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#bibliografia" href="#">Bibliografia<i *ngIf="pacchetto.bibliografia.length>0" class="fas fa-caret-down"></i></a>
-            <div id="bibliografia" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.bibliografia | safe:'html'"></span>
-            </div>
+      <!-- PATOLOGIE SECONDARIE -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#patologie" href="#">Patologie secondarie<i *ngIf="pacchetto.patologie_secondarie.length>0" class="fas fa-caret-down"></i></a>
+         <div id="patologie" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.patologie_secondarie | safe:'html'"></span>
          </div>
+      </div>
 
-         <!-- ALERT -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#alert" href="#">Alert<i *ngIf="pacchetto.alert_msg.length>0" class="fas fa-caret-down"></i></a>
-            <div id="alert" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.alert_msg | safe:'html'"></span>
-            </div>
+      <!-- VALUTAZIONE -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#valutazione" href="#">Valutazione<i *ngIf="pacchetto.valutazione.length>0" class="fas fa-caret-down"></i></a>
+         <div id="valutazione" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.valutazione | safe:'html'"></span>
          </div>
+      </div>
 
-         <!-- ALERT VISIBILE -->
-         <div  class="card-body px-3 py-2" style="overflow:auto;" >
-            <a class="this-anchor" data-toggle="collapse" data-target="#alert_visibile" href="#">Alert visibile<i *ngIf="pacchetto.alert_msg_visibile.length>0" class="fas fa-caret-down"></i></a>
-            <div id="alert_visibile" class="collapse collapse2">
-               <span [innerHTML]="pacchetto.alert_msg_visibile | safe:'html'"></span>
-            </div>
+
+      <!-- BIBLIOGRAFIA -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#bibliografia" href="#">Bibliografia<i *ngIf="pacchetto.bibliografia.length>0" class="fas fa-caret-down"></i></a>
+         <div id="bibliografia" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.bibliografia | safe:'html'"></span>
          </div>
+      </div>
 
-
-         <!-- TABELLA CON LA LISTA DEGLI ESERCIZI -->
-         <div class="card-body" style="overflow:auto;" *ngIf="esercizi.length>0">
-            <table id="tableEsercizi" class="table" style="cursor:pointer">
-                
-              <thead class="thead-dark">
-                    <tr>
-                      <th scope="col">Nome</th>
-                      <th scope="col">Descrizione</th>
-                      <th scope="col">Gruppo</th>
-                      <th scope="col">#Multimedia</th>
-                      <th scope="col">&nbsp;</th>
-                    </tr>
-                </thead>
-
-               <tr *ngFor="let ex of esercizi">
-                  <td class="nowrap" (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
-                  <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
-                  <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
-                  <td style='text-align:right' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
-                  <td style='text-align:right'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio(ex)"></i></td>
-               </tr>
-
-            </table>
+      <!-- ALERT -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#alert" href="#">Alert<i *ngIf="pacchetto.alert_msg.length>0" class="fas fa-caret-down"></i></a>
+         <div id="alert" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.alert_msg | safe:'html'"></span>
          </div>
+      </div>
 
-        <div class="bg-warning p-3 text-center" *ngIf="esercizi.length==0">
-            <strong style="font-size:18px;">Non ci sono esercizi configurati per questo pacchetto</strong>
-        </div>
-           
+      <!-- ALERT VISIBILE -->
+      <div  class="card-body px-3 py-2" style="overflow:auto;" >
+         <a class="this-anchor" data-toggle="collapse" data-target="#alert_visibile" href="#">Alert visibile<i *ngIf="pacchetto.alert_msg_visibile.length>0" class="fas fa-caret-down"></i></a>
+         <div id="alert_visibile" class="collapse collapse2">
+            <span [innerHTML]="pacchetto.alert_msg_visibile | safe:'html'"></span>
+         </div>
+      </div>
+
+
+      <!-- TABELLA CON LA LISTA DEGLI ESERCIZI -->
+      <div class="card-body" style="overflow:auto;" *ngIf="esercizi.length>0">
+         <table id="tableEsercizi" class="table" style="cursor:pointer">
+               
+            <thead class="thead-dark">
+                  <tr>
+                     <th scope="col">Nome</th>
+                     <th scope="col">Descrizione</th>
+                     <th scope="col">Gruppo</th>
+                     <th scope="col">#Multimedia</th>
+                     <th scope="col">&nbsp;</th>
+                  </tr>
+               </thead>
+
+            <tr *ngFor="let ex of esercizi">
+               <td class="nowrap" (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
+               <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
+               <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
+               <td style='text-align:right' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
+               <td style='text-align:right'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i></td>
+            </tr>
+
+         </table>
+      </div>
+
+      <div class="bg-warning p-3 text-center" *ngIf="esercizi.length==0">
+         <strong style="font-size:18px;">Non ci sono esercizi configurati per questo pacchetto</strong>
+      </div>
+         
+      <!-- FOOTER -->
+         <div class="card-footer">
+            <button title="Aggiungi un nuovo esercizio" class="btn btn-primary" style="margin-right:4px;"
+            (click)="formNuovoEsercizio()">
+               <i class="fas fa-plus"></i>
+            </button>
+   
+            <button title="Aggiorna la lista degli esercizi del pacchetto" class="btn btn-primary"
+            (click)="reloadEserciziPacchetto()">
+               <i class="fas fa-sync-alt"></i>
+            </button>
+         </div>
          <!-- FOOTER -->
-           <div class="card-footer">
-              <button title="Aggiungi un nuovo esercizio" class="btn btn-primary" style="margin-right:4px;"
-              (click)="formNuovoEsercizio()">
-                 <i class="fas fa-plus"></i>
-              </button>
-    
-              <button title="Aggiorna la lista degli esercizi del pacchetto" class="btn btn-primary"
-              (click)="reloadEserciziPacchetto(1)">
-                <i class="fas fa-sync-alt"></i>
-              </button>
-           </div>
-           <!-- FOOTER -->
 
-        </div>
-        </div>
+      </div>
 
 </div>

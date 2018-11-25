@@ -5,10 +5,13 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../neuro-app'
 import { RecordMedia, RecordMediaError } from '../record-media'
+import { Gruppo } from '../classes/gruppo'
 import { Outcome } from '../outcome'
+
 
 // jQuery
 declare var $ : any;
+
 
 /**
  * out_media
@@ -18,6 +21,15 @@ declare var $ : any;
  *  un oggetto Outcome per segnalare un errore
  */
 type out_media =  RecordMedia[] | Outcome;
+
+
+ /**
+ * Il tipo restituito dalla procedura php che carica le tipologie di gruppi di esercizi,
+ * il valore restituito puo' essere:
+ * Gruppo (array), oppure
+ * Outcome per segnalare un errore di database
+ */
+type out_gruppo =  Gruppo[] | Outcome;
 
 
 @Injectable({
@@ -104,9 +116,33 @@ export class NeuroAppService {
         }),
         catchError( this.handleError )
     )
-  } //cancellaGlossario()
+  } // rimuoviMedia()
 
 
+  loadGruppi() : Observable<Gruppo[]> {
+    let db_proc = "NeuroApp.lista_gruppi"
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_gruppi2.php?proc="+db_proc;
+    
+    console.log("** NeuroAppService loadGruppi: ", url)
+    
+    return this.http.get<out_gruppo>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          let outcome = <Outcome>records
+          if ( outcome.status==="exception") {
+              throw new Error(`${outcome.message}`)
+          }
+          else
+            return (records as Gruppo[])
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.handleError ),
+    )
+  }
 
 
   /**

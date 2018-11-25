@@ -8,6 +8,7 @@ import { Outcome } from '../../outcome'
 import { NeuroAppService } from '../neuro-app.service';
 import { RecordPacchetto } from '../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../classes/record-esercizio'
+import { RecordMediaEsercizio } from '../../classes/record-media-esercizio'
 import { Gruppo } from '../../classes/gruppo';
 
 
@@ -37,6 +38,13 @@ type out_esercizio =  RecordEsercizio[] | Outcome;
 type out_gruppo =  Gruppo[] | Outcome;
 
 
+/**
+ * Il tipo restituito dalla procedura php che carica gli elementi multimediali di uno
+ * specifico esercizio
+ * RecordMediaEsercizio (array), oppure
+ * Outcome per segnalare un errore di database
+ */
+type out_media_esercizio =  RecordMediaEsercizio[] | Outcome;
 
 
 
@@ -79,7 +87,7 @@ export class RiabilNeuromotoriaService {
 
     let db_proc = "NeuroApp.lista_pacchetti"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_pacchetti.php?proc="+db_proc+"&ambito="+ambito;
-    var url = this.G_URL_ROOT+"/cgi-bin/lista_pacchetti2.php?proc="+db_proc+"&ambito="+ambito;
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_pacchetti2.php?proc="+db_proc+"&ambito="+ambito;
     
     console.log("** loadPacchetti: ", url)
     
@@ -89,7 +97,7 @@ export class RiabilNeuromotoriaService {
         map ( records => {
           let outcome = <Outcome>records
           if ( outcome.status==="exception") {
-              throw new Error(`Exception: ${outcome.message}`)
+              throw new Error(`${outcome.message}`)
           }
           else
             return (records as RecordPacchetto[])
@@ -118,7 +126,7 @@ export class RiabilNeuromotoriaService {
         map ( outcome => {
           //console.log('** outcome **', outcome)
             if (outcome.status.toLowerCase()=="exception" )
-              throw new Error(`Exception: ${outcome.message}`) 
+              throw new Error(`${outcome.message}`) 
             return outcome
         }),
         tap( outcome => {
@@ -150,7 +158,7 @@ export class RiabilNeuromotoriaService {
    */
   salvaPacchetto(pkt:RecordPacchetto, ambito:string) {
     let db_proc = "NeuroApp.salva_pacchetto"
-    var url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+
+    let url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+
                    "&nome="+pkt.nome +
                    "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
                    "&pre_req="+this.protectNewLine(pkt.pre_req) +
@@ -168,7 +176,7 @@ export class RiabilNeuromotoriaService {
         map ( outcome => {
           //console.log('** outcome **', outcome)
             if (outcome.status.toLowerCase()=="exception" )
-              throw new Error(`Exception: ${outcome.message}`) 
+              throw new Error(`${outcome.message}`) 
             return outcome
         }),
         tap( outcome => {
@@ -206,7 +214,7 @@ export class RiabilNeuromotoriaService {
         map ( outcome => {
           console.log('** outcome **', outcome)
             if (outcome.status.toLowerCase()=="exception" )
-              throw new Error(`Exception: ${outcome.message}`) 
+              throw new Error(`${outcome.message}`) 
             return outcome
         }),
         tap( outcome => {
@@ -224,7 +232,7 @@ export class RiabilNeuromotoriaService {
   loadEserciziPacchetto(pkt: RecordPacchetto) : Observable<RecordEsercizio[]> {
     let db_proc = "NeuroApp.lista_esercizi"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;
-    var url = this.G_URL_ROOT+"/cgi-bin/lista_esercizi_pacchetto2.php?proc="+db_proc+"&id_pkt="+pkt.id
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_esercizi_pacchetto2.php?proc="+db_proc+"&id_pkt="+pkt.id
     
     console.log("** loadEserciziPacchetto: ", url)
     
@@ -234,7 +242,7 @@ export class RiabilNeuromotoriaService {
         map ( records => {
           let outcome = <Outcome>records
           if ( outcome.status==="exception") {
-              throw new Error(`Exception: ${outcome.message}`)
+              throw new Error(`${outcome.message}`)
           }
           else
             return (records as RecordEsercizio[])
@@ -245,25 +253,89 @@ export class RiabilNeuromotoriaService {
         catchError( this.neuroService.handleError ),
     )
   }
+  
+
+  /**
+   * Salva un pacchetto nel DB.
+   * @param pkt pacchetto
+   * @param ambito  - 1 ( riabilitazione neuromotoria )
+   *                  2 ( riabilitazione cognitiva )
+   */
+  salvaEsercizioPacchetto(ex:RecordEsercizio) {
+    let db_proc = "NeuroApp.salva_esercizio"
+
+    let url = this.G_URL_ROOT+"/cgi-bin/salva_esercizio2.php?proc="+db_proc+
+                  "&id_pkt=" + ex.id_pkt +
+                  "&nome=" + ex.nome +
+                  "&descr=" + ex.descr +
+                  "&testo=" + ex.testo +
+                  "&alert=" + ex.alert +
+                  "&limitazioni=" + ex.limitazioni +
+                  "&id_grp=" + ex.id_grp;
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  } // salvaEsercizioPacchetto()
 
 
-  loadGruppi() : Observable<Gruppo[]> {
-    let db_proc = "NeuroApp.lista_gruppi"
-    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;
-    let url = this.G_URL_ROOT+"/cgi-bin/lista_gruppi2.php?proc="+db_proc;
+
+  /**
+   * Cancella un esercizio dal sistema.
+   * @param ex
+   */
+  cancellaEsercizio(ex:RecordEsercizio) {
+    let db_proc = "NeuroApp.cancella_esercizio"
+    let url = this.G_URL_ROOT+"/cgi-bin/cancella_esercizio2.php?proc="+db_proc+"&id_pkt="+ex.id_pkt+"&id_ex="+ex.id_ex;
+    //let url = this.G_URL_ROOT+"/cgi2-bin/cancella_pacchetto2.php?proc="+db_proc+"&id_pkt="+pkt.id;
     
-    console.log("** loadGruppi: ", url)
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  } // cancellaEsercizio()
+
+
+
+  loadMediaEsercizio(ex: RecordEsercizio) : Observable<RecordMediaEsercizio[]> {
+    let db_proc = "NeuroApp.lista_dettaglio_esercizio"
+    //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;    
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_media_esercizio.php?proc="+db_proc+
+    "&id_pkt="+ex.id_pkt+"&id_ex="+ex.id_ex;
     
-    return this.http.get<out_gruppo>(url)
+    console.log("** loadMediaEsercizio: ", url)
+    
+    return this.http.get<out_media_esercizio>(url)
     .pipe(
         retry(1),
         map ( records => {
           let outcome = <Outcome>records
           if ( outcome.status==="exception") {
-              throw new Error(`Exception: ${outcome.message}`)
+              throw new Error(`${outcome.message}`)
           }
           else
-            return (records as Gruppo[])
+            return (records as RecordMediaEsercizio[])
         }),
         tap( records => {
           console.log('** fetched records **', records)
@@ -271,6 +343,7 @@ export class RiabilNeuromotoriaService {
         catchError( this.neuroService.handleError ),
     )
   }
+
 
 
 }

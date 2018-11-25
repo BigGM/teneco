@@ -1,7 +1,6 @@
 <?php
 
-header('Access-Control-Allow-Origin: *'); 
-
+header('Access-Control-Allow-Origin: *');
 
 
 /**
@@ -17,6 +16,8 @@ function msg_fmt( $e ) {
    return $msg;
 }
 
+
+
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
@@ -26,22 +27,17 @@ function msg_fmt( $e ) {
  * Parsa la query string. Restituisce questi attributi:
 /**
  * Parsa la query string. Restituisce questi attributi:
- * $proc        - la procedura del DB di lettura
- * $voce        - voce di glossario
- * $definizione - definizione della voce di glossario
+ * $proc    - la procedura pl/sql di cancellazione
+ * $id_pkt  - id del pacchetto da cancellare
  **/
-
 parse_str($_SERVER['QUERY_STRING']);
 
-
 $proc  = rawurldecode($proc);
-$voce  = rawurldecode($voce);
-$definizione = rawurldecode($definizione);
+$id_pkt = rawurldecode($id_pkt);
+$id_ex = rawurldecode($id_ex);
 
 /*****
-echo $proc . "\n";
-echo $voce. "\n";
-echo $$definizione . "\n";
+echo $id_pkt . "\n";
 die();
 *****/
 
@@ -67,7 +63,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:voce, :definizione, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_pkt, :id_ex, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -83,12 +79,12 @@ oci_set_prefetch($stmt,1000);
 /**
  * Imposta i parametri della procedura 
  **/
-$refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':voce'       , $voce, 512);
-oci_bind_by_name($stmt, ':definizione', $definizione, 4000);
-oci_bind_by_name($stmt, ':outcome'    , $outcome, 4000);
+oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
+oci_bind_by_name($stmt, ':id_ex'   , $id_ex, 255);
+oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
+
 
 /**
  * Lancia la procedura 
@@ -110,9 +106,11 @@ if ( substr($outcome,0,9)==="Exception") {
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
+ 
 
 // Successo
 echo '{"status":"ok", "message":"'. msg_fmt( $outcome ) .'"}'; 
+
 
 oci_free_statement($stmt);
 oci_close($conn);

@@ -58,8 +58,8 @@ export class NewPacchettoComponent extends ActionPacchetto implements OnInit, On
 
 
   /**
-   * Salva su db la nuova voce di glossario inserita via form
-   * @param form 
+   * Salva su db il nuovo pacchetto.
+   * @param form
    */
   salvaPacchetto(form) {
     console.log("NewPacchettoComponent.salvaPacchetto")

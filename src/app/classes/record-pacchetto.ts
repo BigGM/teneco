@@ -56,50 +56,21 @@ export class RecordPacchetto {
       this.valutazione          = ""
     }
   
-  
-    /**
-     * Elimina gli spazi bianchi laterali dalla stringa in input considerando
-     * che la stringa puo' essere contenuta tra i tag <p>...</p>.
-     * @param s 
-     */
-    public trimField (s:string) {
-      if (s==null || s=="undefined" || s==="")
-        return s;
-  
-      let start_s = "";
-      let end_s   = "";
-      
-      if (s.startsWith("<p>" ) ) {
-        start_s = "<p>"
-          s = s.substring(3)
-      }
-      if (s.endsWith("</p>" ) ) {
-        end_s = "</p>"
-          s = s.substring(0,s.length-4)
-      }
-      // il metodo trim_nbsp() toglie gli spazi laterali scritti come "&nbsp;"
-      s = NeuroApp.trim_nbsp(s)
-  
-      // rimette tutto insieme
-      return (start_s + s + end_s).trim();
-    }
-  
-  
+
     /**
      * Elimina gli spazi laterari dai campi del record.
      */
     public trim() {
-      this.nome         = this.trimField ( this.nome )
-      this.descr        = this.trimField ( this.descr )
-      this.contro_ind   = this.trimField ( this.contro_ind )
-      this.pre_req      = this.trimField ( this.pre_req )
-      this.alert_msg    = this.trimField ( this.alert_msg )
-      this.alert_msg_visibile    = this.trimField ( this.alert_msg_visibile )
-      this.bibliografia          = this.trimField ( this.bibliografia )
-      this.patologie_secondarie  = this.trimField ( this.patologie_secondarie )
-      this.valutazione           = this.trimField (this.valutazione)
-      //this.short_descr  = this.trimField ( this.short_descr )
-    } 
+      this.nome         = NeuroApp.trimField ( this.nome )
+      this.descr        = NeuroApp.trimField ( this.descr )
+      this.contro_ind   = NeuroApp.trimField ( this.contro_ind )
+      this.pre_req      = NeuroApp.trimField ( this.pre_req )
+      this.alert_msg    = NeuroApp.trimField ( this.alert_msg )
+      this.alert_msg_visibile    = NeuroApp.trimField ( this.alert_msg_visibile )
+      this.bibliografia          = NeuroApp.trimField ( this.bibliografia )
+      this.patologie_secondarie  = NeuroApp.trimField ( this.patologie_secondarie )
+      this.valutazione           = NeuroApp.trimField (this.valutazione)
+    }
 
   } // RecordPacchetto
   

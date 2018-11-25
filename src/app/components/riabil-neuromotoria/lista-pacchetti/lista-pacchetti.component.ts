@@ -27,6 +27,7 @@ export class ListaPacchettiComponent implements OnInit {
     //console.log( "ListaPacchettiComponent costruttore" )
     this.pacchetti = []
     this.pacchetto = null
+    this.pktSubscr = null
   }
 
 
@@ -39,7 +40,8 @@ export class ListaPacchettiComponent implements OnInit {
     console.log( "ListaPacchettiComponent => onDestroy" )
     this.pacchetti = null
     this.pacchetto = null
-    this.pktSubscr.unsubscribe()
+    if (this.pktSubscr )
+      this.pktSubscr.unsubscribe()
   }
 
 
@@ -111,7 +113,7 @@ onForeground(row,event:MouseEvent) {
     /**
      * Emette l'evento per la componente ListaEsercizi che riceve il
      * pacchetto da mostrare in dettaglio, carica la lista degli esercizi di
-     * questo paccheto e li visualizza
+     * questo pacchetto e li visualizza
      */
     this.selectedPkt.emit(pkt)
   }

@@ -1,0 +1,89 @@
+
+  
+  <!-- VIDEO -->
+  <div class="w-100" *ngIf="filter('video'); let video_list">
+  <label class="label-media" >Video ({{video_list.length}})</label>
+  <div id="video-esercizio" class="row py-3 px-1 my-bg-secondary" 
+      style="border-radius:4px;margin:0">
+  
+      <div *ngFor="let video of video_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
+        <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break">
+            <div class="embed-responsive embed-responsive-16by9">
+              <video controls> <source class="embed-responsive-item" [src]="video.url"></video>
+            </div>
+            <p>
+            <table style="color:white"><tr>
+            <td class="descr-media">{{video.descr}}</td>
+            <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaVideo(video)"></i></td>
+            </tr></table>
+        </div>
+      </div>
+  </div>
+  </div>
+
+	<br>
+
+	<!-- AUDIO -->
+	<div class="w-100" *ngIf="filter('audio'); let lista_audio">
+		<label class="label-media" >Audio ({{lista_audio.length}})</label>
+		<div id="doc-esercizio" class="row py-3 px-1 my-bg-secondary" 
+			style="border-radius:4px;margin:0">
+
+			<div *ngFor="let audio of lista_audio" class="col-sm-6 col-md-4 mb-3">
+					<div class="thumbnail thumbnail-media my-bg-dark p-3 word-break">
+							<audio controls style="width:100%"> <source [src]="audio.url"></audio>
+							<table style="color:white"><tr>
+							<td class="descr-media">{{audio.descr}}</td>
+							<td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaAudio(audio)"></i></td>
+							</tr></table>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+  <!-- IMMAGINI -->
+  <div class="w-100" *ngIf="filter('image'); let image_list">
+  <label class="label-media" >Immagini ({{image_list.length}})</label>
+  <div id="images-esercizio" class="row py-3 px-1 my-bg-secondary" 
+   style="border-radius:4px;margin:0">
+   
+     <div *ngFor="let image of image_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
+         <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break">
+             <img [src]="image.url" class="img-fluid"
+                 data-toggle="modal"
+                 data-target="#modalImageList" 
+                 (click)="openModalImage(image)"
+                 style="cursor:pointer"
+             >
+             <table ><tr>
+             <td class="descr-media">{{image.descr}}</td>
+             <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaImage(image)"></i></td>
+             </tr></table>
+           </div>
+     </div>
+  </div>
+  </div>
+ 
+ <!--
+ <div class="w-100" *ngIf="filter('doc'); let lista_docs">
+        <label class="label-media" >Documenti ({{lista_docs.length}})</label>
+        <div id="doc-esercizio" class="row py-3 px-1 my-bg-secondary" 
+         style="border-radius:4px;margin:0">
+
+    <div *ngFor="let doc of lista_docs" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-4 ow">
+        <div class="thumbnail thumbnail-docs p-2">
+          <div class="media">
+          <img [src]="docIcon(doc.url_media)" class="align-self-start m-1 mr-2" style="height:65px;">
+          <div class="media-body" style="cursor:pointer" (click)="open(doc.url_media)">
+              <a><h5 class="media-heading">{{docName(doc.url_media)}}</h5></a>
+              <p>{{doc.descr_media}}</p>
+          </div>
+          </div>
+          <p><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaDoc(doc)"></i></p>
+        </div>
+      </div>
+</div>
+</div> -->
+

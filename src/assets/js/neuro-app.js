@@ -2,7 +2,7 @@ var NeuroAppJS = {
 
   G_URL_ROOT : "http://81.29.176.113:47000/",
   
-  TEST_ENV : true,      // true: sono in ambiente locale di test
+  DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
 
     
   /**
@@ -56,12 +56,25 @@ var NeuroAppJS = {
    },
 
   
-   truncString : function(descr,max_chars) {
-      if (descr!=null && descr.length > max_chars-3) {
-         return descr.substring(0,max_chars) + "...";
+   /**
+    * Tronca la stringa 's' a 'max_chars' caratteri e aggiunge tre puntini alla fine.
+    */
+   truncString : function(s,max_chars) {
+      if (s!=null && s.length > max_chars-3) {
+         return s.substring(0,max_chars) + "...";
       } else {
-         return descr;
+         return s;
       }
+   },
+   
+   
+   /**
+    * Scrolla la pagina alla posizione dell'elemento specificato.
+    */
+   scrollTo : function(id) {
+      $('html,body').animate({
+         scrollTop: $('#'+id).offset().top
+      },'slow');
    },
 
 
@@ -131,7 +144,7 @@ var NeuroAppJS = {
       console.log('prepareVideoPopover');
       //console.log(_anchor_);
 
-      if  ( NeuroAppJS.TEST_ENV )
+      if  ( NeuroAppJS.DEVELOP_ENV )
          url_video = NeuroAppJS.G_URL_ROOT + "/" +  url_video;
       
       this_content = 
@@ -161,7 +174,7 @@ var NeuroAppJS = {
       console.log('prepareAudioPopover');
       //console.log(_anchor_);
 
-      if ( NeuroAppJS.TEST_ENV )
+      if ( NeuroAppJS.DEVELOP_ENV )
          url_audio = NeuroAppJS.G_URL_ROOT + "/" +  url_audio;
       
       this_content = 
@@ -193,7 +206,7 @@ var NeuroAppJS = {
       //console.log('prepareIMagePopover');
       console.log(_anchor_);
 
-      if ( NeuroAppJS.TEST_ENV )
+      if ( NeuroAppJS.DEVELOP_ENV )
          url_audio = NeuroAppJS.G_URL_ROOT + "/" +  url_image;
       
       this_content = 

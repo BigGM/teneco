@@ -143,8 +143,9 @@ button.close2 {
 
 .btn-navbar {
   font-size:16px !important;
-  background-color: rgb(0,74,128) !important;
-  border-color: rgba(21,138,225,0);
+  background-color: rgb(1,83,143) !important;
+  border-color: rgba(21,138,225,0.5);
+  color:white;
   padding-left:15px;
   padding-right:15px;
   width:100%;
@@ -157,7 +158,8 @@ button.close2 {
 
 .btn-primary {
   /*color:rgb(100,200,255);*/
-  /*background-color: rgb(31,81,118);*/
+  /*background-color: rgb(31,81,118) !important;*/
+  
 }
 .btn-primary:hover {
    /*background-color: rgb(85,125,191);*/

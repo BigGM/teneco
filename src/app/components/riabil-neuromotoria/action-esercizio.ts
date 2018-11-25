@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { RecordEsercizio } from '../../classes/record-esercizio'
 import { NeuroApp } from '../../neuro-app';
 import { Gruppo } from '../../classes/gruppo'
+import { NeuroAppService } from '../../services/neuro-app.service'
 
 
 // questo e' per jQuery
@@ -13,9 +14,11 @@ export class ActionEsercizio {
 	esercizio : RecordEsercizio
 	gruppi    : Array<Gruppo>
    exSubscr  : Subscription;
+   neuroService : NeuroAppService
 
 
-   constructor() {
+   constructor(neuroService: NeuroAppService) {
+      this.neuroService = neuroService
 		this.esercizio = new RecordEsercizio()
     	this.gruppi = Array<Gruppo>()
    }
@@ -102,5 +105,30 @@ export class ActionEsercizio {
       this.esercizio.reset()
       NeuroApp.removePopover()
    }
+
+   /**
+   * Legge dal DB le tipologie di gruppi e le inserisce nell'array this.gruppi
+   */
+   loadGruppi() {
+      //console.log("NewEsercizioComponent.loadGruppi")
+      NeuroApp.showWait();
+      
+      let serv = this.neuroService.loadGruppi()
+      this.exSubscr = serv.subscribe (
+         result => {
+            NeuroApp.hideWait()
+            this.gruppi = result    
+            this.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:""} )
+            //console.log(this.gruppi)
+            this.exSubscr.unsubscribe()
+         },
+         error => {
+            NeuroApp.hideWait()
+            NeuroApp.custom_error(error,"Errore")
+            this.exSubscr.unsubscribe()
+         }
+      )
+   } // loadGruppi()
+
 }
 
