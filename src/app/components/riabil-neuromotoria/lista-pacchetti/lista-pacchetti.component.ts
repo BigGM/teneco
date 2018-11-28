@@ -195,7 +195,7 @@ onForeground(row,event:MouseEvent) {
       azione: "nuovo_pacchetto"
     }
     this.openActionPacchetto.emit( obj )
-    $('#nuovoPacchetto').modal('show')
+    $('#actPacchetto').modal('show')
   }
 
 
@@ -217,7 +217,7 @@ onForeground(row,event:MouseEvent) {
     }
     this.openActionPacchetto.emit(obj)
     
-    $('#modPacchetto').modal('show')
+    $('#actPacchetto').modal('show')
 
     // Invia alla modale il record da modificare tramite il servizio
     //this.pktService.sendRecordToModal(pkt)

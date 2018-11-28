@@ -23,7 +23,7 @@
              <div class="form-group row" >
                 <label for="nome_pkt" class="col-sm-3 col-form-label col-form-label-sm my-label-required font-weight-bold">Nome*</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="nome_pkt"  name="nome_pkt" placeholder="Nome pacchetto"
+                    <input type="text" class="form-control" id="nome_pkt"  name="nome" placeholder="Nome pacchetto"
                     required [(ngModel)]="pacchetto.nome"></div>
                   <!--
                     #ptk_nome="ngModel">
@@ -39,7 +39,7 @@
             <div class="form-group row">
               <label for="summernote-actpkt-descr" class="col-sm-3 col-form-label col-form-label-sm my-label-required font-weight-bold">Descrizione*</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="summernote-actpkt-descr" name="descr_newpkt"  placeholder="Descrizione"
+                  <textarea class="form-control" id="summernote-actpkt-descr" name="descr"  placeholder="Descrizione"
                   required [(ngModel)]="pacchetto.descr"></textarea>
               </div>
             </div>
@@ -48,7 +48,7 @@
             <div class="form-group row">
                 <label for="summernote-actpkt-prereq" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Prerequisiti</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id="summernote-actpkt-prereq" name="pre_req"  placeholder="Prerequisiti" rows="4"
+                    <textarea class="form-control" id="summernote-actpkt-prereq" name="pre_req"  placeholder="Prerequisiti"
                     [(ngModel)]="pacchetto.pre_req"></textarea>
                 </div>
             </div>
@@ -58,7 +58,7 @@
             <div class="form-group row">
               <label for="contro_ind" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Controindicazioni</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="contro_ind" name="contro_ind"  placeholder="Controindicazioni" rows="4"
+                  <textarea class="form-control" id="contro_ind" name="contro_ind"  placeholder="Controindicazioni" rows="3"
                   [(ngModel)]="pacchetto.contro_ind"></textarea>
               </div>
             </div>
@@ -67,7 +67,7 @@
             <div class="form-group row">
               <label for="alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Alert</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="alert" name="alert"  placeholder="Messaggio di alert" rows="4"
+                  <textarea class="form-control" id="alert" name="alert_msg"  placeholder="Messaggio di alert" rows="3"
                   [(ngModel)]="pacchetto.alert_msg"></textarea>
               </div>
             </div>
@@ -76,7 +76,7 @@
             <div class="form-group row">
               <label for="patologie" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Patologie secondarie</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="patologie" name="patologie"  placeholder="Patologie secondarie" rows="4"
+                  <textarea class="form-control" id="patologie" name="patologie_secondarie"  placeholder="Patologie secondarie" rows="3"
                   [(ngModel)]="pacchetto.patologie_secondarie"></textarea>
               </div>
             </div>

@@ -32,13 +32,12 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   constructor(private pktService : RiabilNeuromotoriaService) {
   }
 
-
   ngOnInit() {
       this.pacchetto = new RecordPacchetto()
       this.pacchetto.reset()
       this.entryPacchetto = new RecordPacchetto()
       this.pktSubscr = null
-
+      this.initSummernote()
 
       /**
        * Si sottoscrive al componente ListaEserciziComponent per ricevere l'azione da eseguire.
@@ -55,18 +54,16 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
 
         if (this.azione=="nuovo_pacchetto") {
             this.titolo = "Nuovo pachetto"
+            this.pacchetto.reset()
         }
         else if (this.azione=="modifica_pacchetto") {
             this.titolo = "Modifica pacchetto"
-            this.pacchetto.copy(obj.esercizio)
+            this.pacchetto.copy(obj.pacchetto)
             this.entryPacchetto.copy(obj.pacchetto)
-
-            // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
-            $('#summernote-actpkt-descr').summernote('code', this.pacchetto.descr)
-            $('#summernote-actpkt-prereq').summernote('code', this.pacchetto.pre_req)
         }
-        else 
-          this.titolo = ""
+        // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
+        $('#summernote-actpkt-descr').summernote('code', this.pacchetto.descr)
+        $('#summernote-actpkt-prereq').summernote('code', this.pacchetto.pre_req)
       })
   }
 
@@ -104,39 +101,36 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   private getSummernoteOptions() : any {
     let URL_ROOT = NeuroApp.G_URL_ROOT + "/cgi-bin";
     return  {
-       lang: "it-IT",
-       height: "110px",
-       minHeight: "110px",
-       maxHeight: "110px",
-       dialogsInBody: true,
-       dialogsFade: true,
-       airMode:true,
-       required: false,
-       //disableLinkTarget: true, non usato dalle dialog video, audio e glossario aggiunte
-       videoLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=video&lista_id=-1",
-       audioLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=audio&lista_id=-1",
-       imageLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=image&lista_id=-1",
-       glossarioLinkFunction: URL_ROOT + "/lista_glossario2.php?proc=NeuroApp.glossario",
-       popover: {
-          air: [
-             /*['color', ['color']],*/
-             ['font', ['bold', 'italic', 'underline', 'clear']],
-             /*['fontsize', ['fontsize']],
-             ['fontname', ['fontname']],*/
-             ['linkVideo', ['linkVideo']],
-             ['linkAudio', ['linkAudio']],
-             ['linkImage', ['linkImage']],
-             ['linkGlossario', ['linkGlossario']],
-             ['link', ['unlink']],
-          ]
-       },
-       callbacks: {
-          onInit: function() {
-          console.log('Summernote is launched');
-          $('.note-editable').addClass('form-control');
-          $('.note-editable').css('height', '300px'); 
-          }
-       }
+      lang: "it-IT",
+      height: "90px",
+      minHeight: "90px",
+      maxHeight: "90px",
+      dialogsInBody: true,
+      dialogsFade: true,
+      airMode:true,
+      required: false,
+      //disableLinkTarget: true, non usato dalle dialog video, audio e glossario aggiunte
+      videoLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=video&lista_id=-1",
+      audioLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=audio&lista_id=-1",
+      imageLinkFunction: URL_ROOT + "/lista_media2.php?proc=NeuroApp.lista_media&tipo_media=image&lista_id=-1",
+      glossarioLinkFunction: URL_ROOT + "/lista_glossario2.php?proc=NeuroApp.glossario",
+      popover: {
+         air: [
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['linkVideo', ['linkVideo']],
+            ['linkAudio', ['linkAudio']],
+            ['linkImage', ['linkImage']],
+            ['linkGlossario', ['linkGlossario']],
+            ['link', ['unlink']],
+         ]
+      },
+      callbacks: {
+         onInit: function() {
+         console.log('Summernote is launched');
+         $('.note-editable').addClass('form-control');
+         $('.note-editable').css('height', '300px'); 
+         }
+      }
     }
   } // getSummernoteOptions()
 

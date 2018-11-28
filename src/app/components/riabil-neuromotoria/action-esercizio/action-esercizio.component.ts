@@ -69,22 +69,22 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
         if (this.azione=="nuovo_esercizio") {
             this.titolo = "Nuovo esercizio"
+            this.esercizio.reset()
             this.esercizio.id_pkt = obj.id_pkt
+            this.entryEsercizio.reset()
         }
 
         else if (this.azione=="modifica_esercizio") {
             this.titolo = "Modifica esercizio"
             this.esercizio.copy(obj.esercizio)
             this.entryEsercizio.copy(obj.esercizio)
-
-            // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
-            $('#summernote-actex-descr').summernote('code', this.esercizio.descr)
-            $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
-            $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
-            $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
         }
-        else 
-          this.titolo = ""
+       
+        // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
+        $('#summernote-actex-descr').summernote('code', this.esercizio.descr)
+        $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
+        $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
+        $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
       })
   } // ngOnInit()
 
@@ -154,9 +154,9 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
        },
        callbacks: {
           onInit: function() {
-          console.log('Summernote is launched');
-          $('.note-editable').addClass('form-control');
-          $('.note-editable').css('height', '300px'); 
+            console.log('Summernote is launched');
+            $('.note-editable').addClass('form-control');
+            $('.note-editable').css('height', '300px'); 
           }
        }
     }
