@@ -7,15 +7,15 @@ import {
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
-//import { ResourceImagesService } from '../../services/resource-images/resource-images.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
-declare var $ : any;
-declare var bootbox: any;
+declare var NeuroAppJS : any
+declare var $ : any
+declare var bootbox: any
 
-const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php";
+const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php"
 
 @Component({
   selector: 'app-resource-images',
@@ -153,8 +153,9 @@ export class ResourceImagesComponent implements OnInit {
         result => {
           
           result.map(image => {
+            if (NeuroAppJS.DEVELOP_ENV)
               image.url_media = NeuroApp.G_URL_ROOT +  "/" +image.url_media
-              console.log(image.url_media)
+            console.log(image.url_media)
           })
 
           NeuroApp.hideWait()

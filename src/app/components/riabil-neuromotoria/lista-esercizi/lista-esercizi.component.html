@@ -84,16 +84,17 @@
                      <th scope="col">Nome</th>
                      <th scope="col">Descrizione</th>
                      <th scope="col">Gruppo</th>
-                     <th scope="col">#Multimedia</th>
-                     <th scope="col">&nbsp;</th>
+                     <th scope="col text-right">#Multimedia</th>
+                     <th scope="col" colspan=2>&nbsp;</th>
                   </tr>
                </thead>
 
-            <tr *ngFor="let ex of esercizi">
+            <tr *ngFor="let ex of esercizi" #row (click)='onForeground(ex.id_ex,row,$event)'>
                <td class="nowrap" (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
                <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
                <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
                <td style='text-align:right' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
+               <td style='text-align:right'><i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal" (click)="formModifEsercizio($event,ex)"></i></td>
                <td style='text-align:right'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i></td>
             </tr>
 
@@ -117,7 +118,5 @@
             </button>
          </div>
          <!-- FOOTER -->
-
       </div>
-
 </div>

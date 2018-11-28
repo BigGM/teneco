@@ -155,7 +155,7 @@ export class RiabilNeuromotoriaService {
    * @param pkt pacchetto
    * @param ambito  - 1 ( riabilitazione neuromotoria )
    *                  2 ( riabilitazione cognitiva )
-   */
+   *
   salvaPacchetto(pkt:RecordPacchetto, ambito:string) {
     let db_proc = "NeuroApp.salva_pacchetto"
     let url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+
@@ -184,9 +184,56 @@ export class RiabilNeuromotoriaService {
         }),
         catchError( this.neuroService.handleError )
     )
+  } //salvaPacchetto() */
+  
+  
+  
+  /**
+   * Salva un pacchetto nel DB.
+   * @param pkt         pacchetto
+   * @param php_script  script php da eseguire
+   * @param db_proc     procedura oracle
+   * @param ambito :  1 ( riabilitazione neuromotoria )
+   *                  2 ( riabilitazione cognitiva )
+   **/
+  salvaPacchetto(pkt:RecordPacchetto, php_script:string, db_proc:string, ambito:string) {
+     
+    // NB. Se il pacchetto in ingresso contiene un id significa che stiamo salvando
+    // un pacchetto modificato e quindi nella url va aggiunto l'id
+    let id_pkt = ""
+    if (pkt.id >= 0)
+      id_pkt = "&id_pkt="+pkt.id
+  
+    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script+"?proc="+db_proc+
+                   id_pkt +
+                   "&nome="+pkt.nome +
+                   "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
+                   "&pre_req="+this.protectNewLine(pkt.pre_req) +
+                   "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
+                   "&alert_msg="+pkt.alert_msg +
+                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
+                   "&bibliografia="+pkt.bibliografia +
+                   "&patologie_secondarie="+pkt.patologie_secondarie +
+                   "&valutazione="+pkt.valutazione+
+                   "&ambito="+ambito;
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
   } //salvaPacchetto()
-
-
+  
+  
   /**
    * Salva nel DB un pacchetto modificato.
    * @param pkt pacchetto
@@ -256,22 +303,29 @@ export class RiabilNeuromotoriaService {
   
 
   /**
-   * Salva un pacchetto nel DB.
-   * @param pkt pacchetto
-   * @param ambito  - 1 ( riabilitazione neuromotoria )
-   *                  2 ( riabilitazione cognitiva )
+   * Salva sul sistema un nuovo esercizio o un esercizio esistente modificato.
+   * @param ex          l'esercizio;
+   * @param php_script  lo script php da eseguire
+   * @param db_proc     il nome della procedura oracle da eseguire.
    */
-  salvaEsercizioPacchetto(ex:RecordEsercizio) {
-    let db_proc = "NeuroApp.salva_esercizio"
+  salvaEsercizio(ex: RecordEsercizio, php_script:string, db_proc:string) {
+    
+    // NB. Se l'esecizio in ingresso contiene un id significa che stiamo salvando
+    // un esercizio modificato e quindi nella url va aggiunto l'id
+    let id_ex = ""
+    if (ex.id_ex >= 0)
+      id_ex = "&id_ex="+ex.id_ex
 
-    let url = this.G_URL_ROOT+"/cgi-bin/salva_esercizio2.php?proc="+db_proc+
+    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script+"?proc="+db_proc+
                   "&id_pkt=" + ex.id_pkt +
+                  id_ex +
                   "&nome=" + ex.nome +
                   "&descr=" + ex.descr +
                   "&testo=" + ex.testo +
                   "&alert=" + ex.alert +
                   "&limitazioni=" + ex.limitazioni +
                   "&id_grp=" + ex.id_grp;
+    console.log(url)
 
     return this.http.get<Outcome>(url)
     .pipe(
@@ -287,7 +341,7 @@ export class RiabilNeuromotoriaService {
         }),
         catchError( this.neuroService.handleError )
     )
-  } // salvaEsercizioPacchetto()
+  } // salvaEsercizio()
 
 
 
@@ -345,5 +399,29 @@ export class RiabilNeuromotoriaService {
   }
 
 
+  aggiungiMediaEsercizio(id_pkt:number, id_ex:number, id_media:string) {
+    let db_proc = "NeuroApp.aggiungi_media_esercizio"
+    let url = this.G_URL_ROOT+"/cgi-bin/aggiungi_media_esercizio2.php?proc="+db_proc +
+              "&id_pkt="+id_pkt +
+              "&id_ex="+id_ex +
+              "&id_media="+id_media;
+
+    console.log("aggiungiMediaEsercizio",url)
+
+    return this.http.get<Outcome>(url)
+      .pipe(
+          retry(1),
+          map ( outcome => {
+            //console.log('** outcome **', outcome)
+              if (outcome.status.toLowerCase()=="exception" )
+                throw new Error(`${outcome.message}`) 
+              return outcome
+          }),
+          tap( outcome => {
+            //console.log('** outcome **', outcome)
+          }),
+          catchError( this.neuroService.handleError )
+      )
+  }
 
 }

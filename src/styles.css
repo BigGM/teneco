@@ -29,7 +29,7 @@ router-outlet ~ * {
 }
 
 .my-icon-color {
-    color:rgb(235, 83, 96) !important;
+    color:rgb(228, 35, 35) !important;
 }
 
 .my-icon-size-22 {
@@ -60,6 +60,16 @@ router-outlet ~ * {
    font-size:22px;
    font-weight:normal;
    color:white;
+}
+
+.my-trash-dark {
+   position:absolute;
+   bottom:7px;
+   right:20px;
+   cursor:pointer;
+   font-size:22px;
+   font-weight:normal;
+   color: rgb(30,50,100)
 }
 
 

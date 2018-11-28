@@ -30,15 +30,17 @@ import { ListaPacchettiComponent } from './components/riabil-neuromotoria/lista-
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
 import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service';
-import { NewPacchettoComponent } from './components/riabil-neuromotoria/new-pacchetto/new-pacchetto.component';
 import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
-import { ModPacchettoComponent } from './components/riabil-neuromotoria/mod-pacchetto/mod-pacchetto.component';
 import { ListaEserciziComponent } from './components/riabil-neuromotoria/lista-esercizi/lista-esercizi.component';
-import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-esercizio/new-esercizio.component';
+//import { ModPacchettoComponent } from './components/riabil-neuromotoria/mod-pacchetto/mod-pacchetto.component';
+//import { NewPacchettoComponent } from './components/riabil-neuromotoria/new-pacchetto/new-pacchetto.component';
+//import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-esercizio/new-esercizio.component';
 import { DettaglioEsercizioComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/dettaglio-esercizio.component';
 import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/media-collegati/media-collegati.component';
+import { ActionEsercizioComponent } from './components/riabil-neuromotoria/action-esercizio/action-esercizio.component';
+import { ActionPacchettoComponent } from './components/riabil-neuromotoria/action-pacchetto/action-pacchetto.component';
 
 
 @NgModule({
@@ -57,15 +59,17 @@ import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettag
     RiabilNeuromotoriaComponent,
     RiabilCognitivaComponent,
     ListaPacchettiComponent,
-    NewPacchettoComponent,
+    //NewPacchettoComponent,
     SafePipe,
     TruncatePipe,
     PlaintextPipe,
-    ModPacchettoComponent,
+    //ModPacchettoComponent,
     ListaEserciziComponent,
-    NewEsercizioComponent,
+    //NewEsercizioComponent,
     DettaglioEsercizioComponent,
-    MediaCollegatiComponent
+    MediaCollegatiComponent,
+    ActionEsercizioComponent,
+    ActionPacchettoComponent
   ],
   imports: [
     BrowserModule,

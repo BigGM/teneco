@@ -11,19 +11,31 @@
       <app-lista-esercizi #listaEserciziRef
       [listaPacchetti]="listaPacchettiRef" ></app-lista-esercizi>
 
-      <!-- FORM AGGIUNTA PACCHETTO -->
+
+      <!-- FORM AGGIUNTA PACCHETTO
       <app-new-pacchetto
-      [listaPacchetti]="listaPacchettiRef"></app-new-pacchetto>
+      [listaPacchetti]="listaPacchettiRef"></app-new-pacchetto> -->
 
 
-      <!-- FORM MODIFICA PACCHETTO -->
+      <!-- FORM MODIFICA PACCHETTO
       <app-mod-pacchetto
-      [listaPacchetti]="listaPacchettiRef"></app-mod-pacchetto>
+      [listaPacchetti]="listaPacchettiRef"></app-mod-pacchetto> -->
 
 
-      <!-- FORM AGGIUNTA ESERCIZIO -->
+      <!-- FORM NUOVO ESERCIZIO
       <app-new-esercizio
-      [listaEsercizi]="listaEserciziRef"></app-new-esercizio>
+      [listaEsercizi]="listaEserciziRef"></app-new-esercizio> -->
+
+
+      <!-- FORM AGGIUNTA/MODIFICA PACCHETTO -->
+      <app-action-pacchetto
+      [listaPacchetti]="listaPacchettiRef"></app-action-pacchetto>
+
+
+      <!-- FORM AGGIUNTA/MODIFICA ESERCIZIO -->
+      <app-action-esercizio
+      [listaEsercizi]="listaEserciziRef"></app-action-esercizio>
+
    </DIV>
    </DIV>
 
@@ -31,16 +43,7 @@
 
 
 <DIV id="div_dettaglio_esercizio" class="container-fluid" >
-
-   <!--
-   <DIV class="row">
-   <DIV class="col-sm-12"> -->
-
 	   <!-- PAGINA CON IL DETTAGLIO DI UN ESERCIZIO -->
 	   <app-dettaglio-esercizio #dettaglioEsercizioRef
       [listaEsercizi]="listaEserciziRef"></app-dettaglio-esercizio>
-<!--
-   </DIV>
-   </DIV> -->
-
 </DIV>

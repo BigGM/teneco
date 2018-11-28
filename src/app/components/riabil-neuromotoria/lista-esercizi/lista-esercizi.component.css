@@ -41,3 +41,17 @@
     transition: background-color 0.3s ease-in-out;
  }
  
+
+ .marked-row {
+   background:rgba(39, 140, 255, 0.2) !important;
+   /*text-shadow: 1px 1px 2px white;*/
+   color: rgb(16,95,133);
+ }
+
+ .marked-row-first-col {
+    border-left: 5px solid rgb(7, 85, 221) !important;
+ }
+
+ .marked-row-last-col {
+    border-right:  5px solid rgb(7, 85, 221) !important;
+ }

@@ -18,9 +18,11 @@ import { MediaCollegatiComponent } from './media-collegati/media-collegati.compo
 })
 export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  /** Riferimento alla componente padre ListaEserciziComponent */ 
   @Input() listaEsercizi: ListaEserciziComponent;
 
-  /** Vista al componente che visualizza i media collegati */ 
+  
+  /** Vista al componente child che visualizza i media collegati */ 
   @ViewChildren(MediaCollegatiComponent) mediaCollegatiChild : QueryList<MediaCollegatiComponent>
 
 
@@ -31,22 +33,18 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
   mediaCollegati : MediaCollegatiComponent
 
 
-  /** l'esercizio richiesto */ 
+  /** l'esercizio di cui e' richiesto il dettaglio */ 
   esercizio : RecordEsercizio
 
+  /** la lista degli elmenti multimediali collegati a this.esercizio */
+  media     : Array<RecordMediaEsercizio>
 
   /** gruppi: esercizi passivi, autonomi, ... */ 
   gruppi    : Array<Gruppo>
 
-
-  /** la lista degli elmenti multimediali collegati a questo esercizio */
-  media     : Array<RecordMediaEsercizio>
-
-
   /** visibilita' di questa vista */
   view_dettaglio_visible : boolean
   
-
   /** Sottoscrizione ai servizi */
   exSubscr  : Subscription
 
@@ -97,35 +95,49 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
   ngOnDestroy() {
     this.media = null;
     if (this.exSubscr) this.exSubscr.unsubscribe()
+    this.listaEsercizi.openDettaglio.unsubscribe()
     this.mediaCollegati = null;
   }
 
 
   /**
-   * Sottoscrive la vista 'mediaCollegatiChild' per essere notificato della inizializzazione
+   * Sottoscrive la vista 'mediaCollegatiChild' per ricevere notifica della inizializzazione
    * del componente, assegnarlo all'attributo 'mediaCollegati' e passargli il riferimento
    * all'esercizio visualizzato, così il componente puo' richiedere la lista dei media collegati
    * all'esercizio e presentarli sulla pagina.
    */
   ngAfterViewInit() {
-    this.mediaCollegatiChild.changes.subscribe( (comps: QueryList<MediaCollegatiComponent>) => {
+      this.mediaCollegatiChild.changes.subscribe( (comps: QueryList<MediaCollegatiComponent>) => {
       // Now you can access to the child component
       console.log(comps);
       if (comps.first) {
         this.mediaCollegati = comps.first
         this.mediaCollegati.showMediaFor(this.esercizio)
+
+        // Si sottoscrive al componente MediaCollegatiComponent per ricevere l'aggiornamento
+        // sul numero di multimedia associati all'esercizio mostrato in seguito ad una
+        // di cancellazioe/aggiunta di elementi multimediali
+        this.mediaCollegati.counterMultimedia.subscribe(count => {
+            console.log("DettaglioEsercizioComponent", count)
+            // comunica alla lista degli esercizi il nuovo valore
+            this.listaEsercizi.updateCountMultimedia(count)
+        })
       }
     })
   }
 
 
+  /**
+   * Ottiene il nome del gruppo di esercizi (autonomi, passivi, ...) dal suo id.
+   * @param id_grp  id del gruppo
+   */
   nomeGruppo(id_grp) : string {
     return NeuroApp.nomeGruppo(id_grp)
   }
 
 
   /**
-   * Legge dal DB le tipologie di gruppi e le inserisce nell'array this.gruppi
+   * Legge dal DB le tipologie di gruppi e le inserisce nell'array 'this.gruppi'
    */
   loadGruppi() {
     //console.log("DettaglioEsercizioComponent.loadGruppi")
@@ -146,6 +158,6 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
           this.exSubscr.unsubscribe()
        }
     )
- } // loadGruppi()
+  } // loadGruppi()
 
 }

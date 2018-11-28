@@ -3,18 +3,20 @@ import {
   ViewChild,
   ViewContainerRef,
   ComponentFactoryResolver
-}  from '@angular/core';
+} from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 //import { ResourceVideoService } from '../../services/resource-video/resource-video.service'
 import { NeuroApp } from '../../neuro-app';
+
 import { RecordMedia } from '../../record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var $ : any;
 declare var bootbox: any;
+declare var NeuroAppJS:any;
 
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/video_upload.php";
 
@@ -139,7 +141,7 @@ export class ResourceVideoComponent implements OnInit {
   listaFileVideo() {
     console.log("ResourceVideoComponent.listaFileVideo")
 
-    $('#waitDiv').show();
+    NeuroApp.showWait()
     this.lista_video = []
     let exclude_id  = '' // nessun id viene escluso 
     let tipo_media  = 'video'
@@ -150,7 +152,8 @@ export class ResourceVideoComponent implements OnInit {
         result => {
 
           result.map(video => {
-            video.url_media = NeuroApp.G_URL_ROOT +  "/" + video.url_media
+            if ( NeuroAppJS.DEVELOP_ENV )
+               video.url_media = NeuroApp.G_URL_ROOT +  "/" + video.url_media
             //.log(video.url_media)
           })
 
@@ -215,8 +218,6 @@ export class ResourceVideoComponent implements OnInit {
      */
     cancellaVideo(video:RecordMedia) {
       console.log("ResourceVideoComponent.cancellaVideo")
-      $('#waitDiv').show()
-    
       NeuroApp.showWait()
     
       let serv = this.neuroAppService.rimuoviMedia(video,'video')
@@ -248,7 +249,7 @@ export class ResourceVideoComponent implements OnInit {
 
 
     /**
-     * @param video l'elemento multimediale con il video da avviare
+     * @param video l'elemento multimediale con il video da chiudere
      */
     closeModalVideo() {
       //console.log("closeModalVideo")

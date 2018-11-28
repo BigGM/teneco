@@ -25,6 +25,9 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   /** Gli eserizi del pacchetto corrente */
   esercizi  : RecordEsercizio[]
 
+  /** Id dell'esercizio selezionato per il dettaglio */
+  id_esercizio_selected: number
+
   
   /* Sottoscrizione al servizio RiabilNeuromotoriaService */
   exSubscr : Subscription
@@ -39,19 +42,27 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   @Output() openDettaglio: EventEmitter<RecordEsercizio> = new EventEmitter
 
 
+  /** 
+   * Per comunicare alla finestra modale la richiesta di creare un nuovo
+   * esercizio o modificarne uno esistente.
+   */
+  @Output() openActionEsercizio: EventEmitter<any> = new EventEmitter
+
+
   constructor( private exService : RiabilNeuromotoriaService) {
     console.log( "ListaEserciziComponent costruttore" )
     this.pacchetto = new RecordPacchetto
     this.esercizi = []
     this.view_esercizi_visible = false
     this.exSubscr = null
+    this.id_esercizio_selected = -1
   }
 
 
   ngOnInit() {
     this.listaPacchetti.selectedPkt.subscribe ( pkt => {
-      this.pacchetto.copy(pkt)
-      //console.log(this.pacchetto)
+      //console.log(pkt)
+      this.pacchetto.copy(pkt)      
       this.loadEserciziPacchetto()
       // Qualora fosse aperta la vista di dettaglio esercizio
       // richiede al componente di nascondersi
@@ -69,6 +80,38 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     this.esercizi = null
     if ( this.exSubscr) 
       this.exSubscr.unsubscribe()
+  }
+
+
+  /**
+   * Assegna una classe di stile per evidenziare una riga selezionata col mouse.
+   * @param row riferimento alla riga cliccata della tabella HTML
+   */
+  onForeground(id_ex:number, row, event:MouseEvent) {
+    event.preventDefault()
+    this.id_esercizio_selected = id_ex
+
+    $('#tableEsercizi tr td').removeClass('marked-row');
+    $('#tableEsercizi tr td').removeClass('marked-row-first-col');
+    $('#tableEsercizi tr td').removeClass('marked-row-last-col');
+    for (var j=0; j<row.cells.length; j++) {
+      $(row.cells[j]).addClass('marked-row'); 
+    }
+    if (row.cells.length>0) {
+      $(row.cells[0]).addClass('marked-row-first-col');
+      $(row.cells[row.cells.length-1]).addClass('marked-row-last-col');
+    }
+  }
+
+  /**
+   * aggiorna il numero dei multimedia associati all'esericizio selezionato (id_esercizio_selected)
+   * @param new_count il valore aggiornato
+   */
+  updateCountMultimedia(new_count:number) {
+    this.esercizi.forEach (ex => {
+      if (ex.id_ex==this.id_esercizio_selected)
+        ex.count_media = new_count
+    })
   }
 
 
@@ -118,7 +161,6 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   confermaCancellaEsercizio(event:MouseEvent, ex:RecordEsercizio)
   {
     NeuroApp.removePopover()
-    
     event.preventDefault()
     
     let self = this;
@@ -170,6 +212,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   
+  
   /** 
    * Invia al componente di dettaglio l'esercizio da mostrare.
    */
@@ -189,7 +232,33 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   formNuovoEsercizio() {
     NeuroApp.removePopover()
-    $('#nuovoEsercizio').modal('show')
+
+    // comunica all finestra modale l'azione da eseguire (nuovo esercizio)
+    let obj = {
+      azione: "nuovo_esercizio",
+      id_pkt: this.pacchetto.id
+    }
+    this.openActionEsercizio.emit( obj )
+    
+    $('#actionEsercizio').modal('show')
+  }
+
+
+  formModifEsercizio(event:MouseEvent, esercizio:RecordEsercizio) {
+    event.preventDefault()
+    NeuroApp.removePopover()
+
+    // comunica all finestra modale l'azione da eseguire (nuovo esercizio)
+    let obj = {
+      azione    :"modifica_esercizio",
+      esercizio : esercizio
+    }
+    
+    // comunica all finestra modale l'esercizio da modificare
+    this.openActionEsercizio.emit(obj)
+    
+    // infine apre la modale
+    $('#actionEsercizio').modal('show')
   }
 
 }

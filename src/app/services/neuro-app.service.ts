@@ -5,6 +5,7 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../neuro-app'
 import { RecordMedia, RecordMediaError } from '../record-media'
+import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
 import { Gruppo } from '../classes/gruppo'
 import { Outcome } from '../outcome'
 
@@ -119,6 +120,34 @@ export class NeuroAppService {
   } // rimuoviMedia()
 
 
+  /**
+   * Cancella un elemento multimediale dall'esercizio specificato in input
+   * @param media : l'elemento da cancellare
+   */
+  rimuoviMediaEsercizio (media:RecordMediaEsercizio) {
+    let db_proc = 'NeuroApp.cancella_media_esercizio'
+    let url = this.G_URL_ROOT+"/cgi-bin/cancella_media_esercizio2.php?proc="+db_proc +
+              "&id_pkt="+media.id_pkt+"&id_ex="+media.id_ex+"&id_media="+media.id
+
+    console.log(url);
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(outcome.message) 
+            return outcome
+        }),
+        tap( outcome => {
+          console.log('** outcome **', outcome)
+        }),
+        catchError( this.handleError )
+    )
+  } // rimuoviMediaEsercizio()
+
+  
   loadGruppi() : Observable<Gruppo[]> {
     let db_proc = "NeuroApp.lista_gruppi"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_esercizi2.php?proc="+db_proc+"&ambito="+ambito;

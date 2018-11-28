@@ -20,7 +20,14 @@ export class ListaPacchettiComponent implements OnInit {
   pktSubscr  : Subscription
   pacchetto  : RecordPacchetto
 
-  @Output() selectedPkt = new EventEmitter();
+  @Output() selectedPkt = new EventEmitter()
+
+  /** 
+   * Per comunicare alla finestra modale la richiesta di creare un nuovo
+   * esercizio o modificarne uno esistente.
+   */
+  @Output() openActionPacchetto: EventEmitter<any> = new EventEmitter
+
 
 
   constructor( private pktService : RiabilNeuromotoriaService) {
@@ -183,6 +190,11 @@ onForeground(row,event:MouseEvent) {
    */
   formNuovoPacchetto() {
     NeuroApp.removePopover()
+    // comunica all finestra modale l'azione da eseguire: creazione nuovo pacchetto
+    let obj = {
+      azione: "nuovo_pacchetto"
+    }
+    this.openActionPacchetto.emit( obj )
     $('#nuovoPacchetto').modal('show')
   }
 
@@ -196,9 +208,18 @@ onForeground(row,event:MouseEvent) {
     console.log("formModifPacchetto", pkt)
     NeuroApp.removePopover()
     mouseEvent.stopPropagation()
+    
+    // comunica all finestra modale l'azione da eseguire: modifica di un pacchetto
+    // e gli passa il pacchetto da modificare
+    let obj = {
+      azione: "modifica_pacchetto",
+      pacchetto : pkt
+    }
+    this.openActionPacchetto.emit(obj)
+    
     $('#modPacchetto').modal('show')
 
     // Invia alla modale il record da modificare tramite il servizio
-    this.pktService.sendRecordToModal(pkt)
+    //this.pktService.sendRecordToModal(pkt)
   }
 }

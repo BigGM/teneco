@@ -86,7 +86,7 @@ export class NewPacchettoComponent extends ActionPacchetto implements OnInit, On
     }
 
     NeuroApp.showWait();
-    
+    /*
     let serv = this.pktService.salvaPacchetto(this.pacchetto,this.ambito)    
     this.pktSubscr = serv.subscribe (
       result => {
@@ -101,7 +101,7 @@ export class NewPacchettoComponent extends ActionPacchetto implements OnInit, On
         NeuroApp.custom_error(error,"Error")
         this.pktSubscr.unsubscribe()
       }
-    )
+    )*/
   } // salvaPacchetto(form)
 
 

@@ -102,7 +102,7 @@ export class ModPacchettoComponent extends ActionPacchetto implements OnInit, On
 
 
   /**
-   * Salva su db la nuova voce di glossario inserita via form
+   * Salva su db il pacchetto modificato.
    * @param form 
    */
   salvaPacchettoModificato(form) {
@@ -146,7 +146,7 @@ export class ModPacchettoComponent extends ActionPacchetto implements OnInit, On
         this.pktSubscr.unsubscribe()
       }
     )
-  } // salvaPacchetto(form)
+  } // salvaPacchettoModificato(form)
 
 
   /**

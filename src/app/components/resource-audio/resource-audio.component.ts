@@ -8,11 +8,11 @@ import {
 import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
-//import { ResourceAudioService } from '../../services/resource-audio/resource-audio.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordMedia } from '../../record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
+declare var NeuroAppJS : any;
 declare var $ : any;
 declare var bootbox: any;
 
@@ -142,19 +142,19 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
   */
   listaFileAudio() {
     console.log("ResourceAudioComponent.loadAudios")
-  
-    $('#waitDiv').show();
+    
+    NeuroApp.showWait();
     this.lista_audio = []
     let exclude_id  = '' // nessun id viene escluso 
     let tipo_media  = 'audio'
-    NeuroApp.showWait();
   
     let serv = this.neuroAppService.listaMedia(exclude_id, tipo_media)
     this.mediaSubscr = serv.subscribe(
         result => {
 
           result.map(audio => {
-            audio.url_media = NeuroApp.G_URL_ROOT +  "/" + audio.url_media
+            if (NeuroAppJS.DEVELOP_ENV)
+              audio.url_media = NeuroApp.G_URL_ROOT +  "/" + audio.url_media
             console.log(audio.url_media)
           })
 

@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/fontawesome-free-5.5.0-web/css/all.min.css",
               "./src/assets/css/my-style.css",
               "./src/assets/css/neuro-app.css",

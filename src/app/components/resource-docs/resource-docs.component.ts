@@ -14,6 +14,8 @@ import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.compone
 
 declare var $ : any;
 declare var bootbox: any;
+declare var NeuroAppJS: any;
+
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
 
 
@@ -27,29 +29,15 @@ export class ResourceDocsComponent implements OnInit {
   // lista dei documenti presenti nel DB
   lista_docs :  RecordMedia[];
 
-  // per la registrazione al servizio di accesso alle procedure del DB
+  // Registrazione al servizio di accesso alle procedure del DB
   mediaSubscr:  Subscription;
   
-  // l'array 'icons' associa una icona ad un estensione
-  readonly icons: { [id: string]: string } = {
-    '.txt'  :  "txt-icon.png",
-    '.doc'  :  "word-icon.png",
-    '.docx' :  "word-icon.png",
-    '.docm' :  "word-icon.png",
-    '.rtf'  :  "word-icon.png",
-    '.pdf'  :  "pdf-icon.png",
-    '.xls'  :  "xls-icon.png",
-    '.xlsx' :  "xls-icon.png"
-  }
-
-  // path delle immagini
-  readonly root_images = NeuroApp.ROOT_ICONS
-  
-  // Accesso al tag ng-template referenziato come dynamic_container
+  // Accesso al tag ng-template referenziato nel .html come 'dynamic_file_uploader'
   @ViewChild('dynamic_file_uploader', { read: ViewContainerRef }) entry: ViewContainerRef;
   
-  componentUploadRef: any
 
+  // Riferimento al componente dinamico per effettuare l'upload
+  componentUploadRef: any
 
 
   /**
@@ -87,14 +75,22 @@ export class ResourceDocsComponent implements OnInit {
       this.mediaSubscr.unsubscribe()
     
       if ( this.componentUploadRef ) {
-      this.componentUploadRef.destroy()  
-    }
+        this.componentUploadRef.destroy()  
+      }
   }
 
-  createComponentUpload (
-    title:string,
-    id_file_upload:string,
-    accept:string) {
+
+  /**
+   * Crea una istanza del componente dinamico di upload.
+   * 
+   * @param title           : il titolo inserito nella interfaccia di upload
+   * @param id_file_upload  : identificativo del campo html di <input type=file ...>
+   * @param accept          : il valore dell'attributo accept per il campp di input
+   */
+  createComponentUpload ( title:string,
+                          id_file_upload:string,
+                          accept:string )
+  {
 
     if ( this.componentUploadRef ) {
       this.componentUploadRef.destroy()  
@@ -116,29 +112,24 @@ export class ResourceDocsComponent implements OnInit {
     })
   }
 
-  open(url:string) {
-    window.open(url)
-  }
-  
 
   /**
-  * Carica la lista dei documenti presenti sul database 
+  * Carica la lista di tutti i documenti presenti sul sistema. 
   */
   loadDocs() {
     console.log("ResourceDocsComponent.loadDocs")
-    
-    $('#waitDiv').show();
+    NeuroApp.showWait();
     this.lista_docs = []
     let exclude_id  = '' // nessun id viene escluso 
     let tipo_media  = 'doc'
-    NeuroApp.showWait();
     
     let serv = this.neuroAppService.listaMedia(exclude_id, tipo_media)
     this.mediaSubscr = serv.subscribe(
         result => {
 
           result.map(doc => {
-            doc.url_media = NeuroApp.G_URL_ROOT +  "/" + doc.url_media
+            if (NeuroAppJS.DEVELOP_ENV)
+              doc.url_media = NeuroApp.G_URL_ROOT +  "/" + doc.url_media
             console.log(doc.url_media)
           })
 
@@ -186,10 +177,10 @@ export class ResourceDocsComponent implements OnInit {
    * @param url
    */
   docIcon(url) {
-    if ( this.icons[NeuroApp.fileExt(url)] == undefined )
-      return this.root_images + "/generic-doc-icon.png"
+    if ( NeuroApp.icons[NeuroApp.fileExt(url)] == undefined )
+      return NeuroApp.ROOT_ICONS + "/generic-doc-icon.png"
     else
-      return this.root_images + "/" + this.icons[ NeuroApp.fileExt(url) ]
+      return NeuroApp.ROOT_ICONS + "/" + NeuroApp.icons[ NeuroApp.fileExt(url) ]
   }
 
 
@@ -229,7 +220,6 @@ export class ResourceDocsComponent implements OnInit {
      */
     cancellaDocumento(doc:RecordMedia) {
       console.log("ListaGlossarioComponent.cancellaDocumento")
-      $('#waitDiv').show()
     
       NeuroApp.showWait()
     
