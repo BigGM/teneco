@@ -21,6 +21,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
   @Input() listaEsercizi: ListaEserciziComponent
 
+  ambito    : string
   entryEsercizio: RecordEsercizio   // questo e' l'esercizio all'apertura della finestra
   esercizio : RecordEsercizio
 	gruppi    : Array<Gruppo>
@@ -53,7 +54,15 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
       else
         this.loadGruppi()
 
+      /**
+       *  L'ambito sta nella lista dei pacchetti e ci arrivo passando dalla lista degli esercizi,
+       *  ricordo che :
+       *  ambito = "1"   => riabilitazione neuromotria
+       *  ambito = "3"   => formazione
+       */
+      this.ambito = this.listaEsercizi.listaPacchetti.AMBITO
 
+      
       /**
        * Si sottoscrive al componente ListaEserciziComponent per ricevere l'azione da eseguire.
        * Il campo 'obj' in input ha un campo azione che puo' essere "nuovo_esercizio" o
@@ -63,28 +72,30 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
        * nel secondo caso 'obj' avra' anche un campo 'esercizio' con l'esercizio da modificare
        */
       this.listaEsercizi.openActionEsercizio.subscribe (obj => {
-        console.log("this.listaEsercizi.openActionEsercizio.subscribe", obj)
+          console.log("this.listaEsercizi.openActionEsercizio.subscribe", obj)
 
-        this.azione = obj.azione
+          this.azione = obj.azione
 
-        if (this.azione=="nuovo_esercizio") {
-            this.titolo = "Nuovo esercizio"
-            this.esercizio.reset()
-            this.esercizio.id_pkt = obj.id_pkt
-            this.entryEsercizio.reset()
-        }
+          
+          if (this.azione=="nuovo_esercizio") {
+              this.titolo = this.ambito=="1" ? "Nuovo esercizio" : "Nuova procedura"
+              this.esercizio.reset()
+              this.esercizio.id_pkt = obj.id_pkt
+              this.entryEsercizio.reset()
+          }
+          else if (this.azione=="modifica_esercizio") {
+              this.titolo = "Modifica esercizio"
+              this.titolo = this.ambito=="1" ? "Modifica esercizio" : "Modifica procedura"
+              this.esercizio.copy(obj.esercizio)
+              this.entryEsercizio.copy(obj.esercizio)
+          }
 
-        else if (this.azione=="modifica_esercizio") {
-            this.titolo = "Modifica esercizio"
-            this.esercizio.copy(obj.esercizio)
-            this.entryEsercizio.copy(obj.esercizio)
-        }
-       
-        // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
-        $('#summernote-actex-descr').summernote('code', this.esercizio.descr)
-        $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
-        $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
-        $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
+
+          // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
+          $('#summernote-actex-descr').summernote('code', this.esercizio.descr)
+          $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
+          $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
+          $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
       })
   } // ngOnInit()
 
@@ -210,11 +221,15 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
                   ? "Esercizio aggiunto al pacchetto"
                   : "Esercizi modificato"
 
-    let serv = this.exService.salvaEsercizio(this.esercizio, php_script, db_proc)
+
+    // lancia il salvataggio su una copia codificata dell'esercizio corrente, per trattare
+    // correttamente i caratteri antipatici
+    let es_encoded = this.esercizio.encode()
+
+    let serv = this.exService.salvaEsercizio(es_encoded, php_script, db_proc)
     this.exSubscr = serv.subscribe (
       result => {
         NeuroApp.hideWait()
-        
         NeuroApp.custom_info(info_msg)
         // Aggiorna la lista degli esercizi del pacchetto
         this.listaEsercizi.reloadEserciziPacchetto()

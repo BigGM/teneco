@@ -5,21 +5,58 @@ var NeuroAppJS = {
   //G_URL_ROOT : "http://192.168.2.63:47000/",
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
+  
+  
+   /**
+    * Controlla periodicamente la connessione col server
+    */
+   checkServerConnection : function () {
+     $.ajax({
+        type: "HEAD",
+        cache: false,
+        async: true,
+        timeout: 20000,
+        // il valore appeso allo script php serve a fare in modo che il browser non utilizzi la cache
+        url: NeuroAppJS.G_URL_ROOT + "/cgi-bin/internet_conn.php?rand=" + Math.round(Math.random() * 100000),
+        success: function(message, text, response) {
+           NeuroAppJS.showAlertConnection('hide');
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+           NeuroAppJS.showAlertConnection('show');
+        }
+     })
+   } ,
+   
+   
+   /**
+    * Mostra il messaggio di connesione persa o lo nasconde quando la connessione e' di nuovo funzionante.
+    **/
+   showAlertConnection : function (value) {
+     var opacity = $('#div-lost-internet').css('opacity');
+     
+     if (value=='show' && opacity==0) {
+        $('#div-lost-internet').animate( {'top': '+=380px', 'opacity':1}, 350);
+        $('#waitDiv').hide();
+     }
+     else if (value=='hide' && opacity==1)
+        $('#div-lost-internet').animate( {'top': '-=380px', 'opacity':0}, 350);
+   } ,
+  
 
-    
+
   /**
-  * Popup per i messaggi di errore
-  **/
-  custom_error : function(output_msg, title_msg) { 
-    if (!title_msg) 
-      title_msg = 'Error'; 
-    bootbox.alert({  
-      size: 'large', 
-      title: '<H3 style="color:white;">'+title_msg+"</H3>", 
-      message: '<h4><label class="alert alert-danger" style="width:100%;font-weight:normal;">'+output_msg+'</label></h4>',
-      draggable:true
-    })
-  }, // function custom_error(output_msg, title_msg) 
+   * Popup per i messaggi di errore
+   **/
+   custom_error : function(output_msg, title_msg) { 
+       if (!title_msg) 
+         title_msg = 'Error'; 
+       bootbox.alert({  
+         size: 'large', 
+         title: '<H3 style="color:white;">'+title_msg+"</H3>", 
+         message: '<h4><label class="alert alert-danger" style="width:100%;font-weight:normal;">'+output_msg+'</label></h4>',
+         draggable:true
+       })
+   }, // function custom_error(output_msg, title_msg) 
 
 
   /**

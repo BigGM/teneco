@@ -21,7 +21,7 @@ export class RecordEsercizio {
    }
   
    /**
-    * Copia l'eserizio in input su questo esercizio.
+    * Copia l'esercizio in input su questo esercizio.
     * @param rec il record da ricopiare
     */
    copy(rec:RecordEsercizio) {
@@ -64,5 +64,37 @@ export class RecordEsercizio {
       this.alert       = NeuroApp.trimField ( this.alert )
       this.limitazioni = NeuroApp.trimField ( this.limitazioni )
       this.nome_grp    = NeuroApp.trimField ( this.nome_grp )
+   }
+
+   /**
+     * Crea una copia dell'esercizio corrente con i campi stringa codificati.
+     */
+   public encode() : RecordEsercizio {
+      let out = new RecordEsercizio
+      out.id_ex = this.id_ex
+      out.id_pkt = this.id_pkt
+      out.id_grp = this.id_grp
+      out.count_media = this.count_media
+      out.nome  = encodeURIComponent(this.nome)
+      out.descr = encodeURIComponent(this.descr)
+      out.testo = encodeURIComponent(this.testo)
+      out.alert = encodeURIComponent(this.alert)
+      out.limitazioni = encodeURIComponent(this.limitazioni)
+      out.nome_grp = encodeURIComponent(this.nome_grp)
+      
+      return out
+   }
+
+   /**
+     * Decodifica i campi stringa dell'esercizio in input.
+     * @param es
+     */
+   public static decode(es : RecordEsercizio) {
+      es.nome  = decodeURIComponent(es.nome)
+      es.descr = decodeURIComponent(es.descr)
+      es.testo = decodeURIComponent(es.testo)
+      es.alert = decodeURIComponent(es.alert)
+      es.limitazioni = decodeURIComponent(es.limitazioni)
+      es.nome_grp = decodeURIComponent(es.nome_grp)
    }
 }

@@ -4,7 +4,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../../neuro-app'
-import { Outcome } from '../../outcome'
+import { Outcome } from '../../classes/outcome'
 import { NeuroAppService } from '../neuro-app.service';
 import { RecordPacchetto } from '../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../classes/record-esercizio'
@@ -57,7 +57,7 @@ export class RiabilNeuromotoriaService {
 
   // Parametro in uscita per comunicare alla finestra modale di modifica
   // il record di glossario da modificare
-  @Output() change_pkt:EventEmitter<RecordPacchetto>;
+  //@Output() change_pkt:EventEmitter<RecordPacchetto>;
 
 
   constructor (
@@ -66,18 +66,18 @@ export class RiabilNeuromotoriaService {
   ) {
     //console.log("NeuroApp.G_URL_ROOT ==> " + NeuroApp.G_URL_ROOT )
     this.G_URL_ROOT = NeuroApp.G_URL_ROOT;
-    this.change_pkt = new EventEmitter();
+//    this.change_pkt = new EventEmitter();
   }
 
 
   /**
    * Invia alla finestra modale di modifica il record da modificare.
    * @param rec record di glossario da modificare
-   */
+   *
   sendRecordToModal(rec: RecordPacchetto) {
     this.change_pkt.emit(rec)
 
-  }
+  } */
 
 
   /**
@@ -85,7 +85,7 @@ export class RiabilNeuromotoriaService {
    */
   loadPacchetti(ambito) : Observable<RecordPacchetto[]> {
 
-    let db_proc = "NeuroApp.lista_pacchetti"
+    let db_proc = "NeuroApp.lista_pacchetti2"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_pacchetti.php?proc="+db_proc+"&ambito="+ambito;
     let url = this.G_URL_ROOT+"/cgi-bin/lista_pacchetti2.php?proc="+db_proc+"&ambito="+ambito;
     
@@ -104,7 +104,7 @@ export class RiabilNeuromotoriaService {
             //RecordPacchetto.setShortDescr(records as RecordPacchetto[])
         }),
         tap( records => {
-          console.log('** fetched records **', records)
+          //console.log('** fetched records **', records)
         }),
         catchError( this.neuroService.handleError ),
     )
@@ -143,6 +143,7 @@ export class RiabilNeuromotoriaService {
    */
   private protectNewLine = function(s) {
     console.log("protectNewLine " + s );
+    return s
     if (s==null||s=="")
       return "";
     s = s.replace(/(?:\r\n|\r|\n)/g, '<br>');
@@ -150,44 +151,6 @@ export class RiabilNeuromotoriaService {
   }
 
 
-  /**
-   * Salva un pacchetto nel DB.
-   * @param pkt pacchetto
-   * @param ambito  - 1 ( riabilitazione neuromotoria )
-   *                  2 ( riabilitazione cognitiva )
-   *
-  salvaPacchetto(pkt:RecordPacchetto, ambito:string) {
-    let db_proc = "NeuroApp.salva_pacchetto"
-    let url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto2.php?proc="+db_proc+
-                   "&nome="+pkt.nome +
-                   "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
-                   "&pre_req="+this.protectNewLine(pkt.pre_req) +
-                   "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
-                   "&alert_msg="+pkt.alert_msg +
-                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
-                   "&bibliografia="+pkt.bibliografia +
-                   "&patologie_secondarie="+pkt.patologie_secondarie +
-                   "&valutazione="+pkt.valutazione+
-                   "&ambito="+ambito;
-
-    return this.http.get<Outcome>(url)
-    .pipe(
-        retry(1),
-        map ( outcome => {
-          //console.log('** outcome **', outcome)
-            if (outcome.status.toLowerCase()=="exception" )
-              throw new Error(`${outcome.message}`) 
-            return outcome
-        }),
-        tap( outcome => {
-          //console.log('** outcome **', outcome)
-        }),
-        catchError( this.neuroService.handleError )
-    )
-  } //salvaPacchetto() */
-  
-  
-  
   /**
    * Salva un pacchetto nel DB.
    * @param pkt         pacchetto
@@ -203,19 +166,24 @@ export class RiabilNeuromotoriaService {
     let id_pkt = ""
     if (pkt.id >= 0)
       id_pkt = "&id_pkt="+pkt.id
+
+    // Codifica i campi del pacchetto prima di eseguire la richiesta http al server
+    pkt = pkt.encode()
   
     let url = this.G_URL_ROOT+"/cgi-bin/"+php_script+"?proc="+db_proc+
                    id_pkt +
-                   "&nome="+pkt.nome +
-                   "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
-                   "&pre_req="+this.protectNewLine(pkt.pre_req) +
-                   "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
+                   "&nome="+ pkt.nome +
+                   "&descr="+ pkt.descr +
+                   "&pre_req="+ pkt.pre_req +
+                   "&contro_ind="+ pkt.contro_ind +
                    "&alert_msg="+pkt.alert_msg +
-                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
-                   "&bibliografia="+pkt.bibliografia +
-                   "&patologie_secondarie="+pkt.patologie_secondarie +
-                   "&valutazione="+pkt.valutazione+
+                   "&alert_msg_visibile=" + pkt.alert_msg_visibile +
+                   "&bibliografia=" + pkt.bibliografia +
+                   "&patologie_secondarie=" + pkt.patologie_secondarie +
+                   "&valutazione=" + pkt.valutazione+
                    "&ambito="+ambito;
+
+    console.log(url)
 
     return this.http.get<Outcome>(url)
     .pipe(
@@ -234,44 +202,6 @@ export class RiabilNeuromotoriaService {
   } //salvaPacchetto()
   
   
-  /**
-   * Salva nel DB un pacchetto modificato.
-   * @param pkt pacchetto
-   * @param ambito  - 1 ( riabilitazione neuromotoria )
-   *                  2 ( riabilitazione cognitiva )
-   */
-  salvaPacchettoModificato(pkt:RecordPacchetto, ambito:string) {
-    let db_proc = "NeuroApp.salva_pacchetto_modificato"
-    var url = this.G_URL_ROOT+"/cgi-bin/salva_pacchetto_modificato2.php?proc="+db_proc+
-                   "&id_pkt="+pkt.id +
-                   "&nome="+pkt.nome +
-                   "&descr="+pkt.descr.replace(/&amp;/,'0x26').replace(/#/,'0x23') +
-                   "&pre_req="+this.protectNewLine(pkt.pre_req) +
-                   "&contro_ind="+this.protectNewLine(pkt.contro_ind) +
-                   "&alert_msg="+pkt.alert_msg +
-                   "&alert_msg_visibile="+pkt.alert_msg_visibile +
-                   "&bibliografia="+pkt.bibliografia +
-                   "&patologie_secondarie="+pkt.patologie_secondarie +
-                   "&valutazione="+pkt.valutazione+
-                   "&ambito="+ambito;
-    
-    return this.http.get<Outcome>(url)
-    .pipe(
-        retry(1),
-        map ( outcome => {
-          console.log('** outcome **', outcome)
-            if (outcome.status.toLowerCase()=="exception" )
-              throw new Error(`${outcome.message}`) 
-            return outcome
-        }),
-        tap( outcome => {
-          //console.log('** outcome **', outcome)
-        }),
-        catchError( this.neuroService.handleError )
-    )
-  } //salvaPacchettoModificato()
-
-
 
  /**
    * Carica la lista degli esercizi del pacchetto specificato in input.

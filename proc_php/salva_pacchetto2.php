@@ -37,12 +37,9 @@ function msg_fmt( $e ) {
 
 parse_str($_SERVER['QUERY_STRING']);
 
-$entity = array('0x26', '0x23');
-$replace_with = array('&', '#');
-
 $proc  = rawurldecode($proc);
 $nome  = rawurldecode($nome);
-$descr = str_replace($entity,$replace_with,rawurldecode($descr));
+$descr = rawurldecode($descr);
 $pre_req    = rawurldecode($pre_req);
 $contro_ind = rawurldecode($contro_ind);
 $alert_msg  = rawurldecode($alert_msg);

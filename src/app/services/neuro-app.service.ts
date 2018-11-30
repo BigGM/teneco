@@ -4,10 +4,10 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../neuro-app'
-import { RecordMedia, RecordMediaError } from '../record-media'
+import { RecordMedia } from '../classes/record-media'
 import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
 import { Gruppo } from '../classes/gruppo'
-import { Outcome } from '../outcome'
+import { Outcome } from '../classes/outcome'
 
 
 // jQuery
@@ -167,7 +167,7 @@ export class NeuroAppService {
             return (records as Gruppo[])
         }),
         tap( records => {
-          console.log('** fetched records **', records)
+          //console.log('** fetched records **', records)
         }),
         catchError( this.handleError ),
     )

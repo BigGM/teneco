@@ -16,3 +16,24 @@
    padding: 0px 10px;
    background-color: rgba(4,48,83,0.92)
 }
+
+
+/**
+ * Stili della finestra di allarme connessione internet
+ */
+.alert-danger-2 {
+   font-family:Calibri,tahoma,verdana;
+   font-size:36px;
+   background-color: rgb(255, 230, 20);
+   color: rgb(30,30,0);
+}
+#div-lost-internet {
+   z-index:4000;
+   position: fixed;
+   top:  -300px;
+   width: 550px;
+   left: -webkit-calc(50% - 275px);
+   left: -moz-calc(50% - 275px);
+   left: calc(50% - 275px);
+   opacity: 0;
+}

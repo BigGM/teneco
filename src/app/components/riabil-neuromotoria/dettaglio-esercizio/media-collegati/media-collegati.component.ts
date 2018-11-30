@@ -5,7 +5,7 @@ import { NeuroAppService } from '../../../../services/neuro-app.service'
 import { RiabilNeuromotoriaService } from '../../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { RecordEsercizio } from '../../../../classes/record-esercizio'
 import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
-import { RecordMedia } from '../../../../record-media'
+import { RecordMedia } from '../../../../classes/record-media'
 
 
 

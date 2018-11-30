@@ -14,7 +14,7 @@
             <p>
             <table class="w-100"><tr>
             <td class="descr-media text-white">{{video.descr}}</td>
-            <td>&nbsp;<i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(video)"></i></td>
+            <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(video)"></i></td>
             </tr></table>
         </div>
       </div>
@@ -30,14 +30,14 @@
 			style="border-radius:4px;margin:0">
 
 			<div *ngFor="let audio of lista_audio" class="col-sm-6 col-md-4 mb-3">
-					<div class="thumbnail thumbnail-media my-bg-dark p-3 word-break">
+				<div class="thumbnail thumbnail-media my-bg-dark p-3 word-break">
               <audio controls style="width:100%"> <source [src]="audio.url"></audio>
               <p>
-							<table class="w-100"><tr>
-							<td class="descr-media text-white">{{audio.descr}}</td>
-							<td>&nbsp;<i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(audio)"></i></td>
-							</tr></table>
-					</div>
+                  <table class="w-100"><tr>
+                  <td class="descr-media text-white">{{audio.descr}}</td>
+                  <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(audio)"></i></td>
+                  </tr></table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
              <p>
              <table class="w-100"><tr>
              <td class="descr-media text-white">{{image.descr}}</td>
-             <td>&nbsp;<i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(image)"></i></td>
+             <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(image)"></i></td>
              </tr></table>
            </div>
      </div>

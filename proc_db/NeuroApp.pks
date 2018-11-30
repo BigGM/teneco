@@ -80,6 +80,11 @@ PROCEDURE lista_patologie_gruppo(p_code_gruppo in varchar2,
 PROCEDURE lista_pacchetti(p_ambito in varchar2,
                           p_outcome in out varchar2, 
                           p_cursor OUT SYS_REFCURSOR);
+                          
+                          
+PROCEDURE lista_pacchetti2(p_ambito in varchar2,
+                          p_outcome in out varchar2, 
+                          p_cursor OUT SYS_REFCURSOR);
 
 
 
@@ -180,6 +185,8 @@ FUNCTION  media_collegato(p_id_media in varchar2) return varchar2;
 
 PROCEDURE rimuovi_media(p_id_media in varchar2,
                         p_outcome in out varchar2);
+                        
+FUNCTION count_esercizi (p_id_pacchetto in integer) return integer;                        
                         
 
 END NeuroApp;

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { NeuroApp } from '../../../neuro-app';
 import { RiabilNeuromotoriaService } from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { ListaPacchettiComponent } from '../lista-pacchetti/lista-pacchetti.component';
+import { PacchettiFormazioneComponent } from '../../formazione/pacchetti-formazione/pacchetti-formazione.component';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../../classes/record-esercizio'
 
@@ -34,11 +35,12 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   /** Per l'accesso alla lista dei pacchetti */ 
-  @Input() listaPacchetti: ListaPacchettiComponent;
+  @Input() listaPacchetti: ListaPacchettiComponent | PacchettiFormazioneComponent
 
 
   /** Per comunicare alla finestra di dettaglio la richiesta di apertura  
-   *  con l'esercizio da mostrare */
+   *  con l'esercizio da mostrare.
+   **/
   @Output() openDettaglio: EventEmitter<RecordEsercizio> = new EventEmitter
 
 
@@ -50,7 +52,6 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   constructor( private exService : RiabilNeuromotoriaService) {
-    console.log( "ListaEserciziComponent costruttore" )
     this.pacchetto = new RecordPacchetto
     this.esercizi = []
     this.view_esercizi_visible = false
@@ -60,10 +61,21 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   ngOnInit() {
+    /**
+     * Si sottoscrive alla lista dei pacchetti per ricevere il pacchetto di cui si vuole
+     * visualizzzare gli esercizi, oppure, se pkt e' vuoto per chiudere il dettaglio
+     * qualore fosse aperto.
+     */
     this.listaPacchetti.selectedPkt.subscribe ( pkt => {
-      //console.log(pkt)
-      this.pacchetto.copy(pkt)      
-      this.loadEserciziPacchetto()
+      //console.log("this.listaPacchetti.selectedPkt", pkt)
+      if ( pkt ) {
+        console.log(pkt)
+        this.pacchetto.copy(pkt)
+        console.log(this.pacchetto)
+        this.loadEserciziPacchetto()
+      } else {
+          this.view_esercizi_visible = false
+      }
       // Qualora fosse aperta la vista di dettaglio esercizio
       // richiede al componente di nascondersi
       this.hideDettaglioEsercizio()
@@ -103,6 +115,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
+
   /**
    * aggiorna il numero dei multimedia associati all'esericizio selezionato (id_esercizio_selected)
    * @param new_count il valore aggiornato
@@ -130,6 +143,9 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
           console.log(result)
           NeuroApp.hideWait()
           this.esercizi = result
+          this.esercizi.forEach(es => {
+            RecordEsercizio.decode(es)
+          })
           this.view_esercizi_visible = true
           NeuroApp.scrollTo('divListaEserciziPacchetto')
           this.exSubscr.unsubscribe()
@@ -151,6 +167,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     NeuroApp.removePopover()
     this.esercizi = []
     this.loadEserciziPacchetto();
+    this.hideDettaglioEsercizio()
   }
 
 
@@ -162,11 +179,22 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   {
     NeuroApp.removePopover()
     event.preventDefault()
+
+    let ambito  = this.listaPacchetti.AMBITO
+    
+    let title   = ambito=="1" 
+                  ? "<h3>Cancella esercizio</h3>"
+                  :  "<h3>Cancella procedura</h3>"
+
+    let message = ambito=="1" 
+                  ? "<h6 p-4 style='line-height:1.6;'>Conferma rimozione dell'esercizio <label class='text-danger'>\""+ex.nome+"\"</label></h6>"
+                  : "<h6 p-4 style='line-height:1.6;'>Conferma rimozione della procedura <label class='text-danger'>\""+ex.nome+"\"</label></h6>"
     
     let self = this;
+    
     bootbox.dialog ({
-        title: "<h3>Cancella esercizio</h3>", 
-        message: "<h6 p-4 style='line-height:1.6;'>Conferma rimozione dell'esercizio <label class='text-danger'>\""+ex.nome+"\"</label></h6>",
+        title: title, 
+        message: message,
         draggable:true,
         buttons:{
           "Annulla":{
@@ -181,7 +209,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
        } // end buttons
     }); // bootbox.dialog
 
-  } // confermaCancellaPacchetto()
+  } // confermaCancellaEsercizio()
 
 
   /**
@@ -200,8 +228,9 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
           this.exSubscr.unsubscribe()
           NeuroApp.hideWait()
           NeuroApp.custom_info(`Esercizio "<b>${ex.nome}</b>" cancellato`)
-          // Aggiorna la lista dei pacchetti
+          // Aggiorna la lista degli esercizi di questo pacchetto
           this.reloadEserciziPacchetto()
+          this.listaPacchetti.updateNumEsercizi(ex.id_pkt, this.esercizi.length )
         },
         error => {
           this.exSubscr.unsubscribe()
@@ -211,8 +240,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     )
   }
 
-  
-  
+   
   /** 
    * Invia al componente di dettaglio l'esercizio da mostrare.
    */

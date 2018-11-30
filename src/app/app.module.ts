@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
-// Librerie
+// Librerie esterne
 import { FileUploadModule } from 'ng2-file-upload';
 
 // Componenti di progetto
@@ -24,23 +24,25 @@ import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-uplo
 import { RiabilNeuromotoriaComponent } from './components/riabil-neuromotoria/riabil-neuromotoria.component';
 import { RiabilCognitivaComponent } from './components/riabil-cognitiva/riabil-cognitiva.component';
 import { ListaPacchettiComponent } from './components/riabil-neuromotoria/lista-pacchetti/lista-pacchetti.component'
+import { ListaEserciziComponent } from './components/riabil-neuromotoria/lista-esercizi/lista-esercizi.component';
+import { DettaglioEsercizioComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/dettaglio-esercizio.component';
+import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/media-collegati/media-collegati.component';
+import { ActionEsercizioComponent } from './components/riabil-neuromotoria/action-esercizio/action-esercizio.component';
+import { ActionPacchettoComponent } from './components/riabil-neuromotoria/action-pacchetto/action-pacchetto.component';
+import { FormazioneComponent } from './components/formazione/formazione.component';
 
 
 // Servizi di progetto
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
 import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service';
+
+
+// Pipe
 import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
-import { ListaEserciziComponent } from './components/riabil-neuromotoria/lista-esercizi/lista-esercizi.component';
-//import { ModPacchettoComponent } from './components/riabil-neuromotoria/mod-pacchetto/mod-pacchetto.component';
-//import { NewPacchettoComponent } from './components/riabil-neuromotoria/new-pacchetto/new-pacchetto.component';
-//import { NewEsercizioComponent } from './components/riabil-neuromotoria/new-esercizio/new-esercizio.component';
-import { DettaglioEsercizioComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/dettaglio-esercizio.component';
-import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/media-collegati/media-collegati.component';
-import { ActionEsercizioComponent } from './components/riabil-neuromotoria/action-esercizio/action-esercizio.component';
-import { ActionPacchettoComponent } from './components/riabil-neuromotoria/action-pacchetto/action-pacchetto.component';
+import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
 
 
 @NgModule({
@@ -59,17 +61,16 @@ import { ActionPacchettoComponent } from './components/riabil-neuromotoria/actio
     RiabilNeuromotoriaComponent,
     RiabilCognitivaComponent,
     ListaPacchettiComponent,
-    //NewPacchettoComponent,
     SafePipe,
     TruncatePipe,
     PlaintextPipe,
-    //ModPacchettoComponent,
     ListaEserciziComponent,
-    //NewEsercizioComponent,
     DettaglioEsercizioComponent,
     MediaCollegatiComponent,
     ActionEsercizioComponent,
-    ActionPacchettoComponent
+    ActionPacchettoComponent,
+    FormazioneComponent,
+    PacchettiFormazioneComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,17 @@
-<!-- Il div con la gif di wait visualizzato nel caricamento di una pagina -->
-<div id='waitDiv' style='display:none;z-index:1000'>
-  <img id='waitImage' src='../assets/images/wait.gif' alt='Loading'/>
-</div>
+
+
+  <!-- Il div per il messaggio di alert quando il server non e' raggiungibile -->
+  <div id="div-lost-internet" class="alert-danger-2 p-4 shadow-lg">
+    <i class="fas fa-exclamation-triangle" style="font-size:40px"></i>
+    <label style="position:relative;top:-2px;font-weight:normal">&nbsp;Web server non raggiungibile</label><br>
+    <label style="position:relative;top:-16px;left:53px;font-weight:normal;font-size:22px">(Connessione internet assente e/o server down)</label>
+  </div>
+
+  <!-- Il div con la gif di wait visualizzato nel caricamento di una pagina -->
+  <div id='waitDiv' style='display:none;z-index:1000'>
+    <img id='waitImage' src='../assets/images/wait.gif' alt='Loading'/>
+  </div>
+
 
 <nav class="navbar navbar-expand-sm navbar-dark fixed-top navbar-shadow" >
 
@@ -30,22 +40,26 @@
               </div>
           </li>
        
-          <li class="nav-item dropdown">
-            <button class="btn btn-primary btn-navbar dropdown-toggle" id="navbardrop" data-toggle="dropdown">
-              Risorse
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" routerLink="/video">Video</a>
-              <a class="dropdown-item" routerLink="/audio">Audio</a>
-              <a class="dropdown-item" routerLink="/images">Immagini</a>
-              <a class="dropdown-item" routerLink="/docs">Documenti</a>
-            </div>
-          </li>
+          <li class="nav-item">
+              <button class="btn btn-primary btn-navbar" routerLink="/formazione">Formazione</button>
+           </li>
+
  
            <li class="nav-item">
               <button class="btn btn-primary btn-navbar" routerLink="/pazienti">Pazienti</button>
            </li>
-     
+
+           <li class="nav-item dropdown">
+              <button class="btn btn-primary btn-navbar dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+                Risorse
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/video">Video</a>
+                <a class="dropdown-item" routerLink="/audio">Audio</a>
+                <a class="dropdown-item" routerLink="/images">Immagini</a>
+                <a class="dropdown-item" routerLink="/docs">Documenti</a>
+              </div>
+            </li>
            <li class="nav-item">
              <button class="btn btn-primary btn-navbar" routerLink="/glossario" >Glossario</button>
             </li>

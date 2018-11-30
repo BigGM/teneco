@@ -2,10 +2,12 @@
 
 header('Access-Control-Allow-Origin: *'); 
 
+include('msg_fmt.php');
+
 /**
  * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
  * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
- */
+ *
 function msg_fmt( $e ) {
    $replace_what = array('&quot;');
    $replace_with = array(' ');
@@ -13,12 +15,14 @@ function msg_fmt( $e ) {
    $msg = str_replace($replace_what,$replace_with,$msg);
    $msg = preg_replace('#\R+#', '<br>', $msg);
    return $msg;
-}
+} */
 
 
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
+
+
 
 
 /**
@@ -109,16 +113,17 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
    if ($outp != $start) {$outp .= ",";}
    $outp .= '{'.
-              '"id":'          . $row[0] . ','  . 
-              '"nome":"'       . $row[1] . '",' .
-              '"descr":"'      . $row[2] . '",' .
-              '"contro_ind":"' . $row[3] . '",' .
-              '"pre_req":"'    . $row[4] . '",' .
-              '"alert_msg":"'  . $row[5] . '",'  .
-              '"alert_msg_visibile":"'  . $row[6] . '",'  .
-              '"bibliografia":"'  . $row[7] . '",'  .
-              '"patologie_secondarie":"'  . $row[8] . '",'  .
-              '"valutazione":"'  . $row[9] . '"'  .
+              '"id":'          . rawurlencode($row[0]) . ','  . 
+              '"nome":"'       . rawurlencode($row[1]) . '",' .
+              '"descr":"'      . rawurlencode($row[2]) . '",' .
+              '"contro_ind":"' . rawurlencode($row[3]) . '",' .
+              '"pre_req":"'    . rawurlencode($row[4]) . '",' .
+              '"alert_msg":"'  . rawurlencode($row[5]) . '",'  .
+              '"alert_msg_visibile":"' . rawurlencode($row[6]) . '",'  .
+              '"bibliografia":"'  . rawurlencode($row[7]) . '",'  .
+              '"patologie_secondarie":"' . rawurlencode($row[8]) . '",'  .
+              '"valutazione":"'  . rawurlencode($row[9]) . '",'  .
+              '"num_esercizi":"'  . $row[10] . '"'  .
             '}';
 }
 $outp .="]";

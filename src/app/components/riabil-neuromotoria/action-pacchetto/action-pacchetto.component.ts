@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import { RiabilNeuromotoriaService } from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { NeuroApp } from '../../../neuro-app';
 import { ListaPacchettiComponent } from '../lista-pacchetti/lista-pacchetti.component';
+import { PacchettiFormazioneComponent } from '../../formazione/pacchetti-formazione/pacchetti-formazione.component';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
-
 
 // questo e' per jQuery
 declare var $: any;
@@ -17,12 +17,12 @@ declare var $: any;
 })
 export class ActionPacchettoComponent implements OnInit, OnDestroy {
 
-  @Input() listaPacchetti: ListaPacchettiComponent;
+  @Input() listaPacchetti: ListaPacchettiComponent | PacchettiFormazioneComponent
 
   // questo e' il pacchetto all'apertura della finestra modale in modalita: modifica
   entryPacchetto : RecordPacchetto
 
-  readonly ambito = "1"
+  ambito    : string
   pacchetto : RecordPacchetto
   pktSubscr : Subscription
   azione    : string;         // azione richiesta: nuovo_esercizio, modifica_esercizio
@@ -37,7 +37,10 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
       this.pacchetto.reset()
       this.entryPacchetto = new RecordPacchetto()
       this.pktSubscr = null
+      this.ambito = this.listaPacchetti.AMBITO
       this.initSummernote()
+
+      console.log("AMBITO from listaPacchetti", this.listaPacchetti.AMBITO)
 
       /**
        * Si sottoscrive al componente ListaEserciziComponent per ricevere l'azione da eseguire.
@@ -53,7 +56,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
         this.azione = obj.azione
 
         if (this.azione=="nuovo_pacchetto") {
-            this.titolo = "Nuovo pachetto"
+            this.titolo = "Nuovo pacchetto"
             this.pacchetto.reset()
         }
         else if (this.azione=="modifica_pacchetto") {
@@ -208,13 +211,15 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
                     : "Pacchetto modificato"
 
 
-    let serv = this.pktService.salvaPacchetto(this.pacchetto, php_script, db_proc, this.ambito)
+    let encoded_pkt = this.pacchetto.encode()
+
+    let serv = this.pktService.salvaPacchetto(encoded_pkt, php_script, db_proc, this.ambito)
     this.pktSubscr = serv.subscribe (
       result => {
         NeuroApp.hideWait()
         NeuroApp.custom_info(info_msg)
         // Aggiorna la lista delle voci di glossario
-        this.listaPacchetti.reloadPacchetti(this.ambito)
+        this.listaPacchetti.reloadPacchetti()
         this.pktSubscr.unsubscribe()
       },
       error => {
@@ -234,13 +239,11 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     * @param field_name nome del campo
     * @param field_value valore definito nell'interfaccia
     */
-   protected checkMandatory(field_name:string, field_value:string) : string {
+  protected checkMandatory(field_name:string, field_value:string) : string {
     //console.log (field_name, field_value)
     if ( field_value==null || field_value=="undefined" || field_value==="" || field_value=="<p><br></p>") {
        return `<b>${field_name}</b><br>`
     }
     return ""
- }
-
-
+  }
 }

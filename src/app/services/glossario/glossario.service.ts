@@ -4,7 +4,7 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry,  map, tap } from 'rxjs/operators';
 
 import { NeuroApp } from '../../neuro-app'
-import { Outcome } from '../../outcome'
+import { Outcome } from '../../classes/outcome'
 import { NeuroAppService } from '../neuro-app.service';
 
 

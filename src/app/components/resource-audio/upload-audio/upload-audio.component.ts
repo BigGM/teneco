@@ -2,7 +2,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { FileUploader, FileItem } from 'ng2-file-upload'
 import { NeuroApp} from '../../../neuro-app'
-import { CommonUpload } from '../../../common-upload'
+import { CommonUpload } from '../../../classes/common-upload'
 
 
 declare var $ : any;

@@ -3950,6 +3950,7 @@ var Editor = /** @class */ (function () {
                /** --MODIF-- **/
                if (urlOnClick ) {
                    //$$1(anchor).attr('href', "");
+                   console.log(linkUrl);
                    $$1(anchor).attr('onclick', linkUrl);
                    $$1(anchor).attr('tabindex', "0");            // questo e' per il popover di Bootstrap 4
                    $$1(anchor).attr('data-trigger', "click");    // e pure questo

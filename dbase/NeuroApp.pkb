@@ -360,6 +360,20 @@ EXCEPTION
 END lista_media;
 
 
+FUNCTION count_esercizi (p_id_pacchetto in integer) return integer
+IS
+  num_es integer;
+BEGIN
+    num_es := 0;
+    select count('x') into num_es 
+      from gca_pacchetti_esercizi 
+     where id_pacchetto = p_id_pacchetto;
+    return num_es;
+EXCEPTION
+    when others then return -1;
+end count_esercizi;
+
+
 
 PROCEDURE lista_pacchetti(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
 IS
@@ -373,7 +387,8 @@ BEGIN
            replace(alert_visibile,'"','"\'),
            replace(bibliografia,'"','"\'),
            replace(patologie_secondarie,'"','"\'),
-           replace(valutazione,'"','"\')
+           replace(valutazione,'"','"\'),
+           count_esercizi(id_pacchetto)
            --nvl(GCA_PACCHETTI.id_ambito,-1) id_ambito,
            --trim(nvl(GCA_AMBITO.ambito,'')) ambito,
            --nvl(GCA_PACCHETTI.id_patologia,-1) id_patologia,  
@@ -387,7 +402,7 @@ BEGIN
     order by nome_pacchetto;
     
 EXCEPTION
-    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
 END lista_pacchetti;
 
 

@@ -1,9 +1,10 @@
 <div class="container">
 
-    <div class="card" *ngIf="glossario.length>0">
+
+    <div class="card shadow-lg" style="border:0px" *ngIf="glossario.length>0">
     
-        <div class="card-header">
-          <h3 style="color:rgb(208, 39, 39);">Voci del glossario</h3>
+        <div class="card-header my-bg-dark my-text-red text-center">
+          <label>Voci del glossario</label>
         </div>
         
         <div class="card-body" style="max-height:550px;overflow:auto;">
@@ -26,7 +27,7 @@
           </table>
         </div>
         
-        <div class="card-footer">
+        <div class="card-footer" style="border-bottom:0px">
           <button title="Aggiungi nuova voce" class="btn btn-primary" style="margin-right:4px;"
           (click)="formNuovaVoceGlossario()">
              <i class="fas fa-plus"></i>

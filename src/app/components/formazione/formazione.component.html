@@ -1,0 +1,34 @@
+<DIV id="div_formazione_controller" class="container-fluid first-panel-position">
+
+  <DIV class="row">
+  <DIV class="col-sm-12">
+
+     <!-- PANNELLO CON LA LISTA DEI PACCHETTI DI FORMAZIONE -->
+     <app-pacchetti-formazione #PacchettiFormazioneRef></app-pacchetti-formazione>
+
+
+     <!-- FORM AGGIUNTA/MODIFICA PACCHETTO -->
+     <app-action-pacchetto
+     [listaPacchetti]="PacchettiFormazioneRef"></app-action-pacchetto>
+
+     
+     <!-- PANNELLO CON LA LISTA DELLE PROCEDURE DI UN PACCHETTO
+      --  NB: e' esattamente quello degli esercizi della riabilitazione neuromotoria -->
+     <app-lista-esercizi #listaProcedureRef
+     [listaPacchetti]="PacchettiFormazioneRef" ></app-lista-esercizi>
+
+
+     <!-- FORM AGGIUNTA/MODIFICA PROCEDURA  -->
+     <app-action-esercizio
+     [listaEsercizi]="listaProcedureRef"></app-action-esercizio>
+
+  </DIV>
+  </DIV>
+
+</DIV>
+
+<!--
+<DIV id="div_dettaglio_esercizio" class="container-fluid" >
+    <app-dettaglio-esercizio #dettaglioEsercizioRef
+     [listaEsercizi]="listaEserciziRef"></app-dettaglio-esercizio>
+</DIV> -->

@@ -113,13 +113,13 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
    if ($outp != $start) {$outp .= ",";}
    $outp .= '{"id_pkt":'      . $row[0] . 
             ',"id_ex":'       . $row[1] .
-            ',"nome":"'       . $row[2] .'"'.
-            ',"descr":"'      . $row[3] .'"'.
-            ',"testo":"'      . $row[4] .'"'.
-            ',"alert":"'      . $row[5] .'"'.
-            ',"limitazioni":"'. $row[6] .'"'.
+            ',"nome":"'       . rawurlencode($row[2]) .'"'.
+            ',"descr":"'      . rawurlencode($row[3]) .'"'.
+            ',"testo":"'      . rawurlencode($row[4]) .'"'.
+            ',"alert":"'      . rawurlencode($row[5]) .'"'.
+            ',"limitazioni":"'. rawurlencode($row[6]) .'"'.
             ',"id_grp":'      . $row[7] .
-            ',"nome_grp":"'   . $row[8] .'"'.
+            ',"nome_grp":"'   . rawurlencode($row[8]) .'"'.
             ',"count_media":' . $row[9] . '}';
 }
 $outp .="]";

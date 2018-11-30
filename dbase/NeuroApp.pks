@@ -181,6 +181,8 @@ FUNCTION  media_collegato(p_id_media in varchar2) return varchar2;
 PROCEDURE rimuovi_media(p_id_media in varchar2,
                         p_outcome in out varchar2);
                         
+FUNCTION count_esercizi (p_id_pacchetto in integer) return integer;                        
+                        
 
 END NeuroApp;
 /

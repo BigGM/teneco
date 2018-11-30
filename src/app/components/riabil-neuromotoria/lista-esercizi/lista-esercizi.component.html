@@ -1,11 +1,11 @@
-<div id="divListaEserciziPacchetto" class="container mt-4 mb-3"
+<div id="divListaEserciziPacchetto" class="container mt-5 mb-3"
    *ngIf="view_esercizi_visible">
 
-      <div class="card ">
+      <div class="card shadow-lg" style="border:0px">
          
          <!-- NOME DEL PACCHETTO  -->         
-         <div class="card-header my-bg-dark text-white text-center" 
-         style="font-size:22px;">
+         <div class="card-header my-bg-dark my-text-red text-center" 
+         style="font-size:26px;">
             {{pacchetto.nome}}
          </div>
          
@@ -77,25 +77,25 @@
 
       <!-- TABELLA CON LA LISTA DEGLI ESERCIZI -->
       <div class="card-body" style="overflow:auto;" *ngIf="esercizi.length>0">
-         <table id="tableEsercizi" class="table" style="cursor:pointer">
+         <table id="tableEsercizi" class="table" style="cursor:pointer" >
                
-            <thead class="thead-dark">
+            <thead class="thead-dark" border="1">
                   <tr>
-                     <th scope="col">Nome</th>
-                     <th scope="col">Descrizione</th>
-                     <th scope="col">Gruppo</th>
-                     <th scope="col text-right">#Multimedia</th>
-                     <th scope="col" colspan=2>&nbsp;</th>
+                     <th>Nome</th>
+                     <th>Descrizione</th>
+                     <th>Gruppo</th>
+                     <th class="text-right">#Multimedia</th>
+                     <th colspan=2></th>
                   </tr>
-               </thead>
+            </thead>
 
             <tr *ngFor="let ex of esercizi" #row (click)='onForeground(ex.id_ex,row,$event)'>
                <td class="nowrap" (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
                <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
                <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
-               <td style='text-align:right' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
-               <td style='text-align:right'><i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal" (click)="formModifEsercizio($event,ex)"></i></td>
-               <td style='text-align:right'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i></td>
+               <td style='text-align:right;width:100px;' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
+               <td style='text-align:right;width:32px'><i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal" (click)="formModifEsercizio($event,ex)"></i></td>
+               <td style='text-align:right;width:32px'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i></td>
             </tr>
 
          </table>
@@ -106,7 +106,7 @@
       </div>
          
       <!-- FOOTER -->
-         <div class="card-footer">
+         <div class="card-footer" style="border-bottom:0px">
             <button title="Aggiungi un nuovo esercizio" class="btn btn-primary" style="margin-right:4px;"
             (click)="formNuovoEsercizio()">
                <i class="fas fa-plus"></i>

@@ -1,25 +1,29 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { RiabilNeuromotoriaService} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 import { NeuroApp } from '../../../neuro-app';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
+//import { FormazioneService} from '../../../services/formazione/formazione.service'
+import { RiabilNeuromotoriaService} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 
 
 declare var $ : any;
 declare var bootbox: any;
 
 @Component({
-  selector: 'app-lista-pacchetti',
-  templateUrl: './lista-pacchetti.component.html',
-  styleUrls: ['./lista-pacchetti.component.css']
+  selector: 'app-pacchetti-formazione',
+  templateUrl: './pacchetti-formazione.component.html',
+  styleUrls: ['./pacchetti-formazione.component.css']
 })
-export class ListaPacchettiComponent implements OnInit {
-
-  readonly AMBITO = "1"
+export class PacchettiFormazioneComponent implements OnInit {
+  
+  // Questo e' l'ambito che identifica i pacchetti di formazione sul DB
+  readonly AMBITO = "3"
 
   /** La lista dei pacchetti */
   pacchetti  : RecordPacchetto[]
 
+  /** Sottoscrizione al servizio di accesso al DB.
+   * Il servizio e' quello dei pacchetti di formazione. */
   pktSubscr  : Subscription
   
 
@@ -31,9 +35,8 @@ export class ListaPacchettiComponent implements OnInit {
    */
   @Output() openActionPacchetto: EventEmitter<any> = new EventEmitter
 
-
   constructor( private pktService : RiabilNeuromotoriaService) {
-    //console.log( "ListaPacchettiComponent costruttore" )
+    //console.log( "PacchettiFormazioneComponent costruttore" )
     this.pacchetti = []
     this.pktSubscr = null
   }
@@ -44,7 +47,7 @@ export class ListaPacchettiComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log( "ListaPacchettiComponent => onDestroy" )
+    console.log( "PacchettiFormazioneComponent => onDestroy" )
     this.pacchetti = null
     if (this.pktSubscr )
       this.pktSubscr.unsubscribe()
@@ -57,9 +60,9 @@ export class ListaPacchettiComponent implements OnInit {
    */
   onForeground(row,event:MouseEvent) {
     event.preventDefault()
-    $('#tablePacchetti tr td').removeClass('marked-row');
-    $('#tablePacchetti tr td').removeClass('marked-row-first-col');
-    $('#tablePacchetti tr td').removeClass('marked-row-last-col');
+    $('#tablePacchettiFormazione tr td').removeClass('marked-row');
+    $('#tablePacchettiFormazione tr td').removeClass('marked-row-first-col');
+    $('#tablePacchettiFormazione tr td').removeClass('marked-row-last-col');
     for (var j=0; j<row.cells.length; j++) {
       $(row.cells[j]).addClass('marked-row'); 
     }
@@ -69,11 +72,10 @@ export class ListaPacchettiComponent implements OnInit {
     }
   }
 
+
   /**
    * Carica dal DB i pacchetti configurati sul sistema.
    * In caso di errore emette una popup.
-   * @ambito -  1: riabilitazione neuromotoria
-   *            2: riabilitazione cognitiva
    */
   loadPacchetti() {
     console.log("ListaPacchettiComponent.loadPacchetti")
@@ -102,7 +104,6 @@ export class ListaPacchettiComponent implements OnInit {
 
 
   reloadPacchetti() {
-    console.log("** reloadPacchetti **")
     NeuroApp.removePopover()
     this.pacchetti = []
     this.loadPacchetti();
@@ -112,27 +113,26 @@ export class ListaPacchettiComponent implements OnInit {
 
 
   /**
+   * Carica le procedure del pacchetto specificato in input.
    * 
    * @param event evento di click che lancia questo metodo
    * @param pkt   il pacchetto selezionato
    */
-  loadEserciziPacchetto(event:MouseEvent, pkt) {
+  loadProcedurePacchetto(event:MouseEvent, pkt) {
     console.log("** loadEserciziPacchetto **")
     NeuroApp.removePopover()
     
     /**
-     * Emette l'evento per la componente ListaEsercizi che riceve il
-     * pacchetto da mostrare in dettaglio, carica la lista degli esercizi di
-     * questo pacchetto e li visualizza
+     * Emette l'evento per la componente ListaEsercizi per inviargli il pacchetto
+     * di cui si vuole caricare la lista degli esercizi.
      */
     this.selectedPkt.emit(pkt)
   }
 
-
   /**
-   * Aggiorna il numero delle procedure del pacchetto specificato.
+   * Aggiorna il numero degli esercizi al valore new_value per il pacchetto id_pkt.
    * Questo metodo viene richiamato dal componente ListaEserciziComponent dopo una
-   * cancellazione o l'aggiunta di un esercizio/procedura.
+   * cancellazione o l'aggiunta di un esercizio.
    * 
    * @param id_pkt 
    * @param num_esercizi
@@ -142,6 +142,7 @@ export class ListaPacchettiComponent implements OnInit {
       if(pkt.id == id_pkt) pkt.num_esercizi = num_esercizi
     })
   }
+
 
 
   /**
@@ -182,6 +183,9 @@ export class ListaPacchettiComponent implements OnInit {
    */
   cancellaPacchetto(pkt:RecordPacchetto) {
     console.log("ListaPacchettiComponent.cancellaPacchetto")
+
+    return
+
     NeuroApp.showWait();
     
     let serv = this.pktService.cancellaPacchetto(pkt)
@@ -216,7 +220,7 @@ export class ListaPacchettiComponent implements OnInit {
     $('#actPacchetto').modal('show')
   }
 
-
+  
   /**
    * Apre il modulo per la modifica di un pacchetto esistente
    * @param mouseEvent l'evento di click che apre questa finestra
@@ -240,4 +244,5 @@ export class ListaPacchettiComponent implements OnInit {
     // Invia alla modale il record da modificare tramite il servizio
     //this.pktService.sendRecordToModal(pkt)
   }
+
 }

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { NeuroApp } from '../../neuro-app';
-import { RecordMedia } from '../../record-media'
+import { RecordMedia } from '../../classes/record-media'
 import { DynamicUploadComponent } from '../dynamic-upload/dynamic-upload.component'
 
 declare var NeuroAppJS : any;

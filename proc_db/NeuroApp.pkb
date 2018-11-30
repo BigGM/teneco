@@ -360,6 +360,20 @@ EXCEPTION
 END lista_media;
 
 
+FUNCTION count_esercizi (p_id_pacchetto in integer) return integer
+IS
+  num_es integer;
+BEGIN
+    num_es := 0;
+    select count('x') into num_es 
+      from gca_pacchetti_esercizi 
+     where id_pacchetto = p_id_pacchetto;
+    return num_es;
+EXCEPTION
+    when others then return -1;
+end count_esercizi;
+
+
 
 PROCEDURE lista_pacchetti(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
 IS
@@ -373,7 +387,8 @@ BEGIN
            replace(alert_visibile,'"','"\'),
            replace(bibliografia,'"','"\'),
            replace(patologie_secondarie,'"','"\'),
-           replace(valutazione,'"','"\')
+           replace(valutazione,'"','"\'),
+           count_esercizi(id_pacchetto)
            --nvl(GCA_PACCHETTI.id_ambito,-1) id_ambito,
            --trim(nvl(GCA_AMBITO.ambito,'')) ambito,
            --nvl(GCA_PACCHETTI.id_patologia,-1) id_patologia,  
@@ -387,8 +402,36 @@ BEGIN
     order by nome_pacchetto;
     
 EXCEPTION
-    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
 END lista_pacchetti;
+
+
+
+PROCEDURE lista_pacchetti2(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    OPEN p_cursor FOR
+    SELECT id_pacchetto, nome_pacchetto, descr_pacchetto,
+           controindicazioni,
+           prerequisiti,
+           alert,
+           alert_visibile,
+           bibliografia,
+           patologie_secondarie,
+           valutazione,
+           count_esercizi(id_pacchetto)
+    from GCA_PACCHETTI
+        left outer join GCA_AMBITO on 
+            GCA_AMBITO.id_ambito=GCA_PACCHETTI.id_ambito
+        left outer join GCA_PATOLOGIE on 
+            GCA_PATOLOGIE.id_patologia=GCA_PACCHETTI.id_patologia
+    where GCA_PACCHETTI.id_ambito = p_ambito
+    order by nome_pacchetto;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END lista_pacchetti2;
 
 
 PROCEDURE salva_pacchetto(p_nome in varchar2, 
@@ -698,19 +741,28 @@ EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
 END cancella_media_esercizio;
 
+
 --
 -- aggiunge un elemento multimedia all'esercizio specificato
+-- p_id_pacchetto : id del pacchetto
+-- p_id_esercizio : id dell'esercizio
+-- p_id_media     : lista degli id media da inserire, valori separati da virgola
 --
 PROCEDURE aggiungi_media_esercizio(p_id_pacchetto in varchar2,
                          p_id_esercizio in varchar2,
                          p_id_media in varchar2,
                          p_outcome in out varchar2)
 IS
+    CURSOR C1 IS
+        select regexp_substr(p_id_media,'[^,]+', 1, level) id_media from dual
+        connect by regexp_substr(p_id_media, '[^,]+', 1, level) is not null;
 BEGIN             
     p_outcome := 'OK';
     
-    insert into gca_esercizio_media ( id_pacchetto, id_esercizio, id_media)
-    values (p_id_pacchetto, p_id_esercizio, p_id_media); 
+    for c1rec in c1 loop
+        insert into gca_esercizio_media ( id_pacchetto, id_esercizio, id_media)
+        values (p_id_pacchetto, p_id_esercizio, c1rec.id_media);
+    end loop;
  
     commit;
     

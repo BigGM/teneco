@@ -16,6 +16,7 @@ export class RecordPacchetto {
     bibliografia : string
     patologie_secondarie : string
     valutazione  : string
+    num_esercizi : number
   
     constructor() {
         this.reset()
@@ -36,6 +37,7 @@ export class RecordPacchetto {
       this.bibliografia = rec.bibliografia
       this.patologie_secondarie  =rec.patologie_secondarie
       this.valutazione  = rec.valutazione
+      this.num_esercizi = rec.num_esercizi
     }
   
   
@@ -54,6 +56,7 @@ export class RecordPacchetto {
       this.bibliografia         = ""
       this.patologie_secondarie = ""
       this.valutazione          = ""
+      this.num_esercizi = -1
     }
   
 
@@ -70,6 +73,42 @@ export class RecordPacchetto {
       this.bibliografia          = NeuroApp.trimField ( this.bibliografia )
       this.patologie_secondarie  = NeuroApp.trimField ( this.patologie_secondarie )
       this.valutazione           = NeuroApp.trimField (this.valutazione)
+    }
+
+
+    /**
+     * Crea una nuova istanza di questo pacchetto con i campi codificati.
+     */
+    public encode() : RecordPacchetto {
+       let out = new RecordPacchetto
+       out.id   = this.id
+       out.num_esercizi = this.num_esercizi
+       out.nome = encodeURIComponent(this.nome)
+       out.descr = encodeURIComponent(this.descr)
+       out.contro_ind = encodeURIComponent(this.contro_ind)
+       out.pre_req = encodeURIComponent(this.pre_req)
+       out.alert_msg = encodeURIComponent(this.alert_msg)
+       out.alert_msg_visibile = encodeURIComponent(this.alert_msg_visibile)
+       out.bibliografia = encodeURIComponent(this.bibliografia)
+       out.patologie_secondarie = encodeURIComponent(this.patologie_secondarie)
+       out.valutazione = encodeURIComponent(this.valutazione)
+       return out
+    }
+
+    /**
+     * Decodifica il pacchetto in input.
+     * @param pkt 
+     */
+    public static decode(pkt : RecordPacchetto) {
+      pkt.nome = decodeURIComponent(pkt.nome)
+      pkt.descr = decodeURIComponent(pkt.descr)
+      pkt.contro_ind = decodeURIComponent(pkt.contro_ind)
+      pkt.pre_req = decodeURIComponent(pkt.pre_req)
+      pkt.alert_msg = decodeURIComponent(pkt.alert_msg)
+      pkt.alert_msg_visibile = decodeURIComponent(pkt.alert_msg_visibile)
+      pkt.bibliografia = decodeURIComponent(pkt.bibliografia)
+      pkt.patologie_secondarie = decodeURIComponent(pkt.patologie_secondarie)
+      pkt.valutazione = decodeURIComponent(pkt.valutazione)
     }
 
   } // RecordPacchetto
