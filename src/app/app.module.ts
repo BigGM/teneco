@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 // Librerie esterne
-import { FileUploadModule } from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload'; 
 
 // Componenti di progetto
 import { AppComponent } from './app.component';
@@ -30,6 +30,10 @@ import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettag
 import { ActionEsercizioComponent } from './components/riabil-neuromotoria/action-esercizio/action-esercizio.component';
 import { ActionPacchettoComponent } from './components/riabil-neuromotoria/action-pacchetto/action-pacchetto.component';
 import { FormazioneComponent } from './components/formazione/formazione.component';
+import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component' 
+import { UploadVideoComponent } from './components/resource-video/upload-video/upload-video.component'
+import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component'
+import { UploadImageComponent } from './components//resource-images/upload-image/upload-image.component'
 
 
 // Servizi di progetto
@@ -58,6 +62,10 @@ import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-
     ModGlossarioComponent,
     NewGlossarioComponent,
     DynamicUploadComponent,
+    UploadAudioComponent,
+    UploadVideoComponent,
+    UploadDocComponent,
+    UploadImageComponent,
     RiabilNeuromotoriaComponent,
     RiabilCognitivaComponent,
     ListaPacchettiComponent,
