@@ -8,6 +8,21 @@ var NeuroAppJS = {
   
   
    /**
+   * Attiva il full screen, usa la libreria fullscreen.js nella directory assets
+   **/
+   fullscreen: function() {
+      if (screenfull.enabled) {
+         screenfull.request();
+         return true;
+      }
+      return false;
+   },
+   
+   fullscreenExit: function() {
+      screenfull.exit();
+   },
+  
+   /**
     * Controlla periodicamente la connessione col server
     */
    checkServerConnection : function () {

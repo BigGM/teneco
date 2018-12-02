@@ -16,7 +16,10 @@ declare var NeuroAppJS:any;
   animations : [fadeAnimation]
 })
 export class AppComponent {
-  title = 'teneco';
+  
+  title = 'TENECO-GCA';
+  
+  fullScreen: string = "off"
 
   subscr:Subscription;
 
@@ -24,6 +27,23 @@ export class AppComponent {
     // Controlla la connesione internet ogni 25 secondi.
     window.setInterval( NeuroAppJS.checkServerConnection, 25000);
     this.loadGruppi()
+  }
+  
+  
+  /**
+   * Attiva il fullscreen
+   **/
+  fullscreen() {
+     if ( NeuroAppJS.fullscreen() )
+        this.fullScreen = "on"
+  }
+
+  /**
+   * Abbandona il fullscreen
+   **/  
+  fullscreenExit() {
+     NeuroAppJS.fullscreenExit()
+     this.fullScreen = "off"
   }
 
 

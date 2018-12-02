@@ -64,7 +64,11 @@
              <button class="btn btn-primary btn-navbar" routerLink="/glossario" >Glossario</button>
             </li>
         </ul>
-
+        <i *ngIf="fullScreen=='off'" class="fas fa-expand text-white mr-2" style="cursor:pointer;font-size:30px;"
+        title="Fullscreen" (click)="fullscreen()"></i>
+        <i *ngIf="fullScreen=='on'" class="fas fa-compress text-white mr-2" style="cursor:pointer;font-size:30px;"
+        title="Chiudi fullscreen" (click)="fullscreenExit()"></i>
+      
         <label class='label-GCA'>Network&nbsp;GCA</label>
 
      </div>
