@@ -1,4 +1,10 @@
+ <div class="shadow-lg px-3 py-1 mb-5 w-100">
+ 
+ <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color: rgb(24, 58, 83);">Gestione Video</div>
+ 
 <DIV id="div_video_component" class="container-fluid mb-5">
+
+  
 
     <!--
       La componente UploadVideoComponent invia al parent la richiesta di
@@ -15,7 +21,7 @@
             <td style="width:55px;margin:0;">
                <button title="Aggiorna la lista dei file video"
                   type="button"
-                  class="btn btn-info btn-md"
+                  class="btn btn-primary btn-md"
                   (click)="listaFileVideo()">
                   <i class="fas fa-sync-alt" aria-hidden="true"></i>
                   </button>
@@ -36,7 +42,7 @@
       <div id="div-view-video-as-grid" *ngIf="view_video_as=='grid'" 
          class="row py-3 px-1 my-bg-secondary" 
          style="border-radius:4px;">
-         <div *ngFor="let video of lista_video" class="col-sm-6 col-md-4  col-lg-3 mb-3">
+         <div *ngFor="let video of lista_video" class="col-sm-6 col-md-4 col-lg-3 mb-3">
             <div class="thumbnail thumbnail-video my-bg-dark p-3 word-break">
                <div class="embed-responsive embed-responsive-16by9">
                   <video controls> <source class="embed-responsive-item" [src]="video.url_media"></video>
@@ -99,5 +105,6 @@
          </div>
          </div>
       </div>
-
 </DIV>
+
+</div>
