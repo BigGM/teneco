@@ -50,6 +50,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-
     ActionEsercizioComponent,
     ActionPacchettoComponent,
     FormazioneComponent,
-    PacchettiFormazioneComponent
+    PacchettiFormazioneComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

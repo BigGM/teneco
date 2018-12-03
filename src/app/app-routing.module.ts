@@ -10,6 +10,7 @@ import { ResourceDocsComponent } from './components/resource-docs/resource-docs.
 import { PazientiComponent } from './components/pazienti/pazienti.component'
 import { GlossarioComponent } from './components/glossario/glossario.component'
 import { FormazioneComponent } from './components/formazione/formazione.component'
+import { HomeComponent } from './components/home/home.component';
 
 
 const routes: Routes = [
@@ -22,8 +23,9 @@ const routes: Routes = [
   { path: 'docs', component: ResourceDocsComponent },
   { path: 'pazienti', component: PazientiComponent },
   { path: 'glossario', component: GlossarioComponent },
+  { path: '', component: HomeComponent },
 
-  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 
 @NgModule({
