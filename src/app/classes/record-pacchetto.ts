@@ -6,17 +6,21 @@ import { NeuroApp } from '../neuro-app'
  */
 export class RecordPacchetto {
 
-    id           : number
-    nome         : string
-    descr        : string
-    contro_ind   : string
-    pre_req      : string
-    alert_msg    : string
+    id             : number
+    nome           : string
+    descr          : string
+    contro_ind     : string           // controindicazioni relative
+    contro_ind_abs : string           // controindicazioni assolute
+    pre_req        : string           // prerequisiti fisici
+    pre_req_comp   : string           // prerequisiti comportamentali
+    alert_msg      : string
     alert_msg_visibile : string
     bibliografia : string
     patologie_secondarie : string
-    valutazione  : string
-    num_esercizi : number
+    valutazione   : string
+    come_valutare : string
+    num_esercizi  : number
+    note          : string
   
     constructor() {
         this.reset()
@@ -31,13 +35,17 @@ export class RecordPacchetto {
       this.nome         = rec.nome
       this.descr        = rec.descr
       this.contro_ind   = rec.contro_ind
+      this.contro_ind_abs   = rec.contro_ind_abs
       this.pre_req      = rec.pre_req
+      this.pre_req_comp = rec.pre_req_comp
       this.alert_msg    = rec.alert_msg
       this.alert_msg_visibile = rec.alert_msg_visibile
       this.bibliografia = rec.bibliografia
       this.patologie_secondarie  =rec.patologie_secondarie
       this.valutazione  = rec.valutazione
+      this.come_valutare  = rec.come_valutare
       this.num_esercizi = rec.num_esercizi
+      this.note  = rec.note
     }
   
   
@@ -50,13 +58,17 @@ export class RecordPacchetto {
       this.nome         = ""
       this.descr        = ""
       this.contro_ind   = ""
+      this.contro_ind_abs = ""
       this.pre_req      = ""
+      this.pre_req_comp = ""
       this.alert_msg    = ""
       this.alert_msg_visibile   = ""
       this.bibliografia         = ""
       this.patologie_secondarie = ""
       this.valutazione          = ""
+      this.come_valutare        = ""
       this.num_esercizi = -1
+      this.note = ""
     }
   
 
@@ -64,15 +76,19 @@ export class RecordPacchetto {
      * Elimina gli spazi laterari dai campi del record.
      */
     public trim() {
-      this.nome         = NeuroApp.trimField ( this.nome )
-      this.descr        = NeuroApp.trimField ( this.descr )
-      this.contro_ind   = NeuroApp.trimField ( this.contro_ind )
-      this.pre_req      = NeuroApp.trimField ( this.pre_req )
-      this.alert_msg    = NeuroApp.trimField ( this.alert_msg )
-      this.alert_msg_visibile    = NeuroApp.trimField ( this.alert_msg_visibile )
-      this.bibliografia          = NeuroApp.trimField ( this.bibliografia )
-      this.patologie_secondarie  = NeuroApp.trimField ( this.patologie_secondarie )
-      this.valutazione           = NeuroApp.trimField (this.valutazione)
+      this.nome           = NeuroApp.trimField ( this.nome )
+      this.descr          = NeuroApp.trimField ( this.descr )
+      this.contro_ind     = NeuroApp.trimField ( this.contro_ind )
+      this.contro_ind_abs = NeuroApp.trimField ( this.contro_ind_abs )
+      this.pre_req        = NeuroApp.trimField ( this.pre_req )
+      this.pre_req_comp   = NeuroApp.trimField ( this.pre_req_comp )
+      this.alert_msg      = NeuroApp.trimField ( this.alert_msg )
+      this.alert_msg_visibile   = NeuroApp.trimField ( this.alert_msg_visibile )
+      this.bibliografia         = NeuroApp.trimField ( this.bibliografia )
+      this.patologie_secondarie = NeuroApp.trimField ( this.patologie_secondarie )
+      this.valutazione          = NeuroApp.trimField (this.valutazione)
+      this.come_valutare        = NeuroApp.trimField (this.come_valutare)
+      this.note                 = NeuroApp.trimField (this.note)
     }
 
 
@@ -86,12 +102,16 @@ export class RecordPacchetto {
        out.nome = encodeURIComponent(this.nome)
        out.descr = encodeURIComponent(this.descr)
        out.contro_ind = encodeURIComponent(this.contro_ind)
+       out.contro_ind_abs = encodeURIComponent(this.contro_ind_abs)
        out.pre_req = encodeURIComponent(this.pre_req)
+       out.pre_req_comp = encodeURIComponent(this.pre_req_comp)
        out.alert_msg = encodeURIComponent(this.alert_msg)
        out.alert_msg_visibile = encodeURIComponent(this.alert_msg_visibile)
        out.bibliografia = encodeURIComponent(this.bibliografia)
        out.patologie_secondarie = encodeURIComponent(this.patologie_secondarie)
        out.valutazione = encodeURIComponent(this.valutazione)
+       out.come_valutare = encodeURIComponent(this.come_valutare)
+       out.note = encodeURIComponent(this.note)
        return out
     }
 
@@ -103,12 +123,16 @@ export class RecordPacchetto {
       pkt.nome = decodeURIComponent(pkt.nome)
       pkt.descr = decodeURIComponent(pkt.descr)
       pkt.contro_ind = decodeURIComponent(pkt.contro_ind)
+      pkt.contro_ind_abs = decodeURIComponent(pkt.contro_ind_abs)
       pkt.pre_req = decodeURIComponent(pkt.pre_req)
+      pkt.pre_req_comp = decodeURIComponent(pkt.pre_req_comp)
       pkt.alert_msg = decodeURIComponent(pkt.alert_msg)
       pkt.alert_msg_visibile = decodeURIComponent(pkt.alert_msg_visibile)
       pkt.bibliografia = decodeURIComponent(pkt.bibliografia)
       pkt.patologie_secondarie = decodeURIComponent(pkt.patologie_secondarie)
       pkt.valutazione = decodeURIComponent(pkt.valutazione)
+      pkt.come_valutare = decodeURIComponent(pkt.come_valutare)
+      pkt.note = decodeURIComponent(pkt.note)
     }
 
   } // RecordPacchetto

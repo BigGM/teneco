@@ -123,7 +123,11 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
               '"bibliografia":"'  . rawurlencode($row[7]) . '",'  .
               '"patologie_secondarie":"' . rawurlencode($row[8]) . '",'  .
               '"valutazione":"'  . rawurlencode($row[9]) . '",'  .
-              '"num_esercizi":"'  . $row[10] . '"'  .
+              '"num_esercizi":' . $row[10] . ','  .
+              '"note":"'        . rawurlencode($row[11]) . '",' .
+              '"contro_ind_abs":"'  . rawurlencode($row[12]) . '",' .
+              '"pre_req_comp":"'  . rawurlencode($row[13]) . '",' .
+              '"come_valutare":"'  . rawurlencode($row[14]) . '"' .
             '}';
 }
 $outp .="]";

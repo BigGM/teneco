@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 // !! Necessario per far funzionare il reload delle pagine !!
 import { HashLocationStrategy, LocationStrategy} from '@angular/common'
 
+
 // Librerie esterne
 import { FileUploadModule } from 'ng2-file-upload'; 
 
@@ -99,7 +100,7 @@ import { HomeComponent } from './components/home/home.component';
     RiabilNeuromotoriaService,
     // la # location strategy serve a far funzionare il reload delle pagine
     // che, altrimennti, ritorna con 404 page non found
-    {provide:LocationStrategy, useClass:HashLocationStrategy}
+    {provide:LocationStrategy, useClass:HashLocationStrategy }
   ],
   bootstrap: [AppComponent],
   entryComponents: [DynamicUploadComponent]

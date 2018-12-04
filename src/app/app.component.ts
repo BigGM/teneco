@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NeuroApp } from './neuro-app'
 import { NeuroAppService } from './services/neuro-app.service'
@@ -7,6 +7,7 @@ import { fadeAnimation } from './animations';
 
 // il modulo in puro javascript dell'applicazione
 declare var NeuroAppJS:any;
+declare var screenfull:any;
 
 
 @Component({
@@ -15,9 +16,9 @@ declare var NeuroAppJS:any;
   styleUrls: ['./app.component.css'],
   animations : [fadeAnimation]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   
-  title = 'TENECO-GCA';
+  title = 'TENECO GCA';
   
   fullScreen: string = "off"
 
@@ -30,12 +31,26 @@ export class AppComponent {
   }
   
   
+  ngOnInit() {
+     /**
+      // listener del fullscreen change
+      screenfull.onchange( () => {
+         console.log('Am I fullscreen?', screenfull.isFullscreen ? 'Yes' : 'No');
+         if ( screenfull.isFullscreen )
+            this.fullScreen = "on"
+         else 
+            this.fullScreen = "off"
+      })**/
+  }
+  
+  
   /**
    * Attiva il fullscreen
    **/
   fullscreen() {
-     if ( NeuroAppJS.fullscreen() )
+     if ( NeuroAppJS.fullscreen() ) {
         this.fullScreen = "on"
+     }
   }
 
   /**

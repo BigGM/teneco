@@ -181,6 +181,10 @@ export class RiabilNeuromotoriaService {
                    "&bibliografia=" + pkt.bibliografia +
                    "&patologie_secondarie=" + pkt.patologie_secondarie +
                    "&valutazione=" + pkt.valutazione+
+                   "&note=" + pkt.note+
+                   "&contro_ind_abs=" + pkt.contro_ind_abs+
+                   "&pre_req_comp=" + pkt.pre_req_comp+
+                   "&come_valutare=" + pkt.come_valutare+
                    "&ambito="+ambito;
 
     console.log(url)

@@ -67,6 +67,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
         // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
         $('#summernote-actpkt-descr').summernote('code', this.pacchetto.descr)
         $('#summernote-actpkt-prereq').summernote('code', this.pacchetto.pre_req)
+        $('#summernote-actpkt-prereq-comp').summernote('code', this.pacchetto.pre_req_comp)
       })
   }
 
@@ -78,6 +79,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     // Cancella i codice html creato da summernote
     $('#summernote-actpkt-descr').summernote('destroy')
     $('#summernote-actpkt-prereq').summernote('destroy')
+    $('#summernote-actpkt-prereq-comp').summernote('destroy')
   }
 
 
@@ -94,6 +96,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     // questo non e' obbligatorio
     note_options.required = false
     $('#summernote-actpkt-prereq').summernote(note_options)
+    $('#summernote-actpkt-prereq-comp').summernote(note_options)
 
   } // initSummernote()
 
@@ -152,6 +155,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     NeuroApp.removePopover()
     $('#summernote-actpkt-descr').summernote('reset')
     $('#summernote-actpkt-prereq').summernote('reset')
+    $('#summernote-actpkt-prereq-comp').summernote('reset')
   }
 
 
@@ -165,6 +169,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     this.pacchetto.copy(this.entryPacchetto)
     $('#summernote-actpkt-descr').summernote('code', this.pacchetto.descr)
     $('#summernote-actpkt-prereq').summernote('code', this.pacchetto.pre_req)
+    $('#summernote-actpkt-prereq-comp').summernote('code', this.pacchetto.pre_req_comp)
   }
 
 
@@ -181,6 +186,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     //console.log(form.value)
     this.pacchetto.descr = $('#summernote-actpkt-descr').summernote('code')
     this.pacchetto.pre_req =  $('#summernote-actpkt-prereq').summernote('code')
+    this.pacchetto.pre_req_comp =  $('#summernote-actpkt-prereq-comp').summernote('code')
     
     // trim dei campi
     this.pacchetto.trim()

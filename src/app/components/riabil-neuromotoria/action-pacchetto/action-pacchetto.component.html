@@ -54,24 +54,102 @@
               </div>
             </div>
   
-            <!-- PRE-REQUISITI -->
-            <div class="form-group row">
-                <label for="summernote-actpkt-prereq" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Prerequisiti</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id="summernote-actpkt-prereq" name="pre_req"  placeholder="Prerequisiti"
-                    [(ngModel)]="pacchetto.pre_req"></textarea>
-                </div>
-            </div>
-  
             
-            <!-- CONTRO INDICAZIONI -->
-            <div class="form-group row">
-              <label for="contro_ind" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Controindicazioni</label>
-              <div class="col-sm-9">
-                  <textarea class="form-control" id="contro_ind" name="contro_ind"  placeholder="Controindicazioni" rows="3"
-                  [(ngModel)]="pacchetto.contro_ind"></textarea>
+            <!-- PRE-REQUISITI FISICI -->
+            <div class="group-items mb-4">
+                <label class="my-legend">&nbsp;Prerequisiti&nbsp;</label>
+              <div class="form-group row">
+                  <label for="summernote-actpkt-prereq" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Fisici</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="summernote-actpkt-prereq" name="pre_req"  placeholder="Prerequisiti fisici"
+                      [(ngModel)]="pacchetto.pre_req"></textarea>
+                  </div>
+              </div>
+
+              <!-- PRE-REQUISITI COMPORTAMENTALI -->
+              <div class="form-group row">
+                  <label for="summernote-actpkt-prereq-comp" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Cognitivo-Comportamentali</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="summernote-actpkt-prereq-comp" name="pre_req_comp"  placeholder="Prerequisiti cognitivo-comportamentali"
+                      [(ngModel)]="pacchetto.pre_req_comp"></textarea>
+                  </div>
               </div>
             </div>
+            
+           <div class="group-items mb-4">
+              <label class="my-legend">&nbsp;Controindicazioni&nbsp;</label>
+              <!-- CONTRO INDICAZIONI RELATIVE -->
+              <div class="form-group row">
+                <label for="contro_ind" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Relative</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="contro_ind" name="contro_ind"  placeholder="Controindicazioni relative" rows="3"
+                    [(ngModel)]="pacchetto.contro_ind"></textarea>
+                </div>
+              </div>
+
+              <!-- CONTRO INDICAZIONI ASSOLUTE -->
+              <div class="form-group row" >
+                  <label for="contro_ind_abs" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Assolute</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="contro_ind_abs" name="contro_ind_abs"  placeholder="Controindicazioni assolute" rows="3"
+                      [(ngModel)]="pacchetto.contro_ind_abs"></textarea>
+                  </div>
+              </div>
+          </div>
+
+            <div class="group-items mb-4 pt-2">
+                <label class="my-legend" style="top:-22px">&nbsp;Valutazione&nbsp;</label>
+              <!-- VALUTAZIONE -->
+              <div class="form-group row">
+                <label for="valutazione" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Valutazione</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="valutazione" name="valutazione"  placeholder="Valutazione" rows="3"
+                    [(ngModel)]="pacchetto.valutazione"></textarea>
+                </div>
+              </div>
+
+
+              <!-- COME VALUTARE  -->
+              <div class="form-group row">
+                  <label for="come-valutare" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Come&nbsp;valutare</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="come-valutare" name="come-valutare"  placeholder="Come valutare" rows="3"
+                      [(ngModel)]="pacchetto.come_valutare"></textarea>
+                  </div>
+              </div>
+
+              <div class="form-group row">
+                  <label for="scheda" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Scheda</label>
+                  <div class="input-group mb-3 col-sm-9">
+                    <input type="text" class="form-control" placeholder="Scheda di valutazione" disabled>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button"><i class="fas fa-bars"></i></button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+
+            <!-- PATOLOGIE -->
+            <div class="form-group row">
+                <label for="patologie_secondarie" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Patologie secondarie</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="patologie_secondarie" name="patologie_secondarie"  placeholder="Patologie secondarie" rows="3"
+                    [(ngModel)]="pacchetto.patologie_secondarie"></textarea>
+                </div>
+            </div>
+              
+              
+
+            <!-- BIBLIOGRAFIA -->
+            <div class="form-group row">
+              <label for="bibliografia" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Bibliografia</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="bibliografia" name="bibliografia"  placeholder="Bibliografia" rows="3"
+                  [(ngModel)]="pacchetto.bibliografia"></textarea>
+              </div>
+            </div>
+  
   
             <!-- ALERT -->
             <div class="form-group row">
@@ -81,16 +159,27 @@
                   [(ngModel)]="pacchetto.alert_msg"></textarea>
               </div>
             </div>
-  
-            <!-- PATOLOGIE -->
+
+            <!-- ALERT VISIBILE -->
             <div class="form-group row">
-              <label for="patologie" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Patologie secondarie</label>
+              <label for="alert_visibile" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Alert visibile</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="patologie" name="patologie_secondarie"  placeholder="Patologie secondarie" rows="3"
-                  [(ngModel)]="pacchetto.patologie_secondarie"></textarea>
+                  <textarea class="form-control" id="alert_visibile" name="alert_visibile_msg"  placeholder="Alert visibile" rows="3"
+                  [(ngModel)]="pacchetto.alert_msg_visibile"></textarea>
+              </div>
+            </div>
+
+
+            <!-- NOTE -->
+            <div class="form-group row">
+              <label for="note" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Note</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3"
+                  [(ngModel)]="pacchetto.note"></textarea>
               </div>
             </div>
   
+            
           </form>
           
        </div>

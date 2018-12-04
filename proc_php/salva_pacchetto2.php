@@ -47,6 +47,7 @@ $alert_msg_visibile  = rawurldecode($alert_msg_visibile);
 $bibliografia  = rawurldecode($bibliografia);
 $patologie_secondarie  = rawurldecode($patologie_secondarie);
 $valutazione  = rawurldecode($valutazione);
+$note  = rawurldecode($note);
 $ambito     = rawurldecode($ambito);
 
 /*****
@@ -78,7 +79,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:nome, :descr, :pre_req, :contro_ind, :alert_msg, :alert_msg_visibile,  :bibliografia, :patologie_secondarie, :valutazione, :ambito, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:nome, :descr, :pre_req, :contro_ind, :alert_msg, :alert_msg_visibile,  :bibliografia, :patologie_secondarie, :valutazione, :note, :contro_ind_abs, :pre_req_comp, :come_valutare, :ambito, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -106,6 +107,10 @@ oci_bind_by_name($stmt, ':alert_msg_visibile' , $alert_msg_visibile, 4000);
 oci_bind_by_name($stmt, ':bibliografia' , $bibliografia, 4000);
 oci_bind_by_name($stmt, ':patologie_secondarie' , $patologie_secondarie, 4000);
 oci_bind_by_name($stmt, ':valutazione' , $valutazione, 4000);
+oci_bind_by_name($stmt, ':note' , $note, 4000);
+oci_bind_by_name($stmt, ':contro_ind_abs' , $contro_ind_abs, 4000);
+oci_bind_by_name($stmt, ':pre_req_comp' , $pre_req_comp, 4000);
+oci_bind_by_name($stmt, ':come_valutare' , $come_valutare, 4000);
 oci_bind_by_name($stmt, ':ambito'     , $ambito, 10);
 oci_bind_by_name($stmt, ':outcome'    , $outcome, 4000);
 
