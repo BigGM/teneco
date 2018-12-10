@@ -1,5 +1,7 @@
 import { NeuroApp } from '../neuro-app'
 
+import { RecordMedia } from './record-media'
+
 
 /**
  * La struttura del record del pacchetto
@@ -21,6 +23,7 @@ export class RecordPacchetto {
     come_valutare : string
     num_esercizi  : number
     note          : string
+    id_scheda_val : number
   
     constructor() {
         this.reset()
@@ -46,6 +49,7 @@ export class RecordPacchetto {
       this.come_valutare  = rec.come_valutare
       this.num_esercizi = rec.num_esercizi
       this.note  = rec.note
+      this.id_scheda_val = rec.id_scheda_val
     }
   
   
@@ -69,6 +73,7 @@ export class RecordPacchetto {
       this.come_valutare        = ""
       this.num_esercizi = -1
       this.note = ""
+      this.id_scheda_val = -1
     }
   
 
@@ -112,6 +117,7 @@ export class RecordPacchetto {
        out.valutazione = encodeURIComponent(this.valutazione)
        out.come_valutare = encodeURIComponent(this.come_valutare)
        out.note = encodeURIComponent(this.note)
+       out.id_scheda_val = this.id_scheda_val
        return out
     }
 

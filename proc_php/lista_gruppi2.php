@@ -28,6 +28,11 @@ function msg_fmt( $e ) {
 parse_str($_SERVER['QUERY_STRING']);
 
 $proc = rawurldecode($proc);
+$ambito = rawurldecode($ambito);
+if (!isset($ambito)) {
+   $ambito = -1;
+}
+
 
 /*****
 echo $proc . "\n";
@@ -55,7 +60,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:outcome,:cursor); END;';
+$cmd  = 'BEGIN ' . $proc . '(:ambito, :outcome,:cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -72,6 +77,8 @@ oci_set_prefetch($stmt,1000);
  **/
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
+
+oci_bind_by_name($stmt, ':ambito' , $ambito,  100);
 oci_bind_by_name($stmt, ':cursor'  , $refcur, -1, OCI_B_CURSOR);
 oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 
@@ -105,7 +112,7 @@ $outp  = $start;
 while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
    if ($outp != $start) {$outp .= ",";}
-   $outp .= '{"id":' . $row[0] .',' . '"nome":"' . $row[1].'", "descr":'. '"'. $row[2]. '"}' ;
+   $outp .= '{"id_ambito":' . $row[0] .', "id":' . $row[1] .',' . '"nome":"' . $row[2].'", "descr":'. '"'. $row[3]. '"}' ;
 }
 $outp .="]";
 echo($outp);

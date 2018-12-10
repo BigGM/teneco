@@ -1,13 +1,18 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RiabilNeuromotoriaService } from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
+import { NeuroAppService } from '../../../services/neuro-app.service'
 import { NeuroApp } from '../../../neuro-app';
 import { ListaPacchettiComponent } from '../lista-pacchetti/lista-pacchetti.component';
 import { PacchettiFormazioneComponent } from '../../formazione/pacchetti-formazione/pacchetti-formazione.component';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
+import { RecordMedia } from '../../../classes/record-media'
 
 // questo e' per jQuery
 declare var $: any;
+
+// La libreria javascript
+declare var NeuroAppJS : any;
 
 
 @Component({
@@ -22,14 +27,21 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   // questo e' il pacchetto all'apertura della finestra modale in modalita: modifica
   entryPacchetto : RecordPacchetto
 
-  ambito    : string
+  ambito    : number
   pacchetto : RecordPacchetto
   pktSubscr : Subscription
   azione    : string;         // azione richiesta: nuovo_esercizio, modifica_esercizio
   titolo    : string;         // questo e' il titolo da inserire nella finestra modale
 
+  /** La lista degli elementi multimediali non collegati all'esercizio */
+  listaSchede : Array<RecordMedia>
+  
+  // scheda di valutazione assegnata al pacchetto corrente
+  schedaValutazione : RecordMedia
 
-  constructor(private pktService : RiabilNeuromotoriaService) {
+
+  constructor(private pktService : RiabilNeuromotoriaService,
+              private neuroAppService : NeuroAppService) {
   }
 
   ngOnInit() {
@@ -38,31 +50,52 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
       this.entryPacchetto = new RecordPacchetto()
       this.pktSubscr = null
       this.ambito = this.listaPacchetti.AMBITO
+      this.schedaValutazione = new RecordMedia()
       this.initSummernote()
 
       console.log("AMBITO from listaPacchetti", this.listaPacchetti.AMBITO)
 
+
       /**
-       * Si sottoscrive al componente ListaEserciziComponent per ricevere l'azione da eseguire.
-       * Il campo 'obj' in input ha un campo azione che puo' essere "nuovo_esercizio" o
-       * "modifica_esercizio", 
-       * nel primo caso 'obj'  posside un second campo 'id_pkt' con l'id del pacchetto a cui il
-       * nuovo esercizio verra' associato;
-       * nel secondo caso 'obj' avra' anche un campo 'esercizio' con l'esercizio da modificare
+       * Si sottoscrive al componente ListaPacchettiComponent o PacchettiFormazioneComponent 
+       * per ricevere l'azione da eseguire.
+       * Il campo 'obj' in input ha un campo azione che puo' essere "nuovo_pacchetto" o
+       * "modifica_pacchetto",
+       * nel secondo caso 'obj' avra' anche un campo 'pacchetto' con il pacchetto da modificare.
        */
       this.listaPacchetti.openActionPacchetto.subscribe (obj => {
         console.log("this.listaPacchetti.openActionPacchetto", obj)
 
         this.azione = obj.azione
+        this.schedaValutazione.reset()
 
         if (this.azione=="nuovo_pacchetto") {
-            this.titolo = "Nuovo pacchetto"
+          
+            if (this.ambito==1)
+              this.titolo = "Nuovo pacchetto"
+            else if (this.ambito==2) 
+              this.titolo = "Nuovo pacchetto cognitivo"
+            else if (this.ambito==3) 
+              this.titolo = "Nuova procedura"
             this.pacchetto.reset()
         }
         else if (this.azione=="modifica_pacchetto") {
-            this.titolo = "Modifica pacchetto"
+            
+            if (this.ambito==1)
+                this.titolo = "Modifica pacchetto"
+            else if (this.ambito==2) 
+              this.titolo = "Modifica pacchetto cognitivo"
+            else if (this.ambito==3) 
+              this.titolo = "Modifica procedura"
+            
             this.pacchetto.copy(obj.pacchetto)
             this.entryPacchetto.copy(obj.pacchetto)
+
+            // Se al pachetto e' assegnata una scheda di valutazione, la legge
+            if ( this.pacchetto.id_scheda_val != -1 ) {
+              this.readSchedaForId(this.pacchetto.id_scheda_val)
+              this.entryPacchetto.id_scheda_val = this.pacchetto.id_scheda_val
+            }
         }
         // inzializza i campi summernote (il bind angular non puo' funzionare per questi)
         $('#summernote-actpkt-descr').summernote('code', this.pacchetto.descr)
@@ -132,9 +165,9 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
       },
       callbacks: {
          onInit: function() {
-         console.log('Summernote is launched');
-         $('.note-editable').addClass('form-control');
-         $('.note-editable').css('height', '300px'); 
+            console.log('Summernote is launched');
+            $('.note-editable').addClass('form-control');
+            $('.note-editable').css('height', '300px'); 
          }
       }
     }
@@ -188,8 +221,9 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     this.pacchetto.pre_req =  $('#summernote-actpkt-prereq').summernote('code')
     this.pacchetto.pre_req_comp =  $('#summernote-actpkt-prereq-comp').summernote('code')
     
-    // trim dei campi
+    // trim dei campi e assegnazione scheda di valutazione
     this.pacchetto.trim()
+    this.pacchetto.id_scheda_val = this.schedaValutazione.id_media;
 
     // e controllo dei campi obbligatori
     let fields_empty = "";
@@ -252,4 +286,87 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     }
     return ""
   }
+
+
+  /**
+   * Apre la finestra modale per la selezione della scheda di valutazione
+   */
+  openModalScheda() {
+
+    let serv = this.neuroAppService.listaMedia('', 'doc')
+    this.pktSubscr = serv.subscribe (
+        result => {
+          result.map(item => {
+            if (NeuroAppJS.DEVELOP_ENV )
+              item.url_media = NeuroApp.G_URL_ROOT +  "/" + item.url_media
+          })
+
+          // Questa sara' la lista delle schede
+          this.listaSchede = result
+
+          // Apre la finestra modale
+          $("#myFetch_scheda").modal('show');
+          this.pktSubscr.unsubscribe()
+          NeuroApp.hideWait()
+        },
+        error => {
+          NeuroApp.hideWait()
+          NeuroApp.custom_error(error,"Errore")
+          this.pktSubscr.unsubscribe()
+        }
+    )
+  } // openModalScheda()
+
+
+  /**
+   * Legge dal DB la scheda di valutazione con l'id specificato.
+   * @param id_scheda id della scheda di valutazione
+   */
+  readSchedaForId(id_scheda: number) {
+    let schedaSubscr : Subscription
+    let serv = this.pktService.getSchedaValutazione(id_scheda)
+
+    schedaSubscr = serv.subscribe (
+      result => {
+        schedaSubscr.unsubscribe()
+        this.schedaValutazione.copy(result)
+        RecordMedia.decode(this.schedaValutazione)
+      },
+      error => {
+        schedaSubscr.unsubscribe()
+      }
+    )
+  }
+
+  /**
+   * Chiude la finestra modale per la scelta della scheda di valutazione.
+   */
+  closeModalScheda() {
+    $("#myFetch_scheda").modal('hide');
+  }
+
+
+  /**
+   * Restituise l'icona da inserire per il documento secondo la sua estensione
+   * @param url
+   */
+  docIcon(url) {
+    if ( NeuroApp.icons[NeuroApp.fileExt(url)] == undefined )
+      return NeuroApp.ROOT_ICONS + "/generic-doc-icon.png"
+    else
+      return NeuroApp.ROOT_ICONS + "/" + NeuroApp.icons[ NeuroApp.fileExt(url) ]
+  }
+
+
+  /**
+  * Apre il documento specificato tramite url in una nuova finestra
+  * @param url 
+  */
+  open(event:MouseEvent, scheda:RecordMedia) {
+    event.stopPropagation()
+    window.open(scheda.url_media)
+  }
+
+  
+
 }

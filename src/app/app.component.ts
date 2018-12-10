@@ -64,7 +64,7 @@ export class AppComponent implements OnInit {
 
   /**
    * Legge dal DB le tipologie di gruppi di servizi (passivi, autonomi, etc. ) e le inserisce 
-   * nell'array globale NeuroApp.gruppiin modo da renderlo disponibile a ogni componente
+   * nell'array globale NeuroApp.gruppi in modo da renderlo disponibile a ogni componente
    * che lo richieda.
    */
   loadGruppi() {
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
     this.subscr = serv.subscribe (
         result => {
           NeuroApp.hideWait()
-          NeuroApp.gruppi = result    
+          NeuroApp.gruppi = result
           NeuroApp.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:""} )
           console.log(NeuroApp.gruppi)
           this.subscr.unsubscribe()

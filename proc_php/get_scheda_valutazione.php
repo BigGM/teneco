@@ -4,26 +4,9 @@ header('Access-Control-Allow-Origin: *');
 
 include('msg_fmt.php');
 
-/**
- * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
- * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
- *
-function msg_fmt( $e ) {
-   $replace_what = array('&quot;');
-   $replace_with = array(' ');
-   $msg = htmlentities($e, ENT_QUOTES);
-   $msg = str_replace($replace_what,$replace_with,$msg);
-   $msg = preg_replace('#\R+#', '<br>', $msg);
-   return $msg;
-} */
-
-
 //print_r($_GET);
 //$keys = array_keys($_GET);
 //print_r($keys);
-
-
-
 
 /**
  * Parsa la query string. Restituisce questi attributi:
@@ -33,10 +16,12 @@ function msg_fmt( $e ) {
 parse_str($_SERVER['QUERY_STRING']);
 
 $proc = rawurldecode($proc);
+$id_scheda =  rawurldecode($id_scheda);
+
 
 /*****
 echo $proc . "\n";
-echo $ambito . "\n";
+echo $id_scheda . "\n";
 die();
 *****/
 
@@ -61,7 +46,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:ambito, :outcome,:cursor); END;';
+$cmd  = 'BEGIN ' . $proc . '(:id_scheda, :outcome,:cursor); END;';
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -78,9 +63,9 @@ oci_set_prefetch($stmt,1000);
  **/
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
-oci_bind_by_name($stmt, ':cursor'  , $refcur, -1, OCI_B_CURSOR);
-oci_bind_by_name($stmt, ':ambito'  , $ambito, 100);
-oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
+oci_bind_by_name($stmt, ':cursor'   , $refcur, -1, OCI_B_CURSOR);
+oci_bind_by_name($stmt, ':id_scheda', $id_scheda, 100);
+oci_bind_by_name($stmt, ':outcome'  , $outcome, 4000);
 
 /**
  * Lancia la procedura 
@@ -106,32 +91,21 @@ if ( substr($outcome,0,9)==="Exception") {
    die();
 }
  
-//$outp = $outcome . "|";
-$start = "[";
+// NB. Mi faccio restituisce un record corrispondente alla struttura typescript RecordMedia.
+//     !! La procedura restituisce un solo record !!
+$start = "";
 $outp  = $start;
 while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
    if ($outp != $start) {$outp .= ",";}
    $outp .= '{'.
-              '"id":'          . rawurlencode($row[0]) . ','  . 
-              '"nome":"'       . rawurlencode($row[1]) . '",' .
-              '"descr":"'      . rawurlencode($row[2]) . '",' .
-              '"contro_ind":"' . rawurlencode($row[3]) . '",' .
-              '"pre_req":"'    . rawurlencode($row[4]) . '",' .
-              '"alert_msg":"'  . rawurlencode($row[5]) . '",'  .
-              '"alert_msg_visibile":"' . rawurlencode($row[6]) . '",'  .
-              '"bibliografia":"'  . rawurlencode($row[7]) . '",'  .
-              '"patologie_secondarie":"' . rawurlencode($row[8]) . '",'  .
-              '"valutazione":"'  . rawurlencode($row[9]) . '",'  .
-              '"num_esercizi":' . $row[10] . ','  .
-              '"note":"'        . rawurlencode($row[11]) . '",' .
-              '"contro_ind_abs":"'  . rawurlencode($row[12]) . '",' .
-              '"pre_req_comp":"'  . rawurlencode($row[13]) . '",' .
-              '"come_valutare":"'  . rawurlencode($row[14]) . '",' .
-              '"id_scheda_val":' . $row[15] .
+              '"id_media":'   . $id_scheda . ','  .
+              '"url_media":"' . rawurlencode($row[1]) . '",' .
+              '"descr_media":"' . rawurlencode($row[0]) . '",' .
+              '"usato_media":0' .
             '}';
 }
-$outp .="]";
+$outp .="";
 echo($outp);
 
 oci_free_statement($refcur);

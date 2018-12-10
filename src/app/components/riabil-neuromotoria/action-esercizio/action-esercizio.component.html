@@ -49,7 +49,7 @@
           
           <!-- GRUPPO DI APPARTENENZA -->
           <div class="form-group row">
-              <label for="summernote-actex-gruppo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Gruppo esercizi</label>
+              <label for="summernote-actex-gruppo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Gruppo</label>
               <div class="col-sm-9">
                   <select id="summernote-actex-gruppo" class="form-control"name="gruppo"
                    [(ngModel)]="esercizio.id_grp" >
@@ -70,9 +70,9 @@
 
           <!-- ALERT ESERCIZIO -->
           <div class="form-group row">
-              <label for="summernote-actex-alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Alert esercizio</label>
+              <label for="summernote-actex-alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nota di avviso</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="summernote-actex-alert" name="testo_actex"  placeholder="Alert esercizio"
+                  <textarea class="form-control" id="summernote-actex-alert" name="testo_actex"  placeholder="Nota di avviso"
                     [(ngModel)]="esercizio.alert"></textarea>
               </div>
           </div>
@@ -97,16 +97,16 @@
            <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
         </button>
 
-        <button *ngIf="azione=='modifica_esercizio'" title="Ricarica sul modulo i campi dell'esercizio corrente" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica_esercizio'" title="Ricarica il modulo" class="btn btn-info text-white" 
           (click)="reload(actExForm);">
           <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
         </button>
         
-        <button *ngIf="azione=='nuovo_esercizio'" title="Salva nuovo esercizio" class="btn btn-info text-white" 
+        <button *ngIf="azione=='nuovo_esercizio'" title="Salva inserimento" class="btn btn-info text-white" 
             (click)="salvaEsercizio(actExForm)">
             <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
 
-        <button *ngIf="azione=='modifica_esercizio'" title="Salva modifiche all'esercizio" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica_esercizio'" title="Salva modifiche" class="btn btn-info text-white" 
             (click)="salvaEsercizio(actExForm)">
             <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
      </div>

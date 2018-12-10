@@ -21,7 +21,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
   @Input() listaEsercizi: ListaEserciziComponent
 
-  ambito    : string
+  AMBITO    : number
   entryEsercizio: RecordEsercizio   // questo e' l'esercizio all'apertura della finestra
   esercizio : RecordEsercizio
 	gruppi    : Array<Gruppo>
@@ -49,8 +49,12 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
       // Se la lista dei gruppi e' gia' inserita nell'array globale usa quello,
       // così evita un accesso non necessario al server
-      if ( NeuroApp.gruppi ) 
+      if ( NeuroApp.gruppi )  {
         this.gruppi = NeuroApp.gruppi
+        this.gruppi = this.gruppi.filter(item => {
+          return item.id_ambito == this.AMBITO
+        })
+      }
       else
         this.loadGruppi()
 
@@ -60,7 +64,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
        *  ambito = "1"   => riabilitazione neuromotria
        *  ambito = "3"   => formazione
        */
-      this.ambito = this.listaEsercizi.listaPacchetti.AMBITO
+      this.AMBITO = this.listaEsercizi.listaPacchetti.AMBITO
 
       
       /**
@@ -78,14 +82,14 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
           
           if (this.azione=="nuovo_esercizio") {
-              this.titolo = this.ambito=="1" ? "Nuovo esercizio" : "Nuova procedura"
+              this.titolo = this.AMBITO==1 ? "Nuovo esercizio" : "Nuova modalità"
               this.esercizio.reset()
               this.esercizio.id_pkt = obj.id_pkt
               this.entryEsercizio.reset()
           }
           else if (this.azione=="modifica_esercizio") {
               this.titolo = "Modifica esercizio"
-              this.titolo = this.ambito=="1" ? "Modifica esercizio" : "Modifica procedura"
+              this.titolo = this.AMBITO==1 ? "Modifica esercizio" : "Modifica modalità"
               this.esercizio.copy(obj.esercizio)
               this.entryEsercizio.copy(obj.esercizio)
           }
@@ -305,9 +309,11 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
     this.exSubscr = serv.subscribe (
        result => {
           NeuroApp.hideWait()
-          this.gruppi = result    
-          this.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:""} )
-          //console.log(this.gruppi)
+          this.gruppi = result
+          this.gruppi = this.gruppi.filter(item => {
+            return item.id_ambito == this.AMBITO
+          })
+          this.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:"", id_ambito:-1} )
           this.exSubscr.unsubscribe()
        },
        error => {

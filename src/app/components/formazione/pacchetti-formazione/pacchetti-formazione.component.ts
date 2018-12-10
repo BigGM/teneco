@@ -17,7 +17,7 @@ declare var bootbox: any;
 export class PacchettiFormazioneComponent implements OnInit {
   
   // Questo e' l'ambito che identifica i pacchetti di formazione sul DB
-  readonly AMBITO = "3"
+  readonly AMBITO: number = 3
 
   /** La lista dei pacchetti */
   pacchetti  : RecordPacchetto[]

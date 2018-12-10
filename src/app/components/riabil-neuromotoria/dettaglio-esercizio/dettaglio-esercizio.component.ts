@@ -33,10 +33,10 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
   mediaCollegati : MediaCollegatiComponent
 
 
-  /** l'esercizio di cui e' richiesto il dettaglio */ 
+  /** Esercizio/Modalita di cui e' richiesto il dettaglio */ 
   esercizio : RecordEsercizio
 
-  /** la lista degli elmenti multimediali collegati a this.esercizio */
+  /** la lista degli elementi multimediali collegati a this.esercizio */
   media     : Array<RecordMediaEsercizio>
 
   /** gruppi: esercizi passivi, autonomi, ... */ 
@@ -73,7 +73,7 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
      * ex == null  => nascondi questa vista
      */
     this.listaEsercizi.openDettaglio.subscribe (ex => {
-      //console.log("DettaglioEsercizioComponent", ex)
+      console.log("DettaglioEsercizioComponent", ex)
       
       if (ex) {
         this.esercizio.copy(ex as RecordEsercizio)

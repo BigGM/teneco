@@ -15,7 +15,7 @@ declare var bootbox: any;
 })
 export class ListaPacchettiComponent implements OnInit {
 
-  readonly AMBITO = "1"
+  readonly AMBITO:number = 1
 
   /** La lista dei pacchetti */
   pacchetti  : RecordPacchetto[]
@@ -74,6 +74,7 @@ export class ListaPacchettiComponent implements OnInit {
    * In caso di errore emette una popup.
    * @ambito -  1: riabilitazione neuromotoria
    *            2: riabilitazione cognitiva
+   *            3: formazione
    */
   loadPacchetti() {
     console.log("ListaPacchettiComponent.loadPacchetti")

@@ -9,6 +9,7 @@ import { NeuroAppService } from '../neuro-app.service';
 import { RecordPacchetto } from '../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../classes/record-esercizio'
 import { RecordMediaEsercizio } from '../../classes/record-media-esercizio'
+import { RecordMedia } from '../../classes/record-media'
 import { Gruppo } from '../../classes/gruppo';
 
 
@@ -47,6 +48,12 @@ type out_gruppo =  Gruppo[] | Outcome;
 type out_media_esercizio =  RecordMediaEsercizio[] | Outcome;
 
 
+/**
+ * Il tipo restituito dalla procedura php get_scheda_valutazione.php
+ */
+type out_scheda_val =  RecordMedia | Outcome;
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +90,7 @@ export class RiabilNeuromotoriaService {
   /**
    * Carica la lista del pacchetti dal DB
    */
-  loadPacchetti(ambito) : Observable<RecordPacchetto[]> {
+  loadPacchetti(ambito:number) : Observable<RecordPacchetto[]> {
 
     let db_proc = "NeuroApp.lista_pacchetti2"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_pacchetti.php?proc="+db_proc+"&ambito="+ambito;
@@ -158,8 +165,9 @@ export class RiabilNeuromotoriaService {
    * @param db_proc     procedura oracle
    * @param ambito :  1 ( riabilitazione neuromotoria )
    *                  2 ( riabilitazione cognitiva )
+   *                  3 ( formazione )
    **/
-  salvaPacchetto(pkt:RecordPacchetto, php_script:string, db_proc:string, ambito:string) {
+  salvaPacchetto(pkt:RecordPacchetto, php_script:string, db_proc:string, ambito:number) {
      
     // NB. Se il pacchetto in ingresso contiene un id significa che stiamo salvando
     // un pacchetto modificato e quindi nella url va aggiunto l'id
@@ -185,7 +193,8 @@ export class RiabilNeuromotoriaService {
                    "&contro_ind_abs=" + pkt.contro_ind_abs+
                    "&pre_req_comp=" + pkt.pre_req_comp+
                    "&come_valutare=" + pkt.come_valutare+
-                   "&ambito="+ambito;
+                   "&ambito="+ambito +
+                   "&id_scheda_val="+pkt.id_scheda_val;
 
     console.log(url)
 
@@ -356,6 +365,36 @@ export class RiabilNeuromotoriaService {
           }),
           catchError( this.neuroService.handleError )
       )
+  }
+
+
+  /**
+   * Recupera descrizione e url della scheda con l'id specificato.
+   * @param id_scheda id della scheda
+   */
+  getSchedaValutazione(id_scheda:number) : Observable<RecordMedia> {
+    let db_proc = "NeuroApp.get_scheda_valutazione";
+    let url = this.G_URL_ROOT+"/cgi-bin/get_scheda_valutazione.php?proc="+db_proc +
+              "&id_scheda="+id_scheda;
+
+    console.log("getSchedaValutazione",url)
+
+    return this.http.get<out_scheda_val>(url)
+    .pipe(
+        retry(1),
+        map ( record => {
+          let outcome = <Outcome>record
+          if ( outcome.status==="exception") {
+              throw new Error(`${outcome.message}`)
+          }
+          else
+            return (record as RecordMedia)
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.neuroService.handleError ),
+    )
   }
 
 }

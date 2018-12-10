@@ -20,3 +20,15 @@
     background-color: rgb(34, 67, 136);
     border-radius:4px;
 }
+
+.my-bg-dark-2 {
+    background-color:rgb(36,72,116);
+}
+.my-bg-dark-2:hover {
+    background-color:rgb(43, 96, 160);
+    transition: background-color 0.4s ease-in-out;
+}
+
+.my-pointer {
+    cursor: pointer;
+} 
