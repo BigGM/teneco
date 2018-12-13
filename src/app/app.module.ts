@@ -52,6 +52,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
 import { HomeComponent } from './components/home/home.component';
+import { ResourceImagesTargetComponent } from './components/resource-images-target/resource-images-target.component';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { HomeComponent } from './components/home/home.component';
     ActionPacchettoComponent,
     FormazioneComponent,
     PacchettiFormazioneComponent,
-    HomeComponent
+    HomeComponent,
+    ResourceImagesTargetComponent
   ],
   imports: [
     BrowserModule,

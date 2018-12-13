@@ -47,24 +47,25 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
       this.exSubscr = null
       this.initSummernote()
 
+      /**
+       *  L'ambito sta nella lista dei pacchetti e ci arrivo passando dalla lista degli esercizi,
+       *  ricordo che :
+       *  ambito = 1   => riabilitazione neuromotria
+       *  ambito = 3   => formazione
+       *  ambito = -1  => "-- Nessun gruppo --"
+       */
+      this.AMBITO = this.listaEsercizi.listaPacchetti.AMBITO
+
       // Se la lista dei gruppi e' gia' inserita nell'array globale usa quello,
       // così evita un accesso non necessario al server
       if ( NeuroApp.gruppi )  {
         this.gruppi = NeuroApp.gruppi
         this.gruppi = this.gruppi.filter(item => {
-          return item.id_ambito == this.AMBITO
+          return (item.id_ambito == this.AMBITO ||  item.id_ambito==-1)
         })
       }
       else
         this.loadGruppi()
-
-      /**
-       *  L'ambito sta nella lista dei pacchetti e ci arrivo passando dalla lista degli esercizi,
-       *  ricordo che :
-       *  ambito = "1"   => riabilitazione neuromotria
-       *  ambito = "3"   => formazione
-       */
-      this.AMBITO = this.listaEsercizi.listaPacchetti.AMBITO
 
       
       /**
@@ -311,7 +312,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
           NeuroApp.hideWait()
           this.gruppi = result
           this.gruppi = this.gruppi.filter(item => {
-            return item.id_ambito == this.AMBITO
+            return (item.id_ambito == this.AMBITO ||  item.id_ambito==-1)
           })
           this.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:"", id_ambito:-1} )
           this.exSubscr.unsubscribe()

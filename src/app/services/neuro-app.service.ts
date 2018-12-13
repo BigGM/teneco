@@ -6,6 +6,7 @@ import { catchError, retry,  map, tap } from 'rxjs/operators';
 import { NeuroApp } from '../neuro-app'
 import { RecordMedia } from '../classes/record-media'
 import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
+import { RecordImageTarget } from 'src/app/classes/record-image-target';
 import { Gruppo } from '../classes/gruppo'
 import { Outcome } from '../classes/outcome'
 
@@ -24,6 +25,16 @@ declare var $ : any;
 type out_media =  RecordMedia[] | Outcome;
 
 
+/**
+ * out_img_target
+ *  Tipo restituito procedura php che recupera la lista delle immagini target.
+ *  Puo essere:
+ *  un array di oggetti RecordImageTarget, oppure
+ *  un oggetto Outcome per segnalare un errore
+ */
+type out_img_target =  RecordImageTarget[] | Outcome;
+
+
  /**
  * Il tipo restituito dalla procedura php che carica le tipologie di gruppi di esercizi,
  * il valore restituito puo' essere:
@@ -31,6 +42,8 @@ type out_media =  RecordMedia[] | Outcome;
  * Outcome per segnalare un errore di database
  */
 type out_gruppo =  Gruppo[] | Outcome;
+
+
 
 
 @Injectable({
@@ -47,7 +60,6 @@ export class NeuroAppService {
 
 
   /**
-   * 
    * @param lista_id   - lista degli id da escludere (valori separati da virgola)
    * @param tipo_media - video, audio, image, doc
    */
@@ -78,7 +90,7 @@ export class NeuroAppService {
         }),
         catchError( this.handleError ),
     )
-  } // listamedia
+  } // listaMedia
 
 
   /**
@@ -146,6 +158,34 @@ export class NeuroAppService {
         catchError( this.handleError )
     )
   } // rimuoviMediaEsercizio()
+
+
+  /**
+   * @param lista_id   - lista degli id da escludere (valori separati da virgola)
+   * @param tipo_media - video, audio, image, doc
+   */
+  listaImagesTarget() : Observable<RecordImageTarget[]> {
+
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_images_target.php?proc=NeuroApp.lista_target";    
+    console.log("** listaMedia: ", url)
+    
+    return this.http.get<out_img_target>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          console.log(records)
+          let outcome = records as Outcome
+          if (outcome.status === "exception") {
+              throw new Error(outcome.message)
+          }
+          return records as RecordImageTarget[]
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.handleError ),
+    )
+  } // listaImagesTarget
 
   
   loadGruppi() : Observable<Gruppo[]> {

@@ -27,8 +27,7 @@ export class RecordMedia {
       this.url_media = this.url_media.trim()
       this.descr_media = this.descr_media.trim()
     }
-    
-    
+        
     public encode() : RecordMedia {
       let out = new RecordMedia()
       out.id_media = this.id_media

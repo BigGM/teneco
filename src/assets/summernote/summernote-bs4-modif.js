@@ -4576,7 +4576,7 @@ var Brand = /** @class */ (function () {
       //console.log("*** Brand this ***")
       this.$editingArea = context.layoutInfo.editingArea;
       this.$brand = $$1([
-         '<label class="summernote-brand"><i class="fas fa-sun" style="color:rgb(255,120,0)"></i></label>'
+         '<label class="summernote-brand"><i class="fas fa-sun" style="color:rgb(2,144,220)"></i></label>'
       ].join('')).prependTo(this.$editingArea);
    }
    

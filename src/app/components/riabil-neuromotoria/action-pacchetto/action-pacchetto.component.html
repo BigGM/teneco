@@ -227,11 +227,13 @@
                 </div>
                 <div class='modal-body mx-3'>
                     <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let scheda of listaSchede">
-                        <div class="col-sm-12 p-3 my-pointer" (click)="schedaValutazione.copy(scheda);closeModalScheda()">
+                        <div class="col-sm-12 my-pointer p-3" 
+                            (click)="schedaValutazione.copy(scheda);closeModalScheda()"
+                            >
                             <img [src]="docIcon(scheda.url_media)" style="width:42px;margin-right:10px">{{scheda.descr_media | truncate}}
-                            
-                            <button title="Apri scheda" type="button" class="btn btn-light" style="float:right;" (click)="open($event,scheda)">
-                                <i class="far fa-eye"></i> </button>
+                            <button title="Apri scheda" type="button" class="btn btn-warning text-dark px-2 pb-1" style="float:right;"
+                                (click)="open($event,scheda)">
+                                <i class="far fa-eye" style="font-size:18px;"></i> </button>
                             
                         </div>
                         

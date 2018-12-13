@@ -90,11 +90,10 @@
      margin-right:20px;
  }
 
-   .my-bg-secondary {
+.my-bg-secondary {
     background-color:  rgb(123, 157, 181);
-    
-   }
+}
 
-   .my-bg-dark {
+.my-bg-dark {
     background-color:rgb(55, 102, 135);
-   }
+}

@@ -148,22 +148,21 @@
         <h3 class='modal-title'><img src='assets/images/video_icon.png' style="width:64px;">&nbsp;Aggiungi video</h3>
 		  
 		  <div style="float:right;margin:0;padding:0">
-				<i class="fas fa-times close" data-dismiss='modal' (click)="stopAllVideos()"></i>
-				<i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('video')"></i>
+            <i class="fas fa-times close" data-dismiss='modal' (click)="stopAllVideos()"></i>
+            <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('video')"></i>
 		  </div>
 
         </div>
         <div class='modal-body mx-3'>
-          
-          <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let media of listaMediaDisponibili">
+          <div class="row mb-1 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
 				
-				<div class="col-sm-9 pt-2 word-break">
-					<label class="checkbox-container">&nbsp;
-							<input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
-							<span class="checkmark"></span>
-					</label>
-					{{media.descr_media | truncate}}
-				</div>
+            <div class="col-sm-9 pt-2 word-break">
+                <label class="checkbox-container">&nbsp;
+                    <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
+                    <span class="checkmark"></span>
+                </label>
+                {{media.descr_media | truncate}}
+            </div>
 
             <div class="col-sm-3 embed-responsive embed-responsive-16by9">
                 <video controls>
@@ -183,19 +182,19 @@
             <div class='modal-header'>
             	<h3 class='modal-title'><img src='assets/images/audio_icon.png' style="width:64px;">&nbsp;Aggiungi audio</h3>
             	<div style="float:right;margin:0;padding:0">
-						<i class="fas fa-times close" data-dismiss='modal' (click)="stopAllAudio()"></i>
-						<i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('audio')"></i>
+                    <i class="fas fa-times close" data-dismiss='modal' (click)="stopAllAudio()"></i>
+                    <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('audio')"></i>
 				  </div>
             </div>
             <div class='modal-body mx-3'>
           
                 <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let media of listaMediaDisponibili">
 						<div class="col-sm-8 pt-2 word-break">
-								<label class="checkbox-container">&nbsp;
-										<input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
-										<span class="checkmark"></span>
-								</label>
-								{{media.descr_media | truncate}}
+                            <label class="checkbox-container">&nbsp;
+                                    <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
+                                    <span class="checkmark"></span>
+                            </label>
+                            {{media.descr_media | truncate}}
 						</div>
                   <div class="col-sm-4">
                       <audio controls style="max-width:100%;height:60px;">
@@ -215,21 +214,21 @@
             <div class='modal-header'>
             	<h3 class='modal-title'><img src='assets/images/image_icon.png' style="width:64px;">&nbsp;Aggiungi immagine</h3>
             	<div style="float:right;margin:0;padding:0">
-						<i class="fas fa-times close" data-dismiss='modal'></i>
-						<i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('image')"></i>
-				   </div>
+                    <i class="fas fa-times close" data-dismiss='modal'></i>
+                    <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('image')"></i>
+				</div>
             </div>
             <div class='modal-body mx-3'>
-                <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let media of listaMediaDisponibili">
-							<div class="col-sm-9 pt-2 word-break">
-									<label class="checkbox-container">&nbsp;
-										<input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
-										<span class="checkmark"></span>
-									</label>
-									{{media.descr_media | truncate}}
-							</div>
-                    <div class="col-sm-3">
-                      <img [src]="media.url_media" class="img-fluid">
+                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+                    <div class="col-sm-9 pt-2 word-break">
+                        <label class="checkbox-container">&nbsp;
+                            <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
+                            <span class="checkmark"></span>
+                        </label>
+                        {{media.descr_media | truncate}}
+                    </div>
+                    <div class="col-sm-3" style="padding-right:0px">
+                        <img [src]="media.url_media" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -243,20 +242,20 @@
             <div class='modal-header' style='background-color:rgba(90,90,170,1.0)'>
             	<h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Aggiungi documento</h3>
             	<div style="float:right;margin:0;padding:0">
-							<i class="fas fa-times close" data-dismiss='modal'></i>
-							<i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('doc')"></i>
-					</div>
+                    <i class="fas fa-times close" data-dismiss='modal'></i>
+                    <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('doc')"></i>
+				</div>
             </div>
             <div class='modal-body mx-3'>
-                <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let media of listaMediaDisponibili">
+                <div class="row mb-1 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
                     <div class="col-sm-11 p-3 my-pointer" (click)="open(media.url_media)">
                         <img [src]="docIcon(media.url_media)" style="width:42px;margin-right:10px">{{media.descr_media | truncate}}
                     </div>
                     <div class="col-sm-1 pt-3">
                         <label class="checkbox-container">&nbsp;
-									<input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
-									<span class="checkmark"></span>
-								</label>
+                            <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
+                            <span class="checkmark"></span>
+						</label>
                     </div>
                 </div>
             </div>

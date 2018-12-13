@@ -184,11 +184,11 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     
     let title   = ambito==1 
                   ? "<h3>Cancella esercizio</h3>"
-                  :  "<h3>Cancella procedura</h3>"
+                  :  "<h3>Cancella modalit&agrave;</h3>"
 
     let message = ambito==1 
                   ? "<h6 p-4 style='line-height:1.6;'>Conferma rimozione dell'esercizio <label class='text-danger'>\""+ex.nome+"\"</label></h6>"
-                  : "<h6 p-4 style='line-height:1.6;'>Conferma rimozione della procedura <label class='text-danger'>\""+ex.nome+"\"</label></h6>"
+                  : "<h6 p-4 style='line-height:1.6;'>Conferma rimozione della modalit&agrave; <label class='text-danger'>\""+ex.nome+"\"</label></h6>"
     
     let self = this;
     

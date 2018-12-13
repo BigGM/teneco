@@ -172,7 +172,7 @@ export class ResourceImagesComponent implements OnInit {
 
 
   /**
-   * Ricarica la lista dei file audio. Il metodo viene richiamato quando la componente
+   * Ricarica la lista delle immagini. Il metodo viene richiamato quando la componente
    * child UploadImagesComponent invia l'evento reloadImagesEvent
    * @param msg 
    */

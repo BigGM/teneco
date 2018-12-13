@@ -88,6 +88,11 @@
    background-color:rgb(36,72,116);
   }
 
+  .my-bg-dark-2:hover {
+   background-color:rgb(43, 96, 160);
+   transition: background-color 0.4s ease-in-out;
+  }
+
   .my-pointer {
      cursor: pointer;
   }
@@ -98,23 +103,27 @@
    cursor: pointer;
    float: right;
    font-weight: normal;
-}
+  }
+
+  .my-shadow-sm {
+   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25) !important;
+  }
 
 
 #div_action_media {
    position: fixed;
-   top: 70px;
+   top: 80px;
    left: 10px;
    z-index:200;
-   max-height:200px;
+   max-height:246px;
    border-radius: 4px;
    background-color:rgba(38,102,192,1);
    /*border:1px solid rgba(100,100,100,0.2)*/
 }
 .action-media {
    cursor:pointer;
-   margin:4px 3px;
-   width:36px;
+   margin:6px 5px;
+   width:46px;
 }
 
 

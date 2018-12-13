@@ -76,7 +76,10 @@ export class AppComponent implements OnInit {
         result => {
           NeuroApp.hideWait()
           NeuroApp.gruppi = result
-          NeuroApp.gruppi.push ( <Gruppo>{id:-1,nome:"-- Nessun gruppo --",descr:""} )
+          NeuroApp.gruppi.push ( <Gruppo> { id: -1, 
+                                            nome: "-- Nessun gruppo --", 
+                                            descr: "", 
+                                            id_ambito:-1} )
           console.log(NeuroApp.gruppi)
           this.subscr.unsubscribe()
         },
