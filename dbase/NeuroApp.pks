@@ -65,7 +65,8 @@ PROCEDURE lista_media(p_tipo_media in varchar2,
                       p_cursor OUT SYS_REFCURSOR);
                           
 
-PROCEDURE lista_gruppi(p_outcome in out varchar2, 
+PROCEDURE lista_gruppi(p_ambito in varchar2,
+                       p_outcome in out varchar2, 
                        p_cursor OUT SYS_REFCURSOR);
                           
                           
@@ -80,6 +81,11 @@ PROCEDURE lista_patologie_gruppo(p_code_gruppo in varchar2,
 PROCEDURE lista_pacchetti(p_ambito in varchar2,
                           p_outcome in out varchar2, 
                           p_cursor OUT SYS_REFCURSOR);
+                          
+                          
+PROCEDURE lista_pacchetti2(p_ambito in varchar2,
+                          p_outcome in out varchar2, 
+                          p_cursor OUT SYS_REFCURSOR);
 
 
 
@@ -92,7 +98,12 @@ PROCEDURE salva_pacchetto(p_nome in varchar2,
                           p_bibliografia in varchar2,
                           p_patologie_secondarie in varchar2,
                           p_valutazione in varchar2,
+                          p_note in varchar2,                          
+                          p_controindicazioni_ass in varchar2,
+                          p_prerequisiti_comp in varchar2,
+                          p_come_valutare in varchar2,
                           p_ambito in varchar2,
+                          p_id_scheda_val in varchar2,
                           p_outcome in out varchar2);
                           
 PROCEDURE salva_pacchetto_modificato(p_id_pacchetto in varchar2,
@@ -105,6 +116,11 @@ PROCEDURE salva_pacchetto_modificato(p_id_pacchetto in varchar2,
                           p_bibliografia in varchar2,
                           p_patologie_secondarie in varchar2,
                           p_valutazione in varchar2,
+                          p_note in varchar2,
+                          p_controindicazioni_ass in varchar2,
+                          p_prerequisiti_comp in varchar2,
+                          p_come_valutare in varchar2,
+                          p_id_scheda_val in varchar2,
                           p_outcome in out varchar2);
 
 
@@ -181,8 +197,32 @@ FUNCTION  media_collegato(p_id_media in varchar2) return varchar2;
 PROCEDURE rimuovi_media(p_id_media in varchar2,
                         p_outcome in out varchar2);
                         
-FUNCTION count_esercizi (p_id_pacchetto in integer) return integer;                        
+FUNCTION count_esercizi (p_id_pacchetto in integer) return integer;
+
+
+PROCEDURE get_scheda_valutazione(p_id_scheda in varchar2,
+                                 p_outcome in out varchar2, 
+                                 p_cursor OUT SYS_REFCURSOR);
                         
+
+PROCEDURE lista_target(p_categoria in varchar2, 
+                       p_outcome in out varchar2, 
+                       p_cursor OUT SYS_REFCURSOR);
+                       
+                       
+PROCEDURE lista_categorie(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR);
+
+
+PROCEDURE aggiungi_target(p_url in varchar2,
+                          p_nome_target in varchar2,
+                          p_categoria in varchar2,
+                          p_descrizione in varchar2,
+                          p_outcome in out varchar2);
+                          
+                          
+PROCEDURE cancella_target(p_id_target in varchar2,
+                          p_outcome in out varchar2);
+
 
 END NeuroApp;
 /

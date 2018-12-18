@@ -3,7 +3,7 @@
   header('Access-Control-Allow-Origin: *'); 
 
   // se ho uploadato almeno un file....
-  $home_docs_path  = "/home/apache/htdocs/GCA/video";
+  $home_docs_path  = "../htdocs/GCA/video";
   $stored_proc_name = "NeuroApp.aggiungi_media";
 
   if ( empty( $_FILES ) ) {

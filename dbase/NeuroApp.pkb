@@ -265,13 +265,21 @@ END def_glossario;
                   
 
 
-PROCEDURE lista_gruppi(p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
+PROCEDURE lista_gruppi(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
 IS
 BEGIN
     p_outcome := 'OK';
-    OPEN p_cursor FOR
-    SELECT id_gruppo, nome_gruppo, nvl(desc_gruppo,'') as descr 
-    from GCA_GRUPPI;
+    
+    if p_ambito > 0 then
+        OPEN p_cursor FOR
+        SELECT id_ambito, id_gruppo, nome_gruppo, nvl(desc_gruppo,'') as descr 
+        from GCA_GRUPPI
+        where id_ambito = p_ambito;
+    else
+        OPEN p_cursor FOR
+        SELECT id_ambito, id_gruppo, nome_gruppo, nvl(desc_gruppo,'') as descr 
+        from GCA_GRUPPI;
+    end if;    
     
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
@@ -406,6 +414,55 @@ EXCEPTION
 END lista_pacchetti;
 
 
+
+PROCEDURE lista_pacchetti2(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    OPEN p_cursor FOR
+    SELECT id_pacchetto, nome_pacchetto, descr_pacchetto,
+           controindicazioni,
+           prerequisiti,
+           alert,
+           alert_visibile,
+           bibliografia,
+           patologie_secondarie,
+           valutazione,
+           count_esercizi(id_pacchetto),
+           note,
+           controindicazioni_ass,
+           prerequisiti_comp,
+           come_valutare,
+           nvl(id_scheda_valutazione,-1)
+    from GCA_PACCHETTI
+        left outer join GCA_AMBITO on 
+            GCA_AMBITO.id_ambito=GCA_PACCHETTI.id_ambito
+        left outer join GCA_PATOLOGIE on 
+            GCA_PATOLOGIE.id_patologia=GCA_PACCHETTI.id_patologia
+    where GCA_PACCHETTI.id_ambito = p_ambito
+    order by nome_pacchetto;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END lista_pacchetti2;
+
+
+PROCEDURE get_scheda_valutazione(p_id_scheda in varchar2,
+                                 p_outcome in out varchar2, 
+                                 p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+      select descr_media, url
+        from GCA_multimedia
+       where id_media = p_id_scheda;
+
+     
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END get_scheda_valutazione;
+
+
 PROCEDURE salva_pacchetto(p_nome in varchar2, 
                           p_descr in varchar2,
                           p_prerequisiti in varchar2,
@@ -415,11 +472,22 @@ PROCEDURE salva_pacchetto(p_nome in varchar2,
                           p_bibliografia in varchar2,
                           p_patologie_secondarie in varchar2,
                           p_valutazione in varchar2,
+                          p_note in varchar2,
+                          p_controindicazioni_ass in varchar2,
+                          p_prerequisiti_comp in varchar2,
+                          p_come_valutare in varchar2,
                           p_ambito in varchar2,
+                          p_id_scheda_val in varchar2,
                           p_outcome in out varchar2)
 IS
+ scheda_valutazione integer := p_id_scheda_val;
 BEGIN
     p_outcome := 'OK';
+    
+    if scheda_valutazione= -1 then
+      scheda_valutazione := null;
+    end if;
+    
     insert into GCA_PACCHETTI(id_pacchetto,
                               nome_pacchetto,
                               descr_pacchetto,
@@ -430,6 +498,11 @@ BEGIN
                               bibliografia,
                               patologie_secondarie,
                               valutazione,
+                              note,
+                              controindicazioni_ass,
+                              prerequisiti_comp,
+                              come_valutare,
+                              id_scheda_valutazione,
                               id_ambito ) 
     values (S_GCA_PACCHETTI_ID_PACCHETTO.nextval, 
             p_nome, 
@@ -441,6 +514,11 @@ BEGIN
             p_bibliografia,
             p_patologie_secondarie,
             p_valutazione,
+            p_note,
+            p_controindicazioni_ass,
+            p_prerequisiti_comp,
+            p_come_valutare,
+            scheda_valutazione,
             p_ambito);
     commit;
 EXCEPTION
@@ -458,11 +536,21 @@ PROCEDURE salva_pacchetto_modificato(p_id_pacchetto in varchar2,
                           p_bibliografia in varchar2,
                           p_patologie_secondarie in varchar2,
                           p_valutazione in varchar2,
+                          p_note in varchar2,
+                          p_controindicazioni_ass in varchar2,
+                          p_prerequisiti_comp in varchar2,
+                          p_come_valutare in varchar2,
+                          p_id_scheda_val in varchar2,
                           p_outcome in out varchar2)
-                          IS
+IS
   esiste_pacchetto integer := 0;
+  scheda_valutazione integer := p_id_scheda_val;
 BEGIN
     p_outcome := 'OK';
+    
+    if scheda_valutazione= -1 then
+      scheda_valutazione := null;
+    end if;
     
     -- Non deve esiste un pacchetto col nuovo nome scelto
     select count('x') into esiste_pacchetto
@@ -484,7 +572,12 @@ BEGIN
            alert_visibile = p_alert_visibile ,
            bibliografia = p_bibliografia ,            
            patologie_secondarie = p_patologie_secondarie,
-           valutazione = p_valutazione             
+           valutazione = p_valutazione,
+           note = p_note,
+           controindicazioni_ass = p_controindicazioni_ass,
+           prerequisiti_comp = p_prerequisiti_comp,
+           come_valutare = p_come_valutare,
+           id_scheda_valutazione = scheda_valutazione
      where id_pacchetto = p_id_pacchetto;
     
     commit;
@@ -529,7 +622,10 @@ BEGIN
         left outer join GCA_ESERCIZIO_MEDIA
         on GCA_ESERCIZIO_MEDIA.id_esercizio = GCA_PACCHETTI_ESERCIZI.id_esercizio and 
            GCA_ESERCIZIO_MEDIA.id_pacchetto = GCA_PACCHETTI_ESERCIZI.id_pacchetto
-    where  GCA_PACCHETTI_ESERCIZI.id_pacchetto = p_id_pacchetto                
+        left outer join GCA_PACCHETTI 
+        on gca_gruppi.id_ambito = GCA_PACCHETTI.id_ambito           
+    where  GCA_PACCHETTI_ESERCIZI.id_pacchetto = p_id_pacchetto  and
+           GCA_PACCHETTI.ID_PACCHETTO =  GCA_PACCHETTI_ESERCIZI.id_pacchetto              
     group by GCA_PACCHETTI_ESERCIZI.id_pacchetto ,
             GCA_PACCHETTI_ESERCIZI.id_esercizio ,
             GCA_PACCHETTI_ESERCIZI.nome_esercizio ,
@@ -565,7 +661,6 @@ BEGIN
         left outer join GCA_ESERCIZIO_MEDIA
         on GCA_ESERCIZIO_MEDIA.id_esercizio = GCA_PACCHETTI_ESERCIZI.id_esercizio and 
            GCA_ESERCIZIO_MEDIA.id_pacchetto = GCA_PACCHETTI_ESERCIZI.id_pacchetto
-
         left outer join GCA_MULTIMEDIA
         on GCA_MULTIMEDIA.id_media = GCA_ESERCIZIO_MEDIA.id_media                   
     where   GCA_PACCHETTI_ESERCIZI.id_pacchetto = p_id_pacchetto and 
@@ -921,6 +1016,105 @@ EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
 END rimuovi_media;
 
+
+PROCEDURE lista_target(p_categoria in varchar2, 
+                       p_outcome in out varchar2, 
+                       p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    if p_categoria is not null then
+        OPEN p_cursor FOR
+        SELECT id_target, url_target, nome_target, len_nome_target, nvl(GCA_CATEGORIA.categoria,'') as categoria , nvl(descr_target,'') as descr 
+        from GCA_TARGET_ATTIVITA
+        left outer join GCA_CATEGORIA
+            on GCA_CATEGORIA.id_cat = GCA_TARGET_ATTIVITA.id_cat 
+        where upper(GCA_CATEGORIA.categoria) = upper(p_categoria)
+        order by GCA_CATEGORIA.categoria, nome_target;        
+    else
+        OPEN p_cursor FOR
+        SELECT id_target, url_target, nome_target, len_nome_target, nvl(GCA_CATEGORIA.categoria,'') as categoria , nvl(descr_target,'') as descr 
+        from GCA_TARGET_ATTIVITA
+        left outer join GCA_CATEGORIA
+            on GCA_CATEGORIA.id_cat = GCA_TARGET_ATTIVITA.id_cat
+        order by GCA_CATEGORIA.categoria, nome_target;
+    end if;    
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_target;
+
+
+PROCEDURE lista_categorie(p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    OPEN p_cursor FOR
+    SELECT id_cat, categoria 
+    from GCA_CATEGORIA;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_categorie;
+
+
+
+PROCEDURE aggiungi_target(p_url in varchar2,
+                          p_nome_target in varchar2,
+                          p_categoria in varchar2,
+                          p_descrizione in varchar2,
+                          p_outcome in out varchar2)
+IS
+    esiste_rec integer := 0;
+BEGIN
+    p_outcome := 'OK';
+    
+    -- Controlla se gia' esiste il target
+    select count('x') into esiste_rec
+      from gca_target_attivita 
+     where url_target = p_url;
+      
+    if esiste_rec > 0 then
+      p_outcome:='Exception: il file "'||p_url||'" esiste gia'' nella base dati';
+      return;
+    end if;
+    
+    INSERT INTO GCA_TARGET_ATTIVITA (
+       ID_TARGET,
+       URL_TARGET,
+       NOME_TARGET,
+       LEN_NOME_TARGET,
+       CATEGORIA,
+       DESCR_TARGET,
+       ID_CAT
+    ) 
+    select S_GCA_TARGET_ATTIVITA_ID.nextval,
+           p_url, p_nome_target, length(p_nome_target), p_categoria, p_descrizione, id_cat
+      from gca_categoria
+     where upper(GCA_CATEGORIA.categoria) = upper(p_categoria);
+     
+    commit;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END aggiungi_target;
+
+
+
+PROCEDURE cancella_target(p_id_target in varchar2,
+                          p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome:= 'OK';
+
+    delete GCA_TARGET_ATTIVITA 
+     where ID_TARGET = p_id_target;
+
+    commit;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END cancella_target;
 
 END NeuroApp;
 /

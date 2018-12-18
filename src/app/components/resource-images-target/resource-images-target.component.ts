@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NeuroAppService } from '../../services/neuro-app.service'
 import { NeuroApp } from '../../neuro-app';
 import { RecordImageTarget } from '../../classes/record-image-target'
+import { UploadImagesTargetComponent } from './upload-images-target/upload-images-target.component';
 
 declare var NeuroAppJS : any
 declare var $ : any
@@ -13,67 +14,48 @@ declare var bootbox: any
   templateUrl: './resource-images-target.component.html',
   styleUrls: ['./resource-images-target.component.css']
 })
-export class ResourceImagesTargetComponent implements OnInit, OnDestroy {
+export class ResourceImagesTargetComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   // lista dei documenti presenti nel DB
   lista_images :  RecordImageTarget[];
 
   // per la registrazione al servizio di accesso alle procedure del DB
-  mediaSubscr:  Subscription;
+  imgSubscr:  Subscription;
 
-  // root path delle icone
-  readonly root_images = NeuroApp.ROOT_ICONS
+    // Accesso alla component child che esegue l'upload
+  @ViewChild(UploadImagesTargetComponent) uploadComponent: UploadImagesTargetComponent;
 
-  // Vista a griglia o lista
-  view_images_as : string = "grid"
-
-  // l'imagine da mostrare sulla finetra modale
-  curr_image: RecordImageTarget = null
 
   constructor( private neuroAppService : NeuroAppService) {
-    console.log( "ResourceImagesTargetComponent=> constructor" )
+    //console.log( "ResourceImagesTargetComponent=> constructor" )
     this.lista_images = []
-    this.mediaSubscr = null
+    this.imgSubscr = null
   }
 
+
+  ngAfterViewInit() {
+    //console.log( "ResourceImagesTargetComponent=> AfterViewInit" )
+    //console.log("*** uploadComponent **** ", this.uploadComponent);
+
+    // Si sottoscrive al component child di upload che emette un messaggio
+    // alla fine dell'upload, in questo modo si puo' aggiornare la lista delle immagini
+    this.uploadComponent.messageEvent.subscribe ( (msg:string) => {
+      this.listaImmagini()
+    })
+  }  
+
+  
   ngOnInit() {
-    console.log( "ResourceImagesTargetComponent=> OnInit" )
-    this.view_images_as = "grid"
+    //console.log( "ResourceImagesTargetComponent=> OnInit" )
     if (this.lista_images)
       console.log( this.lista_images.length )
     this.listaImmagini()
   }
 
   ngOnDestroy() {
-    console.log( "ResourceImagesTargetComponent => OnDestroy" )
-    if (this.mediaSubscr)
-      this.mediaSubscr.unsubscribe()
-  }
-
-
-    /**
-   * Attiva la visualizzazione a lista
-   */
-  viewAsList(){
-    console.log("viewAsList")
-    if (this.view_images_as=="list")
-      return
-
-    $('#div-view-images-as-grid').animate({opacity:0},400, () =>{
-      this.view_images_as = "list"
-    })
-  }
-
-  /**
-   * Attiva la visualizzazione a griglia
-   */
-  viewAsGrid(){
-    console.log("viewAsGrid")
-    if (this.view_images_as == "grid")
-      return
-    $('#div-view-images-as-list').animate({opacity:0},400, () =>{
-      this.view_images_as = "grid"
-    })
+    //console.log( "ResourceImagesTargetComponent => OnDestroy" )
+    if (this.imgSubscr)
+      this.imgSubscr.unsubscribe()
   }
 
 
@@ -90,7 +72,7 @@ export class ResourceImagesTargetComponent implements OnInit, OnDestroy {
     NeuroApp.showWait();
 
     let serv = this.neuroAppService.listaImagesTarget()
-    this.mediaSubscr = serv.subscribe(
+    this.imgSubscr = serv.subscribe(
         result => {
           result.map(image => {
             RecordImageTarget.decode(image)
@@ -101,39 +83,69 @@ export class ResourceImagesTargetComponent implements OnInit, OnDestroy {
 
           NeuroApp.hideWait()
           this.lista_images = result
-          this.mediaSubscr.unsubscribe()
+          this.imgSubscr.unsubscribe()
         },
         error => {
           NeuroApp.hideWait()
           NeuroApp.custom_error(error,"Error")
-          this.mediaSubscr.unsubscribe()
+          this.imgSubscr.unsubscribe()
         }
     )
   } // listaImmagini()
 
 
   /**
-   * Ricarica la lista delle immagini. Il metodo viene richiamato quando la componente
-   * child UploadImagesComponent invia l'evento reloadImagesEvent
-   * @param msg 
-   *
-  reloadImages(msg) {
-    console.log("ResourceImagesTargetComponent.reloadImages => reloadImagesEvent received", msg)
-    this.listaImmagini()
-  } */
-
-  /**
-   * 
-   * @param audio l'elemento multimediale con l'audio
+   * Richiede conferma di cancellazione di una immagine dal database e se confermato
+   * esegue l'azione.
+   * @param image
    */
-  openModalImage(image:RecordImageTarget) {
-    this.curr_image = image
-    // e la attiva
-    $("#modalImageList").modal();
+  confermaCancellaTarget(image:RecordImageTarget) {
+    let self = this
 
-    $('#modalImageList').on('hidden.bs.modal', (e) => {
-        this.curr_image = null
-    })
-  } // openModalImage
+      let msg="<h6 style='line-height:1.6'>Conferma rimozione dell'immagine<br><label style='word-break:break-all;color:rgb(180,0,0);'>\""+NeuroApp.fileName(image.nome)+"\"&nbsp;?</label></h6>";
+      
+      bootbox.dialog ({
+        title: "<h4>Cancella Immagine</h4>", 
+        message: msg,
+        draggable:true,
+        buttons: {
+          "Annulla":{
+              className: "btn-secondary btn-md"
+          },
+          "Rimuovi" : { 
+              className: "btn-danger btn-md",
+              callback: function() {
+                self.cancellaImage(image);
+              } // end callback
+          } // end Rimuovi
+        } // end buttons
+      }); // bootbox.dialog
+    } // confermaCancellaTarget()
 
+
+    /**
+     * Rimuove una immagine dal DB e dal file sistem.
+     * @param image l'immagine da cancellare
+     */
+    cancellaImage(image: RecordImageTarget) {
+      $('#waitDiv').show()
+    
+      NeuroApp.showWait()
+    
+      let serv = this.neuroAppService.cancellaTarget(image)
+      this.imgSubscr = serv.subscribe (
+        result => {
+          this.imgSubscr.unsubscribe()
+          NeuroApp.hideWait()
+          NeuroApp.custom_info("Immagine target cancellata")
+          // Aggiorna la lista delle immagini
+          this.listaImmagini()
+        },
+        error => {
+          this.imgSubscr.unsubscribe()
+          NeuroApp.hideWait()
+          NeuroApp.custom_error(error,"Error")
+        }
+      )
+    } // cancellaImage()
 }

@@ -214,7 +214,7 @@ export class ResourceImagesComponent implements OnInit {
 
     /**
      * Rimuove una immagine dal DB e dal file sistem.
-     * @param image l'audio da cancellare
+     * @param image l'immagine da cancellare
      */
     cancellaImage(audio:RecordMedia) {
       console.log("ResourceImagesComponent.cancellaImage")

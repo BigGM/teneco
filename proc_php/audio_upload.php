@@ -3,7 +3,7 @@
 header('Access-Control-Allow-Origin: *'); 
 
 // se ho uploadato almeno un file....
-$home_audio_path  = "/home/apache/htdocs/GCA/audio";
+$home_audio_path  = "../htdocs/GCA/audio";
 $stored_proc_name = "NeuroApp.aggiungi_media";
 
 if ( empty( $_FILES ) ) {

@@ -53,6 +53,7 @@ import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
 import { HomeComponent } from './components/home/home.component';
 import { ResourceImagesTargetComponent } from './components/resource-images-target/resource-images-target.component';
+import { UploadImagesTargetComponent } from './components/resource-images-target/upload-images-target/upload-images-target.component';
 
 
 @NgModule({
@@ -86,7 +87,8 @@ import { ResourceImagesTargetComponent } from './components/resource-images-targ
     FormazioneComponent,
     PacchettiFormazioneComponent,
     HomeComponent,
-    ResourceImagesTargetComponent
+    ResourceImagesTargetComponent,
+    UploadImagesTargetComponent
   ],
   imports: [
     BrowserModule,

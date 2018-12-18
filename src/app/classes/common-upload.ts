@@ -1,6 +1,7 @@
 
 /** 
- * La classe CommonUpload contiene metodi statici comuni alle componenti di upload.
+ * La classe CommonUpload contiene metodi statici comuni alle componenti di upload
+ * delle risorse audio, video, immagini, documenti.
  */
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { NeuroApp } from '../neuro-app'

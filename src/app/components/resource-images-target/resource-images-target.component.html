@@ -1,20 +1,19 @@
 
 <div class="shadow-lg px-3 py-1 mb-5 w-100">
  
-  <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color: rgb(24, 58, 83);">Immagini target
+  <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color:rgb(24, 58, 83);">
+    Immagini target
   </div>
   
- <DIV id="div_image_component" class="container-fluid mb-5">  
- 
-    <!--
+ <div id="div_image_component" class="container-fluid mb-5">
+   
+   <!--
        La componente UploadImageComponent invia al parent la richiesta di
        ricaricare la lista delle immagini alla fine di un upload.   
-    <app-upload-image (reloadImageEvent)="reloadImages($event)"></app-upload-image> -->
- 
-     <!--
-       Componente dinamica per l'upload
-     <ng-template #dynamic_file_uploader>  </ng-template> -->
- 
+   <app-upload-image (reloadImageEvent)="reloadImages($event)"></app-upload-image> -->
+    
+   <app-upload-images-target></app-upload-images-target>
+  
    <table style="margin-bottom:6px;width:100%">
      <tr>
        <td style="width:55px;margin:0;">
@@ -35,43 +34,25 @@
      </tr>
    </table>
  
- 
      <!-- Presentazione a griglia -->
-     <div id="div-view-images-as-grid" *ngIf="view_images_as=='grid'" 
-       class="row py-3 px-1" 
-       style="background-color:rgb(123, 157, 181); border-radius:4px;">
+     <div id="div-view-images-as-grid"
+       class="row py-3 px-1 my-bg-secondary" 
+       style="border-radius:4px;">
          <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
              <div class="thumbnail thumbnail-image p-3 word-break">
                  <img [src]="image.url" class="img-fluid">
-                 <p class="descr-image">
-                 {{image.nome}}<br>
-                 <label *ngIf="image.categoria">{{image.categoria}}<br></label>
-                 <label *ngIf="image.descr">{{image.descr}}</label>
-                </p>
+
+                 <table ><tr>
+                    <td class="descr-image">{{image.nome}}<br>
+                      {{image.categoria}}<br>
+                      {{image.descr}}</td>
+                    <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaTarget(image)"></i></td>
+                    </tr>
+                </table>
                </div>
          </div>
      </div>
- 
- 
-    <!-- 
-      -- Finestra modale per inserire una immagine allargata
-    <div *ngIf="curr_image" id='modalImageList' class='modal fade' role='dialog' data-backdrop="static">
-       <div class='modal-dialog modal-dialog-centered modal-lg'>
-       <div class='modal-content shadow-lg'>
-          <div class='modal-header'>
-             <h4 class='modal-title'>{{curr_image.nome}}</h4>
-             <button type='button' class='close' data-dismiss='modal'>&times;</button>
-          </div>
- 
-          <div class='modal-body col-12 text-center'>
-             <img [src]="curr_image.url" class='img-fluid'>
-          </div>
-       </div>
-       </div>
-    </div> -->
- 
- </DIV>
- 
+  </div>
  </div>
  
  

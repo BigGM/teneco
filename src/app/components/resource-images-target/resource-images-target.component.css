@@ -29,7 +29,7 @@ input[type="file"] {
    /*border: 1px solid #ddd;*/
    border-radius: 4px;
    
-   background-color:rgb(55, 102, 135);
+   background-color:rgb(49, 102, 142);
    -webkit-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
       -moz-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
            box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
@@ -56,8 +56,8 @@ input[type="file"] {
     font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 17px;
     font-weight: normal;
-    color:rgb(240,240,244);
-    line-height: 1.6;
+    color:rgb(245,247,250);
+    line-height: 1.2;
 }
 .descr-image-on-lista {
    font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -92,9 +92,9 @@ input[type="file"] {
 }
 
 .my-bg-secondary {
-   background-color:  rgb(123, 157, 181);
-}
+   background-color: rgb(41, 81, 117)!important;
+  }
 
-.my-bg-dark {
-   background-color:rgb(55, 102, 135);
-}
+  .my-bg-dark {
+   background-color: rgb(32, 53, 74)!important;
+  }

@@ -1,26 +1,27 @@
 <div class="mb-5">
 
-    <label class="title-doc">{{title}}</label>
+    <label class="title-doc">Upload target</label>
  
    <div class="row pt-3 pb-3 card my-bg-secondary">
 
        <div class="col-sm-12" style="overflow:auto">
  
-         <label for="{{id_file_upload}}" class="custom-file-upload">Sfoglia</label><br/>
-         <input [hidden]="true" id="{{id_file_upload}}"
+         <label for="upload-categorie" class="custom-file-upload">Sfoglia</label><br/>
+         <input [hidden]="true" id="upload-categorie"
              type="file" 
              ng2FileSelect [uploader]="uploader" 
              multiple 
-             accept={{accept}} />
+             accept="image/*" />
          
            <p style="font-size:14px;color:white"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
  
            <table class="table" style="color:white">
                <thead>
                <tr>
-                   <th width="30%">Nome file</th>
-                   <th width="20%">Descrizione*</th>
-                   <th *ngIf="uploader.options.isHTML5">Dimensione</th>
+                   <th>File</th>
+                   <th>Nome*</th>
+                   <th width="140px;">Categoria*</th>
+                   <th>Descrizione</th>
                    <th *ngIf="uploader.options.isHTML5">Avanzamento</th>
                    <th>Stato</th>
                    <th class="text-center">Azioni</th>
@@ -28,11 +29,18 @@
                </thead>
                <tbody>
                <tr *ngFor="let item of uploader.queue">
+
                    <td class="font-weight-bold">{{ item?.file?.name }}</td>
  
-                   <td><input type="text" class="form-control my-form-control" [(ngModel)]="item.formData['descrizione']" /></td>
+                   <td><input type="text" class="form-control my-form-control" [(ngModel)]="item.formData['nome_target']" /></td>
                    
-                   <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.3' }} MB</td>
+                   <td>
+                    <select class="form-control my-form-control"  [(ngModel)]="item.formData['categoria']">
+                        <option *ngFor="let cat of lista_categorie" [ngValue]="cat.nome">{{cat.nome}}</option>
+                      </select>
+                   </td>
+                   
+                   <td><input type="text" class="form-control my-form-control" [(ngModel)]="item.formData['descrizione']" /></td>
                    
                    <td *ngIf="uploader.options.isHTML5">
                        <div class="progress height-30">

@@ -3,7 +3,7 @@
 header('Access-Control-Allow-Origin: *'); 
 
 // se ho uploadato almeno un file....
-$home_images_path  = "/home/apache/htdocs/GCA/img_riabilitazione";
+$home_images_path  = "../htdocs/GCA/img_riabilitazione";
 $stored_proc_name = "NeuroApp.aggiungi_media";
 
 if ( empty( $_FILES ) ) {

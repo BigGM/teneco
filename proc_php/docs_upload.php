@@ -1,17 +1,8 @@
 <?php
-
   header('Access-Control-Allow-Origin: *'); 
-  header('Access-Control-Allow-Headers: *'); 
-  
-  
-  foreach (getallheaders() as $name => $value) {
-    echo "$name: $value\n";
-  }
-
-  
-
+ 
   // se ho uploadato almeno un file....
-  $home_docs_path  = "/home/apache/htdocs/GCA/docs";
+  $home_docs_path  = "../htdocs/GCA/docs";
   $stored_proc_name = "NeuroApp.aggiungi_media";
 
   if ( empty( $_FILES ) ) {
@@ -21,9 +12,8 @@
 
   $tempPath = $_FILES[ 'file' ][ 'tmp_name' ];
   
-  
-  if (isset($_POST['docdesc']))  {
-     $titolo_doc=$_POST['docdesc'];
+  if (isset($_POST['descrizione']))  {
+     $titolo_doc=$_POST['descrizione'];
   }
   
   $docName = str_replace(" ","_",$_FILES[ 'file' ][ 'name' ]);
@@ -37,9 +27,10 @@
   }
 
   // NB. url da inserire in ambiente di esercizio
-  // $url = "/GCA/docs/". $audioFileName;
+  // $url = "/GCA/docs/". $docName;
   
-  $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/GCA/docs/". $docName;
+  //$url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/GCA/docs/". $docName;
+  $url = "/GCA/docs/". $docName;
   $descr_media = $titolo_doc;	
   $tipo_media = "doc";	
   $db_user = getenv('ANA_DB_USERNAME');

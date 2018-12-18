@@ -9,6 +9,7 @@ import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
 import { RecordImageTarget } from 'src/app/classes/record-image-target';
 import { Gruppo } from '../classes/gruppo'
 import { Outcome } from '../classes/outcome'
+import { Categoria } from '../classes/categoria'
 
 
 // jQuery
@@ -35,7 +36,7 @@ type out_media =  RecordMedia[] | Outcome;
 type out_img_target =  RecordImageTarget[] | Outcome;
 
 
- /**
+/**
  * Il tipo restituito dalla procedura php che carica le tipologie di gruppi di esercizi,
  * il valore restituito puo' essere:
  * Gruppo (array), oppure
@@ -43,6 +44,14 @@ type out_img_target =  RecordImageTarget[] | Outcome;
  */
 type out_gruppo =  Gruppo[] | Outcome;
 
+
+/**
+ * Il tipo restituito dalla procedura php che carica le categorie delle immagini target.
+ * Il valore restituito puo' essere:
+ * Categoria (array), oppure
+ * Outcome per segnalare un errore di database
+ */
+type out_categoria = Categoria[] | Outcome;
 
 
 
@@ -187,6 +196,34 @@ export class NeuroAppService {
     )
   } // listaImagesTarget
 
+
+  /**
+   * Cancella un elemento multimediale dal DB
+   * @param doc
+   * @param tipo_media - video, audio, image, doc
+   */
+  cancellaTarget (doc:RecordImageTarget) {
+    let db_proc = 'NeuroApp.cancella_target'
+    var file_target = this.mediaName(doc.url)
+    var url = this.G_URL_ROOT+"/cgi-bin/cancella_target.php?proc="+db_proc+"&id_target="+doc.id+"&file_target="+file_target;
+    console.log(url);
+
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(outcome.message) 
+            return outcome
+        }),
+        tap( outcome => {
+          console.log('** outcome **', outcome)
+        }),
+        catchError( this.handleError )
+    )
+  } // cancellaTarget()
+
   
   loadGruppi() : Observable<Gruppo[]> {
     let db_proc = "NeuroApp.lista_gruppi"
@@ -211,6 +248,33 @@ export class NeuroAppService {
         catchError( this.handleError ),
     )
   }
+
+
+  /**
+   * Lista delle categorie delle immagini target definite nel DB
+   */
+  listaCategorie() : Observable<Categoria[]> {
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_categorie.php?proc=NeuroApp.lista_categorie";
+    
+    console.log("** listaCategorie: ", url)
+    
+    return this.http.get<out_categoria>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          console.log(records)
+          let outcome = records as Outcome
+          if (outcome.status === "exception") {
+              throw new Error(outcome.message)
+          }
+          return records as Categoria[]
+        }),
+        tap( records => {
+          console.log('** fetched records **', records)
+        }),
+        catchError( this.handleError ),
+    )
+  } // listaCategorie
 
 
   /**
