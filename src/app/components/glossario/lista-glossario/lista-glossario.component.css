@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css?family=Niramit');
+
+
   #tableGlossario {
     width:100%;
     color:rgb(34,67,136);
@@ -13,7 +17,17 @@
   }
   
   #tableGlossario > tbody > tr:hover {
-    /*color:white;*/
     background-color: rgb(193, 221, 253);
     transition: background-color 0.3s ease-in-out;
+  }
+
+  .title-glossario {
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+  }
+
+  .def-glossario {
+    font-family: 'Niramit', sans-serif;
+    font-size:22px;
+    color:rgb(34,67,136);
   }

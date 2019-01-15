@@ -1,0 +1,70 @@
+
+<DIV *ngIf="view_dettaglio_visible"
+  id="view_dettaglio_esercizio"
+  class="container mb-5 py-3 shadow-lg" 
+  >
+
+   
+    <!-- PAGINA CON IL DETTAGLIO DI UN ESERCIZIO  -->
+    <div class='w-100 my-bg-dark my-text-red text-center py-2'>
+        <label>Dettaglio</label>
+    </div>
+    <div class="new-line-1"></div>
+    
+    <!-- NOME -->
+    <div class="w-100">
+        <label class='label-dettaglio w-100'>Nome</label>
+        <div class="row content-dettaglio p-2">
+          <div class='col-sm-12'>{{esercizio.nome}} {{nomeGruppo(esercizio.id_grp)}}</div>
+        </div>
+        <div class="new-line-1"></div>
+    </div>
+
+
+    <!-- DESCRIZIONE -->
+    <div class="w-100">
+        <label class='label-dettaglio w-100'>Descrizione</label>
+        <div class="row content-dettaglio p-2">
+          <div class='col-sm-12'
+          [innerHTML]="esercizio.descr.length>0 ? (esercizio.descr | safe:'html') : 'Nessuna descrizione'"></div>
+        </div>
+        <div class="new-line-1"></div>
+    </div>
+    
+
+    <!-- TESTO -->
+    <div class="w-100">
+      <label class='label-dettaglio w-100'>Testo</label>
+      <div class="row content-dettaglio p-2">
+        <div class='col-sm-12'
+        [innerHTML]="esercizio.testo.length>0 ? (esercizio.testo | safe:'html') : 'Nessuna testo inserito'"></div>
+      </div>
+      <div class="new-line-1"></div>
+    </div>
+
+
+    <!-- LIMITAZIONI -->
+    <div class="w-100">
+      <label class='label-dettaglio'>Limitazioni</label>
+      <div class="row content-dettaglio p-2">
+        <div class='col-sm-12'
+            [innerHTML]="esercizio.limitazioni.length>0 ? (esercizio.limitazioni | safe:'html') : 'Nessuna limitazione'">
+        </div>
+      </div>
+      <div class="new-line-1"></div>
+    </div>
+    
+
+   <!-- ALERT -->
+    <div class="w-100">
+      <label class='label-dettaglio w-100'>Avvertenze</label>
+      <div class="row content-dettaglio p-2">
+        <div class='col-sm-12'
+        [innerHTML]="esercizio.alert.length>0 ? (esercizio.alert | safe:'html') : 'Nessun alert'"></div>
+      </div>
+      <div class="new-line-1"></div>
+    </div>
+
+    <app-media-collegati class="w-100 mb-4"></app-media-collegati>
+    
+</DIV>

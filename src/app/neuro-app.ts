@@ -125,7 +125,7 @@ export class NeuroApp {
       }) 
    }
 
-      /**
+   /**
    * Una popup per i messaggi di info.
    **/
   static custom_info2 (output_msg:string, callback) { 

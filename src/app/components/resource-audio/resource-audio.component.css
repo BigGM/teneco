@@ -57,9 +57,9 @@
       bottom:16px;
       right:30px;
       cursor:pointer;
-      font-size:22px;
+      font-size:26px;
       font-weight:normal;
-      color:rgb(228, 192, 30);
+      color:rgb(0, 203, 224);
    }
 
    .descr-audio {
@@ -79,7 +79,7 @@
         cursor:pointer;
         font-size:26px;
         font-weight:normal;
-        color:rgb(228, 192, 30);
+        color:rgb(0, 203, 224);
    }
    .icon-list-grid {
         cursor:pointer;

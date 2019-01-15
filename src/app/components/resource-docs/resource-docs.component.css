@@ -55,9 +55,10 @@
    
    .my-trash {
       position:absolute;
-      bottom:16px;
+      bottom:14px;
       right:30px;
       cursor:pointer;
-      font-size:22px;
+      font-size:26px;
       font-weight:normal;
+      color: rgb(50,50,100);
    }

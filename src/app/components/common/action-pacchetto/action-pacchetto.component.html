@@ -1,0 +1,244 @@
+<!--
+    --NOTA--
+    Nella finestra modale i campi marcati con un id like "summernote...." sono ricoperti
+    dalla libreria summernote, per questi campi il bind angular non funziona perche' la libreria
+    ricopre completamente il campo di testo con un suo oggetto, tuttavia ho lasciato il riferimento
+    al bind  [(ngModel)] perche' se si decide che un campo deve tornare a funzionare come
+    normale campo di testo la parte angula e' gia' scritta.
+-->
+
+
+<div class="container">
+
+    <!-- INSERIMENTO/MODIFICA PACCHETTO  -->
+    <div  id="actPacchetto" class="modal fade"
+          tabindex="-1"
+          role="dialog" data-backdrop="static"
+          style="padding-top:35px; display:none;">
+         
+       <div class="modal-dialog modal-lg" role="document">
+       <div class="modal-content shadow-lg">
+       <div class="modal-header">
+          <h3 class="modal-title">{{titolo}}</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+  
+       
+       <div class="modal-body" style="height:450px;overflow:auto;">
+          <form #actPktForm="ngForm" class="form-horizontal" role="form" novalidate>
+             
+            <!-- NOME PACCHETTO (OBBLIGATORIO) -->
+             <div class="form-group row" >
+                <label for="nome_pkt" class="col-sm-3 col-form-label col-form-label-sm my-label-required font-weight-bold">Nome*</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="nome_pkt"  name="nome_pkt" placeholder="Nome pacchetto"
+                    required [(ngModel)]="pacchetto.nome"></div>
+                  <!--
+                    #ptk_nome="ngModel">
+                  </div>
+                  <div [hidden]="ptk_nome.valid || ptk_nome.pristine"
+                    class="alert alert-danger">
+                      Il nome del pacchetto è richiesto
+                  </div> -->
+            </div>
+  
+            
+            <!-- DESCRIZIONE (OBBLIGATORIO) -->
+            <div class="form-group row">
+              <label for="summernote-actpkt-descr" class="col-sm-3 col-form-label col-form-label-sm my-label-required font-weight-bold">Descrizione*</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="summernote-actpkt-descr" name="descr"  placeholder="Descrizione"
+                  required [(ngModel)]="pacchetto.descr"></textarea>
+              </div>
+            </div>
+  
+            
+            <!-- PRE-REQUISITI FISICI -->
+            <div class="group-items mb-4">
+                <label class="my-legend">&nbsp;Prerequisiti&nbsp;</label>
+              <div class="form-group row">
+                  <label for="summernote-actpkt-prereq" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Fisici</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="summernote-actpkt-prereq" name="pre_req"  placeholder="Prerequisiti fisici"
+                      [(ngModel)]="pacchetto.pre_req"></textarea>
+                  </div>
+              </div>
+
+              <!-- PRE-REQUISITI COMPORTAMENTALI -->
+              <div class="form-group row">
+                  <label for="summernote-actpkt-prereq-comp" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Cognitivo-Comportamentali</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="summernote-actpkt-prereq-comp" name="pre_req_comp"  placeholder="Prerequisiti cognitivo-comportamentali"
+                      [(ngModel)]="pacchetto.pre_req_comp"></textarea>
+                  </div>
+              </div>
+            </div>
+            
+           <div class="group-items mb-4">
+              <label class="my-legend">&nbsp;Controindicazioni&nbsp;</label>
+              <!-- CONTRO INDICAZIONI RELATIVE -->
+              <div class="form-group row">
+                <label for="contro_ind" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Relative</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="contro_ind" name="contro_ind"  placeholder="Controindicazioni relative" rows="3"
+                    [(ngModel)]="pacchetto.contro_ind"></textarea>
+                </div>
+              </div>
+
+              <!-- CONTRO INDICAZIONI ASSOLUTE -->
+              <div class="form-group row" >
+                  <label for="contro_ind_abs" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Assolute</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="contro_ind_abs" name="contro_ind_abs"  placeholder="Controindicazioni assolute" rows="3"
+                      [(ngModel)]="pacchetto.contro_ind_abs"></textarea>
+                  </div>
+              </div>
+          </div>
+
+            <div class="group-items mb-4 pt-2">
+                <label class="my-legend" style="top:-22px">&nbsp;Valutazione&nbsp;</label>
+              <!-- VALUTAZIONE -->
+              <div class="form-group row">
+                <label for="valutazione" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Valutazione</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="valutazione" name="valutazione"  placeholder="Valutazione" rows="3"
+                    [(ngModel)]="pacchetto.valutazione"></textarea>
+                </div>
+              </div>
+
+
+              <!-- COME VALUTARE  -->
+              <div class="form-group row">
+                  <label for="come-valutare" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Come&nbsp;valutare</label>
+                  <div class="col-sm-9">
+                      <textarea class="form-control" id="come-valutare" name="come-valutare"  placeholder="Come valutare" rows="3"
+                      [(ngModel)]="pacchetto.come_valutare"></textarea>
+                  </div>
+              </div>
+
+              <!-- SCHEDA DI VALUTAZIONE -->
+              <div class="form-group row">
+                  <label for="scheda" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Scheda</label>
+                  <div class="input-group mb-3 col-sm-9">
+                    <input type="text" class="form-control" placeholder="Scheda di valutazione" id="scheda_val"  name="scheda_val"
+                    [ngModel]="schedaValutazione.descr_media" disabled>
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" (click)="openModalScheda()"><i class="fas fa-bars"></i></button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+
+            <!-- PATOLOGIE -->
+            <div class="form-group row">
+                <label for="patologie_secondarie" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Patologie secondarie</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="patologie_secondarie" name="patologie_secondarie"  placeholder="Patologie secondarie" rows="3"
+                    [(ngModel)]="pacchetto.patologie_secondarie"></textarea>
+                </div>
+            </div>
+              
+              
+
+            <!-- BIBLIOGRAFIA -->
+            <div class="form-group row">
+              <label for="bibliografia" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Bibliografia</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="bibliografia" name="bibliografia"  placeholder="Bibliografia" rows="3"
+                  [(ngModel)]="pacchetto.bibliografia"></textarea>
+              </div>
+            </div>
+  
+  
+            <!-- ALERT -->
+            <div class="form-group row">
+              <label for="alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Alert</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="alert" name="alert_msg"  placeholder="Messaggio di alert" rows="3"
+                  [(ngModel)]="pacchetto.alert_msg"></textarea>
+              </div>
+            </div>
+
+            <!-- ALERT VISIBILE -->
+            <div class="form-group row">
+              <label for="alert_visibile" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Alert visibile</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="alert_visibile" name="alert_visibile_msg"  placeholder="Alert visibile" rows="3"
+                  [(ngModel)]="pacchetto.alert_msg_visibile"></textarea>
+              </div>
+            </div>
+
+
+            <!-- NOTE -->
+            <div class="form-group row">
+              <label for="note" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Note</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3"
+                  [(ngModel)]="pacchetto.note"></textarea>
+              </div>
+            </div>
+  
+            
+          </form>
+          
+       </div>
+       <div class="modal-footer">
+
+          <button *ngIf="azione=='modifica_pacchetto'" title="Ricarica sul modulo i campi del pacchetto corrente" class="btn btn-info text-white" 
+                  (click)="reloadEntryPkt()">
+              <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
+          </button>
+          
+          <button *ngIf="azione=='nuovo_pacchetto'" title="Salva pacchetto" class="btn btn-info text-white" 
+              (click)="salvaPacchetto(actPktForm)">
+              <!--[disabled]="actPktForm.invalid" -->
+              <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+          </button>
+
+          <button *ngIf="azione=='modifica_pacchetto'" title="Salva modifiche" class="btn btn-info text-white" 
+            (click)="salvaPacchetto(actPktForm)">
+            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+          </button>
+
+          <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
+          (click)="reset(actPktForm)">
+            <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
+            </button>
+
+       </div>
+       </div>
+       </div>
+    </div>
+    <!-- INSERIMENTO MODIFICA PACCHETTO -->
+
+
+        <!-- FINESTRA MODALE PER AGGIUNGERE UNA SCHEDA DI VALUTAZIONE  -->
+        <div id='myFetch_scheda' class='modal fade' role='dialog' data-backdrop='static'>
+            <div class='modal-dialog modal-lg'>
+            <div class='modal-content shadow-lg'>
+                <div class='modal-header' style='background-color:rgba(90,90,170,1.0)'>
+                    <h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Scheda di valutazione</h3>
+                    <div style="float:right;margin:0;padding:0">
+                        <i class="fas fa-times close" data-dismiss='modal'></i>
+                    </div>
+                </div>
+                <div class='modal-body mx-3'>
+                    <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let scheda of listaSchede">
+                        <div class="col-sm-12 my-pointer p-3" 
+                            (click)="schedaValutazione.copy(scheda);closeModalScheda()"
+                            >
+                            <img [src]="docIcon(scheda.url_media)" style="width:42px;margin-right:10px">{{scheda.descr_media | truncate}}
+                            <button title="Apri scheda" type="button" class="btn btn-warning text-dark px-2 pb-1" style="float:right;"
+                                (click)="open($event,scheda)">
+                                <i class="far fa-eye" style="font-size:18px;"></i> </button>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+        </div></div></div>
+
+  </div>

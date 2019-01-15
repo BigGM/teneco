@@ -28,16 +28,21 @@ import { DynamicUploadComponent } from './components/dynamic-upload/dynamic-uplo
 import { RiabilNeuromotoriaComponent } from './components/riabil-neuromotoria/riabil-neuromotoria.component';
 import { RiabilCognitivaComponent } from './components/riabil-cognitiva/riabil-cognitiva.component';
 import { ListaPacchettiComponent } from './components/riabil-neuromotoria/lista-pacchetti/lista-pacchetti.component'
-import { ListaEserciziComponent } from './components/riabil-neuromotoria/lista-esercizi/lista-esercizi.component';
-import { DettaglioEsercizioComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/dettaglio-esercizio.component';
-import { MediaCollegatiComponent } from './components/riabil-neuromotoria/dettaglio-esercizio/media-collegati/media-collegati.component';
-import { ActionEsercizioComponent } from './components/riabil-neuromotoria/action-esercizio/action-esercizio.component';
-import { ActionPacchettoComponent } from './components/riabil-neuromotoria/action-pacchetto/action-pacchetto.component';
+import { MediaCollegatiComponent } from './components/common/dettaglio-esercizio/media-collegati/media-collegati.component';
+import { ActionEsercizioComponent } from './components/common/action-esercizio/action-esercizio.component';
+import { ActionPacchettoComponent } from './components/common/action-pacchetto/action-pacchetto.component';
+import { ListaEserciziComponent } from './components/common/lista-esercizi/lista-esercizi.component';
+import { DettaglioEsercizioComponent } from './components/common/dettaglio-esercizio/dettaglio-esercizio.component';
 import { FormazioneComponent } from './components/formazione/formazione.component';
 import { UploadAudioComponent } from './components/resource-audio/upload-audio/upload-audio.component' 
 import { UploadVideoComponent } from './components/resource-video/upload-video/upload-video.component'
 import { UploadDocComponent } from './components/resource-docs/upload-doc/upload-doc.component'
 import { UploadImageComponent } from './components//resource-images/upload-image/upload-image.component'
+import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
+import { HomeComponent } from './components/home/home.component';
+import { ResourceImagesTargetComponent } from './components/resource-images-target/resource-images-target.component';
+import { UploadImagesTargetComponent } from './components/resource-images-target/upload-images-target/upload-images-target.component';
+import { PacchettiCognitiviComponent } from './components/riabil-cognitiva/pacchetti-cognitivi/pacchetti-cognitivi.component';
 
 
 // Servizi di progetto
@@ -50,10 +55,6 @@ import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil
 import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
-import { PacchettiFormazioneComponent } from './components/formazione/pacchetti-formazione/pacchetti-formazione.component';
-import { HomeComponent } from './components/home/home.component';
-import { ResourceImagesTargetComponent } from './components/resource-images-target/resource-images-target.component';
-import { UploadImagesTargetComponent } from './components/resource-images-target/upload-images-target/upload-images-target.component';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { UploadImagesTargetComponent } from './components/resource-images-target
     PacchettiFormazioneComponent,
     HomeComponent,
     ResourceImagesTargetComponent,
-    UploadImagesTargetComponent
+    UploadImagesTargetComponent,
+    PacchettiCognitiviComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,60 @@
+<!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
+<div id="divPacchettiCognitivi" class="container" *ngIf="pacchetti.length>0">
+  <div class="card shadow-lg" style="border:0px">
+      
+    <div class="card-header my-bg-dark my-text-red text-center">
+        <label>Riabilitazione cognitiva</label>
+    </div>
+      
+      <div class="card-body" style="max-height:550px;overflow:auto;">
+        <table id="tablePacchettiCognitivi" class="table">
+
+            <thead class="thead-dark">
+                <tr>
+                   <th scope="col">Nome</th>
+                   <th scope="col">Descrizione</th>
+                   <th scope="col text-right">#Esercizi</th>
+                   <th scope="col" colspan=2>&nbsp;</th>
+                </tr>
+          </thead>
+          
+          <!-- 
+            [textContent] corrisponde a ng-bind di angularJS 
+            [innerHtml]   corrisponde a ng-bind-html di angularJS
+            NB. textContent e innerHTML sono PROPRIO le property del DOM, NON attributi creati da angular
+            (click)='onForeground(row,$event)'
+          -->
+
+           <tr *ngFor="let pkt of pacchetti"  #row (click)='onForeground(row,$event)'>
+              <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto($event,pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
+              
+              <!-- <td [innerHtml]="pkt.descr | truncate:80 | safe:'html'"></td> -->    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
+              <td [textContent]="pkt.descr | plaintext | truncate:80" (click)="loadEserciziPacchetto($event,pkt)"></td>
+
+              <td class="text-right mr-2" (click)="loadEserciziPacchetto($event,pkt)">{{pkt.num_esercizi}}</td>
+              
+              <td class="text-right" (click)="formModifPacchetto($event,pkt)">
+                <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
+              </td>
+             
+              <td class="text-right" (click)="confermaCancellaPacchetto($event,pkt)">
+                <i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
+              </td>
+
+           </tr>
+        </table>
+      </div> <!-- card body -->
+      
+      <div class="card-footer" style="border-bottom:0px">
+          <button title="Aggiungi un nuovo pacchetto" class="btn btn-primary" style="margin-right:4px;"
+          (click)="formNuovoPacchetto()">
+             <i class="fas fa-plus"></i>
+          </button>
+
+          <button title="Aggiorna la lista dei pacchetti" class="btn btn-primary"
+          (click)="reloadPacchetti()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+      </div> <!-- card footer -->
+  </div>
+</div>

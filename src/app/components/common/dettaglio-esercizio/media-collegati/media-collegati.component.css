@@ -1,0 +1,197 @@
+
+  .thumbnail-media {
+     /*border: 1px solid #ddd;*/
+     border-radius: 4px;
+     background-color: rgb(250,250,253);
+     -webkit-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+        -moz-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+             box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+  }
+  
+  .thumbnail-docs {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: rgb(250,250,253);
+      
+      -webkit-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+         -moz-box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+            box-shadow: 0px 8px 30px -13px rgba(0,0,0,.45);
+   }
+  
+  .label-media {
+      /*background-color: rgb(55, 65, 75)!important;*/
+      background-color: rgb(76, 100, 140)!important;
+      border-radius:4px;
+      color: white;
+      font-family: Calibri, Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 26px;
+      font-weight: normal;
+      margin: 0;
+      width: 100%;
+      padding-left: 30px;
+   }
+
+   .label-doc {
+      font-family: Calibri,Tahoma,Verdana;
+      color: rgb(50,50,100);
+      font-size:20px;
+      font-weight:600;
+   }
+  
+  .word-break {
+     overflow-wrap: break-word;
+     word-wrap: break-word;
+     hyphens: auto;
+     word-break: break-all;
+  }
+  
+ 
+  .descr-media {
+      font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 17px;
+      font-weight: normal;
+  }
+  .descr-video-on-lista {
+   font-family: Calibri,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-size: 24px;
+   font-weight: normal;
+   /*color:rgb(20,30,80);*/
+   color:rgb(240, 240, 243);
+  }
+
+  .icon-list {
+       cursor:pointer;
+       font-size:26px;
+       font-weight:normal;
+       color:rgb(228, 192, 30);
+  }
+  .icon-list-grid {
+       cursor:pointer;
+       font-size:32px;
+       color:rgb(231, 41, 82);
+       float:right;
+  }
+
+  .my-bg-secondary {
+   /*background-color:  rgb(94, 137, 167);*/
+   background-color:  rgb(55, 67, 94);
+  }
+
+
+  .my-bg-dark {
+   /*background-color:rgb(55, 102, 135);*/
+   background-color:rgb(70, 86, 120);
+  }
+
+  .my-bg-dark-2 {
+   /*background-color:rgb(55, 102, 135);*/
+   background-color:rgb(36,72,116);
+  }
+
+  .my-bg-dark-2:hover {
+   background-color:rgb(43, 96, 160);
+   transition: background-color 0.4s ease-in-out;
+  }
+
+  .my-pointer {
+     cursor: pointer;
+  }
+
+  .my-trash-2 {
+   font-size: 24px;
+   color: rgb(51,134,236);
+   cursor: pointer;
+   float: right;
+   font-weight: normal;
+  }
+
+  .my-shadow-sm {
+   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25) !important;
+  }
+
+
+#div_action_media {
+   position: fixed;
+   top: 80px;
+   left: 10px;
+   z-index:200;
+   max-height:246px;
+   border-radius: 4px;
+   background-color:rgba(38,102,192,1);
+   /*border:1px solid rgba(100,100,100,0.2)*/
+}
+.action-media {
+   cursor:pointer;
+   margin:6px 5px;
+   width:46px;
+}
+
+
+/* The checkbox-container */
+.checkbox-container {
+   display: block;
+   position: relative;
+   padding-left: 35px;
+   margin-bottom: 12px;
+   cursor: pointer;
+   font-size: 22px;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+   position: absolute;
+   opacity: 0;
+   /*cursor: pointer;*/
+   height: 0;
+   width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 28px;
+   width: 28px;
+   background-color: #eee;
+   border-radius:4px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+   background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+   background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+   content: "";
+   position: absolute;
+   display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+   display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+   left: 10px;
+   top: 4px;
+   width: 9px;
+   height: 16px;
+   border: solid white;
+   border-width: 0 3px 3px 0;
+   -webkit-transform: rotate(45deg);
+   -ms-transform: rotate(45deg);
+   transform: rotate(45deg);
+}

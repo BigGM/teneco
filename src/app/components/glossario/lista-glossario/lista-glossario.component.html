@@ -12,9 +12,9 @@
             
              <tr *ngFor="let rec of glossario">
                 
-                <td class='nowrap'><strong>{{rec.voce}}:</strong></td>
+                <td class='nowrap' (click)="viewVoce(rec)"><strong>{{rec.voce}}:</strong></td>
               
-                <td>{{rec.def | truncate:100}}</td>
+                <td (click)="viewVoce(rec)">{{rec.def | truncate:100}}</td>
                 
                 <td (click)="formModifVoceGlossario(rec)">
                    <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
@@ -39,5 +39,23 @@
           </button>
         </div> <!-- card footer -->
     </div>
+
+   <!-- 
+     -- Finestra modale
+     -->
+   <div id='modalGlossario' class='modal fade' role='dialog'>
+      <div class='modal-dialog modal-lg'>
+      <div class='modal-content shadow-lg'>
+         <div class='modal-header my-bg-dark'>
+            <h4 class='modal-title title-glossario'>{{voce_glossario.voce}}</h4>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+         </div>
+
+         <div class='modal-body col-12 def-glossario'>
+            <label>{{voce_glossario.def}}</label>
+         </div>
+      </div>
+      </div>
+   </div>
     
 </div>

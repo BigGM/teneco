@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlossarioService, RecordGlossario} from '../../../services/glossario/glossario.service'
 import { Subscription } from 'rxjs';
 import { NeuroApp } from '../../../neuro-app';
@@ -11,16 +11,17 @@ declare var bootbox: any;
   templateUrl: './lista-glossario.component.html',
   styleUrls: ['./lista-glossario.component.css']
 })
-export class ListaGlossarioComponent implements OnInit {
+export class ListaGlossarioComponent implements OnInit, OnDestroy {
 
   glossario     : RecordGlossario[];
   glossSubscr   : Subscription;
   voce_glossario: RecordGlossario 
 
   constructor( private glossarioService : GlossarioService) {
-    console.log( "ListaGlossarioComponent costruttore" )
+    //console.log( "ListaGlossarioComponent costruttore" )
     this.glossario = []
     this.glossSubscr = null
+    this.voce_glossario = new RecordGlossario()
   }
 
   ngOnInit() {
@@ -30,8 +31,9 @@ export class ListaGlossarioComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log( "ListaGlossarioComponent => onDestroy" )
-    this.glossSubscr.unsubscribe()
+    //console.log( "ListaGlossarioComponent => onDestroy" )
+    if (this.glossSubscr != null)
+      this.glossSubscr.unsubscribe()
   }
   
   /**
@@ -39,7 +41,7 @@ export class ListaGlossarioComponent implements OnInit {
    * emette una popup di errore.
    */
   loadGlossario() {
-    console.log("ListaGlossarioComponent.loadGlossario")
+    //console.log("ListaGlossarioComponent.loadGlossario")
     NeuroApp.showWait();
     
     let serv = this.glossarioService.loadGlossario()
@@ -60,6 +62,16 @@ export class ListaGlossarioComponent implements OnInit {
 
 
   /**
+   * Visualizza una voce di glossario sulla finestra modale.
+   * @param voce voce del glossario
+   */
+  viewVoce(voce: RecordGlossario) {
+    this.voce_glossario = voce
+    $("#modalGlossario").modal()
+  }
+
+
+  /**
    * Apre il modulo per la definizione di una nuova voce del glossario
    */
   formNuovaVoceGlossario() {
@@ -71,9 +83,7 @@ export class ListaGlossarioComponent implements OnInit {
    * Apre il modulo per la modifica di una voce del glossario
    */
   formModifVoceGlossario(voce_glossario:RecordGlossario) {
-    let self = this
-    $('#modifVoceGlossario').modal('show')
-    
+    $('#modifVoceGlossario').modal('show')   
     // Invia alla modale il record da modificare tramite il servizio
     this.glossarioService.sendRecordToModal(voce_glossario)
   }
@@ -83,13 +93,12 @@ export class ListaGlossarioComponent implements OnInit {
    * Ricarica la lista delle voci di glossario
    */
   refreshGlossario() {
-    console.log("refreshGlossario")
+    //console.log("refreshGlossario")
     this.glossario = []
     this.loadGlossario()
   }
 
   /**
-   * 
    * @param voce_glossario
    */
   confermaCancellaGlossario(voce_glossario:RecordGlossario)
@@ -121,24 +130,24 @@ export class ListaGlossarioComponent implements OnInit {
    * @param voce_glossario voce di glossario da cancellare
    */
   cancellaGlossario(voce_glossario:RecordGlossario) {
-    console.log("ListaGlossarioComponent.cancellaGlossario")
+    //console.log("ListaGlossarioComponent.cancellaGlossario")
     NeuroApp.showWait();
     
     let serv = this.glossarioService.cancellaGlossario(voce_glossario.id)
     
     this.glossSubscr = serv.subscribe (
-        result => {
-          this.glossSubscr.unsubscribe()
-          NeuroApp.hideWait()
-          NeuroApp.custom_info(`Voce di glossario "<b>${voce_glossario.voce}</b>" cancellata`)
-          // Aggiorna la lista delle voci di glossario
-          this.refreshGlossario()
-        },
-        error => {
-          this.glossSubscr.unsubscribe()
-          NeuroApp.hideWait()
-          NeuroApp.custom_error(error,"Error")
-        }
+      result => {
+        this.glossSubscr.unsubscribe()
+        NeuroApp.hideWait()
+        NeuroApp.custom_info(`Voce di glossario "<b>${voce_glossario.voce}</b>" cancellata`)
+        // Aggiorna la lista delle voci di glossario
+        this.refreshGlossario()
+      },
+      error => {
+        this.glossSubscr.unsubscribe()
+        NeuroApp.hideWait()
+        NeuroApp.custom_error(error,"Error")
+      }
     )
   }
 }

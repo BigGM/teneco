@@ -1,3 +1,32 @@
-<p>
-  riabil-cognitiva works!
-</p>
+<DIV id="div_pkg2_controller" class="container-fluid mb-3">
+
+  <DIV class="row">
+  <DIV class="col-sm-12">
+
+     <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
+     <app-pacchetti-cognitivi #PacchettiCognitiviRef></app-pacchetti-cognitivi>
+
+     
+     <!-- PANNELLO CON LA LISTA DEGLI ESERCIZI DI UN PACCHETTO -->
+     <app-lista-esercizi #listaEserciziRef2
+     [listaPacchetti]="PacchettiCognitiviRef" ></app-lista-esercizi>
+
+
+     <!-- FORM AGGIUNTA/MODIFICA PACCHETTO -->
+     <app-action-pacchetto
+     [listaPacchetti]="PacchettiCognitiviRef"></app-action-pacchetto>
+
+
+     <!-- FORM AGGIUNTA/MODIFICA ESERCIZIO -->
+     <app-action-esercizio
+     [listaEsercizi]="listaEserciziRef2"></app-action-esercizio>
+
+  </DIV>
+  </DIV>
+
+</DIV>
+
+<DIV id="div_dettaglio_esercizio" class="container-fluid" >
+    <app-dettaglio-esercizio #dettaglioEsercizioRef
+     [listaEsercizi]="listaEserciziRef2"></app-dettaglio-esercizio>
+</DIV>
