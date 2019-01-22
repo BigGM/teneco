@@ -28,9 +28,12 @@ function msg_fmt( $e ) {
 parse_str($_SERVER['QUERY_STRING']);
 
 $proc = rawurldecode($proc);
-$ambito = rawurldecode($ambito);
+
 if (!isset($ambito)) {
    $ambito = -1;
+}
+else {
+   $ambito = rawurldecode($ambito);
 }
 
 

@@ -14,35 +14,43 @@ declare var bootbox: any;
   templateUrl: './pacchetti-cognitivi.component.html',
   styleUrls: ['./pacchetti-cognitivi.component.css']
 })
-export class PacchettiCognitiviComponent implements OnInit {
+export class PacchettiCognitiviComponent implements OnInit, OnDestroy {
 
+  /** l'AMBITO 2 identifica i pacchetti di tipo cognitivo */
   readonly AMBITO:number = 2
 
-  /** La lista dei pacchetti */
-  pacchetti  : RecordPacchetto[]
 
-  pktSubscr  : Subscription
+  /** La lista dei pacchetti */
+  pacchetti : RecordPacchetto[]
+
+
+  /** Sottoscrizione al servizio RiabilNeuromotoriaService */
+  pktSubscr : Subscription
   
 
+  /** EventEmitter diretto verso ListaEserciziComponent per comunicare
+   * il pacchetto cliccato sulla interfaccia.*/
   @Output() selectedPkt = new EventEmitter()
 
+  
   /** 
    * Per comunicare alla finestra modale la richiesta di creare un nuovo
-   * pacchetto o modificarne uno esistente.
-   */
+   * pacchetto o modificarne uno esistente.*/
   @Output() openActionPacchetto: EventEmitter<any> = new EventEmitter
 
 
+
   constructor( private pktService : RiabilNeuromotoriaService) {
-    //console.log( "ListaPacchettiComponent costruttore" )
     this.pacchetti = []
     this.pktSubscr = null
   }
 
+
+  /** Carica la lista dei pacchetti cognitivi. */
   ngOnInit() {
-    //console.log( this.pacchetti.length )
     this.loadPacchetti()
   }
+
 
   ngOnDestroy() {
     console.log( "PacchettiCognitiviComponent => onDestroy" )
@@ -72,8 +80,8 @@ export class PacchettiCognitiviComponent implements OnInit {
 
 
   /**
-   * Carica dal DB i pacchetti configurati sul sistema.
-   * In caso di errore emette una popup.
+   * Carica dal DB i pacchetti cognitivi configurati sul sistema.
+   * In caso di errore emette una popup con opportuno messaggio.
    * @ambito -  1: riabilitazione neuromotoria
    *            2: riabilitazione cognitiva
    *            3: formazione
@@ -83,8 +91,10 @@ export class PacchettiCognitiviComponent implements OnInit {
     
     NeuroApp.showWait();
     
+    // Richiede al servizio la lettura dei pacchetti con questo AMBITO
     let serv = this.pktService.loadPacchetti(this.AMBITO)
     
+    // e qui si sottoscrive per eseguire il servizio di lettura
     this.pktSubscr = serv.subscribe (
         result => {
           NeuroApp.hideWait()
@@ -104,6 +114,9 @@ export class PacchettiCognitiviComponent implements OnInit {
   } // loadPacchetti()
 
 
+  /**
+   * Rinfresca la lista dei pacchetti cognitivi.
+   */
   reloadPacchetti() {
     console.log("PacchettiCognitiviComponent ** reloadPacchetti **")
     NeuroApp.removePopover()
@@ -115,6 +128,8 @@ export class PacchettiCognitiviComponent implements OnInit {
 
 
   /**
+   * Carica la lista degli esercizi del pacchetto selezionato sull'interfaccia.
+   * 
    * @param event evento di click che lancia questo metodo
    * @param pkt   il pacchetto selezionato
    */
@@ -123,16 +138,16 @@ export class PacchettiCognitiviComponent implements OnInit {
     NeuroApp.removePopover()
     
     /**
-     * Emette l'evento per la componente ListaEsercizi che riceve il
+     * Emette un evento verso la componente ListaEsercizi, gli invia il
      * pacchetto da mostrare in dettaglio, carica la lista degli esercizi di
-     * questo pacchetto e li visualizza
+     * questo pacchetto e li visualizza.
      */
     this.selectedPkt.emit(pkt)
   }
 
 
   /**
-   * Aggiorna il numero degli esercizi per il pacchetto specificato.
+   * Aggiorna il numero degli esercizi del pacchetto specificato.
    * Questo metodo viene richiamato dal componente ListaEserciziComponent dopo una
    * cancellazione o l'aggiunta di un esercizio/procedura.
    * 
@@ -144,7 +159,6 @@ export class PacchettiCognitiviComponent implements OnInit {
       if(pkt.id == id_pkt) pkt.num_esercizi = num_esercizi
     })
   }
-
 
 
   /**
@@ -159,28 +173,28 @@ export class PacchettiCognitiviComponent implements OnInit {
 
     let self = this;
     bootbox.dialog ({
-        title: "<h3>Cancella pacchetto</h3>", 
-        message: "<h6 p-4 style='line-height:1.6;'>Conferma rimozione del pacchetto <label class='text-danger'>\""+pkt.nome+"\"</label></h6>",
-        draggable:true,
-        buttons:{
-          "Annulla":{
-              className:"btn-secondary btn-md"
-          }, 
-          "Rimuovi" : { 
-             className:"btn-danger btn-md",
-             callback: function(){
-              self.cancellaPacchetto(pkt);
-             } // end callback
-          } // end Rimuovi
-       } // end buttons
-    }); // bootbox.dialog
+      title: "<h3>Cancella pacchetto</h3>", 
+      message: "<h6 p-4 style='line-height:1.6;'>Conferma rimozione del pacchetto <label class='text-danger'>\""+pkt.nome+"\"</label></h6>",
+      draggable:true,
+      buttons : {
+        "Annulla": {
+            className:"btn-secondary btn-md"
+        }, 
+        "Rimuovi": { 
+            className:"btn-danger btn-md",
+            callback: function() {
+              self.cancellaPacchetto(pkt)
+            } // end callback
+        } // end Rimuovi
+      } // end buttons
+    });// bootbox.dialog
 
   } // confermaCancellaPacchetto()
 
 
   /**
    * Cancella un pacchetto richiamando il metodo di cancellazione
-   * del servizio pktService
+   * del servizio pktService.
    * @param pkt pacchetto da cancellare
    */
   cancellaPacchetto(pkt:RecordPacchetto) {
@@ -190,19 +204,19 @@ export class PacchettiCognitiviComponent implements OnInit {
     let serv = this.pktService.cancellaPacchetto(pkt)
     
     this.pktSubscr = serv.subscribe (
-        result => {
-          this.pktSubscr.unsubscribe()
-          NeuroApp.hideWait()
-          NeuroApp.custom_info(`Pacchetto "<b>${pkt.nome}</b>" cancellato`)
-          // Aggiorna la lista dei pacchetti
-          this.reloadPacchetti()
-        },
-        error => {
-          this.pktSubscr.unsubscribe()
-          NeuroApp.hideWait()
-          NeuroApp.custom_error(error,"Error")
-        }
-    )
+      result => {
+        this.pktSubscr.unsubscribe()
+        NeuroApp.hideWait()
+        NeuroApp.custom_info(`Pacchetto "<b>${pkt.nome}</b>" cancellato`)
+        // Aggiorna la lista dei pacchetti
+        this.reloadPacchetti()
+      },
+      error => {
+        this.pktSubscr.unsubscribe()
+        NeuroApp.hideWait()
+        NeuroApp.custom_error(error,"Error")
+      }
+    );
   }
 
 
@@ -243,5 +257,4 @@ export class PacchettiCognitiviComponent implements OnInit {
     // Invia alla modale il record da modificare tramite il servizio
     //this.pktService.sendRecordToModal(pkt)
   }
-
 }

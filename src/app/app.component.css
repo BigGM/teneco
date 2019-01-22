@@ -1,13 +1,11 @@
 
 .label-GCA {
-   color: rgb(220,20,20);
-   /*font-family: Tahoma, Calibri;*/
+   color: rgb(255,35,0);
    font-family: 'Cinzel', serif;
-   font-size: 32px;
-   font-weight: bold;
+   font-size: 34px;
+   /*font-weight: bold;*/
    font-style: italic;
-   /*text-shadow: 1px 1px 1px rgb(0,43,81);*/
-   text-shadow: 1px 1px 1px rgb(100,0,0);
+   text-shadow: 1px 1px 1px rgb(0,0,0);
 }
 
 .nav-item {

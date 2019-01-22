@@ -13,7 +13,7 @@ declare var bootbox: any;
   templateUrl: './lista-pacchetti.component.html',
   styleUrls: ['./lista-pacchetti.component.css']
 })
-export class ListaPacchettiComponent implements OnInit {
+export class ListaPacchettiComponent implements OnInit, OnDestroy {
 
   readonly AMBITO:number = 1
 

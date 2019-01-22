@@ -1,7 +1,9 @@
 var NeuroAppJS = {
 
-  G_URL_ROOT : "http://81.29.176.113:47000/",
-  //G_URL_ROOT : "http://192.168.2.63:47000/",
+  G_URL_ROOT : "http://81.29.176.113:51000/",
+  G_URL_ROOT : "http://192.168.2.63:47000/",
+
+  //G_URL_ROOT : "http://192.168.2.249:51000/",
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
   

@@ -64,13 +64,12 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
   ngOnInit() {
     /**
      * Si sottoscrive alla lista dei pacchetti per ricevere il pacchetto di cui si vuole
-     * visualizzzare gli esercizi, oppure, se pkt e' vuoto per chiudere il dettaglio
+     * visualizzare gli esercizi, oppure, se pkt e' vuoto per chiudere il dettaglio
      * qualore fosse aperto.
      */
     this.listaPacchetti.selectedPkt.subscribe ( pkt => {
       //console.log("this.listaPacchetti.selectedPkt", pkt)
       if ( pkt ) {
-        console.log(pkt)
         this.pacchetto.copy(pkt)
         console.log(this.pacchetto)
         this.loadEserciziPacchetto()
