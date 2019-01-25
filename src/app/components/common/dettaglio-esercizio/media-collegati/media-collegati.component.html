@@ -87,6 +87,27 @@
     </div>
  </div>
 
+ <br>
+
+ <!-- SEZIONE APPLICAZIONI -->
+ <div class="w-100" *ngIf="filter( 'app' ); let apps_list">
+   <label class="label-media" >Applicazioni ({{apps_list.length}})</label>
+   <div id="apps-esercizio" class="row py-3 px-1 my-bg-secondary" 
+      style="border-radius:4px;margin:0">
+      
+      <div *ngFor="let app of apps_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
+            <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break my-pointer">
+               <img [src]="app.url_snapshot" class="img-fluid">
+               <p>
+               <table class="w-100"><tr>
+               <td class="descr-media text-white">{{app.descr}}</td>
+               <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(app)"></i></td>
+               </tr></table>
+            </div>
+      </div>
+   </div>
+</div>
+
 
     <!-- 
      -- Finestra modale per aprire un video 
@@ -136,7 +157,8 @@
       <img title="aggiungi video" src="assets/images/add-video.png" class="action-media" (click)="openModalAggiungiMedia('video')"><br>
       <img title="aggiungi audio" src="assets/images/add-audio.png" class="action-media" (click)="openModalAggiungiMedia('audio')"><br>
       <img title="aggiungi immagini" src="assets/images/add-image.png" class="action-media" (click)="openModalAggiungiMedia('image')"><br>
-      <img title="aggiungi documenti" src="assets/images/add-doc.png" class="action-media" (click)="openModalAggiungiMedia('doc')">
+      <img title="aggiungi documenti" src="assets/images/add-doc.png" class="action-media" (click)="openModalAggiungiMedia('doc')"><br>
+      <img title="aggiungi applicazione" src="assets/images/add-app.png" class="action-media" (click)="openModalAggiungiMedia('app')">
     </div>
 
 
@@ -251,7 +273,7 @@
                     <div class="col-sm-11 p-3 my-pointer" (click)="open(media.url_media)">
                         <img [src]="docIcon(media.url_media)" style="width:42px;margin-right:10px">{{media.descr_media | truncate}}
                     </div>
-                    <div class="col-sm-1 pt-3">
+                    <div class="col-sm-1 pt-3" style="background-color:rgb(28, 62, 103);">
                         <label class="checkbox-container">&nbsp;
                             <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
                             <span class="checkmark"></span>
@@ -260,3 +282,35 @@
                 </div>
             </div>
     </div></div></div>
+
+
+
+   <!-- FINESTRA MODALE PER AGGIUNGERE UNA APPLICAZIONE -->
+   <div id='myFetch_app' class='modal fade' role='dialog' data-backdrop='static'>
+      <div class='modal-dialog modal-lg'>
+      <div class='modal-content shadow-lg'>
+            <div class='modal-header'>
+               <h3 class='modal-title'><img src='assets/images/app_icon.png' style="width:64px;">&nbsp;Aggiungi App</h3>
+               <div style="float:right;margin:0;padding:0">
+                  <i class="fas fa-times close" data-dismiss='modal'></i>
+                  <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('app')"></i>
+               </div>
+            </div>
+            <div class='modal-body mx-3'>
+               <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+                  <div class="col-sm-9 pt-2 word-break">
+                        <label class="checkbox-container">&nbsp;
+                           <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
+                           <span class="checkmark"></span>
+                        </label>
+                        {{media.descr_media | truncate}}
+                  </div>
+                  <div class="col-sm-3" style="padding-right:0px">
+                        <img [src]="media.url_snapshot" class="img-fluid">
+                  </div>
+               </div>
+            </div>
+   </div></div></div>
+
+
+

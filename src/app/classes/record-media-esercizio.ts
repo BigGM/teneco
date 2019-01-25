@@ -8,6 +8,7 @@ export class RecordMediaEsercizio {
    url     : string
    tipo    : string
    descr   : string
+   url_snapshot: string
      
    constructor() {
       this.reset()
@@ -19,6 +20,7 @@ export class RecordMediaEsercizio {
 		this.id_ex   = -1
 		this.url     = ""
 		this.tipo    = ""
-		this.descr   = ""
+      this.descr   = ""
+      this.url_snapshot = ""
    }
 }

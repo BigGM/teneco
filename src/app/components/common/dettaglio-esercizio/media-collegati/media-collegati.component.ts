@@ -73,24 +73,26 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   
   showMediaFor(esercizio:RecordEsercizio) {
     this.esercizio = esercizio
+    console.log("showMediaFor", this.esercizio)
     this.loadMediaCollegati()
   }
 
   /**
    * Richiede al DB la lista degli elementi multimediali collegati all'esercizio.
-   * 
    */
   loadMediaCollegati() {
-    //console.log("DettaglioEsercizioComponent.loadMediaCollegati")
+    console.log("DettaglioEsercizioComponent.loadMediaCollegati")
     NeuroApp.showWait();
      
     let serv = this.exService.loadMediaEsercizio(this.esercizio)
     this.exSubscr = serv.subscribe (
        result => {
+         console.log(result)
           this.listaMediaCollegati = result
           if (NeuroAppJS.DEVELOP_ENV ) {
             this.listaMediaCollegati.map (item => {
-              item.url =  NeuroAppJS.G_URL_ROOT + "/" + item.url
+              item.url = NeuroAppJS.G_URL_ROOT + "/" + item.url
+              item.url_snapshot = NeuroAppJS.G_URL_ROOT + "/" + item.url_snapshot
             })
           }
           NeuroApp.hideWait()
@@ -185,11 +187,33 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Filtra la lista dei media 'listaMedia' in base al tipo specificato e  restituisce
+   * restituisce il tipo di applicazione che puo' essere applicata a questo esercizio,
+   * ossia se l'esercizio appartiene ad un pacchetto cognitivo il tipo app deve essere
+   * 'app_cognitiva', se il pacchetto e' di tipo neuromotorio il tipo app sara' 'app_neuromotoria'
+   */
+  tipoApp() {
+    //console.log("tipoApp", this.esercizio)
+    if (this.esercizio ) {
+      if(this.esercizio.id_ambito == 1) {
+        return "app_cognitiva"
+      }
+      else if(this.esercizio.id_ambito == 2) {
+        return "app_neuromotoria"
+      }
+    }
+  }
+
+
+  /**
+   * Filtra la lista dei media 'listaMedia' in base al tipo specificato e restituisce
    * una lista dei soli media del tipo richiesto.
-   * @param tipo_media : video, image, audio, doc
+   * @param tipo_media : video, image, audio, doc, app
    */
   filter(tipo_media:string) : RecordMediaEsercizio[] {
+
+    if (tipo_media=='app')
+      tipo_media = this.tipoApp();
+
     let out = 
       this.listaMediaCollegati.filter( value => {
         return value.tipo==tipo_media
@@ -315,13 +339,17 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
                   NeuroApp.custom_info("L'esercizio contiene tutti i file audio")
               else if (tipo_media=='image')
                   NeuroApp.custom_info("L'esercizio contiene tutte le immagini")
-              else
+              else if (tipo_media=='doc')
                   NeuroApp.custom_info("L'esercizio contiene tutti i documenti")
+              else
+                  NeuroApp.custom_info("L'esercizio contiene tutte le applicazioni")
           }
           else {
               result.map(item => {
-                if (NeuroAppJS.DEVELOP_ENV )
+                if (NeuroAppJS.DEVELOP_ENV ) {
                   item.url_media = NeuroApp.G_URL_ROOT +  "/" + item.url_media
+                  item.url_snapshot = NeuroApp.G_URL_ROOT +  "/" + item.url_snapshot
+                }
               })
 
               // Questa sara' la lista dei media disponibili per l'esercizio

@@ -8,6 +8,7 @@ import { ResourceAudioComponent } from './components/resource-audio/resource-aud
 import { ResourceImagesComponent } from './components/resource-images/resource-images.component'
 import { ResourceDocsComponent } from './components/resource-docs/resource-docs.component'
 import { ResourceImagesTargetComponent } from './components/resource-images-target/resource-images-target.component'
+import { ResourceAppComponent } from './components/resource-app/resource-app.component'
 
 import { PazientiComponent } from './components/pazienti/pazienti.component'
 import { GlossarioComponent } from './components/glossario/glossario.component'
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'docs', component: ResourceDocsComponent },
   { path: 'pazienti', component: PazientiComponent },
   { path: 'glossario', component: GlossarioComponent },
+  { path: 'esercizi', component: ResourceAppComponent },
   { path: '', component: HomeComponent },
 
   { path: '**', redirectTo: '/', pathMatch: 'full' },

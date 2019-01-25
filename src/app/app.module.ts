@@ -55,6 +55,7 @@ import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil
 import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
+import { ResourceAppComponent } from './components/resource-app/resource-app.component';
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import { PlaintextPipe } from './pipes/plaintext.pipe';
     HomeComponent,
     ResourceImagesTargetComponent,
     UploadImagesTargetComponent,
-    PacchettiCognitiviComponent
+    PacchettiCognitiviComponent,
+    ResourceAppComponent
   ],
   imports: [
     BrowserModule,

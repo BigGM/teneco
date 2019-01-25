@@ -1,0 +1,45 @@
+
+<div class="shadow-lg px-3 py-1 mb-5 w-100">
+ 
+  <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color: rgb(24, 58, 83);">App Esercizi
+  </div>
+  
+ <DIV id="div_app_component" class="container-fluid mb-5">  
+ 
+   <table style="margin-bottom:6px;width:100%">
+     <tr>
+       <td style="width:55px;margin:0;">
+           <button title="Aggiorna la lista delle applicazioni"
+             type="button"
+             class="btn btn-primary btn-md"
+             (click)="listaApps()">
+             <i class="fas fa-sync-alt" aria-hidden="true"></i>
+             </button>
+       </td>
+       
+     </tr>
+   </table>
+ 
+      <!-- Presentazione a Lista -->
+     <div id="div-view-app-as-list"
+       class="row py-3 my-bg-secondary"
+       style="border-radius:4px;"
+     >
+           <div *ngFor="let app of lista_apps" class="col-12 mb-3 word-break">
+             <div class="thumbnail thumbnail-image p-2 my-bg-dark">
+                 <table style="width:100%">
+                   <tr>
+                     <td class="descr-app"
+                         style="cursor:pointer"
+                         (click)="openApp(app)"
+                     ><img [src]="app.url_snapshot" class="img-small">{{app.descr_media}}</td>
+                 </tr></table>
+             </div>
+           </div>
+     </div>
+ 
+ </DIV>
+ 
+ </div>
+ 
+ 

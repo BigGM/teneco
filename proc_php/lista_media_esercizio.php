@@ -118,7 +118,8 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
             ',"id":'      . $row[2] .
             ',"url":"'    . $row[3] .'"'.
             ',"tipo":"'   . $row[4] .'"'.
-            ',"descr":"'  . $row[5] .'"}';
+            ',"descr":"'  . $row[5] .'"'.
+            ',"url_snapshot":"'  . $row[6] .'"}';
 }
 $outp .="]";
 echo($outp);

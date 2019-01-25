@@ -6,6 +6,7 @@ import { NeuroApp } from '../neuro-app'
  */
 export class RecordEsercizio {
    id_pkt      : number      // id del pacchetto di appartenenza
+   id_ambito   : number      // ambito
    id_ex       : number      // id dell'esercizio
    nome        : string
    descr       : string
@@ -26,6 +27,7 @@ export class RecordEsercizio {
     */
    copy(rec:RecordEsercizio) {
       this.id_pkt      = rec.id_pkt
+      this.id_ambito   = rec.id_ambito
       this.id_ex       = rec.id_ex
       this.nome        = rec.nome
       this.descr       = rec.descr
@@ -43,6 +45,7 @@ export class RecordEsercizio {
     */
    public reset() {
       this.id_pkt      = -1
+      this.id_ambito   = -1
       this.id_ex       = -1
       this.nome        = ""
       this.descr       = ""
@@ -73,6 +76,7 @@ export class RecordEsercizio {
       let out = new RecordEsercizio
       out.id_ex = this.id_ex
       out.id_pkt = this.id_pkt
+      out.id_ambito = this.id_ambito
       out.id_grp = this.id_grp
       out.count_media = this.count_media
       out.nome  = encodeURIComponent(this.nome)

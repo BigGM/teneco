@@ -112,7 +112,7 @@ $outp  = $start;
 while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
    if ($outp != $start) {$outp .= ",";}
-   $outp .= '{"id_media":' . $row[0] .',' . '"url_media":"' . $row[1].'", "descr_media":'. '"'.$row[2].'", "usato_media":'.$row[3].'}' ;
+   $outp .= '{"id_media":' . $row[0] .',' . '"url_media":"' . $row[1].'", "descr_media":'. '"'.$row[2].'", "usato_media":'.$row[3] .'", "url_snapshot":'.$row[4] .'", "url_param":'.$row[5] .'}';
 }
 $outp .="]";
 echo($outp);

@@ -22,9 +22,9 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php"
   templateUrl: './resource-images.component.html',
   styleUrls: ['./resource-images.component.css']
 })
-export class ResourceImagesComponent implements OnInit {
+export class ResourceImagesComponent implements OnInit, OnDestroy {
 
-  // lista dei documenti presenti nel DB
+  // lista delle immagini presenti nel DB
   lista_images :  RecordMedia[];
 
   // per la registrazione al servizio di accesso alle procedure del DB
