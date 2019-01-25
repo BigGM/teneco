@@ -48,7 +48,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
       private exService : RiabilNeuromotoriaService,
       private neuroAppService : NeuroAppService)
   {
-    this.esercizio = null
+    this.esercizio = new RecordEsercizio
     this.listaMediaCollegati = []
     this.listaMediaDisponibili = []
     this.exSubscr = null
@@ -193,14 +193,12 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
    */
   tipoApp() {
     //console.log("tipoApp", this.esercizio)
-    if (this.esercizio ) {
       if(this.esercizio.id_ambito == 1) {
         return "app_cognitiva"
       }
       else if(this.esercizio.id_ambito == 2) {
         return "app_neuromotoria"
       }
-    }
   }
 
 
