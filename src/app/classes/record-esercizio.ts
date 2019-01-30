@@ -101,4 +101,16 @@ export class RecordEsercizio {
       es.limitazioni = decodeURIComponent(es.limitazioni)
       es.nome_grp = decodeURIComponent(es.nome_grp)
    }
+
+   
+   /**
+    * Sostuisce le string "&nbsp;" con il carattere spazio
+    */
+    public replace_nbsp() {
+      this.descr  = NeuroApp.replace_nbsp ( this.descr )
+      this.descr       = NeuroApp.replace_nbsp ( this.descr )
+      this.testo       = NeuroApp.replace_nbsp ( this.testo )
+      this.alert       = NeuroApp.replace_nbsp ( this.alert )
+      this.limitazioni = NeuroApp.replace_nbsp ( this.limitazioni )     
+    }
 }

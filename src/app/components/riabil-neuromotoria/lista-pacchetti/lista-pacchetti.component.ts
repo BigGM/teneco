@@ -88,7 +88,7 @@ export class ListaPacchettiComponent implements OnInit, OnDestroy {
           NeuroApp.hideWait()
           this.pacchetti = result
           this.pacchetti.forEach(pkt => {
-              RecordPacchetto.decode(pkt)
+              RecordPacchetto.decode(pkt)              
           })
           console.log(this.pacchetti)
           this.pktSubscr.unsubscribe()

@@ -1,6 +1,9 @@
 <?php
 
 header('Access-Control-Allow-Origin: *'); 
+//header('Access-Control-Allow-Methods: GET,POST,PATCH,DELETE,PUT,OPTIONS');
+//header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization");
+header("Access-Control-Allow-Headers: *");
 header('Content-Type: text/plain; charset=utf-8');
 
 
@@ -34,22 +37,31 @@ function msg_fmt( $e ) {
  * $contro_ind - contro indicazioni 
  * $alert_msg  - messaggio di alert 
  **/
+ 
 
-parse_str($_SERVER['QUERY_STRING']);
+$proc  = rawurldecode($_POST['proc']);
+$nome  = rawurldecode($_POST['nome']);
+$descr = str_replace('&nbsp;', ' ', rawurldecode($_POST['descr']) );
+$pre_req    = rawurldecode($_POST['pre_req']);
+$contro_ind = rawurldecode($_POST['contro_ind']);
+$alert_msg  = rawurldecode($_POST['alert_msg']);
+$alert_msg_visibile  = rawurldecode($_POST['alert_msg_visibile']);
+$bibliografia  = rawurldecode($_POST['bibliografia']);
+$patologie_secondarie  = rawurldecode($_POST['patologie_secondarie']);
+$valutazione  = rawurldecode($_POST['valutazione']);
+$note  = rawurldecode($_POST['note']);
+$ambito = rawurldecode($_POST['ambito']);
+$id_scheda_val = rawurldecode($_POST['id_scheda_val']);
 
-$proc  = rawurldecode($proc);
-$nome  = rawurldecode($nome);
-$descr = rawurldecode($descr);
-$pre_req    = rawurldecode($pre_req);
-$contro_ind = rawurldecode($contro_ind);
-$alert_msg  = rawurldecode($alert_msg);
-$alert_msg_visibile  = rawurldecode($alert_msg_visibile);
-$bibliografia  = rawurldecode($bibliografia);
-$patologie_secondarie  = rawurldecode($patologie_secondarie);
-$valutazione  = rawurldecode($valutazione);
-$note  = rawurldecode($note);
-$ambito = rawurldecode($ambito);
-$id_scheda_val = rawurldecode($id_scheda_val);
+//echo '{"status":"exception", "message":"'.$contro_ind.'"}';
+//die();
+
+
+//$fp = fopen('myfile.txt', 'w');
+//fwrite($fp, $descr);
+//fclose($fp);
+//die();
+
 
 /*****
 echo $proc . "\n";
@@ -77,6 +89,8 @@ if (!$conn) {
 }
 
 
+
+
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
@@ -92,26 +106,63 @@ if (!$stmt) {
 oci_set_prefetch($stmt,1000);
 
 
-
 /**
  * Imposta i parametri della procedura 
  **/
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':nome'    , $nome, 255);
-oci_bind_by_name($stmt, ':descr'   , $descr, 4000);
-oci_bind_by_name($stmt, ':pre_req' , $pre_req, 4000);
-oci_bind_by_name($stmt, ':contro_ind' , $contro_ind, 4000);
-oci_bind_by_name($stmt, ':alert_msg'  , $alert_msg, 255);
-oci_bind_by_name($stmt, ':alert_msg_visibile' , $alert_msg_visibile, 4000);
-oci_bind_by_name($stmt, ':bibliografia' , $bibliografia, 4000);
-oci_bind_by_name($stmt, ':patologie_secondarie' , $patologie_secondarie, 4000);
-oci_bind_by_name($stmt, ':valutazione' , $valutazione, 4000);
-oci_bind_by_name($stmt, ':note' , $note, 4000);
-oci_bind_by_name($stmt, ':contro_ind_abs' , $contro_ind_abs, 4000);
-oci_bind_by_name($stmt, ':pre_req_comp'   , $pre_req_comp, 4000);
-oci_bind_by_name($stmt, ':come_valutare'  , $come_valutare, 4000);
+
+$descrCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$descrCLOB->writeTemporary($descr);
+
+$pre_reqCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$pre_reqCLOB->writeTemporary($pre_req);
+
+$contro_indCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$contro_indCLOB->writeTemporary($contro_ind);
+
+$alert_msgCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$alert_msgCLOB->writeTemporary($alert_msg);
+
+$alert_msg_visibileCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$alert_msg_visibileCLOB->writeTemporary($alert_msg_visibile);
+
+$bibliografiaCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$bibliografiaCLOB->writeTemporary($bibliografia);
+
+$patologie_secondarieCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$patologie_secondarieCLOB->writeTemporary($patologie_secondarie);
+
+$valutazioneCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$valutazioneCLOB->writeTemporary($valutazione);
+
+$noteCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$noteCLOB->writeTemporary($note);
+
+$contro_ind_absCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$contro_ind_absCLOB->writeTemporary($contro_ind_abs);
+
+$pre_req_compCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$pre_req_compCLOB->writeTemporary($pre_req_comp);
+
+$come_valutareCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$come_valutareCLOB->writeTemporary($come_valutare);
+
+
+oci_bind_by_name($stmt, ':nome'       , $nome, 255);
+oci_bind_by_name($stmt, ":descr"      , $descrCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':pre_req'    , $pre_reqCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':contro_ind' , $contro_indCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':alert_msg'  , $alert_msgCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':alert_msg_visibile'   , $alert_msg_visibileCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':bibliografia'         , $bibliografiaCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':patologie_secondarie' , $patologie_secondarieCLOB,  -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':valutazione'          , $valutazioneCLOB,  -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':note'           , $noteCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':contro_ind_abs' , $contro_ind_absCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':pre_req_comp'   , $pre_req_compCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':come_valutare'  , $come_valutareCLOB, -1, OCI_B_CLOB);
 oci_bind_by_name($stmt, ':ambito'         , $ambito, 100);
 oci_bind_by_name($stmt, ':id_scheda_val'  , $id_scheda_val, 100);
 oci_bind_by_name($stmt, ':outcome'        , $outcome, 4000);

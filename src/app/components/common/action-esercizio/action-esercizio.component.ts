@@ -227,9 +227,11 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
                   ? "Esercizio aggiunto al pacchetto"
                   : "Esercizi modificato"
 
-
-    // lancia il salvataggio su una copia codificata dell'esercizio corrente, per trattare
-    // correttamente i caratteri antipatici
+    
+    // Sostituisce &nbsp; con spazio
+    this.esercizio.replace_nbsp()
+    
+    // Codifica i caratteri speciali
     let es_encoded = this.esercizio.encode()
 
     let serv = this.exService.salvaEsercizio(es_encoded, php_script, db_proc)
@@ -330,4 +332,9 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
        }
     )
   } // loadGruppi()
+
+  optionSelected(id:number) {
+    console.log("optionSelected", id)
+    return id==1 ? true : false
+  }
 }

@@ -90,36 +90,37 @@ PROCEDURE lista_pacchetti2(p_ambito in varchar2,
 
 
 PROCEDURE salva_pacchetto(p_nome in varchar2, 
-                          p_descr in varchar2,
-                          p_prerequisiti in varchar2,
-                          p_controindicazioni in varchar2,
-                          p_alert in varchar2,
-                          p_alert_visibile in varchar2,
-                          p_bibliografia in varchar2,
-                          p_patologie_secondarie in varchar2,
-                          p_valutazione in varchar2,
-                          p_note in varchar2,                          
-                          p_controindicazioni_ass in varchar2,
-                          p_prerequisiti_comp in varchar2,
-                          p_come_valutare in varchar2,
+                          p_descr in clob,
+                          p_prerequisiti in clob,
+                          p_controindicazioni in clob,
+                          p_alert in clob,
+                          p_alert_visibile in clob,
+                          p_bibliografia in clob,
+                          p_patologie_secondarie in clob,
+                          p_valutazione in clob,
+                          p_note in clob,                          
+                          p_controindicazioni_ass in clob,
+                          p_prerequisiti_comp in clob,
+                          p_come_valutare in clob,
                           p_ambito in varchar2,
                           p_id_scheda_val in varchar2,
                           p_outcome in out varchar2);
                           
-PROCEDURE salva_pacchetto_modificato(p_id_pacchetto in varchar2,
+PROCEDURE salva_pacchetto_modificato (
+                          p_id_pacchetto in varchar2,
                           p_nome in varchar2, 
-                          p_descr in varchar2, 
-                          p_prerequisiti in varchar2,
-                          p_controindicazioni in varchar2,
-                          p_alert in varchar2,                          
-                          p_alert_visibile in varchar2,
-                          p_bibliografia in varchar2,
-                          p_patologie_secondarie in varchar2,
-                          p_valutazione in varchar2,
-                          p_note in varchar2,
-                          p_controindicazioni_ass in varchar2,
-                          p_prerequisiti_comp in varchar2,
-                          p_come_valutare in varchar2,
+                          p_descr in clob, 
+                          p_prerequisiti in clob,
+                          p_controindicazioni in clob,
+                          p_alert in clob,                          
+                          p_alert_visibile in clob,
+                          p_bibliografia in clob,
+                          p_patologie_secondarie in clob,
+                          p_valutazione in clob,
+                          p_note in clob,
+                          p_controindicazioni_ass in clob,
+                          p_prerequisiti_comp in clob,
+                          p_come_valutare in clob,
                           p_id_scheda_val in varchar2,
                           p_outcome in out varchar2);
 
@@ -133,19 +134,19 @@ PROCEDURE lista_esercizi(p_id_pacchetto in varchar2,
 
 PROCEDURE salva_esercizio(p_id_pacchetto in varchar2, 
                           p_nome_esercizio in varchar2,
-                          p_desc_esercizio in varchar2,
-                          p_testo_esercizio in varchar2,
-                          p_alert_esercizio in varchar2,
-                          p_limitazioni_esercizio in varchar2,
+                          p_desc_esercizio in clob,
+                          p_testo_esercizio in clob,
+                          p_alert_esercizio in clob,
+                          p_limitazioni_esercizio in clob,
                           p_id_gruppo in varchar2,
                           p_outcome in out varchar2);
                           
 PROCEDURE salva_esercizio_modificato(p_id_pacchetto in varchar2,
                           p_id_esercizio in varchar2,
-                          p_desc_esercizio in varchar2,
-                          p_testo_esercizio in varchar2,
-                          p_alert_esercizio in varchar2,
-                          p_limitazioni_esercizio in varchar2,
+                          p_desc_esercizio in clob,
+                          p_testo_esercizio in clob,
+                          p_alert_esercizio in clob,
+                          p_limitazioni_esercizio in clob,
                           p_id_gruppo in varchar2,
                           p_outcome in out varchar2);
                           
@@ -199,6 +200,8 @@ PROCEDURE rimuovi_media(p_id_media in varchar2,
                         
 FUNCTION count_esercizi (p_id_pacchetto in integer) return integer;
 
+FUNCTION count_media (p_id_pacchetto in integer, p_id_esercizio in integer) return integer;
+
 
 PROCEDURE get_scheda_valutazione(p_id_scheda in varchar2,
                                  p_outcome in out varchar2, 
@@ -208,6 +211,41 @@ PROCEDURE get_scheda_valutazione(p_id_scheda in varchar2,
 PROCEDURE lista_target(p_categoria in varchar2, 
                        p_outcome in out varchar2, 
                        p_cursor OUT SYS_REFCURSOR);
+                       
+                       
+PROCEDURE lista_categorie(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR);
+
+
+PROCEDURE aggiungi_target(p_url in varchar2,
+                          p_nome_target in varchar2,
+                          p_categoria in varchar2,
+                          p_descrizione in varchar2,
+                          p_outcome in out varchar2);
+                          
+                          
+PROCEDURE cancella_target(p_id_target in varchar2,
+                          p_outcome in out varchar2);
+
+PROCEDURE salva_dati_app(p_id_user  in varchar2,
+                         p_appl_name in varchar2,
+                         p_config_app in varchar2,
+                         p_result_app in varchar2,                         
+                         p_outcome in out varchar2);
+                         
+PROCEDURE lista_pazienti(p_outcome in out varchar2,
+                         p_cursor OUT SYS_REFCURSOR);
+
+PROCEDURE dettaglio_paziente(p_id_paziente in varchar2, 
+                             p_outcome in out varchar2, 
+                             p_cursor OUT SYS_REFCURSOR);
+
+PROCEDURE esisteCF(p_id_login  in varchar2,
+                   p_outcome in out varchar2,
+                   p_cursor OUT SYS_REFCURSOR);
+
+PROCEDURE controllaAccesso(p_id_login  in varchar2,
+                           p_outcome in out varchar2);
+
 
 
 END NeuroApp;

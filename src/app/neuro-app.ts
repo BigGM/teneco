@@ -206,9 +206,13 @@ export class NeuroApp {
     * Elimina dalla stringa in input tutti i caratteri spazio codificati
     * come &nbsp;
     * @param s 
-    */
-   static trim_nbsp(s:string) : string {
-      return s.replace(/^(&nbsp;)+|(&nbsp;)+$/gm,'');
+    **/
+   static trim_nbsp(s:string,this_char:string='') : string {
+      return s.replace(/^(&nbsp;)+|(&nbsp;)+$/gm,this_char);
+   }
+
+   static replace_nbsp(s:string,this_char:string=' ') : string {
+      return s.replace(/(&nbsp;)/gm,this_char);
    }
 
 

@@ -1,0 +1,36 @@
+.thead-dark th {
+   color: #fff;
+   background-color: #1f4f7e;
+   border-color: rgba(0,0,0,0);
+   font-weight: normal;
+ }
+
+ #tablePazienti {
+   width:100%;
+   color:rgb(34,67,136);
+   cursor:pointer;
+ }
+
+ #tablePazienti tr > td {
+   padding: 6px 10px;
+   font-family: Calibri, Geneva, Tahoma, sans-serif,Verdana;
+   font-size:20px;
+   border:1px solid transparent;
+   border-bottom:1px solid rgba(200, 200, 200,0.3);
+ }
+ 
+ #tablePazienti > tbody > tr:hover {
+   background-color: rgb(193, 221, 253);
+   transition: background-color 0.3s ease-in-out;
+ }
+
+ .dropdown-menu {
+    border:0px;
+ }
+ .my-dropdown-item {
+  font-family: Calibri, Geneva, Tahoma, sans-serif,Verdana;
+  font-size:20px;
+ }
+ .my-dropdown-icon {
+   width:24px;
+ }

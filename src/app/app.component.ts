@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
                                             nome: "-- Nessun gruppo --", 
                                             descr: "", 
                                             id_ambito:-1} )*/
-          console.log(NeuroApp.gruppi)
+          //console.log("loadGruppi",NeuroApp.gruppi)
           this.subscr.unsubscribe()
         },
         error => {

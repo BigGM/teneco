@@ -1,0 +1,22 @@
+
+
+<DIV id="div_dettaglio_paziente" class="shadow-lg">
+    <i class="fas fa-angle-right" title="chiudi dettaglio" (click)="closeDettaglio()"
+    style="position:absolute;font-size:36px;color:rgb(244,208,63);margin:10px;cursor:pointer;"></i>
+  <div>
+      <div class="card-header my-card-header text-center my-header-title">
+           <label>{{paziente.nome}} {{paziente.cognome}}</label>
+      </div>
+
+      <div class="card-body my-card-body" >
+        <div class="row"><div class="col-sm-12 field-name">CF:<br><label class='field-value'>{{paziente.cf}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Sesso:<br><label class='field-value'>{{paziente.sesso}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Data di nascita:<br><label class='field-value'>{{paziente.data_nascita}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Citt&agrave; di nascita:<br><label class='field-value'>{{paziente.luogo_nascita}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Nazionalit&agrave;:<br><label class='field-value'>{{paziente.nazionalita}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Citt&agrave; di residenza:<br><label class='field-value'>{{paziente.residenza}}</label></div></div>
+        <div class="row"><div class="col-sm-12 field-name">Indirizzo:<br><label class='field-value'>{{paziente.indirizzo}}</label></div></div>
+        <div class="row" *ngIf="paziente.note.length>0"><div class="col-sm-12 field-name">Note:<br><label class='field-value'>{{paziente.note}}</label></div></div>
+      </div>
+  </div>
+</DIV>

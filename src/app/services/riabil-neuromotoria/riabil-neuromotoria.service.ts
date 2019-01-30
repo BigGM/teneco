@@ -1,5 +1,5 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry,  map, tap } from 'rxjs/operators';
 
@@ -53,6 +53,12 @@ type out_media_esercizio =  RecordMediaEsercizio[] | Outcome;
  */
 type out_scheda_val =  RecordMedia | Outcome;
 
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/x-www-form-urlencoded'
+  })
+};
 
 
 @Injectable({
@@ -160,7 +166,7 @@ export class RiabilNeuromotoriaService {
 
   /**
    * Salva un pacchetto nel DB.
-   * @param pkt         pacchetto
+   * @param pkt         pacchetto ( i caratteri speciali sono gia' codificati)
    * @param php_script  script php da eseguire
    * @param db_proc     procedura oracle
    * @param ambito :  1 ( riabilitazione neuromotoria )
@@ -175,40 +181,37 @@ export class RiabilNeuromotoriaService {
     if (pkt.id >= 0)
       id_pkt = "&id_pkt="+pkt.id
 
-    // Codifica i campi del pacchetto prima di eseguire la richiesta http al server
-    pkt = pkt.encode()
-  
-    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script+"?proc="+db_proc+
-                   id_pkt +
-                   "&nome="+ pkt.nome +
-                   "&descr="+ pkt.descr +
-                   "&pre_req="+ pkt.pre_req +
-                   "&contro_ind="+ pkt.contro_ind +
-                   "&alert_msg="+pkt.alert_msg +
-                   "&alert_msg_visibile=" + pkt.alert_msg_visibile +
-                   "&bibliografia=" + pkt.bibliografia +
-                   "&patologie_secondarie=" + pkt.patologie_secondarie +
-                   "&valutazione=" + pkt.valutazione+
-                   "&note=" + pkt.note+
-                   "&contro_ind_abs=" + pkt.contro_ind_abs+
-                   "&pre_req_comp=" + pkt.pre_req_comp+
-                   "&come_valutare=" + pkt.come_valutare+
-                   "&ambito="+ambito +
-                   "&id_scheda_val="+pkt.id_scheda_val;
-
+    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script
+    let params =   "proc="+db_proc+
+                  id_pkt +
+                  "&nome="+ pkt.nome +
+                  "&descr="+ pkt.descr +
+                  "&pre_req="+ pkt.pre_req +
+                  "&contro_ind="+ pkt.contro_ind +
+                  "&alert_msg="+pkt.alert_msg +
+                  "&alert_msg_visibile=" + pkt.alert_msg_visibile +
+                  "&bibliografia=" + pkt.bibliografia +
+                  "&patologie_secondarie=" + pkt.patologie_secondarie +
+                  "&valutazione=" + pkt.valutazione+
+                  "&note=" + pkt.note+
+                  "&contro_ind_abs=" + pkt.contro_ind_abs+
+                  "&pre_req_comp=" + pkt.pre_req_comp+
+                  "&come_valutare=" + pkt.come_valutare+
+                  "&ambito="+ambito +
+                  "&id_scheda_val="+pkt.id_scheda_val;
     console.log(url)
 
-    return this.http.get<Outcome>(url)
+    return this.http.post<Outcome>(url, params, httpOptions)
     .pipe(
         retry(1),
         map ( outcome => {
-          //console.log('** outcome **', outcome)
+            console.log('** outcome **', outcome)
             if (outcome.status.toLowerCase()=="exception" )
               throw new Error(`${outcome.message}`) 
             return outcome
         }),
         tap( outcome => {
-          //console.log('** outcome **', outcome)
+          console.log('** outcome **', outcome)
         }),
         catchError( this.neuroService.handleError )
     )
@@ -259,18 +262,21 @@ export class RiabilNeuromotoriaService {
     if (ex.id_ex >= 0)
       id_ex = "&id_ex="+ex.id_ex
 
-    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script+"?proc="+db_proc+
-                  "&id_pkt=" + ex.id_pkt +
-                  id_ex +
-                  "&nome=" + ex.nome +
-                  "&descr=" + ex.descr +
-                  "&testo=" + ex.testo +
-                  "&alert=" + ex.alert +
-                  "&limitazioni=" + ex.limitazioni +
-                  "&id_grp=" + ex.id_grp;
+    let url = this.G_URL_ROOT+"/cgi-bin/"+php_script;
+
+    let params = "proc="+db_proc+
+                "&id_pkt=" + ex.id_pkt +
+                id_ex +
+                "&nome=" + ex.nome +
+                "&descr=" + ex.descr +
+                "&testo=" + ex.testo +
+                "&alert=" + ex.alert +
+                "&limitazioni=" + ex.limitazioni +
+                "&id_grp=" + ex.id_grp;
+
     console.log(url)
 
-    return this.http.get<Outcome>(url)
+    return this.http.post<Outcome>(url, params, httpOptions)
     .pipe(
         retry(1),
         map ( outcome => {

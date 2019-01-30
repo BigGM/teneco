@@ -193,10 +193,10 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
    */
   tipoApp() {
     //console.log("tipoApp", this.esercizio)
-      if(this.esercizio.id_ambito == 1) {
+      if(this.esercizio.id_ambito == 2) {
         return "app_cognitiva"
       }
-      else if(this.esercizio.id_ambito == 2) {
+      else if(this.esercizio.id_ambito == 1) {
         return "app_neuromotoria"
       }
   }
@@ -209,14 +209,16 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
    */
   filter(tipo_media:string) : RecordMediaEsercizio[] {
 
-    if (tipo_media=='app')
+    if (tipo_media=='app') {
       tipo_media = this.tipoApp();
+      //console.log("filter*** ", tipo_media)
+    }
 
     let out = 
       this.listaMediaCollegati.filter( value => {
         return value.tipo==tipo_media
       })
-    //console.log(out)
+    
     return out
   }
 
@@ -301,11 +303,20 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   * Apre una finestra modale che consente di aggiungere un elemento multimediale
   * all'esercizio corrente, la finestra contiene video/audio/image/doc 
   * ad esclusione di quelli già assegnati all'esercizio.
-  * @param tipo_media video, audio, image, doc
+  * @param tipo_media video, audio, image, doc, app
   **/
-  openModalAggiungiMedia(tipo_media)
+  openModalAggiungiMedia(tipo_media:string)
   {
     NeuroApp.showWait()
+
+    if (tipo_media=='app') {
+       if (this.esercizio.id_ambito==1) {
+        tipo_media = 'app_neuromotoria'
+       }
+       else {
+        tipo_media = 'app_cognitiva'
+       }
+    }
 
     // Svuota l'array di bind con i checkbox
     this.media_checked = {}
@@ -354,6 +365,9 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
               this.listaMediaDisponibili = result
 
               // Apre la finestra modale
+              if (tipo_media.startsWith('app') )
+                tipo_media = 'app';
+                
               $("#myFetch_"+tipo_media).modal('show');
           }
           this.exSubscr.unsubscribe()
@@ -388,6 +402,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
     id_media = id_media.trim().split(" ").join(",")
     
     console.log(id_media)
+    console.log(this.esercizio);
     
   
     let serv = this.exService.aggiungiMediaEsercizio(this.esercizio.id_pkt, this.esercizio.id_ex, id_media)

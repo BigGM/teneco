@@ -30,6 +30,9 @@ function msg_fmt( $e ) {
  * $voce        - voce di glossario
  * $definizione - definizione della voce di glossario
  **/
+ 
+echo $_POST["proc"] . "<br>"
+die();
 
 parse_str($_SERVER['QUERY_STRING']);
 

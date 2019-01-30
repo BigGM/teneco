@@ -251,7 +251,10 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
                     ? "Pacchetto creato"
                     : "Pacchetto modificato"
 
-
+    // Sostituisce &nbsp; con spazio
+    this.pacchetto.replace_nbsp()
+    
+    // Codifica i caratteri speciali
     let encoded_pkt = this.pacchetto.encode()
 
     let serv = this.pktService.salvaPacchetto(encoded_pkt, php_script, db_proc, this.ambito)

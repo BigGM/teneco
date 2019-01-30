@@ -49,13 +49,15 @@ import { PacchettiCognitiviComponent } from './components/riabil-cognitiva/pacch
 import { NeuroAppService } from './services/neuro-app.service'
 import { GlossarioService } from './services/glossario/glossario.service'
 import { RiabilNeuromotoriaService } from './services/riabil-neuromotoria/riabil-neuromotoria.service';
-
+import { PazientiService } from './services/pazienti/pazienti.service';
 
 // Pipe
 import { SafePipe } from './pipes/safe.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { ResourceAppComponent } from './components/resource-app/resource-app.component';
+import { ListaPazientiComponent } from './components/pazienti/lista-pazienti/lista-pazienti.component';
+import { DettaglioPazienteComponent } from './components/pazienti/dettaglio-paziente/dettaglio-paziente.component';
 
 
 @NgModule({
@@ -92,7 +94,9 @@ import { ResourceAppComponent } from './components/resource-app/resource-app.com
     ResourceImagesTargetComponent,
     UploadImagesTargetComponent,
     PacchettiCognitiviComponent,
-    ResourceAppComponent
+    ResourceAppComponent,
+    ListaPazientiComponent,
+    DettaglioPazienteComponent
   ],
   imports: [
     BrowserModule,
@@ -106,6 +110,7 @@ import { ResourceAppComponent } from './components/resource-app/resource-app.com
     NeuroAppService,
     GlossarioService,
     RiabilNeuromotoriaService,
+    PazientiService,
     // la # location strategy serve a far funzionare il reload delle pagine
     // che, altrimennti, ritorna con 404 page non found
     {provide:LocationStrategy, useClass:HashLocationStrategy }

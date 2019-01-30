@@ -1,8 +1,15 @@
-<DIV class="container-fluid">
 
-    <div class="jumbotron text-center" >
-       <h1>Pagina Pazienti</h1>
-       <img src="assets/images/non-disturbare.jpg">
-    </div>
-  
+<DIV class="container-fluid mb-3">
+    <DIV class="row">
+    <DIV class="col-sm-10">
+       <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
+       <app-lista-pazienti #listaPazientiRef></app-lista-pazienti>
+    </DIV>
+    </DIV>
 </DIV>
+
+<!-- PAGINA  DETTAGLIO PAZIENTE -->
+<app-dettaglio-paziente #dettaglioPazidenteRef
+[listaPazienti]="listaPazientiRef"></app-dettaglio-paziente>
+
+ 

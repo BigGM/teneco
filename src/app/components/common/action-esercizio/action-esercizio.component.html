@@ -51,9 +51,9 @@
           <div class="form-group row">
               <label for="summernote-actex-gruppo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Gruppo</label>
               <div class="col-sm-9">
-                  <select id="summernote-actex-gruppo" class="form-control"name="gruppo"
+                  <select id="summernote-actex-gruppo" class="form-control" name="gruppo"
                    [(ngModel)]="esercizio.id_grp" >
-                    <option *ngFor="let g of gruppi" [value]="g.id" [selected]="true">{{g.nome}}</option>
+                    <option *ngFor="let g of gruppi" [value]="g.id" [selected]="g.id==-1?true:false">{{g.nome}}</option>
                   </select>
               </div>
           </div>
@@ -68,7 +68,7 @@
               </div>
           </div>
 
-          <!-- ALERT ESERCIZIO -->
+          <!-- NOTA DI AVVISO -->
           <div class="form-group row">
               <label for="summernote-actex-alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nota di avviso</label>
               <div class="col-sm-9">

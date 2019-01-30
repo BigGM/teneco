@@ -98,6 +98,25 @@ export class RecordPacchetto {
 
 
     /**
+     * Sostuisce le string "&nbsp;" con il carattere spazio
+     */
+    public replace_nbsp() {
+      this.descr          = NeuroApp.replace_nbsp ( this.descr )
+      this.contro_ind     = NeuroApp.replace_nbsp ( this.contro_ind )
+      this.contro_ind_abs = NeuroApp.replace_nbsp ( this.contro_ind_abs )
+      this.pre_req        = NeuroApp.replace_nbsp ( this.pre_req )
+      this.pre_req_comp   = NeuroApp.replace_nbsp ( this.pre_req_comp )
+      this.alert_msg      = NeuroApp.replace_nbsp ( this.alert_msg )
+      this.alert_msg_visibile   = NeuroApp.replace_nbsp ( this.alert_msg_visibile )
+      this.bibliografia         = NeuroApp.replace_nbsp ( this.bibliografia )
+      this.patologie_secondarie = NeuroApp.replace_nbsp ( this.patologie_secondarie )
+      this.valutazione          = NeuroApp.replace_nbsp (this.valutazione)
+      this.come_valutare        = NeuroApp.replace_nbsp (this.come_valutare)
+      this.note                 = NeuroApp.replace_nbsp (this.note)
+    }
+
+
+    /**
      * Crea una nuova istanza di questo pacchetto con i campi codificati.
      */
     public encode() : RecordPacchetto {

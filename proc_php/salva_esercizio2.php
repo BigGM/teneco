@@ -1,6 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin: *'); 
+header("Access-Control-Allow-Headers: *");
 
 
 /**
@@ -32,14 +33,15 @@ function msg_fmt( $e ) {
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc  = rawurldecode($proc);
-$id_pkt  = rawurldecode($id_pkt);
-$nome  = rawurldecode($nome);
-$descr = rawurldecode($descr);
-$testo = rawurldecode($testo);
-$alert = rawurldecode($alert);
-$limitazioni = rawurldecode($limitazioni);
-$id_grp = rawurldecode($id_grp);
+$proc  = rawurldecode($_POST['proc']);
+$id_pkt  = rawurldecode($_POST['id_pkt']);
+$nome  = rawurldecode($_POST['nome']);
+$descr = rawurldecode($_POST['descr']);
+$testo = rawurldecode($_POST['testo']);
+$alert = rawurldecode($_POST['alert']);
+$limitazioni = rawurldecode($_POST['limitazioni']);
+$id_grp = rawurldecode($_POST['id_grp']);
+
 
 /*****
 echo $proc . "\n";
@@ -94,14 +96,27 @@ oci_set_prefetch($stmt,1000);
 $refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':id_pkt'  , $id_pkt, 255);
-oci_bind_by_name($stmt, ':nome'    , $nome, 255);
-oci_bind_by_name($stmt, ':descr'   , $descr, 4000);
-oci_bind_by_name($stmt, ':testo'   , $testo, 4000);
-oci_bind_by_name($stmt, ':alert'   , $alert, 4000);
-oci_bind_by_name($stmt, ':limitazioni'   , $limitazioni, 4000);
-oci_bind_by_name($stmt, ':id_grp'  , $id_grp, 255);
-oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
+$descrCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$descrCLOB->writeTemporary($descr);
+
+$testoCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$testoCLOB->writeTemporary($testo);
+
+$alertCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$alertCLOB->writeTemporary($testo);
+
+$limitazioniCLOB = oci_new_descriptor($conn, OCI_D_LOB);
+$limitazioniCLOB->writeTemporary($limitazioni);
+
+
+oci_bind_by_name($stmt, ':id_pkt'      , $id_pkt, 255);
+oci_bind_by_name($stmt, ':nome'        , $nome, 255);
+oci_bind_by_name($stmt, ":descr"       , $descrCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':testo'       , $testoCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':alert'       , $alertCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':limitazioni' , $limitazioniCLOB, -1, OCI_B_CLOB);
+oci_bind_by_name($stmt, ':id_grp'      , $id_grp, 255);
+oci_bind_by_name($stmt, ':outcome'     , $outcome, 4000);
 
 
 /**
