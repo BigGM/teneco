@@ -122,13 +122,13 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
               '"alert_msg":"'  . rawurlencode($row[5]!=null ? $row[5]->load() : $row[5]) . '",' .
               '"alert_msg_visibile":"' . rawurlencode($row[6]!=null ? $row[6]->load() : $row[6]) . '",' .
               '"bibliografia":"'  . rawurlencode($row[7]!=null ? $row[7]->load() : $row[7]) . '",' .
-              '"patologie_secondarie":"' . rawurlencode($row[8]) . '",' .
-              '"valutazione":"'  . rawurlencode($row[9]) . '",'  .
+              '"patologie_secondarie":"' . rawurlencode($row[8]!=null ? $row[8]->load() : $row[8]) . '",' .
+              '"valutazione":"'  . rawurlencode($row[9]!=null ? $row[9]->load() : $row[9]) . '",' .
               '"num_esercizi":' . $row[10] . ',' .
-              '"note":"'        . rawurlencode($row[11]) . '",' .
-              '"contro_ind_abs":"'  . rawurlencode($row[12]) . '",' .
-              '"pre_req_comp":"'  . rawurlencode($row[13]) . '",' .
-              '"come_valutare":"'  . rawurlencode($row[14]) . '",' .
+              '"note":"'        . rawurlencode($row[11]!=null ? $row[11]->load() : $row[11]) . '",' .
+              '"contro_ind_abs":"' . rawurlencode($row[12]!=null ? $row[12]->load() : $row[12]) . '",' .
+              '"pre_req_comp":"'  . rawurlencode($row[13]!=null ? $row[13]->load() : $row[13]) . '",' .
+              '"come_valutare":"'  . rawurlencode($row[14]!=null ? $row[14]->load() : $row[14]) . '",' .
               '"id_scheda_val":' . $row[15] .
             '}';
    

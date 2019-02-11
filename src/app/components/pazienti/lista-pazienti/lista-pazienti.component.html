@@ -12,6 +12,7 @@
                   <tr >
                      <th scope="col">Nome</th>
                      <th scope="col">Cognome</th>
+                     <th scope="col">Citt&agrave; di nascita</th>
                      <th scope="col">Data di nascita</th>
                      <th scope="col">&nbsp;</th>
                   </tr>
@@ -27,6 +28,7 @@
              <tr *ngFor="let p of pazienti" #row >
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.nome" ></td>
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.cognome" ></td>
+                <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.luogo_nascita" ></td>
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.data_nascita" ></td>
 
                 <td>
@@ -36,9 +38,9 @@
                       <i class="fas fa-ellipsis-v"></i>
                     </button>
                     <div class="dropdown-menu shadow">
-                      <a class="dropdown-item my-dropdown-item" href="#"><i class="fas fa-edit my-dropdown-icon"></i>&nbsp;Modifica</a>
-                      <a class="dropdown-item my-dropdown-item" href="#"><i class="fas fa-trash-alt my-dropdown-icon"></i>&nbsp;Cancella</a>
-                      <a class="dropdown-item my-dropdown-item" href="#"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Gestione pacchetti</a>
+                      <span class="dropdown-item my-dropdown-item" (click)="formModifPaziente(p)"><i class="fas fa-edit my-dropdown-icon"></i>&nbsp;Modifica</span>
+                      <span class="dropdown-item my-dropdown-item" (click)="confermaCancellaPaziente(p)"><i class="fas fa-trash-alt my-dropdown-icon"></i>&nbsp;Cancella</span>
+                      <span class="dropdown-item my-dropdown-item" (click)="gestionePacchetti(p)"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Gestione pacchetti</span>
                     </div>
                   </div>
 

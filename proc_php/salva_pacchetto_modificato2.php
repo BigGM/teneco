@@ -48,6 +48,11 @@ $valutazione  = rawurldecode($_POST['valutazione']);
 $note  = rawurldecode($_POST['note']);
 $id_scheda_val = rawurldecode($_POST['id_scheda_val']);
 
+$come_valutare = rawurldecode($_POST['come_valutare']);
+$contro_ind_abs = rawurldecode($_POST['contro_ind_abs']);
+$pre_req_comp = rawurldecode($_POST['pre_req_comp']);
+
+
 
 /*****
 echo $proc . "\n";

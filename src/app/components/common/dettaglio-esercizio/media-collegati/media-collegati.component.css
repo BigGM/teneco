@@ -211,3 +211,15 @@
    -ms-transform: rotate(45deg);
    transform: rotate(45deg);
 }
+
+.modal-body {
+   max-height: 80vh; /* max 80% of the viewport height */
+   overflow-y: auto;
+ }
+
+ .modal-footer {
+    height: 22px !important;
+    padding:0;
+    border-top:0;
+    background-color: rgb(222,226,230);
+ }

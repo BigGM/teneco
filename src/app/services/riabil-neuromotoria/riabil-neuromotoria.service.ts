@@ -181,6 +181,8 @@ export class RiabilNeuromotoriaService {
     if (pkt.id >= 0)
       id_pkt = "&id_pkt="+pkt.id
 
+      console.log(pkt)
+
     let url = this.G_URL_ROOT+"/cgi-bin/"+php_script
     let params =   "proc="+db_proc+
                   id_pkt +

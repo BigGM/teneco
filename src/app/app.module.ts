@@ -58,6 +58,7 @@ import { PlaintextPipe } from './pipes/plaintext.pipe';
 import { ResourceAppComponent } from './components/resource-app/resource-app.component';
 import { ListaPazientiComponent } from './components/pazienti/lista-pazienti/lista-pazienti.component';
 import { DettaglioPazienteComponent } from './components/pazienti/dettaglio-paziente/dettaglio-paziente.component';
+import { ActionPazienteComponent } from './components/pazienti/action-paziente/action-paziente.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { DettaglioPazienteComponent } from './components/pazienti/dettaglio-pazi
     PacchettiCognitiviComponent,
     ResourceAppComponent,
     ListaPazientiComponent,
-    DettaglioPazienteComponent
+    DettaglioPazienteComponent,
+    ActionPazienteComponent
   ],
   imports: [
     BrowserModule,

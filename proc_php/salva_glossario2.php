@@ -31,8 +31,8 @@ function msg_fmt( $e ) {
  * $definizione - definizione della voce di glossario
  **/
  
-echo $_POST["proc"] . "<br>"
-die();
+//echo $_POST["proc"] . "<br>"
+//die();
 
 parse_str($_SERVER['QUERY_STRING']);
 

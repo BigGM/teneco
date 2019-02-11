@@ -57,6 +57,8 @@ export class DettaglioPazienteComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.listaPazienti.selectedPaziente)
       this.listaPazienti.selectedPaziente.unsubscribe()
+    if ( this.pazientiSubscr )
+      this.pazientiSubscr.unsubscribe()
   }
 
 
@@ -92,6 +94,6 @@ export class DettaglioPazienteComponent implements OnInit, OnDestroy {
   }
 
   closeDettaglio() {
-    $('#div_dettaglio_paziente').animate({right:'-400px'},500,'easeOutCirc');
+    $('#div_dettaglio_paziente').animate({right:'-430px'},500,'easeOutCirc');
   }
 }

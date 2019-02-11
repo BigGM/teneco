@@ -99,8 +99,8 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
               '"cognome":"'   . rawurlencode($row[2]) . '",'  .
               '"cf":"",'  .
               '"sesso":"",'  .
-              '"data_nascita":"' . rawurlencode($row[3]) . '",'  .
-              '"luogo_nascita":"",' .
+              '"data_nascita":"' . rawurlencode($row[3]) . '",' .
+              '"luogo_nascita":"' . rawurlencode($row[4]) . '",' .
               '"nazionalita":"",' .
               '"residenza":"",' .
               '"indirizzo":"",' .

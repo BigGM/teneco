@@ -1,0 +1,136 @@
+<!--
+    --NOTA--
+    Nella finestra modale i campi marcati con un id like "summernote...." sono ricoperti
+    dalla libreria summernote, per questi campi il bind angular non funziona perche' la libreria
+    ricopre completamente il campo di testo con un suo oggetto, tuttavia ho lasciato il riferimento
+    al bind  [(ngModel)] perche' se si decide che un campo deve tornare a funzionare come
+    campo di testo standard la parte angular e' gia' scritta.
+-->
+
+
+<div class="container">
+
+  <!-- INSERIMENTO/MODIFICA PAZIENTE  -->
+  <div  id="actPaziente" class="modal fade"
+        tabindex="-1"
+        role="dialog" data-backdrop="static"
+        style="padding-top:35px; display:none;">
+       
+     <div class="modal-dialog modal-lg" role="document">
+     <div class="modal-content shadow-lg">
+     <div class="modal-header">
+        <h3 class="modal-title">{{titolo}}</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+        </button>
+     </div>
+
+     
+     <div class="modal-body" style="height:450px;overflow:auto;">
+        <form #actPazForm="ngForm" class="form-horizontal" role="form" novalidate>
+           
+          <!-- NOME -->
+          <div class="form-group row" >
+              <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nome_paz" name="nome_paz"
+                  disabled [ngModel]="paziente.nome"></div>
+          </div>
+
+          <!-- COGNOME -->
+          <div class="form-group row" >
+            <label for="cognome_paz" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Cognome</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="cognome_paz" name="cognome_paz"
+                disabled [ngModel]="paziente.cognome"></div>
+          </div>
+
+         <!-- CF -->
+           <div class="form-group row" >
+            <label for="CF" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Codice fiscale</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="CF" name="CF"
+                disabled [ngModel]="paziente.cf"></div>
+          </div>
+
+          <!-- Sesso -->
+          <div class="form-group row" >
+            <label for="sesso" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Sesso</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="sesso" name="sesso"
+                disabled [ngModel]="paziente.sesso"></div>
+          </div>
+
+          <!-- Luogo e data nascita -->
+          <div class="form-group row" >
+            <label for="nascita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Citt&agrave; e data di nascita</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="nascita" name="nascita"
+                disabled [ngModel]="luogo_data_nascita()"></div>
+          </div>
+
+          <!-- Nazionalita -->
+          <div class="form-group row" >
+            <label for="nazionalita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nazionalit&agrave;</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="nazionalita" name="nazionalita"
+                disabled [ngModel]="paziente.nazionalita"></div>
+          </div>
+
+           <!-- Residenza -->
+          <div class="form-group row" >
+            <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Residenza</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="residenza" name="residenza"
+                [(ngModel)]="paziente.residenza"></div>
+          </div>
+
+           <!-- Indirizzo -->
+           <div class="form-group row" >
+            <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Indirizzo</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="indirizzo" name="indirizzo"
+                [(ngModel)]="paziente.indirizzo"></div>
+          </div>
+
+          <!-- NOTE -->
+          <div class="form-group row">
+            <label for="note" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Note</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3"
+                [(ngModel)]="paziente.note"></textarea>
+            </div>
+          </div>
+
+        </form>
+
+     </div>
+     <div class="modal-footer">
+
+        <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-info text-white" 
+                (click)="reloadEntryPaziente()">
+            <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
+        </button>
+        
+        <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-info text-white" 
+            (click)="salvaPaziente(actPazForm)">
+            <!--[disabled]="actPazForm.invalid" -->
+            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+        </button>
+
+        <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-info text-white" 
+          (click)="salvaPaziente(actPazForm)">
+          <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+        </button>
+
+        <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
+        (click)="reset(actPazForm)">
+          <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
+          </button>
+     </div>
+     </div>
+     </div>
+  </div>
+  <!-- INSERIMENTO MODIFICA PAZIENTE -->
+
+</div>

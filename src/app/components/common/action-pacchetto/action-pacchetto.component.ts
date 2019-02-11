@@ -221,6 +221,9 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     this.pacchetto.descr = $('#summernote-actpkt-descr').summernote('code')
     this.pacchetto.pre_req =  $('#summernote-actpkt-prereq').summernote('code')
     this.pacchetto.pre_req_comp =  $('#summernote-actpkt-prereq-comp').summernote('code')
+
+    //console.log("this.pacchetto.pre_req_comp", this.pacchetto.pre_req_comp)
+    //console.log("this.pacchetto.valuatazione", this.pacchetto.valutazione)
     
     // trim dei campi e assegnazione scheda di valutazione
     this.pacchetto.trim()
@@ -253,9 +256,12 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
 
     // Sostituisce &nbsp; con spazio
     this.pacchetto.replace_nbsp()
+
+    console.log(this.pacchetto);
     
     // Codifica i caratteri speciali
     let encoded_pkt = this.pacchetto.encode()
+
 
     let serv = this.pktService.salvaPacchetto(encoded_pkt, php_script, db_proc, this.ambito)
     this.pktSubscr = serv.subscribe (

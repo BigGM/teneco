@@ -29,6 +29,20 @@ export class Paziente {
       this.note= ""
    }
 
+   copy(p:Paziente) {
+      this.id_paziente = p.id_paziente
+      this.nome = p.nome
+      this.cognome= p.cognome
+      this.cf = p.cf
+      this.sesso= p.sesso
+      this.data_nascita = p.data_nascita
+      this.luogo_nascita = p.luogo_nascita
+      this.nazionalita = p.nazionalita
+      this.residenza = p.residenza
+      this.indirizzo = p.indirizzo
+      this.note= p.note
+   }
+
 
    public encode() : Paziente {
       let out = new Paziente
