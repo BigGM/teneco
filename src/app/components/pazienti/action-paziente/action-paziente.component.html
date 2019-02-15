@@ -81,7 +81,7 @@
           <div class="form-group row" >
             <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Residenza</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="residenza" name="residenza"
+                <input type="text" class="form-control" id="residenza" name="residenza" placeholder="Residenza"
                 [(ngModel)]="paziente.residenza"></div>
           </div>
 
@@ -89,7 +89,7 @@
            <div class="form-group row" >
             <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Indirizzo</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="indirizzo" name="indirizzo"
+                <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo"
                 [(ngModel)]="paziente.indirizzo"></div>
           </div>
 
@@ -97,7 +97,7 @@
           <div class="form-group row">
             <label for="note" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Note</label>
             <div class="col-sm-9">
-                <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3"
+                <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3" placeholder="Note"
                 [(ngModel)]="paziente.note"></textarea>
             </div>
           </div>
@@ -124,7 +124,7 @@
         </button>
 
         <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
-        (click)="reset(actPazForm)">
+        (click)="reset()">
           <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
           </button>
      </div>

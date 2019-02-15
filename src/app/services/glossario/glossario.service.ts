@@ -48,7 +48,11 @@ export class GlossarioService {
   
   // Parametro in uscita per comunicare alla finestra modale di modifica
   // il record di glossario da modificare
-  @Output() change_glos:EventEmitter<RecordGlossario>;
+  @Output() change_glos:EventEmitter<RecordGlossario>
+
+  // Parametro in uscita per richiedere il reset alla finestra modale
+  // per la creazione di una nuova voce di glossario.
+  @Output() new_glos:EventEmitter<any>;
 
 
   constructor(
@@ -58,6 +62,7 @@ export class GlossarioService {
     //console.log("NeuroApp.G_URL_ROOT ==> " + NeuroApp.G_URL_ROOT )
     this.G_URL_ROOT = NeuroApp.G_URL_ROOT;
     this.change_glos = new EventEmitter();
+    this.new_glos = new EventEmitter();
   }
 
 
@@ -67,6 +72,13 @@ export class GlossarioService {
    */
   sendRecordToModal(rec: RecordGlossario) {
     this.change_glos.emit(rec)
+  }
+
+  /**
+   *  Invia alla finestra modale nuova voce la richiesta di reset dei campi.
+   */
+  resetModalNewVoce(){
+    this.new_glos.emit();
   }
 
 

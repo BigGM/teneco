@@ -1,0 +1,129 @@
+#esercizi-paziente-container {
+   position:fixed;
+   top: 60px;
+   left:-500px;
+   height:calc(100% - 58px);
+   height:-moz-calc(100% - 58px);
+   height:-webkit-calc(100% - 58px);
+   background-color:white;
+   z-index:1000;
+   padding:0;
+   
+}
+
+.my-card-body {
+   background-color:white;
+   height: calc(100% - 147px);
+   padding:1.0rem;
+   padding-top:0;
+   border-right:1px solid rgba(0,0,0,0.125);
+}
+
+.my-card-footer {
+   border-right:1px solid rgba(0,0,0,0.125);
+}
+
+.paziente-title {
+    font-family: 'Cinzel', serif;
+    color: white;
+    font-size: 20px;
+    text-shadow: 1px 1px 1px #000000;
+    background-color: rgb(95, 95, 117);
+    border-bottom: 0;
+    border-radius: 0;
+    padding:0;
+}
+
+.tablePacchettiEsercizi {
+   width:100%;
+   color:rgb(77,77,94);
+   cursor:pointer;
+ }
+ 
+ .tablePacchettiEsercizi tr {
+   border-bottom:1px solid rgba(0,0,0,0.1);
+ }
+ 
+ .tablePacchettiEsercizi tr > td {
+   padding: 4px 10px;
+   font-family: Calibri,Tahoma,verdana;
+   font-size:20px;
+ }
+ 
+ .tablePacchettiEsercizi tr > td:first-child {
+   padding-left:25px;
+ }
+ 
+ .tablePacchettiEsercizi > tbody > tr:hover {
+   background-color: rgb(220,220,226);
+   transition: background-color 0.2s ease-in-out;
+ }
+ 
+ .pacchetto {
+    width:100%;
+    background-color: rgb(109, 109, 135);
+    font-family: Calibri,Tahoma,verdana;
+    color: white;
+    padding: 2px 10px;
+    cursor:pointer;
+    font-size: 20px;
+    text-shadow: 1px 1px 1px #000000;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+ }
+ .esercizi {
+    width:100%;
+    background-color: rgb(232,232,236);
+    margin-bottom:6px;
+ }
+ .nav-tabs {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom:1px solid rgba(0,0,0,0.1) !important;
+ }
+ .nav-link {
+    font-family: Calibri,Tahoma,verdana;
+    font-size:20px;
+    font-weight:normal;
+    color:rgb(95,95,117);
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color:rgb(243,243,246);
+    text-shadow: 1px 1px 1px white;
+    border-bottom:1px solid rgba(0,0,0,0.1) !important;
+ }
+ .nav-link.active {
+    color: rgb(255,215,50) !important;
+    background-color: rgb(95, 95, 117) !important;
+    text-shadow: 1px 1px 1px black;
+ }
+ 
+ .tab-content {
+    background-color: rgb(243,243,246);
+    padding:14px;
+    padding-right:0px;
+    border:1px solid rgba(0,0,0,0.1);
+    border-top:0px;
+    width:400px;
+    height:calc(100% - 42px);
+    height:-moz-calc(100% - 42px);
+    height:-webkit-calc(100% - 42px);
+    overflow:auto;
+ }
+ .tab-pane {
+   padding-right:0px;
+ }
+
+
+.custom-control-label::before {
+   background-color:white;
+   border:1px solid rgba(0,0,0,0.3);
+   width:1.2rem;
+   height:1.2rem;
+}
+.custom-control-label::after {
+   width:1.2rem;
+   height:1.2rem;
+}
+.custom-control-label {
+   margin-bottom:20px;
+}

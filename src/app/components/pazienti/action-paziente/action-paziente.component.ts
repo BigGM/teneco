@@ -101,19 +101,21 @@ export class ActionPazienteComponent implements OnInit {
   } // loadDettaglioPaziente()
 
   luogo_data_nascita() {
-    return this.paziente.luogo_nascita + " " + this.paziente.data_nascita
-  }
-
-  reloadEntryPaziente(p:Paziente) {
-    alert("reloadEntryPaziente")
+    return this.paziente.luogo_nascita + ", " + this.paziente.data_nascita
   }
 
   salvaPaziente(p:Paziente) {
     alert("salvaPaziente")
   }
 
-  reset(p:Paziente) {
-    alert("reset")
+  reloadEntryPaziente(p:Paziente) {
+    this.paziente.copy(this.entryPaziente)
+  }
+  
+  reset() {
+    this.paziente.residenza = ""
+    this.paziente.indirizzo = ""
+    this.paziente.note = ""
   }
 
 }

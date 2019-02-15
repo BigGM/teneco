@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms'
 import { GlossarioService, RecordGlossario} from '../../../services/glossario/glossario.service'
 import { NeuroApp } from '../../../neuro-app';
 
@@ -16,17 +17,29 @@ export class NewGlossarioComponent implements OnInit, OnDestroy {
 
   voce_glossario : RecordGlossario;
   glossSubscr    : Subscription;
+  
   @Input() listaGlossario: ListaGlossarioComponent;
+  
+  // accesso alla form nella pagina html
+  @ViewChild(NgForm) newVoceForm: NgForm;
+
   
   constructor(private glossarioService : GlossarioService) {
   }
 
+  
   ngOnInit() {
     this.voce_glossario = {
-      id: -1,  voce: "", def:""} //, short_def: ""
+      id: -1,  voce: "", def:""
+    }
     
     this.glossSubscr = null
-    //$('#nuovaVoceGlossario').draggable({handle:'.modal-header'});
+  
+    // Si registra sul servizio per ricevere la richiesta di reset
+    // dei campi della form
+    this.glossarioService.new_glos.subscribe(item => {
+      this.reset(this.newVoceForm);
+    })
   }
 
   ngOnDestroy() {
@@ -40,10 +53,10 @@ export class NewGlossarioComponent implements OnInit, OnDestroy {
    * @param form 
    */
   salvaGlossario(form) {
+    console.log("NewGlossarioComponent.salvaGlossario")
     console.log(form.value)
     console.log(this.voce_glossario)
 
-    console.log("NewGlossarioComponent.salvaGlossario")
     NeuroApp.showWait();
     
     let serv = this.glossarioService.salvaGlossario(this.voce_glossario)
@@ -71,7 +84,8 @@ export class NewGlossarioComponent implements OnInit, OnDestroy {
   reset(form) {
       console.log(form)
       this.voce_glossario = {
-        id: -1,  voce: "", def:"" } //, short_def: ""
+        id: -1,  voce: "", def:""
+      }
       form.reset()
   }
 }

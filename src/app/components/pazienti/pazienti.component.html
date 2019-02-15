@@ -1,7 +1,7 @@
 
 <DIV class="container-fluid mb-3">
     <DIV class="row">
-    <DIV class="col-sm-10">
+    <DIV class="col-sm-12">
        <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
        <app-lista-pazienti #listaPazientiRef></app-lista-pazienti>
     </DIV>
@@ -16,5 +16,10 @@
 <!-- PAGINA  DETTAGLIO PAZIENTE -->
 <app-dettaglio-paziente #dettaglioPazidenteRef
 [listaPazienti]="listaPazientiRef"></app-dettaglio-paziente>
+
+
+<!-- PAGINA  GESTIONE ESERCIZI DEL PAZIENTE -->
+<app-esercizi-paziente #eserciziPazienteRef
+[listaPazienti]="listaPazientiRef"></app-esercizi-paziente>
 
  

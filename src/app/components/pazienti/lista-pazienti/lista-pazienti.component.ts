@@ -26,6 +26,10 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
   @Output() selectedPaziente = new EventEmitter<Paziente>()
 
 
+  /** Emette il paziente verso la finestra di gestione degli esercizi del paziente */
+  @Output() eserciziPaziente = new EventEmitter<Paziente>()
+
+
   /** 
    * Per comunicare alla finestra modale la richiesta di aggiungere un nuovo
    * paziente o modificarne uno esistente.
@@ -94,8 +98,12 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
     NeuroApp.removePopover()
     this.pazienti = []
     this.loadPazienti();
+    
     // comunica alla finestra col dettaglio di chiudersi.
     this.selectedPaziente.emit()
+
+    // comunica alla finestra gestione esercizi di chiudersi.
+    this.eserciziPaziente.emit()
   }
 
   openDettaglioPaziente(p:Paziente) {
@@ -181,7 +189,13 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
     //this.pktService.sendRecordToModal(pkt)
   }
   
-  gestionePacchetti(p:Paziente){
-    alert("gestionePacchetti");
+  /**
+   * Emette l'evento verso il componente EserciziPazienteComponente per gestire gli 
+   * esercizi da associare al paziente corrente.
+   * @param p 
+   */
+  gestioneEserciziPaziente(p:Paziente){
+    //console.log(p)
+    this.eserciziPaziente.emit(p)
   }
 }

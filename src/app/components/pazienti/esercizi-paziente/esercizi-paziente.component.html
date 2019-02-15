@@ -1,0 +1,81 @@
+<div id="esercizi-paziente-container" class="shadow-lg">
+
+
+  <div class="card-header paziente-title text-center">Gestione Esercizi<p>
+      <label style="font-size:16px">Paziente: {{paziente.nome}} {{paziente.cognome}}</label>
+
+      <i class="fas fa-angle-left" title="chiudi dettaglio" (click)="closeThisView()"
+  style="position:absolute;top:0;right:0;font-size:36px;color:rgb(244,208,63);margin:10px;cursor:pointer;"></i>
+    </div>
+
+  <div class="card-body my-card-body">
+
+  <!-- Nav pills -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#neuromotoria">Neuromotori</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#cognitiva">Cognitivi</a>
+    </li>
+  </ul>
+
+  <!-- Contenuto dei tabs -->
+  <div class="tab-content">
+  
+    <!-- tab: Esercizi Neuromotori -->
+    <div id="neuromotoria"  class="container tab-pane active">
+
+      <div *ngFor="let p of eserciziAmbito1">
+        <div  [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
+          <label>{{p.nome_pacchetto}}</label></div>
+        <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
+          
+          <table class="tablePacchettiEsercizi">
+            <tr *ngFor="let e of p.esercizi">
+                <td>{{e.nome_esercizio}}</td>
+
+                <td class="float-right"><div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [attr.id]="'customCheck'+e.id_esercizio" [(ngModel)]="e.assegnato">
+                    <label class="custom-control-label" [attr.for]="'customCheck'+e.id_esercizio"></label>
+                </div></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+   </div> <!-- tab: Neuromotoria -->
+   
+   
+    <!-- tab: Esercizi Cognitivi -->
+    <div id="cognitiva"  class="container tab-pane fade">
+
+        <div *ngFor="let p of eserciziAmbito2">
+            <div [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >{{p.nome_pacchetto}}</div>
+            <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
+              
+              <table class="tablePacchettiEsercizi">
+                <tr *ngFor="let e of p.esercizi">
+                    <td>{{e.nome_esercizio}}</td>
+    
+                    <td class="float-right"><div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [attr.id]="'customCheck'+e.id_esercizio" [(ngModel)]="e.assegnato">
+                        <label class="custom-control-label" [attr.for]="'customCheck'+e.id_esercizio"></label>
+                    </div></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+         
+    </div>
+  </div>   <!-- Contenuto dei tabs -->
+
+  </div>  <!-- card body -->
+
+  <!---->
+  <div class="card-footer my-card-footer">
+    <button title="Associa gli esercizi selezionati al paziente" type="button" class="btn btn-primary mr-1" (click)="associaEsercizi()">Associa</button>
+    <button title="Seleziona/Deseleziona tutti gli esercizi" type="button" class="btn btn-dark mr-1" (click)="toggle()">Toggle</button>
+    <button title="Reload" type="button" class="btn btn-dark" (click)="reload()"><i class="fas fa-sync-alt"></i></button>
+  </div> 
+  
+</div>

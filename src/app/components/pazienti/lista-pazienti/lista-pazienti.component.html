@@ -5,7 +5,7 @@
           <label>Pazienti</label>
       </div>
         
-        <div class="card-body" style="max-height:580px;overflow:auto;">
+        <div class="card-body" style="max-height:80vh;overflow:auto;">
           <table id="tablePazienti" class="table">
   
               <thead class="thead-dark">
@@ -40,7 +40,7 @@
                     <div class="dropdown-menu shadow">
                       <span class="dropdown-item my-dropdown-item" (click)="formModifPaziente(p)"><i class="fas fa-edit my-dropdown-icon"></i>&nbsp;Modifica</span>
                       <span class="dropdown-item my-dropdown-item" (click)="confermaCancellaPaziente(p)"><i class="fas fa-trash-alt my-dropdown-icon"></i>&nbsp;Cancella</span>
-                      <span class="dropdown-item my-dropdown-item" (click)="gestionePacchetti(p)"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Gestione pacchetti</span>
+                      <span class="dropdown-item my-dropdown-item" (click)="gestioneEserciziPaziente(p)"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Gestione esercizi</span>
                     </div>
                   </div>
 

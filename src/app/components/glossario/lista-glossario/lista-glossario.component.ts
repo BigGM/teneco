@@ -75,7 +75,9 @@ export class ListaGlossarioComponent implements OnInit, OnDestroy {
    * Apre il modulo per la definizione di una nuova voce del glossario
    */
   formNuovaVoceGlossario() {
+    this.voce_glossario = new RecordGlossario()
     $('#nuovaVoceGlossario').modal('show')
+    this.glossarioService.resetModalNewVoce()
   }
 
 

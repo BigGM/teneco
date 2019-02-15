@@ -59,6 +59,7 @@ import { ResourceAppComponent } from './components/resource-app/resource-app.com
 import { ListaPazientiComponent } from './components/pazienti/lista-pazienti/lista-pazienti.component';
 import { DettaglioPazienteComponent } from './components/pazienti/dettaglio-paziente/dettaglio-paziente.component';
 import { ActionPazienteComponent } from './components/pazienti/action-paziente/action-paziente.component';
+import { EserciziPazienteComponent } from './components/pazienti/esercizi-paziente/esercizi-paziente.component';
 
 
 @NgModule({
@@ -98,7 +99,8 @@ import { ActionPazienteComponent } from './components/pazienti/action-paziente/a
     ResourceAppComponent,
     ListaPazientiComponent,
     DettaglioPazienteComponent,
-    ActionPazienteComponent
+    ActionPazienteComponent,
+    EserciziPazienteComponent
   ],
   imports: [
     BrowserModule,

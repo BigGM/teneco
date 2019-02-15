@@ -419,11 +419,12 @@ BEGIN
            replace(bibliografia,'"','"\'),
            replace(patologie_secondarie,'"','"\'),
            replace(valutazione,'"','"\'),
-           count_esercizi(id_pacchetto)
-           --nvl(GCA_PACCHETTI.id_ambito,-1) id_ambito,
-           --trim(nvl(GCA_AMBITO.ambito,'')) ambito,
-           --nvl(GCA_PACCHETTI.id_patologia,-1) id_patologia,  
-           --trim(nvl(GCA_PATOLOGIE.PATOLOGIA,'')) patologia,
+           count_esercizi(id_pacchetto),
+           note,
+           CONTROINDICAZIONI_ASS, 
+           PREREQUISITI_COMP,
+           COME_VALUTARE,
+           ID_SCHEDA_VALUTAZIONE
     from GCA_PACCHETTI
         left outer join GCA_AMBITO on 
             GCA_AMBITO.id_ambito=GCA_PACCHETTI.id_ambito
@@ -846,7 +847,8 @@ BEGIN
     SELECT id_voce, 
            voce, 
            trim(nvl(definizione,'')) as definizione 
-    from GCA_GLOSSARIO;
+    from GCA_GLOSSARIO
+    order by upper(voce);
     
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
@@ -1167,7 +1169,7 @@ BEGIN
     p_outcome := 'OK';
     
     OPEN p_cursor FOR
-    select id_paziente, nome, cognome, to_char(data_nascita,'dd/mm/YYYY') data_nascita
+    select id_paziente, nome, cognome, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita
       from GCA_ANAGRAFICA_PAZIENTI 
       order by 2,1;
     
@@ -1194,56 +1196,216 @@ EXCEPTION
 END dettaglio_paziente;                             
 
 
-PROCEDURE esisteCF(p_id_login  in varchar2,
-                   p_outcome in out varchar2, 
-                   p_cursor OUT SYS_REFCURSOR)
-IS
-    esiste_rec integer := 0;
-BEGIN
-    p_outcome := 'OK';
-
-    -- Controlla se paziente anagrafato nel sistema, altrimenti nego accesso
-    select count('x') into esiste_rec
-      from GCA_ANAGRAFICA_PAZIENTI 
-    where codice_fiscale = p_id_login ;
-
-    if esiste_rec > 0 then
-        -- TODO: inserire ritorno id_paziente
-        OPEN p_cursor FOR
-        select id_paziente, nome
-          from GCA_ANAGRAFICA_PAZIENTI
-        where codice_fiscale = p_id_login ;
- 
-    else
-        p_outcome:='Exception: Utente non autorizzato' ;
-    end if;
-    
-EXCEPTION
-    WHEN others then p_outcome:='Exception:' || sqlerrm;   
-END esisteCF;                             
-             
 PROCEDURE controllaAccesso(p_id_login  in varchar2,
-                           p_outcome in out varchar2)
+                           p_passwd  in varchar2,
+                           p_outcome in out varchar2, 
+                           p_cursor OUT SYS_REFCURSOR)
 IS
-    esiste_rec integer := 0;
+    esiste_rec      integer := 0;
+    lIdPaziente     integer := 0;
+    lPasswd         varchar2(50); 
+    lUltimoAccesso  varchar2(50);
+    
 BEGIN
     p_outcome := 'OK';
 
-    -- Controlla se paziente anagrafato nel sistema, altrimenti nego accesso
-    select count('x') into esiste_rec
-      from GCA_ANAGRAFICA_PAZIENTI 
-    where codice_fiscale = p_id_login ;
+    begin
+        select id_paziente into lIdPaziente
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+        
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso
+                from dual;
+            return;                                
+    end;
 
-    if esiste_rec > 0 then
-        return;
-    else
-        p_outcome:='Exception: Utente non autorizzato' ;
-    end if;
+    -- Controlla se utente gia' registrato
+    begin
+        select passwd, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
+        into   lPasswd , lUltimoAccesso
+        from GCA_LOGIN_UTENTE 
+        where id_utente = lIdPaziente;
+
+        -- Controllo password
+        if ( lPasswd = p_passwd) then 
+            update GCA_LOGIN_UTENTE
+            set  ultimo_accesso=sysdate
+            where id_utente = lIdPaziente;
+            commit;
+            
+            OPEN p_cursor FOR
+                select 1 id_esito, lIdPaziente id_utente, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
+                from GCA_LOGIN_UTENTE 
+                where id_utente = lIdPaziente;     
+            return;                
+        else
+            OPEN p_cursor FOR
+                select -1 id_esito , lIdPaziente id_utente, lUltimoAccesso ultimo_accesso                
+                from dual;
+            return;                            
+        end if;
+
+    exception
+        when no_data_found then    
+            -- Utente non ancora registrato
+            OPEN p_cursor FOR
+                select 0 id_esito , -1 id_utente, null ultimo_accesso
+                from dual;
+            return;                
+    end;
+
     
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
-END controllaAccesso; 
-              
+END controllaAccesso;                             
+             
+PROCEDURE registraLogin(p_id_login  in varchar2,
+                        p_passwd in varchar2,
+                        p_outcome in out varchar2, 
+                        p_cursor OUT SYS_REFCURSOR)
+IS
+    esiste_rec integer := 0;
+    lIdPaziente     integer := 0;
+    lPasswd         varchar2(50); 
+
+BEGIN
+    p_outcome := 'OK';
+
+    begin
+        select id_paziente into lIdPaziente
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+        
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso
+                from dual;
+            return;                                
+    end;
+
+
+    -- Controlla se gia' esiste il target
+    select count('x') into esiste_rec
+    from GCA_LOGIN_UTENTE 
+    where id_utente = lIdPaziente;
+
+    -- Controlla se utente gia' registrato
+    if (esiste_rec > 0) then 
+        OPEN p_cursor FOR
+            select 0 id_esito , -1 id_utente, null ultimo_accesso
+            from dual;
+        return;                
+    else
+        -- Utente non ancora registrato
+        INSERT INTO GCA_LOGIN_UTENTE (
+           ID_UTENTE, 
+           PASSWD,
+           DATA_CREAZIONE,
+           ULTIMO_ACCESSO
+        ) 
+        select lIdPaziente , p_passwd, sysdate, null from dual;
+                
+        commit;
+
+        OPEN p_cursor FOR
+            select 1 id_esito, lIdPaziente id_utente, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
+            from GCA_LOGIN_UTENTE 
+            where id_utente = lIdPaziente;
+    end if;
+
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END registraLogin; 
+
+
+
+
+-- ==============================================================================
+-- Restituisce se un esercizio di un pacchetto e' assegnato a un paziente.
+--  p_id_paziente  - id del paziente
+--  p_id_pacchetto - id del pacchetto di esercizi
+--  p_id_esercizio - id dell'esercizio
+--  Return: 'S' o 'N'
+-- ==============================================================================
+FUNCTION assegnatoAlPaziente(p_id_paziente in varchar2, p_id_pacchetto in varchar2, p_id_esercizio in varchar2) return varchar2
+IS
+   assegnato integer;
+BEGIN
+   select count('x') into assegnato
+     from gca_pazienti_esercizi
+    where id_paziente = p_id_paziente
+      and id_pacchetto = p_id_pacchetto
+      and id_esercizio = p_id_esercizio;
+      
+      if assegnato=0 then
+        return 'N';
+      else
+        return 'S';
+      end if;
+
+EXCEPTION
+    WHEN others then return 'N';
+END assegnatoAlPaziente;
+
+
+-- ============================================================================================
+-- Dato un paziente in input restituisce la lista di tutti i pacchetti e di tutti gli esercizi
+-- dell'ambito indicato, specificando per ogni esercizio se e' assegnao o meno al paziente.
+-- ============================================================================================
+PROCEDURE lista_pacchetti_esercizi(p_id_paziente in varchar2, 
+                                   p_outcome in out varchar2,
+                                   p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+
+     OPEN p_cursor FOR
+     Select gca_pacchetti.id_pacchetto,
+            gca_pacchetti_esercizi.id_esercizio,
+            nome_pacchetto,
+            descr_pacchetto,
+            nome_esercizio,
+            desc_esercizio,
+            assegnatoAlPaziente(p_id_paziente, gca_pacchetti.id_pacchetto, gca_pacchetti_esercizi.id_esercizio) assegnato,
+            gca_pacchetti.id_ambito
+      from gca_pacchetti, gca_pacchetti_esercizi
+     where gca_pacchetti.id_ambito in (1,2)
+       and gca_pacchetti.id_pacchetto = gca_pacchetti_esercizi.id_pacchetto
+      order by gca_pacchetti.id_ambito, nome_pacchetto, nome_esercizio;
+
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_pacchetti_esercizi;
+
+procedure associa_esercizi_paziente(p_id_paziente in varchar2, p_id_esercizi in varchar2, p_outcome in out varchar2)
+IS 
+  CURSOR C1 IS
+     select regexp_substr(p_id_esercizi,'[^,]+', 1, level) id_esercizio from dual
+     connect by regexp_substr(p_id_esercizi, '[^,]+', 1, level) is not null;
+BEGIN       
+    p_outcome := 'OK';
+    
+    delete gca_pazienti_esercizi where id_paziente = p_id_paziente;
+    
+    for c1rec in c1 loop
+       insert into gca_pazienti_esercizi (id_paziente, id_esercizio, id_pacchetto)
+       select p_id_paziente, c1rec.id_esercizio, id_pacchetto
+        from gca_pacchetti_esercizi
+       where gca_pacchetti_esercizi.id_esercizio = c1rec.id_esercizio;
+    end loop;
+ 
+    COMMIT;
+   
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END associa_esercizi_paziente;
+
+
 
 END NeuroApp;
 /

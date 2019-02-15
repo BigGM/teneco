@@ -8,6 +8,7 @@ import { NeuroAppService } from '../neuro-app.service';
 import { NeuroApp } from '../../neuro-app'
 import { Outcome } from '../../classes/outcome'
 import { Paziente } from '../../classes/paziente';
+import { EserciziPaziente } from '../../classes/esercizi-paziente';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
@@ -19,6 +20,8 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 type out_pazienti =  Paziente[] | Outcome;
 
 type out_paziente =  Paziente  | Outcome;
+
+type out_esercizi_paziente =  EserciziPaziente[]  | Outcome;
 
 
 @Injectable({
@@ -51,7 +54,7 @@ export class PazientiService {
     let db_proc = "NeuroApp.lista_pazienti"
     let url = this.G_URL_ROOT+"/cgi-bin/lista_pazienti.php?proc="+db_proc;
     
-    console.log("** loadPazienti: ", url)
+    //console.log("** loadPazienti: ", url)
     
     return this.http.get<out_pazienti>(url)
     .pipe(
@@ -98,5 +101,58 @@ export class PazientiService {
         }),
         catchError( this.neuroService.handleError ),
     )
+  }
+
+
+  /**
+   * Carica la lista degli esercizi assegnati a un paziente
+   */
+  loadEserciziPaziente(p:Paziente) : Observable<EserciziPaziente[]> {
+
+    let db_proc = "NeuroApp.lista_pacchetti_esercizi"
+    let url = this.G_URL_ROOT+"/cgi-bin/lista_pacchetti_esercizi.php?proc="+db_proc+"&id_paziente="+p.id_paziente;
+    
+    //console.log("** loadEserciziPaziente: ", url)
+    
+    return this.http.get<out_esercizi_paziente>(url)
+    .pipe(
+        retry(1),
+        map ( records => {
+          let outcome = <Outcome>records
+          if ( outcome.status==="exception") {
+              throw new Error(`${outcome.message}`)
+          }
+          else
+            return (records as EserciziPaziente[])
+        }),
+        tap( records => {
+          //console.log('** fetched records **', records)
+        }),
+        catchError( this.neuroService.handleError ),
+    )
+  }
+
+  associaEsercizi(id_paziente:number, id_esercizi:string) {
+    let db_proc = "NeuroApp.associa_esercizi_paziente"
+    let url = this.G_URL_ROOT+"/cgi-bin/associa_esercizi_paziente.php?proc="+db_proc +
+              "&id_paziente="+id_paziente +
+              "&id_esercizi="+id_esercizi;
+
+    console.log("associaEsercizi",url)
+
+    return this.http.get<Outcome>(url)
+      .pipe(
+          retry(1),
+          map ( outcome => {
+            //console.log('** outcome **', outcome)
+              if (outcome.status.toLowerCase()=="exception" )
+                throw new Error(`${outcome.message}`) 
+              return outcome
+          }),
+          tap( outcome => {
+            //console.log('** outcome **', outcome)
+          }),
+          catchError( this.neuroService.handleError )
+      )
   }
 }

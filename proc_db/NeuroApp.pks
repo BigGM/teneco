@@ -239,13 +239,22 @@ PROCEDURE dettaglio_paziente(p_id_paziente in varchar2,
                              p_outcome in out varchar2, 
                              p_cursor OUT SYS_REFCURSOR);
 
-PROCEDURE esisteCF(p_id_login  in varchar2,
-                   p_outcome in out varchar2,
-                   p_cursor OUT SYS_REFCURSOR);
-
+PROCEDURE registraLogin(p_id_login  in varchar2,
+                        p_passwd in varchar2,
+                        p_outcome in out varchar2, 
+                        p_cursor OUT SYS_REFCURSOR);
+                        
 PROCEDURE controllaAccesso(p_id_login  in varchar2,
-                           p_outcome in out varchar2);
+                           p_passwd  in varchar2,
+                           p_outcome in out varchar2, 
+                           p_cursor OUT SYS_REFCURSOR);
+                           
+function assegnatoAlPaziente(p_id_paziente in varchar2, p_id_pacchetto in varchar2, p_id_esercizio in varchar2) return varchar2;
 
+PROCEDURE lista_pacchetti_esercizi(p_id_paziente in varchar2, p_outcome in out varchar2,
+                         p_cursor OUT SYS_REFCURSOR);
+                         
+procedure associa_esercizi_paziente(p_id_paziente in varchar2, p_id_esercizi in varchar2, p_outcome in out varchar2);
 
 
 END NeuroApp;

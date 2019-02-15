@@ -77,7 +77,7 @@ export class DettaglioPazienteComponent implements OnInit, OnDestroy {
           this.paziente = result;
           Paziente.decode(this.paziente)
           this.pazientiSubscr.unsubscribe()
-          this.openDettaglio();     
+          this.openDettaglio();
           console.log("loadDettaglioPaziente",this.paziente);
         },
         error => {
