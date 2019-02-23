@@ -28,11 +28,11 @@
 
       <div *ngFor="let p of eserciziAmbito1">
         <div  [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
-          <label>{{p.nome_pacchetto}}</label></div>
+          {{p.nome_pacchetto}}</div>
         <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
           
           <table class="tablePacchettiEsercizi">
-            <tr *ngFor="let e of p.esercizi">
+            <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
                 <td>{{e.nome_esercizio}}</td>
 
                 <td class="float-right"><div class="custom-control custom-checkbox">
@@ -54,7 +54,7 @@
             <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
               
               <table class="tablePacchettiEsercizi">
-                <tr *ngFor="let e of p.esercizi">
+                <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
                     <td>{{e.nome_esercizio}}</td>
     
                     <td class="float-right"><div class="custom-control custom-checkbox">

@@ -111,7 +111,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     let self = this;
     $('#esercizi-paziente-container').animate({left:'0px'}, 500, 'easeOutCirc', function(){
       // attiva i tooltip
-      self.setPopover()
+      self.setPopover() 
     });
   }
 
@@ -125,14 +125,23 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
 
   setPopover(){
     this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach( item => {
-      let id_elem = "#pkt_"+item.id_pacchetto;
+      /*let id_elem = "#pkt_"+item.id_pacchetto;
       $(id_elem).popover({title: item.nome_pacchetto, content: item.descr_pacchetto, trigger: "hover", html:true, boundary:"window"}); 
+      */
+      item.esercizi.forEach ( e => {
+        let id_elem = "#ese_"+e.id_esercizio;
+        $(id_elem).popover({title: e.nome_esercizio, content: e.descr_esercizio, trigger: "hover", html:true, boundary:"window"}); 
+      })
     })
   }
   disposePopover() {
     this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach( item => {
-      let id_elem = "#pkt_"+item.id_pacchetto;
-      $(id_elem).popover('dispose'); 
+      /*let id_elem = "#pkt_"+item.id_pacchetto;
+      $(id_elem).popover('dispose'); */
+      item.esercizi.forEach ( e => {
+        let id_elem = "#ese_"+e.id_esercizio;
+        $(id_elem).popover('dispose');
+      })
     })
   }
 
