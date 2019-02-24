@@ -36,11 +36,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
   // Attiva o disattiva tutti i checkbox degli esercizi
   toggleSelection : boolean;
 
-<<<<<<< HEAD
   view_visible : boolean;
-=======
-  show_backdrop : boolean;
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 
 
   constructor( private pazientiService : PazientiService) {
@@ -49,11 +45,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     this.eserciziAmbito1 = new Array<EserciziPaziente>()
     this.eserciziAmbito2 = new Array<EserciziPaziente>()
     this.toggleSelection = true;
-<<<<<<< HEAD
     this.view_visible = false;
-=======
-    this.show_backdrop = false;
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
   }
 
   ngOnInit() {
@@ -124,12 +116,8 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     $('#esercizi-paziente-container').animate({left:'0px'}, 500, 'easeOutCirc', function(){
       // attiva i tooltip
       self.setPopover()
-<<<<<<< HEAD
       self.view_visible = true
       $('#arrow-paz-ese').animate({opacity:1}, 600)
-=======
-      self.show_backdrop = true;
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
     });
   }
 
@@ -138,28 +126,17 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     $('#esercizi-paziente-container').animate({left:'-500px'}, 500, 'easeOutCirc', function(){
       // cancella i tooltip
       self.disposePopover()
-<<<<<<< HEAD
       self.view_visible = false;
       $('#arrow-paz-ese').css({opacity:0})
-=======
-      self.show_backdrop = false
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
     });
 
   }
 
   setPopover(){
     this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach( item => {
-<<<<<<< HEAD
       //let id_elem = "#pkt_"+item.id_pacchetto;
       //$(id_elem).popover({title: item.nome_pacchetto, content: item.descr_pacchetto, trigger: "hover", html:true, boundary:"window"}); 
       item.esercizi.forEach (e => {
-=======
-      /*let id_elem = "#pkt_"+item.id_pacchetto;
-      $(id_elem).popover({title: item.nome_pacchetto, content: item.descr_pacchetto, trigger: "hover", html:true, boundary:"window"}); 
-      */
-      item.esercizi.forEach ( e => {
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
         let id_elem = "#ese_"+e.id_esercizio;
         $(id_elem).popover({title: e.nome_esercizio, content: e.descr_esercizio, trigger: "hover", html:true, boundary:"window"}); 
       })
@@ -167,15 +144,9 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
   }
   disposePopover() {
     this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach( item => {
-<<<<<<< HEAD
       //let id_elem = "#pkt_"+item.id_pacchetto;
       //$(id_elem).popover('dispose');
       item.esercizi.forEach (e => {
-=======
-      /*let id_elem = "#pkt_"+item.id_pacchetto;
-      $(id_elem).popover('dispose'); */
-      item.esercizi.forEach ( e => {
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
         let id_elem = "#ese_"+e.id_esercizio;
         $(id_elem).popover('dispose');
       })

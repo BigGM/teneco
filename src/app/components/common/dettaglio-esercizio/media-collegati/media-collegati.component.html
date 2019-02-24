@@ -152,22 +152,6 @@
    -- Pannello laterale con le icone di azione sugli elementi multimediali:
    -- modifica esercizio, aggiungi video, aggiungi audio, aggiungi immagine, aggiungi documento
    -->
-<<<<<<< HEAD
-   <div id='div_action_media'  class="shadow text-center">
-
-    
-      <i title="aggiungi video" class="fas fa-file-video text-white mb-2 action-media" (click)="openModalAggiungiMedia('video')"></i><br>
-      <i title="aggiungi audio" class="fas fa-file-audio text-white mb-2 action-media" (click)="openModalAggiungiMedia('audio')"></i><br>
-      <i title="aggiungi immagini" class="fas fa-image text-white mb-2 action-media" (click)="openModalAggiungiMedia('image')"></i><br>
-      <i title="aggiungi documenti" class="fas fa-file-alt text-white mb-2 action-media" (click)="openModalAggiungiMedia('doc')"></i><br>
-      <i title="aggiungi applicazioni" class="fab fa-app-store-ios text-white action-media" (click)="openModalAggiungiMedia('app')"></i>
-    
-      <!--<img title="aggiungi video" src="assets/images/add-video.png" class="action-media" (click)="openModalAggiungiMedia('video')"><br>
-      <img title="aggiungi audio" src="assets/images/add-audio.png" class="action-media" (click)="openModalAggiungiMedia('audio')"><br> 
-      <img title="aggiungi immagini" src="assets/images/add-image.png" class="action-media" (click)="openModalAggiungiMedia('image')"><br> 
-      <img title="aggiungi documenti" src="assets/images/add-doc.png" class="action-media" (click)="openModalAggiungiMedia('doc')"><br> 
-      <img title="aggiungi applicazioni" src="assets/images/add-app.png" class="action-media" (click)="openModalAggiungiMedia('app')"> -->
-=======
    <div id='div_action_media' class="shadow py-2 px-2 text-center">
 
       <i title="aggiungi video" class="fas fa-file-video mb-2 text-white action-media" style="font-size:36px;" (click)="openModalAggiungiMedia('video')"></i><br>
@@ -183,7 +167,6 @@
       <img title="aggiungi documenti" src="assets/images/add-doc.png" class="action-media" (click)="openModalAggiungiMedia('doc')"><br>
       <img title="aggiungi applicazione" src="assets/images/add-app.png" class="action-media" (click)="openModalAggiungiMedia('app')">-->
 
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
     </div>
 
 
@@ -192,18 +175,10 @@
     <div class='modal-dialog modal-lg'>
     <div class='modal-content shadow-lg'>
         <div class='modal-header'>
-<<<<<<< HEAD
-        <!--
-        <h3 class='modal-title'><img src='assets/images/video_icon.png' style="width:64px;">&nbsp;Aggiungi video</h3>
-        -->
-        <h3 class='modal-title'><i class="fas fa-file-video" style="width:64px;"></i>&nbsp;Aggiungi video</h3>
-        
-=======
           <h3 class='modal-title'> <i class="fas fa-file-video mr-3" ></i>Aggiungi video</h3>
         <!--
         <h3 class='modal-title'><img src='assets/images/video_icon.png' style="width:64px;">&nbsp;Aggiungi video</h3>-->
 		  
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 		  <div style="float:right;margin:0;padding:0">
             <i class="fas fa-times close" data-dismiss='modal' (click)="stopAllVideos()"></i>
             <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('video')"></i>
@@ -237,20 +212,11 @@
         <div class='modal-dialog modal-lg'>
         <div class='modal-content shadow-lg'>
             <div class='modal-header'>
-<<<<<<< HEAD
-                <!---
-            	<h3 class='modal-title'><img src='assets/images/audio_icon.png' style="width:64px;">&nbsp;Aggiungi audio</h3>
-                -->
-                <h3 class='modal-title'><i class="fas fa-file-audio" style="width:64px;"></i>&nbsp;Aggiungi audio</h3>
-                
-                <div style="float:right;margin:0;padding:0">
-=======
 
               <h3 class='modal-title'> <i class="fas fa-file-audio mr-3"></i>Aggiungi audio</h3>
               <!--
             	<h3 class='modal-title'><img src='assets/images/audio_icon.png' style="width:64px;">&nbsp;Aggiungi audio</h3> -->
             	<div style="float:right;margin:0;padding:0">
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
                     <i class="fas fa-times close" data-dismiss='modal' (click)="stopAllAudio()"></i>
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('audio')"></i>
 				  </div>
@@ -281,21 +247,12 @@
         <div class='modal-dialog modal-lg'>
         <div class='modal-content shadow-lg'>
             <div class='modal-header'>
-<<<<<<< HEAD
-                <!--
-            	<h3 class='modal-title'><img src='assets/images/image_icon.png' style="width:64px;">&nbsp;Aggiungi immagine</h3>
-                -->
-                <h3 class='modal-title'><i class="fas fa-image" style="width:64px;"></i>&nbsp;Aggiungi immagini</h3>
-                
-                <div style="float:right;margin:0;padding:0">
-=======
 
               <h3 class='modal-title'> <i class="fas fa-image mr-3"></i>Aggiungi immagini</h3>
 
               <!-- <h3 class='modal-title'><img src='assets/images/image_icon.png' style="width:64px;">&nbsp;Aggiungi immagine</h3> -->
               
             	<div style="float:right;margin:0;padding:0">
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
                     <i class="fas fa-times close" data-dismiss='modal'></i>
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('image')"></i>
 				</div>
@@ -323,21 +280,12 @@
         <div class='modal-dialog modal-lg'>
         <div class='modal-content shadow-lg'>
             <div class='modal-header' style='background-color:rgba(90,90,170,1.0)'>
-<<<<<<< HEAD
-                <!--
-                <h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Aggiungi documento</h3>
-                -->
-                <h3 class='modal-title'><i class="fas fa-file-alt" style="width:64px;"></i>&nbsp;Aggiungi documenti</h3>
-                
-                <div style="float:right;margin:0;padding:0">
-=======
 
               <h3 class='modal-title'> <i class="fas fa-file-alt mr-3" ></i>Aggiungi documenti</h3>
 
               <!-- <h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Aggiungi documento</h3> -->
               
             	<div style="float:right;margin:0;padding:0">
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
                     <i class="fas fa-times close" data-dismiss='modal'></i>
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('doc')"></i>
 				</div>
@@ -365,19 +313,11 @@
       <div class='modal-dialog modal-lg'>
       <div class='modal-content shadow-lg'>
             <div class='modal-header'>
-<<<<<<< HEAD
-                <!--
-               <h3 class='modal-title'><img src='assets/images/app_icon.png' style="width:64px;">&nbsp;Aggiungi App</h3>
-               -->
-               <h3 class='modal-title'><i class="fab fa-app-store-ios" style="width:64px;"></i>&nbsp;Aggiungi App</h3>
-               
-=======
 
                <h3 class='modal-title'> <i class="fab fa-app-store-ios mr-3" ></i>Aggiungi App</h3>
 
               <!-- <h3 class='modal-title'><img src='assets/images/app_icon.png' style="width:64px;">&nbsp;Aggiungi App</h3>-->
 
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
                <div style="float:right;margin:0;padding:0">
                   <i class="fas fa-times close" data-dismiss='modal'></i>
                   <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('app')"></i>

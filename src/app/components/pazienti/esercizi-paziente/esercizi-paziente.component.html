@@ -1,23 +1,12 @@
-<<<<<<< HEAD
 
 <div *ngIf="view_visible"
   style="position:fixed;
          top:0; left:0;
          z-index:1000;
          width:100%; height:100%;
-         background-color: rgba(243, 243, 245, 0.55);"         
+         background-color: rgba(56, 56, 60, 0.6);"         
   (click)="closeThisView()"
  ></div>
-=======
-<div id="back_drop" *ngIf="show_backdrop"
-  style="position:fixed;
-        top:0; left:0;
-        width:100%; height:100%;
-        overflow:hidden;
-        background-color: rgba(110,110,114,0.55);
-        z-index:1000;"
-  (click)="closeThisView()"></div>
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 
 <div id="esercizi-paziente-container" class="shadow-lg">
 
@@ -38,12 +27,6 @@
 
   <div class="card-header paziente-title text-center">Gestione Esercizi<p>
       <label style="font-size:16px">Paziente: {{paziente.nome}} {{paziente.cognome}}</label>
-<<<<<<< HEAD
-=======
-
-      <i class="fas fa-angle-left" title="chiudi gestione esercizi" (click)="closeThisView()"
-  style="position:absolute;top:0;right:0;font-size:36px;color:rgb(244,208,63);margin:10px;cursor:pointer;"></i>
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
     </div>
 
   <div class="card-body my-card-body">
@@ -65,21 +48,13 @@
     <div id="neuromotoria"  class="container tab-pane active">
 
       <div *ngFor="let p of eserciziAmbito1">
-<<<<<<< HEAD
         <div style="border-top-left-radius:8px;" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
-=======
-        <div  [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
           {{p.nome_pacchetto}}</div>
         <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
           
           <table class="tablePacchettiEsercizi">
             <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
-<<<<<<< HEAD
                 <td >{{e.nome_esercizio}}</td>
-=======
-                <td>{{e.nome_esercizio}}</td>
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 
                 <td class="float-right"><div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" [attr.id]="'customCheck'+e.id_esercizio" [(ngModel)]="e.assegnato">
@@ -100,11 +75,7 @@
             <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
               
               <table class="tablePacchettiEsercizi">
-<<<<<<< HEAD
                 <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
-=======
-                <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio"> 
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
                     <td>{{e.nome_esercizio}}</td>
     
                     <td class="float-right"><div class="custom-control custom-checkbox">
@@ -123,11 +94,7 @@
 
   <!---->
   <div class="card-footer my-card-footer">
-<<<<<<< HEAD
-    <button title="Assegna gli esercizi selezionati al paziente" type="button" class="btn btn-secondary mr-1" (click)="associaEsercizi()">Assegna</button>
-=======
-    <button title="Assegna gli esercizi selezionati al paziente" type="button" class="btn btn-danger mr-1" (click)="assegnaEsercizi()">Assegna</button>
->>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
+    <button title="Assegna gli esercizi selezionati al paziente" type="button" class="btn btn-danger mr-1" (click)="associaEsercizi()">Assegna</button>
     <button title="Seleziona/Deseleziona tutti gli esercizi" type="button" class="btn btn-dark mr-1" (click)="toggle()">Toggle</button>
     <button title="Reload" type="button" class="btn btn-dark" (click)="reload()"><i class="fas fa-sync-alt"></i></button>
   </div>
