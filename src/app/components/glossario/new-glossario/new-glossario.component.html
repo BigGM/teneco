@@ -50,15 +50,18 @@
         
      </div>
      <div class="modal-footer">
-        <button title="Pulisci" class="btn btn-info text-white" 
+
+         <button title="Salva voce" class="btn btn-danger text-white" 
+         (click)="salvaGlossario(newVoceForm)"
+         [disabled]="newVoceForm.invalid">
+           <i class="fas fa-save" aria-hidden="true"></i>&nbsp;Salva&nbsp;
+         </button>
+
+        <button title="Pulisci" class="btn btn-dark text-white" 
           (click)="reset(newVoceForm);">
            <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
         </button>
         
-        <button title="Salva voce" class="btn btn-info text-white" 
-            (click)="salvaGlossario(newVoceForm)"
-            [disabled]="newVoceForm.invalid">
-        <i class="fas fa-save" aria-hidden="true"></i>&nbsp;Salva&nbsp;</button>
      </div>
      </div>
      </div>
