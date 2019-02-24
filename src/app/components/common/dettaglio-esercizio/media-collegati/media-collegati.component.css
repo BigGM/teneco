@@ -117,13 +117,13 @@
    z-index:200;
    max-height:286px;
    border-radius: 4px;
-   background-color:rgba(33,82,150,1.0);
+   background-color:rgba(17,63,110,1.0);
    /*border:1px solid rgba(100,100,100,0.2)*/
 }
 .action-media {
    cursor:pointer;
-   margin:4px 5px;
-   width:46px;
+   /*margin:4px 5px;
+   width:46px;*/
 }
 
 

@@ -1,10 +1,19 @@
+<div id="back_drop" *ngIf="show_backdrop"
+  style="position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        overflow:hidden;
+        background-color: rgba(110,110,114,0.55);
+        z-index:1000;"
+  (click)="closeThisView()"></div>
+
 <div id="esercizi-paziente-container" class="shadow-lg">
 
 
   <div class="card-header paziente-title text-center">Gestione Esercizi<p>
       <label style="font-size:16px">Paziente: {{paziente.nome}} {{paziente.cognome}}</label>
 
-      <i class="fas fa-angle-left" title="chiudi dettaglio" (click)="closeThisView()"
+      <i class="fas fa-angle-left" title="chiudi gestione esercizi" (click)="closeThisView()"
   style="position:absolute;top:0;right:0;font-size:36px;color:rgb(244,208,63);margin:10px;cursor:pointer;"></i>
     </div>
 
@@ -54,7 +63,7 @@
             <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
               
               <table class="tablePacchettiEsercizi">
-                <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
+                <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio"> 
                     <td>{{e.nome_esercizio}}</td>
     
                     <td class="float-right"><div class="custom-control custom-checkbox">
@@ -73,7 +82,7 @@
 
   <!---->
   <div class="card-footer my-card-footer">
-    <button title="Associa gli esercizi selezionati al paziente" type="button" class="btn btn-primary mr-1" (click)="associaEsercizi()">Associa</button>
+    <button title="Assegna gli esercizi selezionati al paziente" type="button" class="btn btn-primary mr-1" (click)="associaEsercizi()">Assegna</button>
     <button title="Seleziona/Deseleziona tutti gli esercizi" type="button" class="btn btn-dark mr-1" (click)="toggle()">Toggle</button>
     <button title="Reload" type="button" class="btn btn-dark" (click)="reload()"><i class="fas fa-sync-alt"></i></button>
   </div> 

@@ -107,26 +107,28 @@
      </div>
      <div class="modal-footer">
 
-        <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-info text-white" 
-                (click)="reloadEntryPaziente()">
-            <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
-        </button>
-        
-        <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-info text-white" 
-            (click)="salvaPaziente(actPazForm)">
-            <!--[disabled]="actPazForm.invalid" -->
-            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+        <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-danger text-white" 
+          (click)="salvaPaziente(actPazForm)">
+        <!--[disabled]="actPazForm.invalid" -->
+          <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
         </button>
 
-        <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-danger text-white" 
           (click)="salvaPaziente(actPazForm)">
           <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
         </button>
 
-        <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-dark text-white" 
+                  (click)="reloadEntryPaziente()">
+              <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
+        </button>
+          
+        <button title="Pulisci i campi del modulo" class="btn btn-dark text-white" 
         (click)="reset()">
           <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
           </button>
+
+          
      </div>
      </div>
      </div>

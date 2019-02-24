@@ -1,10 +1,12 @@
 #esercizi-paziente-container {
    position:fixed;
-   top: 60px;
+   /*top: 60px;*/
+   top:0px;
    left:-500px;
-   height:calc(100% - 58px);
+   /*height:calc(100% - 58px);
    height:-moz-calc(100% - 58px);
-   height:-webkit-calc(100% - 58px);
+   height:-webkit-calc(100% - 58px);*/
+   height:100%;
    background-color:white;
    z-index:1000;
    padding:0;
@@ -69,6 +71,7 @@
     font-size: 20px;
     text-shadow: 1px 1px 1px #000000;
     border-bottom: 1px solid rgba(0,0,0,0.3);
+    border-top-left-radius: 8px;
  }
  .esercizi {
     width:100%;

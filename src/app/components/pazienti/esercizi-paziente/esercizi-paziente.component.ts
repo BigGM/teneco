@@ -35,6 +35,8 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
   // Attiva o disattiva tutti i checkbox degli esercizi
   toggleSelection : boolean;
 
+  show_backdrop : boolean;
+
 
   constructor( private pazientiService : PazientiService) {
     this.paziente = new Paziente
@@ -42,6 +44,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     this.eserciziAmbito1 = new Array<EserciziPaziente>()
     this.eserciziAmbito2 = new Array<EserciziPaziente>()
     this.toggleSelection = true;
+    this.show_backdrop = false;
   }
 
   ngOnInit() {
@@ -111,7 +114,8 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     let self = this;
     $('#esercizi-paziente-container').animate({left:'0px'}, 500, 'easeOutCirc', function(){
       // attiva i tooltip
-      self.setPopover() 
+      self.setPopover()
+      self.show_backdrop = true;
     });
   }
 
@@ -120,6 +124,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     $('#esercizi-paziente-container').animate({left:'-500px'}, 500, 'easeOutCirc', function(){
       // cancella i tooltip
       self.disposePopover()
+      self.show_backdrop = false
     });
   }
 
@@ -164,7 +169,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
    * Costruisce una lista di id_esercizio che passa alla procedura del DB
    * di eseguire l'associazione.
    */
-  associaEsercizi() {
+  assegnaEsercizi() {
     let id_esercizi:string = ""
     let allEsercizi =  this.eserciziAmbito1.concat(this.eserciziAmbito2)
 
@@ -178,12 +183,12 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     id_esercizi = id_esercizi.trim().split(" ").join(",")
     console.log(id_esercizi);
 
-    let serv = this.pazientiService.associaEsercizi(this.paziente.id_paziente, id_esercizi)
+    let serv = this.pazientiService.assegnaEsercizi(this.paziente.id_paziente, id_esercizi)
     this.pazientiSubscr = serv.subscribe (
       result => {
         this.pazientiSubscr.unsubscribe()
         NeuroApp.hideWait()
-        NeuroApp.custom_info('Esercizi associati al paziente: <b>' + this.paziente.nome + " " + this.paziente.cognome + '</b>')
+        NeuroApp.custom_info('Esercizi assegnati al paziente: <b>' + this.paziente.nome + " " + this.paziente.cognome + '</b>')
       },
       error => {
         this.pazientiSubscr.unsubscribe()
@@ -191,6 +196,6 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
         NeuroApp.custom_error(error,"Error")
       }
     )
-  } // associaEsercizi
+  } // assegnaEsercizi
 
 }
