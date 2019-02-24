@@ -219,8 +219,12 @@
         <div id='myFetch_scheda' class='modal fade' role='dialog' data-backdrop='static'>
             <div class='modal-dialog modal-lg'>
             <div class='modal-content shadow-lg'>
-                <div class='modal-header' style='background-color:rgba(90,90,170,1.0)'>
-                    <h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Scheda di valutazione</h3>
+                <div class='modal-header' style='background-color:rgba(90,90,170,1.0)'> 
+
+                  <h3 class='modal-title'> <i class="fas fa-file-alt mr-3" ></i>Scheda di valutazione</h3>
+
+                    <!--<h3 class='modal-title'><img src='assets/images/doc_icon.png' style="width:64px;">&nbsp;Scheda di valutazione</h3> -->
+
                     <div style="float:right;margin:0;padding:0">
                         <i class="fas fa-times close" data-dismiss='modal'></i>
                     </div>
@@ -231,7 +235,7 @@
                             (click)="schedaValutazione.copy(scheda);closeModalScheda()"
                             >
                             <img [src]="docIcon(scheda.url_media)" style="width:42px;margin-right:10px">{{scheda.descr_media | truncate}}
-                            <button title="Apri scheda" type="button" class="btn btn-warning text-dark px-2 pb-1" style="float:right;"
+                            <button title="Apri scheda" type="button" class="btn btn-light text-dark px-2 pb-1" style="float:right;"
                                 (click)="open($event,scheda)">
                                 <i class="far fa-eye" style="font-size:18px;"></i> </button>
                             
