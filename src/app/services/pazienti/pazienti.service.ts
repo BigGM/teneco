@@ -141,7 +141,7 @@ export class PazientiService {
     )
   }
 
-  associaEsercizi(id_paziente:number, id_esercizi:string) {
+  assegnaEsercizi(id_paziente:number, id_esercizi:string) {
     let db_proc = "NeuroApp.associa_esercizi_paziente"
     let url = this.G_URL_ROOT+"/cgi-bin/associa_esercizi_paziente.php?proc="+db_proc +
               "&id_paziente="+id_paziente +

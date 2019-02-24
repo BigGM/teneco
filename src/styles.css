@@ -37,8 +37,12 @@ router-outlet ~ * {
 }
 
 .my-icon-color {
+<<<<<<< HEAD
    /* color:rgb(228, 35, 35) !important;*/
    color:rgb(24, 58, 83) !important;
+=======
+    color:rgb(4, 35, 70) !important;
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 }
 
 .my-icon-size-22 {
@@ -336,6 +340,7 @@ a:not([href]):not([tabindex]):hover {
 
 .popover {
    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+<<<<<<< HEAD
    border: 1px solid rgba(0, 0, 0, 0.065);
    border-top-right-radius: 12px;
 }
@@ -359,3 +364,17 @@ a:not([href]):not([tabindex]):hover {
            filter: blur(4px);
  }
 
+=======
+   border-top-right-radius: 8px;
+}
+.popover-header {
+   background-color: rgb(24, 58, 83);
+   color:white;
+   border-radius:0;
+   border-top-right-radius: 8px;
+}
+.popover-body {
+   background-color: whitesmoke;
+   font-size:17px !important;
+}
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6

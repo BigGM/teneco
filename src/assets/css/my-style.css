@@ -66,9 +66,16 @@
 
 /* mod. bootstrap */
 .modal-header {
+<<<<<<< HEAD
    /*background-color:rgb(222,33,33) !important;*/
    /*background-color:rgb(20,60,100) !important;*/
    background-color:rgb(90,90,115) !important;
+=======
+   /*background-color:rgba(28,100,150,1.0) !important;*/
+   /*background-color:rgb(222,33,33) !important;*/
+   background-color:rgb(40,60,85) !important;
+   
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
    border-bottom: 0px;
 }
 

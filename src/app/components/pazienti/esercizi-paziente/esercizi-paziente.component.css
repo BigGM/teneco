@@ -1,9 +1,20 @@
 #esercizi-paziente-container {
    position:fixed;
+<<<<<<< HEAD
    top:0px;
    left:-500px;
    height:100%;
    background-color: white;
+=======
+   /*top: 60px;*/
+   top:0px;
+   left:-500px;
+   /*height:calc(100% - 58px);
+   height:-moz-calc(100% - 58px);
+   height:-webkit-calc(100% - 58px);*/
+   height:100%;
+   background-color:white;
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
    z-index:1000;
    padding:0;
 }
@@ -41,7 +52,11 @@
  }
  
  .tablePacchettiEsercizi tr > td {
+<<<<<<< HEAD
    padding: 2px 10px;
+=======
+   /*padding: 4px 10px;*/
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
    font-family: Calibri,Tahoma,verdana;
    font-size:20px;
  }
@@ -60,11 +75,16 @@
     background-color: rgb(109, 109, 135);
     font-family: Calibri,Tahoma,verdana;
     color: white;
+<<<<<<< HEAD
     padding: 1px 10px;
+=======
+    padding: 0px 10px;
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
     cursor:pointer;
     font-size: 20px;
     text-shadow: 1px 1px 1px #000000;
     border-bottom: 1px solid rgba(0,0,0,0.3);
+    border-top-left-radius: 8px;
  }
  .esercizi {
     width:100%;

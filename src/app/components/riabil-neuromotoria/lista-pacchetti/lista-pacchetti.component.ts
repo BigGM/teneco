@@ -162,7 +162,7 @@ export class ListaPacchettiComponent implements OnInit, OnDestroy {
         draggable:true,
         buttons:{
           "Annulla":{
-              className:"btn-secondary btn-md"
+              className:"btn-dark btn-md"
           }, 
           "Rimuovi" : { 
              className:"btn-danger btn-md",

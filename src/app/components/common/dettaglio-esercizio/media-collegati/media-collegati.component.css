@@ -115,6 +115,7 @@
    top: 80px;
    left: 10px;
    z-index:200;
+<<<<<<< HEAD
    /*max-height:286px;
    border-radius: 4px;*/
    background-color:rgba(22,70,120,1.0);
@@ -123,6 +124,17 @@
 .action-media {
    cursor:pointer;
    font-size:36px;
+=======
+   max-height:286px;
+   border-radius: 4px;
+   background-color:rgba(17,63,110,1.0);
+   /*border:1px solid rgba(100,100,100,0.2)*/
+}
+.action-media {
+   cursor:pointer;
+   /*margin:4px 5px;
+   width:46px;*/
+>>>>>>> 653dffd6fedaef956e93966f0a9e848a22b4afb6
 }
 
 
