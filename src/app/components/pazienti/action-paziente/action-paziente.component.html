@@ -27,61 +27,95 @@
 
      
      <div class="modal-body" style="height:450px;overflow:auto;">
+
+      <div *ngIf="azione=='modifica'" class="px-3 py-2 mb-3" style="background-color:ghostwhite; border-radius:4px;border:1px solid rgba(0,0,0,0.07)">
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Nome</div>
+          <div class="col-sm-4">{{paziente.nome}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Cognome</div>
+          <div class="col-sm-8">{{paziente.cognome}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Codice fiscale</div>
+          <div class="col-sm-8">{{paziente.cf}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Sesso</div>
+          <div class="col-sm-8">{{paziente.sesso}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Citt&agrave; e data di nascita</div>
+          <div class="col-sm-8">{{luogo_data_nascita()}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Nazionalit&agrave;</div>
+          <div class="col-sm-8">{{paziente.nazionalita}}</div>
+        </div>
+      </div>
+      
+    
         <form #actPazForm="ngForm" class="form-horizontal" role="form" novalidate>
            
-          <!-- NOME -->
-          <div class="form-group row" >
-              <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="nome_paz" name="nome_paz"
-                  disabled [ngModel]="paziente.nome"></div>
+          <!-- NOME/COGNOME -->
+          <div *ngIf="azione=='nuovo'" class="form-group row" >
+              <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome/Cognome</label>
+                <div class="col-sm-4">
+                  <input required type="text" class="form-control" id="nome_paz" name="nome_paz" placeholder="Nome"
+                  [(ngModel)]="paziente.nome"></div>
+
+                <div class="col-sm-5">
+                  <input required type="text" class="form-control" id="cognome_paz" name="cognome_paz" placeholder="Cognome"
+                  [(ngModel)]="paziente.cognome"></div>    
           </div>
 
-          <!-- COGNOME -->
-          <div class="form-group row" >
-            <label for="cognome_paz" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Cognome</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" id="cognome_paz" name="cognome_paz"
-                disabled [ngModel]="paziente.cognome"></div>
-          </div>
-
-         <!-- CF -->
-           <div class="form-group row" >
+          <!-- CF/SESSO -->
+           <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="CF" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Codice fiscale</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" id="CF" name="CF"
-                disabled [ngModel]="paziente.cf"></div>
-          </div>
+              <div class="col-sm-5">
+                <input required type="text" class="form-control" id="CF" name="CF" placeholder="Codice fiscale"
+                 [(ngModel)]="paziente.cf"></div>
 
-          <!-- Sesso -->
-          <div class="form-group row" >
-            <label for="sesso" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Sesso</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" id="sesso" name="sesso"
-                disabled [ngModel]="paziente.sesso"></div>
-          </div>
+                 <label for="sesso" class="col-sm-1 col-form-label col-form-label-sm font-weight-bold">Sesso</label>
+                 <div class="col-sm-3">
+                    <select required class="form-control" id="sesso" name="sesso" [(ngModel)]="paziente.sesso">
+                        <option value='M'>Maschio</option>
+                        <option value='F'>Femmina</option>
+                    </select>
+                  </div>
+           </div>
 
           <!-- Luogo e data nascita -->
-          <div class="form-group row" >
+          <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="nascita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Citt&agrave; e data di nascita</label>
-              <div class="col-sm-9">
-                <input type="text" class="form-control" id="nascita" name="nascita"
-                disabled [ngModel]="luogo_data_nascita()"></div>
+              <div class="col-sm-5">
+                <input required type="text" class="form-control" id="luogo_nascita" name="luogo_nascita" placeholder="Città di nascita"
+                 [(ngModel)]="paziente.luogo_nascita"></div>
+
+                <div class="col-sm-4">
+                  <input required type="date" class="form-control" id="data_nascita" name="data_nascita"
+                  [(ngModel)]="paziente.data_nascita"></div>
           </div>
 
           <!-- Nazionalita -->
-          <div class="form-group row" >
+          <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="nazionalita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nazionalit&agrave;</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="nazionalita" name="nazionalita"
-                disabled [ngModel]="paziente.nazionalita"></div>
+                <input required type="text" class="form-control" id="nazionalita" name="nazionalita" placeholder="Nazionalità"
+                [(ngModel)]="paziente.nazionalita"></div>
           </div>
 
            <!-- Residenza -->
           <div class="form-group row" >
             <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Residenza</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="residenza" name="residenza" placeholder="Residenza"
+                <input required type="text" class="form-control" id="residenza" name="residenza" placeholder="Residenza"
                 [(ngModel)]="paziente.residenza"></div>
           </div>
 
@@ -89,7 +123,7 @@
            <div class="form-group row" >
             <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Indirizzo</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo"
+                <input required type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo"
                 [(ngModel)]="paziente.indirizzo"></div>
           </div>
 
@@ -97,7 +131,7 @@
           <div class="form-group row">
             <label for="note" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Note</label>
             <div class="col-sm-9">
-                <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="3" placeholder="Note"
+                <textarea class="form-control" id="note" name="note"  placeholder="Note" rows="4" placeholder="Note"
                 [(ngModel)]="paziente.note"></textarea>
             </div>
           </div>
@@ -107,26 +141,30 @@
      </div>
      <div class="modal-footer">
 
-        <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-secondary text-white" 
                 (click)="reloadEntryPaziente()">
             <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
         </button>
-        
-        <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-info text-white" 
-            (click)="salvaPaziente(actPazForm)">
-            <!--[disabled]="actPazForm.invalid" -->
+                
+        <button *ngIf="azione=='modifica'" title="Pulisci i campi del modulo" class="btn btn-secondary text-white" 
+        (click)="resetModifiche()">
+          <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
+        </button>
+
+        <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-dark text-white" 
+        (click)="salvaModifichePaziente()">
+        <i class="fas fa-share-square"></i>&nbsp;Modifica&nbsp;
+        </button>
+
+        <button *ngIf="azione=='nuovo'" title="Pulisci i campi del modulo" class="btn btn-secondary text-white" 
+        (click)="resetNuovo()">
+          <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
+        </button>
+
+        <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-dark text-white" 
+            (click)="salvaNuovoPaziente()">
             <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
         </button>
-
-        <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-info text-white" 
-          (click)="salvaPaziente(actPazForm)">
-          <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
-        </button>
-
-        <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
-        (click)="reset()">
-          <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
-          </button>
      </div>
      </div>
      </div>

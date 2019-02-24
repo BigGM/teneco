@@ -37,10 +37,11 @@ export class ActionPazienteComponent implements OnInit {
   // titolo della finestra modale
   titolo : string;
 
-
+  
   constructor( private pazientiService : PazientiService ) { 
     this.entryPaziente = new Paziente
     this.paziente = new Paziente
+    this.paziente.sesso='M'       // per impostare la option su "Maschio" nella select
     this.pazientiSubscr = null
   }
 
@@ -51,15 +52,18 @@ export class ActionPazienteComponent implements OnInit {
      * per ricevere l'azione da eseguire.
      * L'oggetto 'obj' in input ha un campo azione che puo' valere "nuovo" o
      * "modifica",
-     * nel secondo caso 'obj' avra' anche un campo 'paziente' con il paziebte da modificare.
+     * nel secondo caso 'obj' avra' anche un campo 'paziente' con il paziente da modificare.
      */
     this.listaPazienti.openActionPaziente.subscribe (obj => {
-      console.log("this.listaPazienti.openActionPaziente", obj)
+      //console.log("this.listaPazienti.openActionPaziente", obj)
 
       this.azione = obj.azione
       
       if (this.azione=="nuovo") {
           this.titolo = "Nuovo paziente"
+          this.paziente = new Paziente()
+          this.paziente.sesso='M'   // per impostare la option su "Maschio" nella select
+          $('#actPaziente').modal('show')
       }
       else if (this.azione=="modifica") {
         this.titolo = "Modifica paziente"
@@ -80,7 +84,7 @@ export class ActionPazienteComponent implements OnInit {
    * @param p 
    */
   loadDettaglioPaziente(p:Paziente) {
-    console.log("PazientiComponent.loadDettaglioPaziente")
+    //console.log("PazientiComponent.loadDettaglioPaziente")
     NeuroApp.showWait();
     let serv = this.pazientiService.loadDettaglioPaziente(p)
     this.pazientiSubscr = serv.subscribe (
@@ -100,22 +104,123 @@ export class ActionPazienteComponent implements OnInit {
       )
   } // loadDettaglioPaziente()
 
+
   luogo_data_nascita() {
     return this.paziente.luogo_nascita + ", " + this.paziente.data_nascita
   }
 
-  salvaPaziente(p:Paziente) {
-    alert("salvaPaziente")
+
+  /**
+   * Salva sul sistema le modifiche al paziente selezionato.
+   */
+  salvaModifichePaziente() {
+    this.paziente.trim()
+    let outcome =
+        this.checkMandatory(this.paziente.indirizzo) &&
+        this.checkMandatory(this.paziente.residenza);
+
+    // Manca qualche campo => messaggio di errore ed esce
+    if (outcome == false) {
+      NeuroApp.custom_error("Controllare i campi obbligatori !","Errore")
+      return
+    }
+
+    // Codifica i caratteri speciali
+    let encoded_p = this.paziente.encode()
+    let php_script = "salva_modifiche_paziente.php"
+    let db_proc    = "NeuroApp.salva_modifiche_paziente"
+
+    let serv = this.pazientiService.salvaModifichePaziente(encoded_p, php_script, db_proc)
+    this.pazientiSubscr = serv.subscribe (
+      result => {
+        NeuroApp.hideWait()
+        NeuroApp.custom_info("Paziente modificato")
+        this.pazientiSubscr.unsubscribe()
+        $('#actPaziente').modal('hide')
+      },
+      error => {
+        NeuroApp.hideWait()
+        NeuroApp.custom_error(error,"Errore")
+        this.pazientiSubscr.unsubscribe()
+        $('#actPaziente').modal('hide')
+      }
+    )
+  } // salvaModifichePaziente
+
+
+  /**
+   * Salva sul sistema il nuovo paziente.
+   */
+  salvaNuovoPaziente() {
+    //console.log(this.paziente)
+    this.paziente.trim()
+    let outcome =
+        this.checkMandatory(this.paziente.nome) &&
+        this.checkMandatory(this.paziente.cognome) &&
+        this.checkMandatory(this.paziente.cf) &&
+        this.checkMandatory(this.paziente.data_nascita) &&
+        this.checkMandatory(this.paziente.indirizzo) &&
+        this.checkMandatory(this.paziente.luogo_nascita) &&
+        this.checkMandatory(this.paziente.nazionalita) &&
+        this.checkMandatory(this.paziente.residenza) &&
+        this.checkMandatory(this.paziente.sesso);
+
+    // Manca qualche campo => messaggio di errore ed esce
+    if (outcome == false) {
+      NeuroApp.custom_error("Controllare i campi obbligatori !","Errore")
+      return
+    }
+
+    // Codifica i caratteri speciali
+    let encoded_p = this.paziente.encode()
+    let php_script = "salva_paziente.php"
+    let db_proc    = "NeuroApp.salva_paziente"
+
+    let serv = this.pazientiService.salvaNuovoPaziente(encoded_p, php_script, db_proc)
+    this.pazientiSubscr = serv.subscribe (
+      result => {
+        NeuroApp.hideWait()
+        NeuroApp.custom_info("Paziente inserito nel sistema")
+        // Aggiorna la lista dei pazienti
+        this.listaPazienti.reloadListaPazienti()
+        this.pazientiSubscr.unsubscribe()
+        $('#actPaziente').modal('hide')
+      },
+      error => {
+        NeuroApp.hideWait()
+        NeuroApp.custom_error(error,"Errore")
+        this.pazientiSubscr.unsubscribe()
+        $('#actPaziente').modal('hide')
+      }
+    )
+  } // salvaNuovoPaziente
+
+
+  resetModifiche() {
+    this.paziente.residenza = ""
+    this.paziente.indirizzo = ""
+    this.paziente.note = ""
+  }
+
+  resetNuovo() {
+    this.paziente = new Paziente()
+    this.paziente.sesso = 'M'
   }
 
   reloadEntryPaziente(p:Paziente) {
     this.paziente.copy(this.entryPaziente)
   }
   
-  reset() {
-    this.paziente.residenza = ""
-    this.paziente.indirizzo = ""
-    this.paziente.note = ""
-  }
 
+  /**
+   * Controlla che il valore del campo in input non sia vuoto.
+   * Ritorna true se e' NON vuoto, false se e' vuoto.
+   */
+  private checkMandatory(field_value:string) : boolean {
+    //console.log (field_name, field_value)
+    if ( field_value==null || field_value=="undefined" || field_value==="" || field_value=="<p><br></p>")
+       return false
+    else
+      return true
+  }
 }

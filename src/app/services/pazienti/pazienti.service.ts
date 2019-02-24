@@ -10,6 +10,7 @@ import { Outcome } from '../../classes/outcome'
 import { Paziente } from '../../classes/paziente';
 import { EserciziPaziente } from '../../classes/esercizi-paziente';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { p } from '@angular/core/src/render3';
 
 
 /**
@@ -22,6 +23,14 @@ type out_pazienti =  Paziente[] | Outcome;
 type out_paziente =  Paziente  | Outcome;
 
 type out_esercizi_paziente =  EserciziPaziente[]  | Outcome;
+
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/x-www-form-urlencoded'
+  })
+};
+
 
 
 @Injectable({
@@ -42,7 +51,7 @@ export class PazientiService {
   ) {
     //console.log("NeuroApp.G_URL_ROOT ==> " + NeuroApp.G_URL_ROOT )
     this.G_URL_ROOT = NeuroApp.G_URL_ROOT;
-//    this.change_pkt = new EventEmitter();
+    // this.change_pkt = new EventEmitter();
   }
 
 
@@ -155,4 +164,90 @@ export class PazientiService {
           catchError( this.neuroService.handleError )
       )
   }
+
+  
+  salvaNuovoPaziente(p:Paziente, php_script:string, db_proc:string) {   
+    let url = this.G_URL_ROOT + "/cgi-bin/" + php_script;
+
+    let params = "proc="+db_proc +
+                "&nome=" + p.nome +
+                "&cognome=" + p.cognome +
+                "&cf=" + p.cf +
+                "&sesso=" + p.sesso +
+                "&luogo_nascita=" + p.luogo_nascita +
+                "&data_nascita=" + p.data_nascita +
+                "&residenza=" + p.residenza +
+                "&indirizzo=" + p.indirizzo +
+                "&nazionalita=" + p.nazionalita+
+                "&note=" + p.note;
+    //console.log(url)
+    return this.http.post<Outcome>(url, params, httpOptions)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  }
+
+  salvaModifichePaziente(p:Paziente, php_script:string, db_proc:string) {
+   
+    let url = this.G_URL_ROOT + "/cgi-bin/" + php_script;
+
+    let params = "proc="+db_proc +
+                "&id_paziente=" + p.id_paziente +
+                "&residenza=" + p.residenza +
+                "&indirizzo=" + p.indirizzo +
+                "&note=" + p.note;
+
+    //console.log(url)
+
+    return this.http.post<Outcome>(url, params, httpOptions)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  }
+
+
+  /**
+   * Cancella un paziente dal sistema.
+   * @param p
+   */
+  cancellaPaziente(p:Paziente) {
+    let db_proc = "NeuroApp.cancella_paziente"
+    let url = this.G_URL_ROOT+"/cgi-bin/cancella_paziente.php?proc="+db_proc+"&id_paziente="+p.id_paziente;
+    
+    return this.http.get<Outcome>(url)
+    .pipe(
+        retry(1),
+        map ( outcome => {
+          //console.log('** outcome **', outcome)
+            if (outcome.status.toLowerCase()=="exception" )
+              throw new Error(`${outcome.message}`) 
+            return outcome
+        }),
+        tap( outcome => {
+          //console.log('** outcome **', outcome)
+        }),
+        catchError( this.neuroService.handleError )
+    )
+  } //cancellaPacchetto()
+
 }

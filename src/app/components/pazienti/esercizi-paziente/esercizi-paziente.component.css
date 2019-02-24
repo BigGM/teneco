@@ -1,26 +1,22 @@
 #esercizi-paziente-container {
    position:fixed;
-   top: 60px;
+   top:0px;
    left:-500px;
-   height:calc(100% - 58px);
-   height:-moz-calc(100% - 58px);
-   height:-webkit-calc(100% - 58px);
-   background-color:white;
+   height:100%;
+   background-color: white;
    z-index:1000;
    padding:0;
-   
 }
 
 .my-card-body {
    background-color:white;
    height: calc(100% - 147px);
-   padding:1.0rem;
-   padding-top:0;
-   border-right:1px solid rgba(0,0,0,0.125);
+   padding: 0px 8px 0.8rem 8px;
+   border-right:1px solid rgba(0,0,0,0.155);
 }
 
 .my-card-footer {
-   border-right:1px solid rgba(0,0,0,0.125);
+   border-right:1px solid rgba(0,0,0,0.135);
 }
 
 .paziente-title {
@@ -45,7 +41,7 @@
  }
  
  .tablePacchettiEsercizi tr > td {
-   padding: 4px 10px;
+   padding: 2px 10px;
    font-family: Calibri,Tahoma,verdana;
    font-size:20px;
  }
@@ -64,7 +60,7 @@
     background-color: rgb(109, 109, 135);
     font-family: Calibri,Tahoma,verdana;
     color: white;
-    padding: 2px 10px;
+    padding: 1px 10px;
     cursor:pointer;
     font-size: 20px;
     text-shadow: 1px 1px 1px #000000;
@@ -87,7 +83,7 @@
     color:rgb(95,95,117);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    background-color:rgb(243,243,246);
+    background-color:rgb(245,245,248);
     text-shadow: 1px 1px 1px white;
     border-bottom:1px solid rgba(0,0,0,0.1) !important;
  }
@@ -98,12 +94,12 @@
  }
  
  .tab-content {
-    background-color: rgb(243,243,246);
-    padding:14px;
+    background-color: rgb(250,250,253);
+    padding:12px;
     padding-right:0px;
     border:1px solid rgba(0,0,0,0.1);
     border-top:0px;
-    width:400px;
+    width:420px;
     height:calc(100% - 42px);
     height:-moz-calc(100% - 42px);
     height:-webkit-calc(100% - 42px);

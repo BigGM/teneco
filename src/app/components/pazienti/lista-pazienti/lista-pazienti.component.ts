@@ -36,7 +36,6 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
    */
   @Output() openActionPaziente: EventEmitter<any> = new EventEmitter()
 
-
   constructor( private pazientiService : PazientiService) {
     //console.log( "PazientiComponent costruttore" )
     this.pazienti = []
@@ -93,9 +92,13 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
       )
   } // loadPazienti()
 
-  reloadPazienti() {
-    console.log("** reloadPazienti **")
-    NeuroApp.removePopover()
+
+  /**
+   * Riaggiorna la lista dei pazienti sull'interfaccia
+   */
+  reloadListaPazienti() {
+    console.log("** reloadListaPazienti **")
+    //NeuroApp.removePopover()
     this.pazienti = []
     this.loadPazienti();
     
@@ -104,10 +107,11 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
 
     // comunica alla finestra gestione esercizi di chiudersi.
     this.eserciziPaziente.emit()
-  }
+  } // reloadListaPazienti
+
 
   openDettaglioPaziente(p:Paziente) {
-    console.log(p)
+    //console.log(p)
     this.selectedPaziente.emit(p)
   }
 
@@ -118,8 +122,7 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
    */
   confermaCancellaPaziente(p:Paziente)
   {
-    NeuroApp.removePopover()
-    
+    //NeuroApp.removePopover()
     let self = this;
     bootbox.dialog ({
         title: "<h3>Cancella paziente</h3>", 
@@ -147,35 +150,35 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
    * @param pkt pacchetto da cancellare
    */
   cancellaPaziente(p:Paziente) {
-    console.log("ListaPazientiComponent.cancellaPaziente")
-    /*NeuroApp.showWait();
-    let serv = this.pazientiSubscr.cancellaPaziente(p)
+
+    NeuroApp.showWait();
+    let serv = this.pazientiService.cancellaPaziente(p)
     
     this.pazientiSubscr = serv.subscribe (
         result => {
           this.pazientiSubscr.unsubscribe()
           NeuroApp.hideWait()
-          NeuroApp.custom_info(`Pacchetto "<b>${p.nome} ${p.cognome}</b>" cancellato`)
-          // Aggiorna la lista dei pacchetti
-          this.reloadPazienti()
+          NeuroApp.custom_info(`Paziente "<b>${p.nome} ${p.cognome}</b>" cancellato`)
+          // Aggiorna la lista dei pazienti
+          this.reloadListaPazienti()
         },
         error => {
           this.pazientiSubscr.unsubscribe()
           NeuroApp.hideWait()
           NeuroApp.custom_error(error,"Error")
         }
-    )*/
+    )
   }
 
 
   /**
-   * Apre il modulo per la modifica di un pacchetto esistente
+   * Apre il modulo per la modifica di un paziente esistente.
    * @param mouseEvent l'evento di click che apre questa finestra
    * @param pkt il pacchetto da modificare
    */
   formModifPaziente(p:Paziente) {
     
-    NeuroApp.removePopover()
+    //NeuroApp.removePopover()
     
     // comunica all finestra modale l'azione da eseguire: modifica di un paziente
     // e gli passa il paziente da modificare
@@ -188,11 +191,32 @@ export class ListaPazientiComponent implements OnInit, OnDestroy {
     // Invia alla modale il record da modificare tramite il servizio
     //this.pktService.sendRecordToModal(pkt)
   }
+
+  /**
+   * Apre il modulo per l'aggiunta di un nuovo paziente.
+   * @param mouseEvent l'evento di click che apre questa finestra
+   * @param pkt il pacchetto da modificare
+   */
+  formNuovoPaziente() {
+    
+    //NeuroApp.removePopover()
+    
+    // comunica all finestra modale l'azione da eseguire: nuovo paziente.
+    let obj = {
+      azione: "nuovo"
+    }
+    this.openActionPaziente.emit(obj)
+
+    // Invia alla modale il record da modificare tramite il servizio
+    //this.pktService.sendRecordToModal(pkt)
+  }
+
+
   
   /**
    * Emette l'evento verso il componente EserciziPazienteComponente per gestire gli 
    * esercizi da associare al paziente corrente.
-   * @param p 
+   * @param p
    */
   gestioneEserciziPaziente(p:Paziente){
     //console.log(p)

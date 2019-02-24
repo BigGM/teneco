@@ -1,11 +1,32 @@
+
+<div *ngIf="view_visible"
+  style="position:fixed;
+         top:0; left:0;
+         z-index:1000;
+         width:100%; height:100%;
+         background-color: rgba(243, 243, 245, 0.55);"         
+  (click)="closeThisView()"
+ ></div>
+
 <div id="esercizi-paziente-container" class="shadow-lg">
 
+    <i id="arrow-paz-ese" class="fas fa-angle-left" title="chiudi gestione esercizi" (click)="closeThisView()"
+    style="
+      opacity:0;
+      position:absolute;
+      width:26px;
+      top:45%; right:-26px;
+      font-size:36px;
+      color:rgb(97, 97, 117);
+      background-color: white;
+      border-top-right-radius: 14px;
+      border-bottom-right-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.12);
+      cursor:pointer;">
+    </i>
 
   <div class="card-header paziente-title text-center">Gestione Esercizi<p>
       <label style="font-size:16px">Paziente: {{paziente.nome}} {{paziente.cognome}}</label>
-
-      <i class="fas fa-angle-left" title="chiudi dettaglio" (click)="closeThisView()"
-  style="position:absolute;top:0;right:0;font-size:36px;color:rgb(244,208,63);margin:10px;cursor:pointer;"></i>
     </div>
 
   <div class="card-body my-card-body">
@@ -27,13 +48,13 @@
     <div id="neuromotoria"  class="container tab-pane active">
 
       <div *ngFor="let p of eserciziAmbito1">
-        <div  [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
-          <label>{{p.nome_pacchetto}}</label></div>
+        <div style="border-top-left-radius:8px;" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
+          {{p.nome_pacchetto}}</div>
         <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
           
           <table class="tablePacchettiEsercizi">
-            <tr *ngFor="let e of p.esercizi">
-                <td>{{e.nome_esercizio}}</td>
+            <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
+                <td >{{e.nome_esercizio}}</td>
 
                 <td class="float-right"><div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" [attr.id]="'customCheck'+e.id_esercizio" [(ngModel)]="e.assegnato">
@@ -50,11 +71,11 @@
     <div id="cognitiva"  class="container tab-pane fade">
 
         <div *ngFor="let p of eserciziAmbito2">
-            <div [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >{{p.nome_pacchetto}}</div>
+            <div style="border-top-left-radius:8px;" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >{{p.nome_pacchetto}}</div>
             <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
               
               <table class="tablePacchettiEsercizi">
-                <tr *ngFor="let e of p.esercizi">
+                <tr *ngFor="let e of p.esercizi" [attr.id]="'ese_'+e.id_esercizio">
                     <td>{{e.nome_esercizio}}</td>
     
                     <td class="float-right"><div class="custom-control custom-checkbox">
@@ -73,9 +94,9 @@
 
   <!---->
   <div class="card-footer my-card-footer">
-    <button title="Associa gli esercizi selezionati al paziente" type="button" class="btn btn-primary mr-1" (click)="associaEsercizi()">Associa</button>
+    <button title="Assegna gli esercizi selezionati al paziente" type="button" class="btn btn-secondary mr-1" (click)="associaEsercizi()">Assegna</button>
     <button title="Seleziona/Deseleziona tutti gli esercizi" type="button" class="btn btn-dark mr-1" (click)="toggle()">Toggle</button>
     <button title="Reload" type="button" class="btn btn-dark" (click)="reload()"><i class="fas fa-sync-alt"></i></button>
-  </div> 
+  </div>
   
 </div>

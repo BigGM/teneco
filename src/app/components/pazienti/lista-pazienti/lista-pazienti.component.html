@@ -5,13 +5,13 @@
           <label>Pazienti</label>
       </div>
         
-        <div class="card-body" style="max-height:80vh;overflow:auto;">
+        <div class="card-body" style="max-height:550px;overflow:auto;padding-bottom:0;">
           <table id="tablePazienti" class="table">
   
               <thead class="thead-dark">
-                  <tr >
-                     <th scope="col">Nome</th>
+                  <tr>
                      <th scope="col">Cognome</th>
+                     <th scope="col">Nome</th>
                      <th scope="col">Citt&agrave; di nascita</th>
                      <th scope="col">Data di nascita</th>
                      <th scope="col">&nbsp;</th>
@@ -26,21 +26,21 @@
             -->
   
              <tr *ngFor="let p of pazienti" #row >
-                <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.nome" ></td>
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.cognome" ></td>
+                <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.nome" ></td>
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.luogo_nascita" ></td>
                 <td (click)='openDettaglioPaziente(p)' class='nowrap' [textContent]="p.data_nascita" ></td>
 
                 <td>
                   <div class="dropdown">
                     <button type="button" class="btn btn-light" data-toggle="dropdown"
-                    style="border-radius:50%; height:38px;width:38px;">
+                    style="border-radius:50%; height:34px;width:34px;">
                       <i class="fas fa-ellipsis-v"></i>
                     </button>
                     <div class="dropdown-menu shadow">
-                      <span class="dropdown-item my-dropdown-item" (click)="formModifPaziente(p)"><i class="fas fa-edit my-dropdown-icon"></i>&nbsp;Modifica</span>
                       <span class="dropdown-item my-dropdown-item" (click)="confermaCancellaPaziente(p)"><i class="fas fa-trash-alt my-dropdown-icon"></i>&nbsp;Cancella</span>
-                      <span class="dropdown-item my-dropdown-item" (click)="gestioneEserciziPaziente(p)"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Gestione esercizi</span>
+                      <span class="dropdown-item my-dropdown-item" (click)="formModifPaziente(p)"><i class="fas fa-edit my-dropdown-icon"></i>&nbsp;Modifica</span>
+                      <span class="dropdown-item my-dropdown-item" (click)="gestioneEserciziPaziente(p)"><i class="fas fa-cubes my-dropdown-icon"></i>&nbsp;Assegna esercizi</span>
                     </div>
                   </div>
 
@@ -48,5 +48,18 @@
              </tr>
           </table>
         </div> <!-- card body -->
+
+        <div class="card-footer" style="border-bottom:0px">
+          <button title="Aggiungi nuova voce" class="btn btn-primary mr-1"
+          (click)="formNuovoPaziente()">
+             <i class="fas fa-plus"></i>
+          </button>
+
+          <button title="Aggiorna lista pazienti" class="btn btn-primary"
+          (click)="reloadListaPazienti()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div> <!-- card footer -->
+
     </div>
   </div>

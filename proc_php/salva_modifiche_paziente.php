@@ -1,38 +1,26 @@
 <?php
 
 header('Access-Control-Allow-Origin: *'); 
+header("Access-Control-Allow-Headers: *");
+header('Content-Type: text/plain; charset=utf-8');
+
+include('msg_fmt.php');
 
 
-/**
- * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
- * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
- */
-function msg_fmt( $e ) {
-   $replace_what = array('&quot;');
-   $replace_with = array(' ');
-   $msg = htmlentities($e, ENT_QUOTES);
-   $msg = str_replace($replace_what,$replace_with,$msg);
-   $msg = preg_replace('#\R+#', '<br>', $msg);
-   return $msg;
-}
 
-
-/**
- * Parsa la query string. Restituisce questi attributi:
-/**
- * Parsa la query string. Restituisce questi attributi:
- * $proc    - la procedura pl/sql di cancellazione
- * $id_voce  - id della voce da cancellare
- **/
-parse_str($_SERVER['QUERY_STRING']);
-
-$proc  = rawurldecode($proc);
-$id_voce = rawurldecode($id_voce);
+$proc        = rawurldecode($_POST['proc']);
+$id_paziente = rawurldecode($_POST['id_paziente']);
+$residenza   = rawurldecode($_POST['residenza']);
+$indirizzo   = rawurldecode($_POST['indirizzo']);
+$note        = rawurldecode($_POST['note']);
 
 
 /*****
 echo $proc . "\n";
-echo $id_voce . "\n";
+echo $id_paziente . "\n";
+echo $residenza . "\n";
+echo $indirizzo . "\n";
+echo $note . "\n";
 die();
 *****/
 
@@ -44,7 +32,6 @@ $db_conn_string=getenv('ORACLE_CONN_STRING');
 /**
  * Connessione al data base 
  **/
-//$conn = oci_connect("telecom", "hp01pvv", 'hpdev01.tandi.it:1521/dbtest', 'AL32UTF8');
 $conn = oci_pconnect($db_user, $db_pwd, $db_conn_string, 'AL32UTF8');
 
 if (!$conn) {
@@ -58,7 +45,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_voce, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_paziente, :residenza, :indirizzo, :note, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -69,13 +56,19 @@ if (!$stmt) {
 
 oci_set_prefetch($stmt,1000);
 
+
 /**
  * Imposta i parametri della procedura 
  **/
+$refcur   = oci_new_cursor($conn);
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':id_voce'  , $id_voce, 255);
-oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
+
+oci_bind_by_name($stmt, ':id_paziente' , $id_paziente, 255);
+oci_bind_by_name($stmt, ':residenza'   , $residenza, 255);
+oci_bind_by_name($stmt, ':indirizzo'   , $indirizzo, 255);
+oci_bind_by_name($stmt, ':note'        , $note, 1024);
+oci_bind_by_name($stmt, ':outcome'     , $outcome, 4000);
 
 
 /**
@@ -98,9 +91,9 @@ if ( substr($outcome,0,9)==="Exception") {
    echo '{"status":"exception", "message":"'.$msg.'"}';
    die();
 }
- 
+
 // Successo
-echo '{"status":"ok", "message":"'. msg_fmt( $outcome ) .'"}'; 
+echo '{"status":"ok", "message":"'. msg_fmt($outcome) .'"}';
 
 oci_free_statement($stmt);
 oci_close($conn);

@@ -1,5 +1,4 @@
 import { NeuroApp } from '../neuro-app'
-
 import { RecordMedia } from './record-media'
 
 

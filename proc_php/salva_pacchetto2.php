@@ -1,8 +1,6 @@
 <?php
 
 header('Access-Control-Allow-Origin: *'); 
-//header('Access-Control-Allow-Methods: GET,POST,PATCH,DELETE,PUT,OPTIONS');
-//header("Access-Control-Allow-Headers: Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: text/plain; charset=utf-8');
 

@@ -262,13 +262,12 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     // Codifica i caratteri speciali
     let encoded_pkt = this.pacchetto.encode()
 
-
     let serv = this.pktService.salvaPacchetto(encoded_pkt, php_script, db_proc, this.ambito)
     this.pktSubscr = serv.subscribe (
       result => {
         NeuroApp.hideWait()
         NeuroApp.custom_info(info_msg)
-        // Aggiorna la lista delle voci di glossario
+        // Aggiorna la lista dei pacchetti
         this.listaPacchetti.reloadPacchetti()
         this.pktSubscr.unsubscribe()
       },

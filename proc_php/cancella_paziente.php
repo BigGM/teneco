@@ -1,50 +1,36 @@
 <?php
-
 header('Access-Control-Allow-Origin: *'); 
 
-
-/**
- * Elimina caratteri di fine linea e doppi apici dalla stringa in input.
- * Necessario affinche' il ritorno sia interpretato corretamente in formato json.
- */
-function msg_fmt( $e ) {
-   $replace_what = array('&quot;');
-   $replace_with = array(' ');
-   $msg = htmlentities($e, ENT_QUOTES);
-   $msg = str_replace($replace_what,$replace_with,$msg);
-   $msg = preg_replace('#\R+#', '<br>', $msg);
-   return $msg;
-}
+include('msg_fmt.php');
 
 
-/**
- * Parsa la query string. Restituisce questi attributi:
 /**
  * Parsa la query string. Restituisce questi attributi:
  * $proc    - la procedura pl/sql di cancellazione
- * $id_voce  - id della voce da cancellare
+ * $id_pkt  - id del pacchetto da cancellare
  **/
 parse_str($_SERVER['QUERY_STRING']);
 
-$proc  = rawurldecode($proc);
-$id_voce = rawurldecode($id_voce);
+$proc = rawurldecode($proc);
+$id_paziente = rawurldecode($id_paziente);
 
 
 /*****
 echo $proc . "\n";
-echo $id_voce . "\n";
+echo $id_paziente . "\n";
 die();
 *****/
+
 
 // Variabili accesso al DB
 $db_user=getenv('ANA_DB_USERNAME');
 $db_pwd=getenv('ANA_DB_PASSWORD');
 $db_conn_string=getenv('ORACLE_CONN_STRING');
 
+
 /**
  * Connessione al data base 
  **/
-//$conn = oci_connect("telecom", "hp01pvv", 'hpdev01.tandi.it:1521/dbtest', 'AL32UTF8');
 $conn = oci_pconnect($db_user, $db_pwd, $db_conn_string, 'AL32UTF8');
 
 if (!$conn) {
@@ -58,7 +44,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:id_voce, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:id_paziente, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -69,12 +55,13 @@ if (!$stmt) {
 
 oci_set_prefetch($stmt,1000);
 
+
 /**
  * Imposta i parametri della procedura 
  **/
 $outcome  = "";
 
-oci_bind_by_name($stmt, ':id_voce'  , $id_voce, 255);
+oci_bind_by_name($stmt, ':id_paziente'  , $id_paziente, 255);
 oci_bind_by_name($stmt, ':outcome' , $outcome, 4000);
 
 
@@ -100,7 +87,7 @@ if ( substr($outcome,0,9)==="Exception") {
 }
  
 // Successo
-echo '{"status":"ok", "message":"'. msg_fmt( $outcome ) .'"}'; 
+echo '{"status":"ok", "message":"'. msg_fmt($outcome).'"}';
 
 oci_free_statement($stmt);
 oci_close($conn);

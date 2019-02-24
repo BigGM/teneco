@@ -187,23 +187,25 @@
        </div>
        <div class="modal-footer">
 
-          <button *ngIf="azione=='modifica_pacchetto'" title="Ricarica sul modulo i campi del pacchetto corrente" class="btn btn-info text-white" 
-                  (click)="reloadEntryPkt()">
-              <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
-          </button>
-          
-          <button *ngIf="azione=='nuovo_pacchetto'" title="Salva pacchetto" class="btn btn-info text-white" 
+        <button *ngIf="azione=='nuovo_pacchetto'" title="Salva pacchetto" class="btn btn-dark text-white" 
               (click)="salvaPacchetto(actPktForm)">
               <!--[disabled]="actPktForm.invalid" -->
               <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
           </button>
 
-          <button *ngIf="azione=='modifica_pacchetto'" title="Salva modifiche" class="btn btn-info text-white" 
+          <button *ngIf="azione=='modifica_pacchetto'" title="Salva modifiche" class="btn btn-dark text-white" 
             (click)="salvaPacchetto(actPktForm)">
             <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
           </button>
 
-          <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
+
+          <button *ngIf="azione=='modifica_pacchetto'" title="Ricarica sul modulo i campi del pacchetto corrente" class="btn btn-secondary text-white" 
+                  (click)="reloadEntryPkt()">
+              <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
+          </button>
+          
+          
+          <button title="Pulisci i campi del modulo" class="btn btn-secondary text-white" 
           (click)="reset(actPktForm)">
             <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
             </button>

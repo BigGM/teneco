@@ -92,24 +92,25 @@
 
      <div class="modal-footer">
 
-        <button *ngIf="azione=='modifica_esercizio'" title="Ricarica il modulo" class="btn btn-info text-white" 
+        <button *ngIf="azione=='modifica_esercizio'" title="Ricarica il modulo" class="btn btn-secondary text-white" 
           (click)="reload(actExForm);">
           <i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;Ricarica&nbsp;
         </button>
         
-        <button *ngIf="azione=='nuovo_esercizio'" title="Salva inserimento" class="btn btn-info text-white" 
-            (click)="salvaEsercizio(actExForm)">
-            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
-
-        <button *ngIf="azione=='modifica_esercizio'" title="Salva modifiche" class="btn btn-info text-white" 
-            (click)="salvaEsercizio(actExForm)">
-            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
-
-        <button title="Pulisci i campi del modulo" class="btn btn-info text-white" 
+        
+        <button title="Pulisci i campi del modulo" class="btn btn-secondary text-white" 
             (click)="reset(actExForm);">
              <i class="fas fa-eraser" aria-hidden="true"></i>&nbsp;Pulisci&nbsp;
-          </button>
+        </button>
   
+        <button *ngIf="azione=='nuovo_esercizio'" title="Salva inserimento" class="btn btn-dark text-white" 
+            (click)="salvaEsercizio(actExForm)">
+            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
+
+        <button *ngIf="azione=='modifica_esercizio'" title="Salva modifiche" class="btn btn-dark text-white" 
+            (click)="salvaEsercizio(actExForm)">
+            <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;</button>
+
      </div>
      </div>
      </div>

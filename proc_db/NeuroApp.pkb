@@ -261,8 +261,7 @@ BEGIN
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
 END def_glossario;        
-
-                  
+            
 
 
 PROCEDURE lista_gruppi(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
@@ -1154,46 +1153,11 @@ BEGIN
         
     end if;
 
-
     commit;
     
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
 END salva_dati_app;
-
-
-
-PROCEDURE lista_pazienti(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR)
-IS
-BEGIN
-    p_outcome := 'OK';
-    
-    OPEN p_cursor FOR
-    select id_paziente, nome, cognome, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita
-      from GCA_ANAGRAFICA_PAZIENTI 
-      order by 2,1;
-    
-EXCEPTION
-    WHEN others then p_outcome:='Exception:' || sqlerrm;   
-END lista_pazienti;
-
-
-PROCEDURE dettaglio_paziente(p_id_paziente in varchar2, 
-                             p_outcome in out varchar2, 
-                             p_cursor OUT SYS_REFCURSOR)
-IS
-BEGIN
-    p_outcome := 'OK';
-    
-    OPEN p_cursor FOR
-    select id_paziente, nome, cognome, codice_fiscale, sesso, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita, nazionalita, 
-           luogo_residenza, indirizzo_domicilio, note
-      from GCA_ANAGRAFICA_PAZIENTI
-      where GCA_ANAGRAFICA_PAZIENTI.ID_PAZIENTE = p_id_paziente;
-    
-EXCEPTION
-    WHEN others then p_outcome:='Exception:' || sqlerrm;   
-END dettaglio_paziente;                             
 
 
 PROCEDURE controllaAccesso(p_id_login  in varchar2,
@@ -1205,7 +1169,6 @@ IS
     lIdPaziente     integer := 0;
     lPasswd         varchar2(50); 
     lUltimoAccesso  varchar2(50);
-    
 BEGIN
     p_outcome := 'OK';
 
@@ -1261,16 +1224,16 @@ BEGIN
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
 END controllaAccesso;                             
-             
+
+
 PROCEDURE registraLogin(p_id_login  in varchar2,
                         p_passwd in varchar2,
                         p_outcome in out varchar2, 
                         p_cursor OUT SYS_REFCURSOR)
 IS
-    esiste_rec integer := 0;
-    lIdPaziente     integer := 0;
-    lPasswd         varchar2(50); 
-
+    esiste_rec  integer := 0;
+    lIdPaziente integer := 0;
+    lPasswd     varchar2(50);
 BEGIN
     p_outcome := 'OK';
 
@@ -1278,7 +1241,6 @@ BEGIN
         select id_paziente into lIdPaziente
         from    GCA_ANAGRAFICA_PAZIENTI 
         where   codice_fiscale = p_id_login;
-        
     exception
         when no_data_found then    
             OPEN p_cursor FOR
@@ -1324,6 +1286,38 @@ END registraLogin;
 
 
 
+PROCEDURE lista_pazienti(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    OPEN p_cursor FOR
+    select id_paziente, nome, cognome, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita
+      from GCA_ANAGRAFICA_PAZIENTI 
+      order by cognome,nome;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_pazienti;
+
+
+PROCEDURE dettaglio_paziente(p_id_paziente in varchar2, 
+                             p_outcome in out varchar2, 
+                             p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    OPEN p_cursor FOR
+    select id_paziente, nome, cognome, codice_fiscale, sesso, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita, nazionalita, 
+           luogo_residenza, indirizzo_domicilio, note
+      from GCA_ANAGRAFICA_PAZIENTI
+      where GCA_ANAGRAFICA_PAZIENTI.ID_PAZIENTE = p_id_paziente;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END dettaglio_paziente;                             
+
 
 -- ==============================================================================
 -- Restituisce se un esercizio di un pacchetto e' assegnato a un paziente.
@@ -1332,7 +1326,7 @@ END registraLogin;
 --  p_id_esercizio - id dell'esercizio
 --  Return: 'S' o 'N'
 -- ==============================================================================
-FUNCTION assegnatoAlPaziente(p_id_paziente in varchar2, p_id_pacchetto in varchar2, p_id_esercizio in varchar2) return varchar2
+FUNCTION esercizioAssegnato(p_id_paziente in varchar2, p_id_pacchetto in varchar2, p_id_esercizio in varchar2) return varchar2
 IS
    assegnato integer;
 BEGIN
@@ -1350,7 +1344,7 @@ BEGIN
 
 EXCEPTION
     WHEN others then return 'N';
-END assegnatoAlPaziente;
+END esercizioAssegnato;
 
 
 -- ============================================================================================
@@ -1371,7 +1365,7 @@ BEGIN
             descr_pacchetto,
             nome_esercizio,
             desc_esercizio,
-            assegnatoAlPaziente(p_id_paziente, gca_pacchetti.id_pacchetto, gca_pacchetti_esercizi.id_esercizio) assegnato,
+            esercizioAssegnato(p_id_paziente, gca_pacchetti.id_pacchetto, gca_pacchetti_esercizi.id_esercizio) assegnato,
             gca_pacchetti.id_ambito
       from gca_pacchetti, gca_pacchetti_esercizi
      where gca_pacchetti.id_ambito in (1,2)
@@ -1381,6 +1375,7 @@ BEGIN
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
 END lista_pacchetti_esercizi;
+
 
 procedure associa_esercizi_paziente(p_id_paziente in varchar2, p_id_esercizi in varchar2, p_outcome in out varchar2)
 IS 
@@ -1406,6 +1401,60 @@ EXCEPTION
 END associa_esercizi_paziente;
 
 
+PROCEDURE salva_paziente(p_nome in varchar2, p_cognome in varchar2,
+                         p_cf   in varchar2, p_sesso in varchar2, 
+                         p_luogo_nascita in varchar2, p_data_nascita in varchar2,
+                         p_residenza in varchar2, p_indirizzo in varchar2,
+                         p_nazionalita in varchar2, p_note in varchar2,
+                         p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    Insert into GCA_ANAGRAFICA_PAZIENTI
+   (ID_PAZIENTE, CODICE_FISCALE, COGNOME, NOME, SESSO, 
+    DATA_NASCITA, LUOGO_NASCITA, LUOGO_RESIDENZA, INDIRIZZO_DOMICILIO, NAZIONALITA, 
+    NOTE)
+ Values
+   (S_GCA_ANAGRAFICA_PAZIENTI.nextval, p_cf, p_cognome, p_nome, p_sesso, 
+    TO_DATE(p_data_nascita, 'YYYY/MM/DD'), p_luogo_nascita, p_residenza, p_indirizzo, p_nazionalita, p_note);
+    
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END salva_paziente;
+
+
+PROCEDURE salva_modifiche_paziente(p_id_paziente in varchar2,
+                         p_residenza in varchar2, p_indirizzo in varchar2,
+                         p_note in varchar2,
+                         p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    update GCA_ANAGRAFICA_PAZIENTI
+        set LUOGO_RESIDENZA = p_residenza,
+            INDIRIZZO_DOMICILIO = p_indirizzo,
+            NOTE = p_note
+    where id_paziente = p_id_paziente;
+    
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END salva_modifiche_paziente;
+                         
+
+
+PROCEDURE cancella_paziente(p_id_paziente in varchar2,p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    DELETE GCA_ANAGRAFICA_PAZIENTI where id_paziente = p_id_paziente;
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END cancella_paziente;
 
 END NeuroApp;
 /

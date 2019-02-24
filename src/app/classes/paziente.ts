@@ -1,3 +1,5 @@
+import { NeuroApp } from '../neuro-app'
+
 export class Paziente {
    id_paziente : number
    nome : string 
@@ -73,6 +75,19 @@ export class Paziente {
       p.note = decodeURIComponent(p.note)
    }
 
+   public trim() {
+      this.nome = NeuroApp.trimField ( this.nome )
+      this.cognome = NeuroApp.trimField ( this.cognome )
+      this.cf = NeuroApp.trimField ( this.cf )
+      this.sesso = NeuroApp.trimField ( this.sesso )
+      this.data_nascita = NeuroApp.trimField ( this.data_nascita )
+      this.luogo_nascita = NeuroApp.trimField ( this.luogo_nascita )
+      this.nazionalita = NeuroApp.trimField ( this.nazionalita )
+      this.residenza = NeuroApp.trimField ( this.residenza )
+      this.indirizzo = NeuroApp.trimField ( this.indirizzo )
+      this.note = NeuroApp.trimField ( this.note )
+
+   }
 
 
 }

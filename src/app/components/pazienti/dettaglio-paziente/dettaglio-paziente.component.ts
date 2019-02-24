@@ -49,7 +49,7 @@ export class DettaglioPazienteComponent implements OnInit, OnDestroy {
         this.loadDettaglioPaziente(p)
       }
       else {
-        this.view_dettaglio_visible = false
+        this.closeDettaglio()
       }
     })
   }
@@ -90,10 +90,14 @@ export class DettaglioPazienteComponent implements OnInit, OnDestroy {
   } // loadDettaglioPaziente()
 
   openDettaglio() {
-      $('#div_dettaglio_paziente').animate({right:'-18px'},500,'easeOutCirc');
+      $('#div_dettaglio_paziente').animate({right:'-18px'},500,'easeOutCirc', function(){
+        $('#arrow-dett-paz').animate({opacity:1}, 600)
+      });
   }
 
   closeDettaglio() {
-    $('#div_dettaglio_paziente').animate({right:'-430px'},500,'easeOutCirc');
+    $('#div_dettaglio_paziente').animate({right:'-450px'},500,'easeOutCirc', function(){
+      $('#arrow-dett-paz').css({opacity:0})
+    });
   }
 }
