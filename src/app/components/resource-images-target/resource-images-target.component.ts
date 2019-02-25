@@ -110,7 +110,7 @@ export class ResourceImagesTargetComponent implements OnInit, OnDestroy, AfterVi
         draggable:true,
         buttons: {
           "Annulla":{
-              className: "btn-secondary btn-md"
+              className: "btn-dark btn-md"
           },
           "Rimuovi" : { 
               className: "btn-danger btn-md",

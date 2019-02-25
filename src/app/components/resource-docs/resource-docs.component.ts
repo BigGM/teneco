@@ -201,7 +201,7 @@ export class ResourceDocsComponent implements OnInit {
         draggable:true,
         buttons: {
           "Annulla":{
-              className: "btn-secondary btn-md"
+              className: "btn-dark btn-md"
           },
           "Rimuovi" : { 
               className: "btn-danger btn-md",

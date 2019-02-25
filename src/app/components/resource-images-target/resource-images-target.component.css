@@ -33,7 +33,7 @@ input[type="file"] {
    cursor:pointer;
    font-size:26px;
    font-weight:normal;
-   color:rgb(0, 203, 224);
+   color:white;
 }
 
 .descr-image {
@@ -48,7 +48,7 @@ input[type="file"] {
    cursor:pointer;
    font-size:26px;
    font-weight:normal;
-   color:rgb(0, 203, 224);
+   color:white;
 }
 
 .my-bg-secondary {
