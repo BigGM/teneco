@@ -340,7 +340,7 @@ a:not([href]):not([tabindex]):hover {
 }
 .popover-header {
    color: white;
-   background-color: rgb(65, 83, 107);
+   background-color: rgb(87, 88, 117);
    text-shadow: 1px 1px 1px black;
    border-radius:0px;
    border-top-right-radius: 12px;
