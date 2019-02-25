@@ -62,7 +62,7 @@ export class ActionPazienteComponent implements OnInit {
       if (this.azione=="nuovo") {
           this.titolo = "Nuovo paziente"
           this.paziente = new Paziente()
-          this.paziente.sesso='M'   // per impostare la option su "Maschio" nella select
+          this.paziente.sesso='M'   // per impostare la option su "Maschio" nella select del sesso
           $('#actPaziente').modal('show')
       }
       else if (this.azione=="modifica") {
@@ -196,13 +196,13 @@ export class ActionPazienteComponent implements OnInit {
   } // salvaNuovoPaziente
 
 
-  resetModifiche() {
+  clearModifiche() {
     this.paziente.residenza = ""
     this.paziente.indirizzo = ""
     this.paziente.note = ""
   }
 
-  resetNuovo() {
+  clearNuovo() {
     this.paziente = new Paziente()
     this.paziente.sesso = 'M'
   }
