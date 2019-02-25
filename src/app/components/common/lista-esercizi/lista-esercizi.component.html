@@ -120,17 +120,25 @@
                      <th>Descrizione</th>
                      <th>Gruppo</th>
                      <th class="text-right">#Multimedia</th>
-                     <th colspan=2></th>
+                     <th colspan=1></th>
                   </tr>
             </thead>
 
             <tr *ngFor="let ex of esercizi" #row (click)='onForeground(ex.id_ex,row,$event)'>
-               <td class="nowrap" (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
+               <td (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
                <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
                <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
                <td style='text-align:right;width:100px;' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>
+               
+               <td class="nowrap text-right" >
+                  <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal mr-2" (click)="formModifEsercizio($event,ex)"></i>
+                  <i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i>
+               </td>
+
+               <!--
                <td style='text-align:right;width:32px'><i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal" (click)="formModifEsercizio($event,ex)"></i></td>
                <td style='text-align:right;width:32px'><i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal" (click)="confermaCancellaEsercizio($event,ex)"></i></td>
+               -->
             </tr>
 
          </table>

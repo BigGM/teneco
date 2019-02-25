@@ -12,16 +12,11 @@
             
              <tr *ngFor="let rec of glossario">
                 
-                <td class='nowrap' (click)="viewVoce(rec)"><strong>{{rec.voce}}:</strong></td>
-              
-                <td (click)="viewVoce(rec)">{{rec.def | truncate:100}}</td>
-                
-                <td (click)="formModifVoceGlossario(rec)">
-                   <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
-                </td>
-                
-                <td (click)="confermaCancellaGlossario(rec)">
-                   <i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
+                <td (click)="viewVoce(rec)"><strong>{{rec.voce}}:</strong></td>
+                <td (click)="viewVoce(rec)">{{rec.def | truncate:100}}</td>                
+                <td class="nowrap">
+                   <i (click)="formModifVoceGlossario(rec)" class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal mr-2"></i>
+                   <i (click)="confermaCancellaGlossario(rec)" class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
                 </td>
              </tr>
           </table>

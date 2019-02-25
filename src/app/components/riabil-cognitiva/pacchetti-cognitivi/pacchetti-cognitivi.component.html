@@ -14,7 +14,7 @@
                    <th scope="col">Nome</th>
                    <th scope="col">Descrizione</th>
                    <th scope="col text-right">#Esercizi</th>
-                   <th scope="col" colspan=2>&nbsp;</th>
+                   <th scope="col" colspan=1>&nbsp;</th>
                 </tr>
           </thead>
           
@@ -26,20 +26,22 @@
           -->
 
            <tr *ngFor="let pkt of pacchetti"  #row (click)='onForeground(row,$event)'>
-              <td class='nowrap' [textContent]="pkt.nome" (click)="loadEserciziPacchetto($event,pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
+              <td [textContent]="pkt.nome" (click)="loadEserciziPacchetto($event,pkt)"></td> <!-- [textContent] === a ng-bind di angularJS   -->
               
               <!-- <td [innerHtml]="pkt.descr | truncate:80 | safe:'html'"></td> -->    <!-- [innerHtml] === a ng-bind-html di angularJS   -->
               <td [textContent]="pkt.descr | plaintext | truncate:80" (click)="loadEserciziPacchetto($event,pkt)"></td>
 
               <td class="text-right mr-2" (click)="loadEserciziPacchetto($event,pkt)">{{pkt.num_esercizi}}</td>
               
-              <td class="text-right" (click)="formModifPacchetto($event,pkt)">
-                <i class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal"></i>
+              <td class="nowrap text-right" >
+                <i (click)="formModifPacchetto($event,pkt)" class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal mr-2"></i>
+                <i (click)="confermaCancellaPacchetto($event,pkt)" class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
               </td>
              
+              <!--
               <td class="text-right" (click)="confermaCancellaPacchetto($event,pkt)">
                 <i class="fas fa-trash-alt my-icon-color my-icon-size-26 font-weight-normal"></i>
-              </td>
+              </td> -->
 
            </tr>
         </table>
