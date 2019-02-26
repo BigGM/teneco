@@ -73,7 +73,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   
   showMediaFor(esercizio:RecordEsercizio) {
     this.esercizio = esercizio
-    console.log("showMediaFor", this.esercizio)
+    //console.log("showMediaFor", this.esercizio)
     this.loadMediaCollegati()
   }
 
@@ -97,7 +97,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
           }
           NeuroApp.hideWait()
           this.exSubscr.unsubscribe()
-          //console.log("MediaCollegatiComponent.loadMediaCollegati", this.listaMediaCollegati)
+          console.log("MediaCollegatiComponent.loadMediaCollegati", this.listaMediaCollegati)
 
           // Comunica alla componente di dettaglio il valore (questo serve nel caso di chiamata di refresh)
           this.counterMultimedia.emit(this.listaMediaCollegati.length)

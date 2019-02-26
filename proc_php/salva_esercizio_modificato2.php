@@ -104,7 +104,7 @@ $testoCLOB = oci_new_descriptor($conn, OCI_D_LOB);
 $testoCLOB->writeTemporary($testo);
 
 $alertCLOB = oci_new_descriptor($conn, OCI_D_LOB);
-$alertCLOB->writeTemporary($testo);
+$alertCLOB->writeTemporary($alert);
 
 $limitazioniCLOB = oci_new_descriptor($conn, OCI_D_LOB);
 $limitazioniCLOB->writeTemporary($limitazioni);

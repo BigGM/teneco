@@ -1,8 +1,8 @@
 var NeuroAppJS = {
 
-  //G_URL_ROOT : "http://81.29.176.113:51000/",   // per il sito visibile dai medici
+  G_URL_ROOT : "http://81.29.176.113:51000/",   // per il sito visibile dai medici
   //G_URL_ROOT : "http://192.168.2.63:47000/",    // per il sito interno 
-  G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
+  //G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
   

@@ -113,13 +113,16 @@ $outp  = $start;
 while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
    if ($outp != $start) {$outp .= ",";}
-   $outp .= '{"id_pkt":'  . $row[0] . 
-            ',"id_ex":'   . $row[1] .
-            ',"id":'      . $row[2] .
-            ',"url":"'    . $row[3] .'"'.
-            ',"tipo":"'   . $row[4] .'"'.
-            ',"descr":"'  . $row[5] .'"'.
-            ',"url_snapshot":"'  . $row[6] .'"}';
+   
+   // Se id==-1 significa che non esiste un media associato
+   if ( $row[2] != "-1")
+      $outp .= '{"id_pkt":'  . $row[0] . 
+               ',"id_ex":'   . $row[1] .
+               ',"id":'      . $row[2] .
+               ',"url":"'    . $row[3] .'"'.
+               ',"tipo":"'   . $row[4] .'"'.
+               ',"descr":"'  . $row[5] .'"'.
+               ',"url_snapshot":"'  . $row[6] .'"}';
 }
 $outp .="]";
 echo($outp);
