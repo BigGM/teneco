@@ -343,15 +343,15 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
         result => {
           if (result.length == 0) {
               if (tipo_media=='video')
-                  NeuroApp.custom_info("L'esercizio contiene tutti i file video")
+                  NeuroApp.custom_info("Nessun video disponibile")
               else if (tipo_media=='audio')
-                  NeuroApp.custom_info("L'esercizio contiene tutti i file audio")
+                  NeuroApp.custom_info("Nessun audio disponibile")
               else if (tipo_media=='image')
-                  NeuroApp.custom_info("L'esercizio contiene tutte le immagini")
+                  NeuroApp.custom_info("Nessuna immagine disponibile")
               else if (tipo_media=='doc')
-                  NeuroApp.custom_info("L'esercizio contiene tutti i documenti")
+                  NeuroApp.custom_info("Nessun documento disponibile")
               else
-                  NeuroApp.custom_info("L'esercizio contiene tutte le applicazioni")
+                  NeuroApp.custom_info("Nessuna applicazione disponibile")
           }
           else {
               result.map(item => {
