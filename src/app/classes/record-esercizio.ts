@@ -44,8 +44,8 @@ export class RecordEsercizio {
     * I campi numerici sono impostati a -1, i campi stringa a un valore vuoto. 
     */
    public reset() {
-      this.id_pkt      = -1
-      this.id_ambito   = -1
+      //this.id_pkt      = -1
+      //this.id_ambito   = -1
       this.id_ex       = -1
       this.nome        = ""
       this.descr       = ""

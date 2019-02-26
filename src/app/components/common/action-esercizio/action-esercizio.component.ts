@@ -82,11 +82,11 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
           this.azione = obj.azione
 
-          
           if (this.azione=="nuovo_esercizio") {
               this.titolo = this.AMBITO==1 || this.AMBITO==2 ? "Nuovo esercizio" : "Nuova modalità"
               this.esercizio.reset()
               this.esercizio.id_pkt = obj.id_pkt
+              this.esercizio.id_ambito = this.AMBITO;
               this.entryEsercizio.reset()
           }
           else if (this.azione=="modifica_esercizio") {

@@ -29,8 +29,8 @@
        <div class="modal-body" style="height:450px;overflow:auto;">
           <form #actPktForm="ngForm" class="form-horizontal" role="form" novalidate>
              
-            <!-- NOME PACCHETTO (OBBLIGATORIO) -->
-             <div class="form-group row" >
+            <!-- NOME PACCHETTO (OBBLIGATORIO, INSERT) -->
+             <div class="form-group row" *ngIf="azione=='nuovo_pacchetto'">
                 <label for="nome_pkt" class="col-sm-3 col-form-label col-form-label-sm my-label-required font-weight-bold">Nome*</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" id="nome_pkt"  name="nome_pkt" placeholder="Nome pacchetto"
@@ -42,6 +42,14 @@
                     class="alert alert-danger">
                       Il nome del pacchetto è richiesto
                   </div> -->
+            </div>
+
+            <!-- NOME PACCHETTO (OBBLIGATORIO, MODIFICA) -->
+            <div class="form-group row" *ngIf="azione=='modifica_pacchetto'">
+              <label for="nome_pkt" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nome</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="nome_pkt"  name="nome_pkt" readonly
+                  [(ngModel)]="pacchetto.nome"></div>
             </div>
   
             

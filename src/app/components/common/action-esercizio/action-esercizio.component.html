@@ -28,12 +28,20 @@
 
         <form #actExForm="ngForm" class="form-horizontal" role="form" novalidate>
            
-          <!-- NOME ESERCIZIO (OBBLIGATORIO) -->
-           <div class="form-group row" >
+          <!-- NOME ESERCIZIO (OBBLIGATORIO, INSERT ) -->
+          <div class="form-group row" *ngIf="azione=='nuovo_esercizio'">
               <label for="nome_ex" class="col-sm-3 col-form-label col-form-label-sm  my-label-required font-weight-bold">Nome*</label>
                 <div class="col-sm-9">
                   <input type="text" class="form-control" id="nome_ex"  name="nome_ex" placeholder="Nome"
                   required [(ngModel)]="esercizio.nome"></div>
+          </div>
+
+          <!-- NOME ESERCIZIO (OBBLIGATORIO, MODIFICA ) -->
+          <div class="form-group row" *ngIf="azione=='modifica_esercizio'">
+            <label for="nome_ex" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control " id="nome_ex"  name="nome_ex" readonly
+                [(ngModel)]="esercizio.nome"></div>
           </div>
 
           

@@ -26,6 +26,7 @@ export class RecordPacchetto {
   
     constructor() {
         this.reset()
+        this.id = -1
     }
   
     /**
@@ -57,7 +58,7 @@ export class RecordPacchetto {
      * I campi numerici sono impostati a -1, i campi stringa a un valore vuoto. 
      */
     public reset() {
-      this.id = -1
+      //this.id = -1
       this.nome         = ""
       this.descr        = ""
       this.contro_ind   = ""
