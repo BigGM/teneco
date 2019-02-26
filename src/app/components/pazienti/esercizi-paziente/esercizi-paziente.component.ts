@@ -109,6 +109,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
 
   reload() {
     this.loadEserciziPaziente(this.paziente)
+    this.toggleSelection = true;
   }
 
   openThisView() {

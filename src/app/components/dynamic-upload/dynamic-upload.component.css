@@ -13,8 +13,8 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-    color:black;
-    background-color: rgb(243, 199, 4);
+    color:white;
+    background-color: rgb(96, 125, 139);
     border-radius:4px;
     display: inline-block;
     padding: 6px 16px;
@@ -67,15 +67,20 @@ input[type="file"] {
 }
 
 .my-bg-secondary {
-    background-color: rgb(49, 113, 157)!important;
+    background-color: rgb(207, 218, 226)!important;
+    border: 1px solid rgba(0,0,0,0.06);
 }
-
 .my-bg-dark {
     background-color: rgb(32, 53, 74)!important;
 }
-
-
 .my-form-control {
     height:30px;
     padding: 2px 6px;
+}
+
+.progress {
+    background-color:whitesmoke;
+}
+.progress-bar {
+    color:black;
 }

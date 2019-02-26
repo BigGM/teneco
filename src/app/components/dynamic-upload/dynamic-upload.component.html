@@ -2,7 +2,7 @@
 
     <label class="title-doc">{{title}}</label>
  
-   <div class="row pt-3 pb-3 card my-bg-secondary">
+   <div class="row pt-3 pb-3 my-bg-secondary shadow-sm">
 
        <div class="col-sm-12" style="overflow:auto">
  
@@ -13,10 +13,10 @@
              multiple 
              accept={{accept}} />
          
-           <p style="font-size:14px;color:white"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
+           <p style="font-size:14px;color:black"><strong>File in coda</strong>: {{ uploader?.queue?.length }}</p>
  
-           <table class="table" style="color:white">
-               <thead>
+           <table class="table" style="color:black">
+               <thead> 
                <tr>
                    <th width="30%">Nome file</th>
                    <th width="20%">Descrizione*</th>
@@ -48,17 +48,17 @@
                    </td>
                    
                    <td nowrap>
-                       <button type="button" class="btn btn-warning btn-sm p-1 px-2 mr-1 text-smaller"
+                       <button type="button" class="btn btn-danger btn-sm p-1 px-2 mr-1 text-smaller"
                                (click)="upload(item)" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                <i class="fas fa-upload"></i> Upload
                        </button>
  
-                       <button type="button" class="btn btn-warning btn-sm p-1 px-2 mr-1 text-smaller"
+                       <button type="button" class="btn btn-dark btn-sm p-1 px-2 mr-1 text-smaller"
                                (click)="item.cancel()" [disabled]="!item.isUploading">
                                <i class="fas fa-ban"></i> Cancel
                        </button>
  
-                       <button type="button" class="btn btn-danger btn-sm p-1 px-2 text-smaller"
+                       <button type="button" class="btn btn-dark btn-sm p-1 px-2 text-smaller"
                                (click)="item.remove()">
                                <i class="far fa-trash-alt"></i> Remove
                        </button>
@@ -75,17 +75,17 @@
                    </div>
                </div>
  
-               <button type="button" class="btn btn-warning btn-sm p-2 mr-1"
+               <button type="button" class="btn btn-danger btn-sm p-2 mr-1"
                        (click)="uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                        <i class="fas fa-upload"></i> Upload all
                </button>
  
-               <button type="button" class="btn btn-warning btn-sm p-2 mr-1"
+               <button type="button" class="btn btn-dark btn-sm p-2 mr-1"
                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
                        <i class="fas fa-ban"></i> Cancel all
                </button>
  
-               <button type="button" class="btn btn-danger btn-sm p-2"
+               <button type="button" class="btn btn-dark btn-sm p-2"
                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
                    <i class="far fa-trash-alt"></i> Remove all
                </button>
