@@ -75,25 +75,26 @@
                    [(ngModel)]="esercizio.testo"></textarea>
               </div>
           </div>
-
-          <!-- NOTA DI AVVISO -->
-          <div class="form-group row">
-              <label for="summernote-actex-alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nota di avviso</label>
-              <div class="col-sm-9">
-                  <textarea class="form-control" id="summernote-actex-alert" name="testo_actex"  placeholder="Nota di avviso"
-                    [(ngModel)]="esercizio.alert"></textarea>
-              </div>
-          </div>
-
-
+          
           <!-- LIMITAZIONI RELATIVE -->
           <div class="form-group row">
               <label for="summernote-actex-limit" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Limitazioni relative</label>
               <div class="col-sm-9">
                   <textarea class="form-control" id="summernote-actex-limit" name="testo_actex"  placeholder="Limitazioni relative"
-                    [(ngModel)]="esercizio.alert"></textarea>
+                    [(ngModel)]="esercizio.limitazioni"></textarea>
               </div>
           </div>
+
+          <!-- NOTA DI AVVISO -->
+          <div class="form-group row">
+            <label for="summernote-actex-alert" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nota di avviso</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="summernote-actex-alert" name="testo_actex"  placeholder="Nota di avviso"
+                  [(ngModel)]="esercizio.alert"></textarea>
+            </div>
+        </div>
+
+
 
         </form>
      </div>

@@ -277,6 +277,7 @@ export class RiabilNeuromotoriaService {
                 "&id_grp=" + ex.id_grp;
 
     console.log(url)
+    console.log(params)
 
     return this.http.post<Outcome>(url, params, httpOptions)
     .pipe(
