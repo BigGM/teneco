@@ -19,6 +19,8 @@ export class RecordEsercizio {
 
    constructor() {
       this.reset()
+      this.id_pkt    = -1
+      this.id_ambito = -1
    }
   
    /**
