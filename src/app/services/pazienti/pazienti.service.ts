@@ -179,6 +179,7 @@ export class PazientiService {
                 "&residenza=" + p.residenza +
                 "&indirizzo=" + p.indirizzo +
                 "&nazionalita=" + p.nazionalita+
+                "&email=" + p.email+
                 "&note=" + p.note;
     //console.log(url)
     return this.http.post<Outcome>(url, params, httpOptions)
@@ -205,6 +206,7 @@ export class PazientiService {
                 "&id_paziente=" + p.id_paziente +
                 "&residenza=" + p.residenza +
                 "&indirizzo=" + p.indirizzo +
+                "&email=" + p.email +
                 "&note=" + p.note;
 
     //console.log(url)

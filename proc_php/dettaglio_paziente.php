@@ -89,7 +89,7 @@ if ( substr($outcome,0,9)==="Exception") {
 }
  
 //$outp = $outcome . "|";
-$start = "[";
+$start = "";
 $outp  = $start;
 while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
 {
@@ -98,18 +98,19 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
    $outp .= '{'.
               '"id_paziente":'. rawurlencode($row[0]) . ','  .
               '"nome":"'      . rawurlencode($row[1]) . '",' .
-              '"cognome":"'   . rawurlencode($row[2]) . '",'  .
-              '"cf":"'        . rawurlencode($row[3]) . '",'  .
-              '"sesso":"'     . rawurlencode($row[4]) . '",'  .
+              '"cognome":"'   . rawurlencode($row[2]) . '",' .
+              '"cf":"'        . rawurlencode($row[3]) . '",' .
+              '"sesso":"'     . rawurlencode($row[4]) . '",' .
               '"data_nascita":"' . rawurlencode($row[5]) . '",'  .
-              '"luogo_nascita":"' . rawurlencode($row[6]) . '",'  .
-              '"nazionalita":"' . rawurlencode($row[7]) . '",'  .
-              '"residenza":"' . rawurlencode($row[8]) . '",'  .
-              '"indirizzo":"' . rawurlencode($row[9]) . '",'  .
-              '"note":"' . rawurlencode($row[10]) . '"'  .
+              '"luogo_nascita":"' . rawurlencode($row[6]) . '",' .
+              '"nazionalita":"' . rawurlencode($row[7]) . '",' .
+              '"residenza":"' . rawurlencode($row[8]) . '",' .
+              '"indirizzo":"' . rawurlencode($row[9]) . '",' .
+              '"email":"' . rawurlencode($row[10]) . '",' .
+              '"note":"' . rawurlencode($row[11]) . '"'  .
             '}';
 }
-$outp .= "]";
+$outp .= "";
 echo($outp);
 
 oci_free_statement($refcur);

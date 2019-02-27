@@ -1310,7 +1310,7 @@ BEGIN
     
     OPEN p_cursor FOR
     select id_paziente, nome, cognome, codice_fiscale, sesso, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita, nazionalita, 
-           luogo_residenza, indirizzo_domicilio, note
+           luogo_residenza, indirizzo_domicilio, email, note
       from GCA_ANAGRAFICA_PAZIENTI
       where GCA_ANAGRAFICA_PAZIENTI.ID_PAZIENTE = p_id_paziente;
     
@@ -1405,7 +1405,8 @@ PROCEDURE salva_paziente(p_nome in varchar2, p_cognome in varchar2,
                          p_cf   in varchar2, p_sesso in varchar2, 
                          p_luogo_nascita in varchar2, p_data_nascita in varchar2,
                          p_residenza in varchar2, p_indirizzo in varchar2,
-                         p_nazionalita in varchar2, p_note in varchar2,
+                         p_nazionalita in varchar2, p_email in varchar2, 
+                         p_note in varchar2,
                          p_outcome in out varchar2)
 IS
 BEGIN
@@ -1413,11 +1414,11 @@ BEGIN
     
     Insert into GCA_ANAGRAFICA_PAZIENTI
    (ID_PAZIENTE, CODICE_FISCALE, COGNOME, NOME, SESSO, 
-    DATA_NASCITA, LUOGO_NASCITA, LUOGO_RESIDENZA, INDIRIZZO_DOMICILIO, NAZIONALITA, 
-    NOTE)
+    DATA_NASCITA, LUOGO_NASCITA, LUOGO_RESIDENZA, INDIRIZZO_DOMICILIO, NAZIONALITA,
+    EMAIL, NOTE) 
  Values
    (S_GCA_ANAGRAFICA_PAZIENTI.nextval, p_cf, p_cognome, p_nome, p_sesso, 
-    TO_DATE(p_data_nascita, 'YYYY/MM/DD'), p_luogo_nascita, p_residenza, p_indirizzo, p_nazionalita, p_note);
+    TO_DATE(p_data_nascita, 'YYYY/MM/DD'), p_luogo_nascita, p_residenza, p_indirizzo, p_nazionalita, p_email, p_note);
     
     COMMIT;
 EXCEPTION
@@ -1427,7 +1428,7 @@ END salva_paziente;
 
 PROCEDURE salva_modifiche_paziente(p_id_paziente in varchar2,
                          p_residenza in varchar2, p_indirizzo in varchar2,
-                         p_note in varchar2,
+                         p_email in varchar2, p_note in varchar2,
                          p_outcome in out varchar2)
 IS
 BEGIN
@@ -1436,6 +1437,7 @@ BEGIN
     update GCA_ANAGRAFICA_PAZIENTI
         set LUOGO_RESIDENZA = p_residenza,
             INDIRIZZO_DOMICILIO = p_indirizzo,
+            email = p_email,
             NOTE = p_note
     where id_paziente = p_id_paziente;
     

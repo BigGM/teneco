@@ -262,12 +262,13 @@ PROCEDURE salva_paziente(p_nome in varchar2, p_cognome in varchar2,
                          p_cf   in varchar2, p_sesso in varchar2, 
                          p_luogo_nascita in varchar2, p_data_nascita in varchar2,
                          p_residenza in varchar2, p_indirizzo in varchar2,
-                         p_nazionalita in varchar2, p_note in varchar2,
+                         p_nazionalita in varchar2, p_email in varchar2, 
+                         p_note in varchar2,
                          p_outcome in out varchar2);
                          
 PROCEDURE salva_modifiche_paziente(p_id_paziente in varchar2,
                          p_residenza in varchar2, p_indirizzo in varchar2,
-                         p_note in varchar2,
+                         p_email in varchar2, p_note in varchar2,
                          p_outcome in out varchar2);
                          
 PROCEDURE cancella_paziente(p_id_paziente in varchar2,p_outcome in out varchar2);

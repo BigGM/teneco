@@ -63,7 +63,7 @@
     
         <form #actPazForm="ngForm" class="form-horizontal" role="form" novalidate>
            
-          <!-- NOME/COGNOME -->
+          <!-- NOME/COGNOME * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
               <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome/Cognome</label>
                 <div class="col-sm-4">
@@ -75,7 +75,7 @@
                   [(ngModel)]="paziente.cognome"></div>    
           </div>
 
-          <!-- CF/SESSO -->
+          <!-- CF/SESSO * -->
            <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="CF" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Codice fiscale</label>
               <div class="col-sm-5">
@@ -91,7 +91,7 @@
                   </div>
            </div>
 
-          <!-- Luogo e data nascita -->
+          <!-- Luogo e data nascita * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="nascita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Citt&agrave; e data di nascita</label>
               <div class="col-sm-5">
@@ -103,7 +103,7 @@
                   [(ngModel)]="paziente.data_nascita"></div>
           </div>
 
-          <!-- Nazionalita -->
+          <!-- Nazionalita * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
             <label for="nazionalita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nazionalit&agrave;</label>
               <div class="col-sm-9">
@@ -111,7 +111,7 @@
                 [(ngModel)]="paziente.nazionalita"></div>
           </div>
 
-           <!-- Residenza -->
+           <!-- Residenza * -->
           <div class="form-group row" >
             <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Residenza</label>
               <div class="col-sm-9">
@@ -119,12 +119,20 @@
                 [(ngModel)]="paziente.residenza"></div>
           </div>
 
-           <!-- Indirizzo -->
-           <div class="form-group row" >
+          <!-- Indirizzo * -->
+          <div class="form-group row" >
             <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Indirizzo</label>
               <div class="col-sm-9">
                 <input required type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo"
                 [(ngModel)]="paziente.indirizzo"></div>
+          </div>
+
+          <!-- Email * -->
+          <div class="form-group row" >
+            <label for="email" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Email</label>
+              <div class="col-sm-9">
+                <input required type="email" class="form-control" id="email" name="email" placeholder="Email"
+                [(ngModel)]="paziente.email"></div> 
           </div>
 
           <!-- NOTE -->

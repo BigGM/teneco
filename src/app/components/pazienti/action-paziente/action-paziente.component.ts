@@ -84,7 +84,7 @@ export class ActionPazienteComponent implements OnInit {
    * @param p 
    */
   loadDettaglioPaziente(p:Paziente) {
-    //console.log("PazientiComponent.loadDettaglioPaziente")
+    //console.log("PazientiComponent.loadDettaglioPaziente") 
     NeuroApp.showWait();
     let serv = this.pazientiService.loadDettaglioPaziente(p)
     this.pazientiSubscr = serv.subscribe (
@@ -105,6 +105,9 @@ export class ActionPazienteComponent implements OnInit {
   } // loadDettaglioPaziente()
 
 
+  /**
+   * Concatena luogo e data di nascita in una sola stringa usata nell'interfaccia grafica.
+   */
   luogo_data_nascita() {
     return this.paziente.luogo_nascita + ", " + this.paziente.data_nascita
   }
@@ -163,11 +166,17 @@ export class ActionPazienteComponent implements OnInit {
         this.checkMandatory(this.paziente.luogo_nascita) &&
         this.checkMandatory(this.paziente.nazionalita) &&
         this.checkMandatory(this.paziente.residenza) &&
-        this.checkMandatory(this.paziente.sesso);
+        this.checkMandatory(this.paziente.sesso) &&
+        this.checkMandatory(this.paziente.email);
 
     // Manca qualche campo => messaggio di errore ed esce
     if (outcome == false) {
       NeuroApp.custom_error("Controllare i campi obbligatori !","Errore")
+      return
+    }
+
+    if ( this.paziente.email.indexOf("@") == -1 ) {
+      NeuroApp.custom_error("Indirizzo di e-mail non valido !","Errore")
       return
     }
 

@@ -10,7 +10,8 @@ export class Paziente {
    luogo_nascita : string 
    nazionalita : string 
    residenza : string 
-   indirizzo : string 
+   indirizzo : string
+   email : string
    note: string
 
    constructor() {
@@ -28,6 +29,7 @@ export class Paziente {
       this.nazionalita = ""
       this.residenza = ""
       this.indirizzo = ""
+      this.email = ""
       this.note= ""
    }
 
@@ -42,6 +44,7 @@ export class Paziente {
       this.nazionalita = p.nazionalita
       this.residenza = p.residenza
       this.indirizzo = p.indirizzo
+      this.email = p.email
       this.note= p.note
    }
 
@@ -58,6 +61,7 @@ export class Paziente {
       out.nazionalita = encodeURIComponent(this.nazionalita)
       out.residenza = encodeURIComponent(this.residenza)
       out.indirizzo = encodeURIComponent(this.indirizzo)
+      out.email = encodeURIComponent(this.email)
       out.note = encodeURIComponent(this.note)
       return out;
    }
@@ -72,6 +76,7 @@ export class Paziente {
       p.nazionalita = decodeURIComponent(p.nazionalita)
       p.residenza = decodeURIComponent(p.residenza)
       p.indirizzo = decodeURIComponent(p.indirizzo)
+      p.email = decodeURIComponent(p.email)
       p.note = decodeURIComponent(p.note)
    }
 
@@ -85,9 +90,7 @@ export class Paziente {
       this.nazionalita = NeuroApp.trimField ( this.nazionalita )
       this.residenza = NeuroApp.trimField ( this.residenza )
       this.indirizzo = NeuroApp.trimField ( this.indirizzo )
+      this.email = NeuroApp.trimField ( this.email )
       this.note = NeuroApp.trimField ( this.note )
-
    }
-
-
 }

@@ -18,6 +18,7 @@ $data_nascita  = rawurldecode($_POST['data_nascita']);
 $residenza     = rawurldecode($_POST['residenza']);
 $indirizzo     = rawurldecode($_POST['indirizzo']);
 $nazionalita   = rawurldecode($_POST['nazionalita']);
+$email         = rawurldecode($_POST['email']);
 $note          = rawurldecode($_POST['note']);
 
 
@@ -32,6 +33,7 @@ echo $data_nascita . "\n";
 echo $residenza . "\n";
 echo $indirizzo . "\n";
 echo $nazionalita . "\n";
+echo $email . "\n";
 echo $note . "\n";
 die();
 *****/
@@ -57,7 +59,7 @@ if (!$conn) {
 /**
  * Crea lo statement per eseguire la procedura oracle 
  **/
-$cmd  = 'BEGIN ' . $proc . '(:nome, :cognome, :cf, :sesso, :luogo_nascita, :data_nascita,  :residenza, :indirizzo, :nazionalita, :note, :outcome); END;'; 
+$cmd  = 'BEGIN ' . $proc . '(:nome, :cognome, :cf, :sesso, :luogo_nascita, :data_nascita,  :residenza, :indirizzo, :nazionalita, :email, :note, :outcome); END;'; 
 $stmt = oci_parse($conn, $cmd);
 if (!$stmt) {
    $e = oci_error($conn);
@@ -86,6 +88,7 @@ oci_bind_by_name($stmt, ':residenza'    , $residenza, 255);
 oci_bind_by_name($stmt, ':indirizzo'    , $indirizzo, 255);
 oci_bind_by_name($stmt, ':nazionalita'  , $nazionalita, 255);
 oci_bind_by_name($stmt, ':note'         , $note, 1024);
+oci_bind_by_name($stmt, ':email'        , $email, 1024);
 oci_bind_by_name($stmt, ':outcome'      , $outcome, 4000);
 
 
