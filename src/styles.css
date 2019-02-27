@@ -106,18 +106,17 @@ router-outlet ~ * {
 
 .note-editable {
    overflow-y: auto;
-   /*font-family: Calibri,Verdana, Geneva, Tahoma, sans-serif;
-   font-size: 20px;*/
    line-height: 1.5;
+   border: double rgb(156, 178, 189);
 }
 /**
  * Aggiusta la posizione e il carattere del placeholder
  */
 .note-placeholder {
-    top: 7px;
-    left: 13px;
-    font-family: Tahoma, calibri, sans-serif, Helvetica, Arial, Tahoma;
-    font-size: 16px !important;
+   top: 7px;
+   left: 13px;
+   font-family: Tahoma, calibri, sans-serif, Helvetica, Arial, Tahoma;
+   font-size: 16px !important;
 }
 .note-form-label {
    font-weight:bold;

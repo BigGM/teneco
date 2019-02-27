@@ -8056,7 +8056,7 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'editor': Editor,
             'clipboard': Clipboard,
             //'dropzone': Dropzone,          /** --MODIF-- **/
-            'brand'     : Brand,             /** --MODIF-- **/
+            //'brand'     : Brand,             /** --MODIF-- **/
             'codeview': CodeView,
             'statusbar': Statusbar,
             'fullscreen': Fullscreen,

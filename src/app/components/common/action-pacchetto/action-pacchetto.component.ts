@@ -169,6 +169,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
             console.log('Summernote is launched');
             $('.note-editable').addClass('form-control');
             $('.note-editable').css('height', '300px'); 
+            //$('.note-editable').css('border', '2px solid rgb(144,164,174)'); 
          }
       }
     }

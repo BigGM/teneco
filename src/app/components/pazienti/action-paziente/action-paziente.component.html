@@ -142,7 +142,7 @@
      <div class="modal-footer">
 
         <button *ngIf="azione=='nuovo'" title="Salva paziente" class="btn btn-danger text-white" 
-          (click)="salvaPaziente(actPazForm)">
+          (click)="salvaNuovoPaziente()">
         <!--[disabled]="actPazForm.invalid" -->
           <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
         </button>
@@ -153,8 +153,8 @@
           </button>
 
         <button *ngIf="azione=='modifica'" title="Salva modifiche" class="btn btn-danger text-white" 
-          (click)="salvaPaziente(actPazForm)">
-          <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp;
+          (click)="salvaModifichePaziente()">
+          <i class="fas fa-share-square"></i>&nbsp;Salva&nbsp; 
         </button>
 
         <button *ngIf="azione=='modifica'" title="Ricarica sul modulo i campi del paziente corrente" class="btn btn-dark text-white" 
