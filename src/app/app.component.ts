@@ -22,7 +22,10 @@ export class AppComponent implements OnInit {
   
   fullScreen: string = "off"
 
-  subscr:Subscription;
+  subscr: Subscription;
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   constructor(private neuroService : NeuroAppService) {
     // Controlla la connesione internet ogni 25 secondi.

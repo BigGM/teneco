@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { NeuroApp } from '../../../neuro-app';
 
 declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
 
 @Component({
@@ -16,6 +17,9 @@ export class ListaGlossarioComponent implements OnInit, OnDestroy {
   glossario     : RecordGlossario[];
   glossSubscr   : Subscription;
   voce_glossario: RecordGlossario 
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   constructor( private glossarioService : GlossarioService) {
     //console.log( "ListaGlossarioComponent costruttore" )

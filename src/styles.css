@@ -18,6 +18,17 @@ router-outlet ~ * {
     width: 100%;
 }
 
+.label-debug {
+   position:fixed;
+   top:80px;
+   left:20px;
+   z-index:25000;
+   font-size:18px;
+   padding: 6px 20px;
+   background-color: rgba(255,200,0,0.9);
+   color: rgb(10,10,30);
+}
+
 .my-text-red {
    font-family: 'Cinzel', serif;
    color:rgb(240,20,20);

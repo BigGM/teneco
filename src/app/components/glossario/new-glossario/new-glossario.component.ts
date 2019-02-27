@@ -7,6 +7,7 @@ import { NeuroApp } from '../../../neuro-app';
 import { ListaGlossarioComponent } from '../lista-glossario/lista-glossario.component';
 
 declare var $:any;
+declare var NeuroAppJS:any;
 
 @Component({
   selector: 'app-new-glossario',
@@ -14,6 +15,9 @@ declare var $:any;
   styleUrls: ['./new-glossario.component.css']
 })
 export class NewGlossarioComponent implements OnInit, OnDestroy {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   voce_glossario : RecordGlossario;
   glossSubscr    : Subscription;

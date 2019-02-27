@@ -22,9 +22,9 @@ export class NeuroApp {
    static G_URL_ROOT = NeuroAppJS.G_URL_ROOT;
 
    // la directory con le icone di progetto
-   static ROOT_ICONS = "assets/images"
+   static ROOT_ICONS = "assets/images";
 
-
+   
    // Gruppi di esercizi (passivi, autonomi, etc.).
    // La lista viene caricata dal componente main (AppComponent.ts) richiamando
    // nel suo costruttore il metodo loadGruppi del servizio NeuroAppService

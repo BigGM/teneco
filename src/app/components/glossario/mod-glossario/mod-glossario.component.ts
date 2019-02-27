@@ -11,12 +11,18 @@ import { ListaGlossarioComponent } from '../lista-glossario/lista-glossario.comp
 // jQuery
 declare var $:any;
 
+// libreria javascript
+declare var NeuroAppJS:any;
+
 @Component({
   selector: 'app-mod-glossario',
   templateUrl: './mod-glossario.component.html',
   styleUrls: ['./mod-glossario.component.css']
 })
 export class ModGlossarioComponent implements OnInit {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   voce_glossario : RecordGlossario;
   glossSubscr  : Subscription;

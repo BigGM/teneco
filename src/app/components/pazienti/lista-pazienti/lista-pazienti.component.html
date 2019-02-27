@@ -1,6 +1,11 @@
 <!-- PANNELLO CON LA LISTA DEI PAZIENTI -->
-<div id="divListaPazienti" class="container-fluid" *ngIf="pazienti.length>0">
-    <div class="card shadow-lg" style="border:0px">
+<div id="divListaPazienti" class="container-fluid">
+
+    <label class="label-debug" *ngIf="debug&&show_debug">app/components/pazienti/lista-pazienti/</label>
+
+    <div class="card shadow-lg" style="border:0px"
+        (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+    >
       <div class="card-header my-bg-dark my-text-red text-center">
           <label>Pazienti</label>
       </div>

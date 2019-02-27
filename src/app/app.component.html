@@ -12,8 +12,10 @@
     <img id='waitImage' src='assets/images/wait.gif' alt='Loading'/>
   </div>
 
+<label class="label-debug" *ngIf="debug&&show_debug">app/app.component.*</label>
 
-<nav class="navbar navbar-expand-sm navbar-dark fixed-top navbar-shadow" >
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top navbar-shadow"
+  (mouseover)="show_debug=true" (mouseleave)="show_debug=false">
 
     <span class='navbar-brand'>
         <img src='assets/images/human-brain-2.jpg' 

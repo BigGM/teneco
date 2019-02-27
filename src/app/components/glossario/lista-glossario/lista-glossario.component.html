@@ -1,5 +1,7 @@
-<div class="container">
+<div class="container"
+(mouseover)="show_debug=true" (mouseleave)="show_debug=false">
 
+   <label class="label-debug" *ngIf="debug&&show_debug">app/components/glossario/lista-glossario/</label>
 
     <div class="card shadow-lg" style="border:0px" *ngIf="glossario.length>0">
     

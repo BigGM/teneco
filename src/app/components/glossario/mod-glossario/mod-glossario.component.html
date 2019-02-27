@@ -4,7 +4,11 @@
   <div  id="modifVoceGlossario" class="modal fade ui-draggable"
         tabindex="-1"
         role="dialog" data-backdrop="static"
-        style="padding-top:35px; display:none;">
+        style="padding-top:35px; display:none;"
+        (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+   >
+
+   <label class="label-debug" *ngIf="debug&&show_debug">app/components/glossario/mod-glossario/</label>
        
      <div class="modal-dialog" role="document">
      <div class="modal-content shadow-lg">
@@ -21,10 +25,10 @@
         <form #modifVoceForm="ngForm" role="form" id="modifVoceForm" name="modifVoceForm" novalidate>
            
            <div class="form-group" >
-              <label for="voce_glossario" class="my-label-required font-weight-bold">Voce*</label>
+              <label for="voce_glossario" class="font-weight-bold">Voce*</label>
                 <div>
-                  <input type="text" class="form-control" id="voce_glossario"  name="voce_glossario" placeholder="Voce"
-                  required [(ngModel)]="voce_glossario.voce"
+                  <input type="text" class="form-control" id="voce_glossario"  name="voce_glossario"
+                  readonly [(ngModel)]="voce_glossario.voce"
                   #voce="ngModel">
                 </div>
                 <div [hidden]="voce.valid || voce.pristine"
