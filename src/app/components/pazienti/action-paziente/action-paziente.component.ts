@@ -19,6 +19,9 @@ declare var NeuroAppJS : any;
 })
 export class ActionPazienteComponent implements OnInit {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
   /** Sottoscrizione ai servizi PazientiService */
   pazientiSubscr  : Subscription
 

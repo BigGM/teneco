@@ -7,6 +7,7 @@ import { NeuroApp } from '../../../neuro-app';
 
 declare var $ : any;
 declare var bootbox: any;
+declare var NeuroAppJS : any;
 
 
 @Component({
@@ -15,6 +16,9 @@ declare var bootbox: any;
   styleUrls: ['./dettaglio-paziente.component.css']
 })
 export class DettaglioPazienteComponent implements OnInit, OnDestroy {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   /** Per l'accesso alla lista dei pazienti */ 
   @Input() listaPazienti: ListaPazientiComponent

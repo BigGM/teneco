@@ -8,8 +8,9 @@ import { PazientiService } from 'src/app/services/pazienti/pazienti.service';
 import { NeuroApp } from '../../../neuro-app';
 import { templateJitUrl } from '@angular/compiler';
 
-declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
+declare var $ : any;
 
 @Component({
   selector: 'app-esercizi-paziente',
@@ -17,6 +18,9 @@ declare var bootbox: any;
   styleUrls: ['./esercizi-paziente.component.css']
 })
 export class EserciziPazienteComponent implements OnInit, OnDestroy {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
   /** Per l'accesso alla lista dei pazienti */ 
   @Input() listaPazienti: ListaPazientiComponent

@@ -8,7 +8,10 @@
   (click)="closeThisView()"
  ></div>
 
-<div id="esercizi-paziente-container" class="shadow-lg">
+<div id="esercizi-paziente-container" class="shadow-lg"
+(mouseover)="show_debug=true" (mouseleave)="show_debug=false">
+
+    <label class="label-debug" *ngIf="debug&&show_debug">app/components/pazienti/esercizi-paziente/</label>
 
     <i id="arrow-paz-ese" class="fas fa-angle-left" title="chiudi gestione esercizi" (click)="closeThisView()"
     style="
