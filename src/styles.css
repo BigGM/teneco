@@ -24,9 +24,9 @@ router-outlet ~ * {
    left:20px;
    z-index:25000;
    font-size:18px;
-   padding: 6px 20px;
-   background-color: rgba(255,200,0,0.9);
-   color: rgb(10,10,30);
+   padding: 16px 30px;
+   background-color: rgba(156, 82, 236, 0.9);
+   color: white;
 }
 
 .my-text-red {
