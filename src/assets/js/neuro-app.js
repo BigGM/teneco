@@ -6,7 +6,11 @@ var NeuroAppJS = {
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
 
-  DEBUG : false,           // mostra/nasconde la label gialla per il debug
+
+  /* Flag per Mostrare/Nascondere la label del debug. Il valore viene
+   * cambiato cliccando sull'immagine a sinistra nella barra del menu .
+   */
+  DEBUG : false,
   
    /**
    * Attiva il full screen, usa la libreria fullscreen.js nella directory assets
