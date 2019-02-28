@@ -400,7 +400,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
 
   /**
    * @param video l'elemento multimediale con il video da avviare
-   *
+   **/
   playVideo(this_video:RecordMediaEsercizio) {
     $("#myModalVideo .modal-title").html(this_video.descr);
     $("#myModalVideo").modal('show');
@@ -408,12 +408,12 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
     video.src = this_video.url
     video.currentTime = 0;
     video.play();
-  } */
+  }
 
   /**
    * Ferma il video in esecuzione sulla pagina di dettaglio esercizio
    * NB. Ci puo' essere un solo video in esecuzione
-   *
+   **/
   stopVideo() {
     $("#myModalVideo").modal('hide');
     let video:any = document.getElementById("video-play");
@@ -421,13 +421,13 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
       video.pause();
       video.currentTime = 0;
     } 
-  } */
+  } 
 
 
   /**
    * Ferma i video in esecuzione sulla pagina di aggiunta video.
    * NB. Ci possono essere piu' video in esecuzione
-   **
+   **/
   stopAllVideos() {
     let videos = document.getElementsByTagName('video');
 
@@ -437,12 +437,12 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
           videos[i].currentTime=0;
       }
     }
-  } */
+  }
 
   /**
    * Ferma tutti i file audio eventualmente in esecuzione.
    * NB. possono esserci piu' file audio in esecuzione.
-   **
+   **/
   stopAllAudio() {
     let sounds = document.getElementsByTagName('audio');
     for(let i=0; i<sounds.length; i++) {
@@ -451,5 +451,5 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
           sounds[i].currentTime=0;
       }
     }
-  } */
+  }
 }
