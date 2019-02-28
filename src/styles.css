@@ -368,3 +368,7 @@ a:not([href]):not([tabindex]):hover {
            filter: blur(4px);
  }
 
+ .cursor-pointer {
+    cursor:pointer;
+ }
+

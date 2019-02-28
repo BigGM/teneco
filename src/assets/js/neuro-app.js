@@ -6,7 +6,7 @@ var NeuroAppJS = {
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
 
-  DEBUG : true,            // mostra/nasconde la label gialla per il debug
+  DEBUG : false,           // mostra/nasconde la label gialla per il debug
   
    /**
    * Attiva il full screen, usa la libreria fullscreen.js nella directory assets

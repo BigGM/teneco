@@ -18,7 +18,7 @@
   (mouseover)="show_debug=true" (mouseleave)="show_debug=false">
 
     <span class='navbar-brand'>
-        <img src='assets/images/human-brain-2.jpg' 
+        <img src='assets/images/human-brain-2.jpg' (click)="toggleDebug()"
         style="width:60px;position:relative;left:-8px" />
     </span>
 
@@ -29,8 +29,14 @@
 
      <div class='collapse navbar-collapse' id='navbar_appMenu' >
         
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto" >
 
+          <!-- Home -->
+          <li class="nav-item">
+              <i class="fas fa-home text-white cursor-pointer mr-4" routerLink="/"></i>
+          </li>
+
+          <!-- Pacchetti -->
           <li class="nav-item dropdown" style="margin:0px 3px;">
           
               <button class="btn btn-primary btn-navbar dropdown-toggle" id="navbardrop" data-toggle="dropdown">
@@ -42,32 +48,37 @@
               </div>
           </li>
        
+          <!-- Formazione -->
           <li class="nav-item">
               <button class="btn btn-primary btn-navbar" routerLink="/formazione">Formazione</button>
-           </li>
+          </li>
 
- 
-           <li class="nav-item">
-              <button class="btn btn-primary btn-navbar" routerLink="/pazienti">Pazienti</button>
-           </li>
+          <!-- Pazienti -->
+          <li class="nav-item">
+            <button class="btn btn-primary btn-navbar" routerLink="/pazienti">Pazienti</button>
+          </li>
 
-           <li class="nav-item dropdown">
-              <button class="btn btn-primary btn-navbar dropdown-toggle" id="navbardrop" data-toggle="dropdown">
-                Risorse
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" routerLink="/video">Video</a>
-                <a class="dropdown-item" routerLink="/audio">Audio</a>
-                <a class="dropdown-item" routerLink="/images">Immagini</a>
-                <a class="dropdown-item" routerLink="/images_target">Immagini target</a>
-                <a class="dropdown-item" routerLink="/docs">Documenti</a>
-                <a class="dropdown-item" routerLink="/esercizi">Applicazioni</a>
-              </div>
-            </li>
-           <li class="nav-item">
-             <button class="btn btn-primary btn-navbar" routerLink="/glossario" >Glossario</button>
-            </li>
+          <!-- Risorse -->
+          <li class="nav-item dropdown">
+            <button class="btn btn-primary btn-navbar dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+              Risorse
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" routerLink="/video">Video</a>
+              <a class="dropdown-item" routerLink="/audio">Audio</a>
+              <a class="dropdown-item" routerLink="/images">Immagini</a>
+              <a class="dropdown-item" routerLink="/images_target">Immagini target</a>
+              <a class="dropdown-item" routerLink="/docs">Documenti</a>
+              <a class="dropdown-item" routerLink="/esercizi">Applicazioni</a>
+            </div>
+          </li>
+
+          <!-- Glossario -->
+          <li class="nav-item">
+            <button class="btn btn-primary btn-navbar" routerLink="/glossario" >Glossario</button>
+          </li>
         </ul>
+        
         <!--
         <i *ngIf="fullScreen=='off'" class="fas fa-expand text-white mr-2" style="cursor:pointer;font-size:30px;"
         title="Fullscreen" (click)="fullscreen()"></i>

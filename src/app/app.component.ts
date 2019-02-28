@@ -45,6 +45,11 @@ export class AppComponent implements OnInit {
             this.fullScreen = "off"
       })**/
   }
+
+  toggleDebug() {
+    NeuroAppJS.DEBUG = !NeuroAppJS.DEBUG;
+    this.debug = NeuroAppJS.DEBUG;
+  }
   
   
   /**
