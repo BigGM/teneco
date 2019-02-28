@@ -6,6 +6,8 @@ import { CommonUpload } from '../../../classes/common-upload'
 
 
 declare var $ : any;
+declare var NeuroAppJS : any;
+
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
 
 @Component({
@@ -14,7 +16,6 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
   styleUrls: ['./upload-audio.component.css']
 })
 export class UploadAudioComponent implements OnInit {
-
   public uploader:FileUploader = new FileUploader({url: URL_UPLOAD})
   public hasBaseDropZoneOver:boolean = false
   public hasAnotherDropZoneOver:boolean = false

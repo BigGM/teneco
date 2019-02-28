@@ -1,6 +1,10 @@
 
-<div class="shadow-lg px-3 py-1 mb-5 w-100">
- 
+<div class="shadow-lg px-3 py-1 mb-5 w-100"
+  (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+>
+
+  <label class="label-debug" *ngIf="debug&&show_debug">app/components/resource-images-target</label>
+
   <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color:rgb(24, 58, 83);">
     Immagini target
   </div>

@@ -18,13 +18,15 @@ declare var NeuroAppJS: any;
 
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/docs_upload.php";
 
-
 @Component({
   selector: 'app-resource-docs',
   templateUrl: './resource-docs.component.html',
   styleUrls: ['./resource-docs.component.css']
 })
 export class ResourceDocsComponent implements OnInit {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
   
   // lista dei documenti presenti nel DB
   lista_docs :  RecordMedia[];
@@ -54,7 +56,6 @@ export class ResourceDocsComponent implements OnInit {
     this.lista_docs = []
     this.mediaSubscr = null
   }
-
 
   ngOnInit() {
     console.log( "ResourceDocsComponent=> OnInit" )

@@ -27,6 +27,10 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/video_upload.php";
 })
 export class ResourceVideoComponent implements OnInit {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+
+
   // lista dei video presenti nel sistema
   lista_video :  RecordMedia[];
 

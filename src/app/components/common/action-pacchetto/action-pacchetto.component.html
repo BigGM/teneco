@@ -14,7 +14,11 @@
     <div  id="actPacchetto" class="modal fade"
           tabindex="-1"
           role="dialog" data-backdrop="static"
-          style="padding-top:35px; display:none;">
+          style="padding-top:35px; display:none;"
+          (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+    >
+
+          <label class="label-debug" *ngIf="debug&&show_debug">app/componens/common/action-pacchetto/</label>
          
        <div class="modal-dialog modal-lg" role="document">
        <div class="modal-content shadow-lg">

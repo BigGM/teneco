@@ -21,7 +21,8 @@
   .label-media {
       /*background-color: rgb(55, 65, 75)!important;*/
       background-color: rgb(76, 100, 140)!important;
-      border-radius:4px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
       color: white;
       font-family: Calibri, Verdana, Geneva, Tahoma, sans-serif;
       font-size: 26px;
@@ -73,18 +74,19 @@
   }
 
   .my-bg-secondary {
-   /*background-color:  rgb(94, 137, 167);*/
-   background-color:  rgb(55, 67, 94);
+   /*background-color:  rgb(55, 67, 94);*/
+   background-color:  rgb(230, 235, 245);
   }
 
+  .my-bg-dark-title {
+   background-color:rgb(24, 58, 83)
+  }
 
   .my-bg-dark {
-   /*background-color:rgb(55, 102, 135);*/
-   background-color:rgb(70, 86, 120);
+   background-color:rgb(76, 100, 140);
   }
 
   .my-bg-dark-2 {
-   /*background-color:rgb(55, 102, 135);*/
    background-color:rgb(36,72,116);
   }
 

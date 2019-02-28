@@ -10,6 +10,9 @@ import { Categoria } from '../../../classes/categoria'
 // jQuery
 declare var $ : any;
 
+// libreria javascript
+declare var NeuroAppJS : any;
+
 // La url dello script php che esegue l'upload sul server
 const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_target_upload.php"
 
@@ -19,6 +22,10 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_target_upload.php"
   styleUrls: ['./upload-images-target.component.css']
 })
 export class UploadImagesTargetComponent implements OnInit {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
 
   public uploader:FileUploader;
   public hasBaseDropZoneOver:boolean = false

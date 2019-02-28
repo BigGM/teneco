@@ -1,10 +1,13 @@
 
 <DIV *ngIf="view_dettaglio_visible"
   id="view_dettaglio_esercizio"
-  class="container mb-5 py-3 shadow-lg" 
-  >
+  class="container mb-5 py-3 shadow-lg"
+>
 
-   
+<div (mouseover)="show_debug=true;mousemove_event=true" (mouseleave)="show_debug=false;mousemove_event=true">
+
+  <label class="label-debug" *ngIf="debug&&show_debug">app/components/common/dettaglio-esercizio/</label>
+
     <!-- PAGINA CON IL DETTAGLIO DI UN ESERCIZIO  -->
     <div class='w-100 my-bg-dark my-text-red text-center py-2'>
         <label>Dettaglio</label>
@@ -20,7 +23,6 @@
         <div class="new-line-1"></div>
     </div>
 
-
     <!-- DESCRIZIONE -->
     <div class="w-100">
         <label class='label-dettaglio w-100'>Descrizione</label>
@@ -31,7 +33,6 @@
         <div class="new-line-1"></div>
     </div>
     
-
     <!-- TESTO -->
     <div class="w-100">
       <label class='label-dettaglio w-100'>Testo</label>
@@ -41,7 +42,6 @@
       </div>
       <div class="new-line-1"></div>
     </div>
-
 
     <!-- LIMITAZIONI -->
     <div class="w-100">
@@ -54,7 +54,6 @@
       <div class="new-line-1"></div>
     </div>
     
-
    <!-- ALERT -->
     <div class="w-100">
       <label class='label-dettaglio w-100'>Avvertenze</label>
@@ -65,6 +64,10 @@
       <div class="new-line-1"></div>
     </div>
 
-    <app-media-collegati class="w-100 mb-4"></app-media-collegati>
-    
+  </div>
+
 </DIV>
+
+<div *ngIf="view_dettaglio_visible" class="container mb-5 py-3 shadow-lg">
+  <app-media-collegati #mediaCollegatiRef class="w-100 mb-4"></app-media-collegati>
+</div>

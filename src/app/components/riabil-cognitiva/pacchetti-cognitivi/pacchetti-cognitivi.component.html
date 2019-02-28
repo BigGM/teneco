@@ -1,7 +1,12 @@
 <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
-<div id="divPacchettiCognitivi" class="container" >
-  <div class="card shadow-lg" style="border:0px">
-      
+<div id="divPacchettiCognitivi" class="container">
+
+  <div class="card shadow-lg" style="border:0px"
+    (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+  >
+
+  <label class="label-debug" *ngIf="debug&&show_debug">app/components/riabil-cognitiva/pacchetti-cognitivi</label>    
+
     <div class="card-header my-bg-dark my-text-red text-center">
         <label>Riabilitazione cognitiva</label>
     </div>

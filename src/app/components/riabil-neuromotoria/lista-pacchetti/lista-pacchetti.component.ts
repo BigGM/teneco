@@ -6,6 +6,7 @@ import { RecordPacchetto } from '../../../classes/record-pacchetto'
 
 
 declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
 
 @Component({
@@ -15,6 +16,10 @@ declare var bootbox: any;
 })
 export class ListaPacchettiComponent implements OnInit, OnDestroy {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+
+
   readonly AMBITO:number = 1
 
   /** La lista dei pacchetti */
@@ -22,7 +27,6 @@ export class ListaPacchettiComponent implements OnInit, OnDestroy {
 
   pktSubscr  : Subscription
   
-
   @Output() selectedPkt = new EventEmitter()
 
   /** 

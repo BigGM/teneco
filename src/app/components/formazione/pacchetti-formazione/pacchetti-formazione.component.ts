@@ -4,8 +4,8 @@ import { NeuroApp } from '../../../neuro-app';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
 import { RiabilNeuromotoriaService} from '../../../services/riabil-neuromotoria/riabil-neuromotoria.service'
 
-
 declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
 
 @Component({
@@ -25,7 +25,6 @@ export class PacchettiFormazioneComponent implements OnInit {
    * Il servizio e' quello dei pacchetti di formazione. */
   pktSubscr  : Subscription
   
-
   @Output() selectedPkt = new EventEmitter()
 
   /** 
@@ -33,6 +32,11 @@ export class PacchettiFormazioneComponent implements OnInit {
    * pacchetto o modificarne uno esistente.
    */
   @Output() openActionPacchetto: EventEmitter<any> = new EventEmitter
+
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
 
   constructor( private pktService : RiabilNeuromotoriaService) {
     //console.log( "PacchettiFormazioneComponent costruttore" )

@@ -1,5 +1,8 @@
 <div id="divListaEserciziPacchetto" class="container mt-5 mb-3"
-   *ngIf="view_esercizi_visible">
+   *ngIf="view_esercizi_visible"
+   (mouseover)="show_debug=true" (mouseleave)="show_debug=false">
+
+   <label class="label-debug" *ngIf="debug&&show_debug">app/components/common/lista-esercizi/</label>
 
       <div class="card shadow-lg" style="border:0px">
          
@@ -125,7 +128,7 @@
             </thead>
 
             <tr *ngFor="let ex of esercizi" #row (click)='onForeground(ex.id_ex,row,$event)'>
-               <td (click)="dettaglioEsercizio(ex)">{{ex.nome}}</td>
+               <td (click)="dettaglioEsercizio(ex)" style="max-width:200px;">{{ex.nome}}</td>
                <td (click)="dettaglioEsercizio(ex)">{{ex.descr | plaintext | truncate:80}}</td>
                <td nowrap ng-bind="ex.nome_grp" (click)="dettaglioEsercizio(ex)">{{ex.nome_grp}}</td>
                <td style='text-align:right;width:100px;' ng-bind="ex.count_media" (click)="dettaglioEsercizio(ex)">{{ex.count_media}}</td>

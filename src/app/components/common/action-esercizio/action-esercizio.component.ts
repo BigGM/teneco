@@ -8,9 +8,11 @@ import { RecordEsercizio } from '../../../classes/record-esercizio'
 import { Gruppo } from '../../../classes/gruppo'
 
 
-
 // questo e' per jQuery
 declare var $: any;
+
+// libreria javascript
+declare var NeuroAppJS: any;
 
 @Component({
   selector: 'app-action-esercizio',
@@ -18,6 +20,10 @@ declare var $: any;
   styleUrls: ['./action-esercizio.component.css']
 })
 export class ActionEsercizioComponent implements OnInit, OnDestroy {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+
 
   @Input() listaEsercizi: ListaEserciziComponent
 

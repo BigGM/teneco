@@ -24,6 +24,9 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/images_upload.php"
 })
 export class ResourceImagesComponent implements OnInit, OnDestroy {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
   // lista delle immagini presenti nel DB
   lista_images :  RecordMedia[];
 

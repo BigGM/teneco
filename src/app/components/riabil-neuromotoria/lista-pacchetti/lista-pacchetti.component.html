@@ -1,7 +1,11 @@
 <!-- PANNELLO CON LA LISTA DEI PACCHETTI -->
-<div id="divListaPacchetti" class="container">
+<div id="divListaPacchetti" class="container"
+  (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
+>
+  <label class="label-debug" *ngIf="debug&&show_debug">app/components/riabil-neuromotoria/lista-pacchetti/</label>
+
   <div class="card shadow-lg" style="border:0px">
-      
+
     <div class="card-header my-bg-dark my-text-red text-center">
         <label>Riabilitazione neuromotoria</label>
     </div>

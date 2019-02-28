@@ -25,6 +25,9 @@ const URL_UPLOAD = NeuroApp.G_URL_ROOT + "/cgi-bin/audio_upload.php";
 })
 export class ResourceAudioComponent implements OnInit, OnDestroy {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
   // lista dei file audio presenti nel sistema
   lista_audio :  RecordMedia[];
 

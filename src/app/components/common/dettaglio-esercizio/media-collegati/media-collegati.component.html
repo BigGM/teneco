@@ -1,4 +1,12 @@
 
+<div (mouseover)="show_debug=true" (mouseleave)="show_debug=false">
+
+<label class="label-debug" *ngIf="debug&&show_debug">app/components/dettaglio-esercizio/media-collegati/</label>
+
+<div class='w-100 my-bg-dark-title my-text-red text-center py-2 mb-5'>
+    <label>Media assegnati</label>
+</div>
+
   
   <!-- SEZIONE FILE VIDEO -->
   <div class="w-100" *ngIf="filter('video'); let video_list">
@@ -19,7 +27,7 @@
         </div>
       </div>
   </div>
-  </div>
+  </div> 
 
 	<br>
 
@@ -339,4 +347,6 @@
             </div>
             <div class="modal-footer"></div>
    </div></div></div>
+
+  </div>
 

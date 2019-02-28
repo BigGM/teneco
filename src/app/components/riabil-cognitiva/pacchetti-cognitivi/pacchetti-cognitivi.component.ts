@@ -6,8 +6,8 @@ import { RecordPacchetto } from '../../../classes/record-pacchetto'
 
 
 declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
-
 
 @Component({
   selector: 'app-pacchetti-cognitivi',
@@ -19,25 +19,24 @@ export class PacchettiCognitiviComponent implements OnInit, OnDestroy {
   /** l'AMBITO 2 identifica i pacchetti di tipo cognitivo */
   readonly AMBITO:number = 2
 
-
   /** La lista dei pacchetti */
   pacchetti : RecordPacchetto[]
 
-
   /** Sottoscrizione al servizio RiabilNeuromotoriaService */
   pktSubscr : Subscription
-  
 
   /** EventEmitter diretto verso ListaEserciziComponent per comunicare
    * il pacchetto cliccato sulla interfaccia.*/
   @Output() selectedPkt = new EventEmitter()
 
-  
   /** 
    * Per comunicare alla finestra modale la richiesta di creare un nuovo
    * pacchetto o modificarne uno esistente.*/
   @Output() openActionPacchetto: EventEmitter<any> = new EventEmitter
 
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
 
 
   constructor( private pktService : RiabilNeuromotoriaService) {

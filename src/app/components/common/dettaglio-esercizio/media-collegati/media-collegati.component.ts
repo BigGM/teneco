@@ -8,12 +8,9 @@ import { RecordMediaEsercizio } from 'src/app/classes/record-media-esercizio';
 import { RecordMedia } from '../../../../classes/record-media'
 
 
-
-
 declare var $: any;
 declare var NeuroAppJS: any;
 declare var bootbox:any;
-
 
 @Component({
   selector: 'app-media-collegati',
@@ -21,6 +18,9 @@ declare var bootbox:any;
   styleUrls: ['./media-collegati.component.css']
 })
 export class MediaCollegatiComponent implements OnInit, OnDestroy {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
 
   // Variabile di output per comunicare al componente DettaglioEsercizio l'aggiornamento
   // del numero dei media dell'esercizio mostrato qui, poi questo componente comunica
@@ -226,7 +226,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   /**
    * Estrae il mome del documento dalla url in input
    */
-  docName(url) {
+  docName(url:string) {
     return NeuroApp.fileName(url)
   }
 
@@ -234,7 +234,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   /**
   * Estrae l'estensione del documento (compreso il '.') dalla url in input
   */
-  docExt(url) {
+  docExt(url:string) {
     return NeuroApp.fileExt(url)
   }
 
@@ -243,7 +243,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
    * Restituise l'icona da inserire per il documento secondo la sua estensione
    * @param url
    */
-  docIcon(url) {
+  docIcon(url:string) {
     if ( NeuroApp.icons[NeuroApp.fileExt(url)] == undefined )
       return NeuroApp.ROOT_ICONS + "/generic-doc-icon.png"
     else
@@ -257,34 +257,6 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   */
   open(url:string) {
     window.open(url)
-  }
-
-
-  /**
-   * @param video l'elemento multimediale con il video da avviare
-   */
-  playVideo(this_video:RecordMediaEsercizio) {
-    $("#myModalVideo .modal-title").html(this_video.descr);
-    $("#myModalVideo").modal('show');
-    let video:any = document.getElementById("video-play");
-    video.src = this_video.url
-    video.currentTime = 0;
-    video.play();
-  } // openModalVideo
-
-
-    
-  /**
-   * Ferma il video in esecuzione sulla pagina di dettaglio esercizio
-   * NB. Ci puo' essere un solo video in esecuzione
-   */ 
-  stopVideo() {
-    $("#myModalVideo").modal('hide');
-    let video:any = document.getElementById("video-play");
-    if (video.currentTime >0) {
-      video.pause();
-      video.currentTime = 0;
-    } 
   }
 
 
@@ -382,7 +354,6 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   } // openModalAggiungiMedia()
 
 
-  
   /**
    *  Aggiunge all'esercizi corrente gli elementi multimediali selezionati
    * nella finestra modale.
@@ -427,33 +398,58 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   } // cancellaMediaEsercizio()
 
 
+  /**
+   * @param video l'elemento multimediale con il video da avviare
+   *
+  playVideo(this_video:RecordMediaEsercizio) {
+    $("#myModalVideo .modal-title").html(this_video.descr);
+    $("#myModalVideo").modal('show');
+    let video:any = document.getElementById("video-play");
+    video.src = this_video.url
+    video.currentTime = 0;
+    video.play();
+  } */
 
-    /**
-     * Ferma i video in esecuzione sulla pagina di aggiunta video.
-     * NB. Ci possono essere piu' video in esecuzione
-     **/
-    stopAllVideos() {
-      let videos = document.getElementsByTagName('video');
+  /**
+   * Ferma il video in esecuzione sulla pagina di dettaglio esercizio
+   * NB. Ci puo' essere un solo video in esecuzione
+   *
+  stopVideo() {
+    $("#myModalVideo").modal('hide');
+    let video:any = document.getElementById("video-play");
+    if (video.currentTime >0) {
+      video.pause();
+      video.currentTime = 0;
+    } 
+  } */
 
-      for(let i=0; i<videos.length; i++) {
-        if ( videos[i].currentTime > 0) {
-            videos[i].pause();
-            videos[i].currentTime=0;
-        }
+
+  /**
+   * Ferma i video in esecuzione sulla pagina di aggiunta video.
+   * NB. Ci possono essere piu' video in esecuzione
+   **
+  stopAllVideos() {
+    let videos = document.getElementsByTagName('video');
+
+    for(let i=0; i<videos.length; i++) {
+      if ( videos[i].currentTime > 0) {
+          videos[i].pause();
+          videos[i].currentTime=0;
       }
     }
+  } */
 
-    /**
-     * Ferma tutti i file audio eventualmente in esecuzione.
-     * NB. possono esserci piu' file audio in esecuzione.
-     **/
-    stopAllAudio() {
-      let sounds = document.getElementsByTagName('audio');
-      for(let i=0; i<sounds.length; i++) {
-        if ( sounds[i].currentTime > 0) {
-            sounds[i].pause();
-            sounds[i].currentTime=0;
-        }
+  /**
+   * Ferma tutti i file audio eventualmente in esecuzione.
+   * NB. possono esserci piu' file audio in esecuzione.
+   **
+  stopAllAudio() {
+    let sounds = document.getElementsByTagName('audio');
+    for(let i=0; i<sounds.length; i++) {
+      if ( sounds[i].currentTime > 0) {
+          sounds[i].pause();
+          sounds[i].currentTime=0;
       }
     }
+  } */
 }

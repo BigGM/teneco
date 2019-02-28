@@ -16,6 +16,9 @@ declare var bootbox: any
 })
 export class ResourceImagesTargetComponent implements OnInit, OnDestroy, AfterViewInit  {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
   // lista dei documenti presenti nel DB
   lista_images :  RecordImageTarget[];
 

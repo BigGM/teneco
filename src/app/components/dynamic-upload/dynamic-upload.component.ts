@@ -7,6 +7,9 @@ import { CommonUpload } from '../../classes/common-upload'
 // jQuery
 declare var $ : any;
 
+// libreria javascript
+declare var NeuroAppJS : any;
+
 
 @Component({
   selector: 'app-dynamic-upload',
@@ -14,6 +17,10 @@ declare var $ : any;
   styleUrls: ['./dynamic-upload.component.css']
 })
 export class DynamicUploadComponent implements OnInit {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
 
   @Input() title: string;
   @Input() id_file_upload : string;

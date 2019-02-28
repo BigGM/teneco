@@ -16,12 +16,14 @@ declare var bootbox: any
 })
 export class ResourceAppComponent implements OnInit {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug:boolean;
+
   // lista delle apps presenti nel sistema
   lista_apps :  RecordMedia[];
 
   // per la registrazione al servizio di accesso alle procedure del DB
   mediaSubscr:  Subscription;
-
 
   /**
    * Costruttore

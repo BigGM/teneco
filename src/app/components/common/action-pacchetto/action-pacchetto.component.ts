@@ -23,6 +23,9 @@ declare var NeuroAppJS : any;
 })
 export class ActionPacchettoComponent implements OnInit, OnDestroy {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+
   @Input() listaPacchetti: ListaPacchettiComponent | PacchettiFormazioneComponent | PacchettiCognitiviComponent
 
   // questo e' il pacchetto all'apertura della finestra modale in modalita: modifica

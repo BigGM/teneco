@@ -11,6 +11,9 @@ import { NeuroAppService } from 'src/app/services/neuro-app.service';
 import { MediaCollegatiComponent } from './media-collegati/media-collegati.component'
 
 
+// libreria javascript
+declare var NeuroAppJS : any;
+
 @Component({
   selector: 'app-dettaglio-esercizio',
   templateUrl: './dettaglio-esercizio.component.html',
@@ -18,12 +21,24 @@ import { MediaCollegatiComponent } from './media-collegati/media-collegati.compo
 })
 export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+  mousemove_event : boolean = false;     // per controllare il movimento del mouse dentro/fuori il componente
+
   /** Riferimento alla componente padre ListaEserciziComponent */ 
   @Input() listaEsercizi: ListaEserciziComponent;
 
-  
-  /** Vista al componente child che visualizza i media collegati */ 
-  @ViewChildren(MediaCollegatiComponent) mediaCollegatiChild : QueryList<MediaCollegatiComponent>
+
+  /** 
+   * Vista al componente child che visualizza i media collegati.
+   * 
+   * NB. "mediaCollegatiRef" e' il riferimento assegnato al componente (vedi corrispondente html)
+   * NB. Se si usasse questa dichiarazione:
+   *        @ViewChildren(MediaCollegatiComponent) mediaCollegatiChild : QueryList<MediaCollegatiComponent>
+   *     si avrebbe accesso a tutti i componenti del tipo MediaCollegatiComponent eventualmente
+   *     presenti nella pagina,  ma qui ce ne sta solo a cui e' assegnato il "nome" mediaCollegatiRef.
+   */
+  @ViewChildren("mediaCollegatiRef") mediaCollegatiChild : QueryList<MediaCollegatiComponent>
 
 
   /** Il componente che visualizza gli elementi multidiali di questo esercizio.
@@ -31,7 +46,6 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
    * la pagina e' pronta
    **/
   mediaCollegati : MediaCollegatiComponent
-
 
   /** Esercizio/Modalita di cui e' richiesto il dettaglio */ 
   esercizio : RecordEsercizio
@@ -47,7 +61,6 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
   
   /** Sottoscrizione ai servizi */
   exSubscr  : Subscription
-
 
   constructor (
       private exService : RiabilNeuromotoriaService,
@@ -75,6 +88,9 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
     this.listaEsercizi.openDettaglio.subscribe (ex => {
       console.log("DettaglioEsercizioComponent", ex)
       
+      // reinizializza a false per il debug
+      this.mousemove_event = false;
+
       if (ex) {
         this.esercizio.copy(ex as RecordEsercizio)
 
@@ -91,12 +107,12 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
     })
   }
 
-
   ngOnDestroy() {
     this.media = null;
     if (this.exSubscr) this.exSubscr.unsubscribe()
     this.listaEsercizi.openDettaglio.unsubscribe()
-    this.mediaCollegati = null;
+    this.mediaCollegati = null
+    this.mousemove_event = false;
   }
 
 
@@ -105,9 +121,23 @@ export class DettaglioEsercizioComponent implements OnInit, OnDestroy, AfterView
    * del componente, assegnarlo all'attributo 'mediaCollegati' e passargli il riferimento
    * all'esercizio visualizzato, così il componente puo' richiedere la lista dei media collegati
    * all'esercizio e presentarli sulla pagina.
+   * 
+   * NB. In caso di debug attivato il codice nel subcribe viene attivato anche quando la label
+   *     di debug viene visualizzata o nascosta, si usa allora l'attributo 'mousemove_event'
+   *     posto a true quando si muove il mouse dentro e fuori il component: in questo caso
+   *     il codice non deve essere eseguito.
    */
   ngAfterViewInit() {
-      this.mediaCollegatiChild.changes.subscribe( (comps: QueryList<MediaCollegatiComponent>) => {
+    
+    console.log("*** ngAfterViewInit ***");
+
+    this.mediaCollegatiChild.changes.subscribe( (comps: QueryList<MediaCollegatiComponent>) => {
+      
+      // se attivato dal solo movimento del mouse dentro/fuori il componente non 
+      // deve fare niente e ritorna immediatamente
+      if (this.mousemove_event)
+        return;
+
       // Now you can access to the child component
       console.log(comps);
       if (comps.first) {

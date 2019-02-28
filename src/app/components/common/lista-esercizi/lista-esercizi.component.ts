@@ -9,6 +9,7 @@ import { RecordPacchetto } from '../../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../../classes/record-esercizio'
 
 declare var $ : any;
+declare var NeuroAppJS : any;
 declare var bootbox: any;
 
 @Component({
@@ -17,6 +18,10 @@ declare var bootbox: any;
   styleUrls: ['./lista-esercizi.component.css']
 })
 export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  debug : boolean = NeuroAppJS.DEBUG;
+  show_debug : boolean = false;
+
 
   /** Per visualizzare o meno questo componente */
   view_esercizi_visible : boolean
