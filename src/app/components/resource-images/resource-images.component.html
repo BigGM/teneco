@@ -7,7 +7,7 @@
 
 <div class="container-fluid my-text-red text-center p-3 mb-4" style="background-color: rgb(24, 58, 83);">Gestione Immagini</div>
  
-<DIV id="div_image_component" class="container-fluid mb-5">  
+<DIV id="div_image_component" class="container-fluid mb-3">  
 
     <!--
       La componente UploadImageComponent invia al parent la richiesta di
@@ -41,8 +41,8 @@
 
     <!-- Presentazione a griglia -->
     <div id="div-view-images-as-grid" *ngIf="view_images_as=='grid'" 
-      class="row py-3 px-1" 
-      style="background-color:rgb(81, 136, 175); border-radius:4px;">
+      class="row py-3 px-1 my-bg-secondary" 
+      style="border-radius:4px;">
         <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
             <div class="thumbnail thumbnail-image p-3 word-break">
                 <img [src]="image.url_media" class="img-fluid"
