@@ -371,4 +371,26 @@ a:not([href]):not([tabindex]):hover {
  .cursor-pointer {
     cursor:pointer;
  }
+ 
+ .close {
+   font-size: 2.0rem;
+   color:white;
+   text-shadow: 0 0 0 transparent;
+ }
+ 
 
+ 
+ .modal-header .close {
+    top: 0px;
+    right: 0px;
+	padding: 0.6rem;
+    right: 0;
+    margin: -0.2rem -0.5rem -1rem 0.2rem;
+ }
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+    color: white;
+    text-decoration: none;
+    opacity: 1.0;
+	background-color: rgb(200,0,0);
+}
