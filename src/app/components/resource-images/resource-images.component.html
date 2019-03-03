@@ -44,13 +44,14 @@
       class="row py-3 px-1 my-bg-secondary" 
       style="border-radius:4px;">
         <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
-            <div class="thumbnail thumbnail-image p-3 word-break">
+            <div class="thumbnail thumbnail-image p-2 word-break">
                 <img [src]="image.url_media" class="img-fluid"
                     data-toggle="modal"
                     data-target="#modalImageList" 
                     (click)="openModalImage(image)"
                     style="cursor:pointer"
                 >
+                <p>
                 <table ><tr>
                 <td class="descr-image">{{image.descr_media}}</td>
                 <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaImage(image)"></i></td>
@@ -66,7 +67,7 @@
       style="border-radius:4px;"
     >
           <div *ngFor="let image of lista_images" class="col-12 mb-3 word-break">
-            <div class="thumbnail thumbnail-image p-2 my-bg-dark">
+            <div class="thumbnail thumbnail-image p-1 my-bg-dark">
                 <table style="width:100%">
                   <tr>
                     <td class="descr-image-on-lista"
