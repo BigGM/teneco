@@ -174,7 +174,7 @@ router-outlet ~ * {
 
 /**
  * ====================================================================================
- * Stili per le popover aperte impostate con i campi testuali summernote
+ * Stili per le popover impostate per i campi summernote
  * ====================================================================================
  **/
 .my-popover-body {
@@ -183,7 +183,7 @@ router-outlet ~ * {
 
 a {
    font-weight: bold;
-   color: rgb(240,17,140);
+   color: rgb(255,245,130);
    text-decoration: none;
    padding: 1px 6px;
    border-radius:6px;
@@ -194,7 +194,7 @@ a {
  */
 a:not([href]):not([tabindex]) {
    font-weight: bold;
-   color: rgb(240,17,140);
+   color: rgb(255,245,130);
    text-decoration: none;
    padding: 1px 6px;
    border-radius:6px;
@@ -205,14 +205,12 @@ a:not([href]):not([tabindex]):hover {
 
 /**
  * Stili aggiuntivi per il popup del glossario. 
- * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
+ * NB. !!! Questa prima classe e' usata anche pe rimuovere i popover aperti !!!
  */
 .my-popover-glossario {
    max-width:360px !important;
    border: 1px solid rgba(150,150,150,0.1) !important;
-   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;
 }
-
 /** 
  * Stile del titolo del popover che presenta
  * una voce del glossario
@@ -220,27 +218,24 @@ a:not([href]):not([tabindex]):hover {
 .voce-glossario {
    width:100%;
    font-weight:normal;
-   background-color:rgb(9, 140, 177);
+   background-color:rgb(0, 150, 195);
    color:white;
    padding:8px 12px;
    font-family:Roman;
    font-size:28px;
 }
-
 /** 
- * Stile del body del popover che presenta
- * una voce del glossario
+ * Stile del body del popover che presenta una voce del glossario.
  */
 .descr-glossario {
    width:100%;
-   background-color:rgb(27, 66, 91);
+   background-color:rgb(33, 84, 120);
    padding:8px 24px;
    font-family: Calibri, Tahoma, Verdana,san serif;
    font-size:20px;
    font-weight:normal;
    color: white;
 }
-
 
 
 /**
@@ -250,13 +245,11 @@ a:not([href]):not([tabindex]):hover {
 .my-popover-video {
    max-width: 450px !important;
    border: 1px solid rgba(150,150,150,0.1) !important;
-   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;
 }
-
 /**
  * Questo per il div con i video
  */
- .voce-video {
+.voce-video {
    width:100%;
    font-weight:normal;
    background-color:rgb(6, 82, 157);
@@ -281,11 +274,10 @@ a:not([href]):not([tabindex]):hover {
  * Stili aggiuntivi per il popover dei file audio.
  * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
  */
- .my-popover-audio {
+.my-popover-audio {
    width: 340px !important;
    max-width: 340px !important;
    border: 1px solid rgba(150,150,150,0.1) !important;
-   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;
 }
 /**
  * Questo per il div che riproduce l'audio
@@ -314,12 +306,13 @@ a:not([href]):not([tabindex]):hover {
  * Stili aggiuntivi per il popover con le immagini.
  * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
  */
- .my-popover-image {
+.my-popover-image {
    width: 380px !important;
    max-width: 380px !important;
    border: 1px solid rgba(150,150,150,0.1) !important;
-   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;
+   /*box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;*/
 }
+
 /**
  * Questo per il div che contiene l'immagine
  */
@@ -343,8 +336,11 @@ a:not([href]):not([tabindex]):hover {
    font-weight:normal;
 }
 
+/**
+ * Variazione di stili per l'oggetto popover bootstrap.
+ */
 .popover {
-   box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+   box-shadow: 0 1rem 3rem rgba(0,0,0,.2)!important;
    border: 1px solid rgba(0, 0, 0, 0.065);
    border-top-right-radius: 12px;
 }

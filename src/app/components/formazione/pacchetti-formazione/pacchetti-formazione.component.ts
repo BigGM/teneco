@@ -54,6 +54,7 @@ export class PacchettiFormazioneComponent implements OnInit {
     this.pacchetti = null
     if (this.pktSubscr )
       this.pktSubscr.unsubscribe()
+    NeuroApp.removePopover()
   }
 
 

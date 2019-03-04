@@ -56,6 +56,7 @@ export class PacchettiCognitiviComponent implements OnInit, OnDestroy {
     this.pacchetti = null
     if (this.pktSubscr )
       this.pktSubscr.unsubscribe()
+    NeuroApp.removePopover()
   }
 
 
