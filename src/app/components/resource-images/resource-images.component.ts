@@ -197,7 +197,7 @@ export class ResourceImagesComponent implements OnInit, OnDestroy {
         msg = "<h6><b>L'immagine viene usata in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
       bootbox.dialog ({
-        title: "<h4>Cancella Immagine</h4>", 
+        title: "<h3>Cancella Immagine</h3>", 
         message: msg,
         draggable:true,
         buttons: {

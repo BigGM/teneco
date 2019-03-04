@@ -108,7 +108,7 @@ export class ResourceImagesTargetComponent implements OnInit, OnDestroy, AfterVi
       let msg="<h6 style='line-height:1.6'>Conferma rimozione dell'immagine<br><label style='word-break:break-all;color:rgb(180,0,0);'>\""+NeuroApp.fileName(image.nome)+"\"&nbsp;?</label></h6>";
       
       bootbox.dialog ({
-        title: "<h4>Cancella Immagine</h4>", 
+        title: "<h3>Cancella Immagine</h3>", 
         message: msg,
         draggable:true,
         buttons: {

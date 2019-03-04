@@ -198,7 +198,7 @@ export class ResourceAudioComponent implements OnInit, OnDestroy {
         msg = "<h6><b>Il file audio viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
       bootbox.dialog ({
-        title: "<h4>Cancella Audio</h4>", 
+        title: "<h3>Cancella Audio</h3>", 
         message: msg,
         draggable:true,
         buttons: {

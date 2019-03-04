@@ -198,7 +198,7 @@ export class ResourceVideoComponent implements OnInit {
         msg = "<h6><b>Il file video viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
       bootbox.dialog ({
-        title: "<h4>Cancella Video</h4>", 
+        title: "<h3>Cancella Video</h3>", 
         message: msg,
         draggable:true,
         buttons: {

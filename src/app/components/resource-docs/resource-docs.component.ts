@@ -197,7 +197,7 @@ export class ResourceDocsComponent implements OnInit {
         msg = "<h6><b>Il documento viene utilizzato in uno o pi&ugrave; esercizi. </b><br> " + msg + "</h6>"
 
       bootbox.dialog ({
-        title: "<h4>Cancella Documento</h4>", 
+        title: "<h3>Cancella Documento</h3>", 
         message: msg,
         draggable:true,
         buttons: {
