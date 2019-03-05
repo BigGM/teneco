@@ -51,7 +51,7 @@
  }
  
  .tablePacchettiEsercizi > tbody > tr:hover {
-   background-color: rgb(220,220,226);
+   background-color: rgb(220,220,230);
    transition: background-color 0.2s ease-in-out;
  }
  
@@ -69,7 +69,7 @@
  }
  .esercizi {
     width:100%;
-    background-color: rgb(232,232,236);
+    background-color: rgb(232,232,242);
     margin-bottom:6px;
  }
  .nav-tabs {
