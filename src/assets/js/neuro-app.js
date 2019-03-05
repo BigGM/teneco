@@ -137,6 +137,21 @@ var NeuroAppJS = {
    },
 
 
+
+   /*======================================================================================================
+    * Il gruppo di funzioni che seguono vengono usate assieme alla libreria summernote modificata per 
+    * creare finestre di popup informative cliccando su particolari parole marcate durante la fase di
+    * inserimento del testo. Le finestre di popup includono:
+    * 1 - Descrizione di una voce di glossario,
+    * 2 - Visualizzazione di un video,
+    * 3 - Apertura di un file audio,
+    * 4 - Visualizzazione di una immagine.
+    * =====================================================================================================*/
+
+   /**
+    * Chiude (hide) il popover specificato
+    * @param {*} id_popover 
+    */
    closePopover: function(id_popover)  {
       console.log("closePopover", id_popover, NeuroAppJS.gloss_anchor[id_popover])
       $(NeuroAppJS.gloss_anchor[id_popover]).popover('hide');
@@ -288,6 +303,5 @@ var NeuroAppJS = {
          $(_anchor_).trigger('click');
       }   
    }, // prepareImagePopover()
-   
- 
+
 } // var NeuroApp
