@@ -11,6 +11,20 @@ var NeuroAppJS = {
    * cambiato cliccando sull'immagine a sinistra nella barra del menu .
    */
   DEBUG : false,
+
+
+  /**
+   * Controlla se l'ambiente di esecuzione del sito e' un device mobile
+   */
+  isMobileDevice: function () {
+   return   navigator.userAgent.match(/Android/i) ||
+            navigator.userAgent.match(/webOS/i) ||
+            navigator.userAgent.match(/iPhone/i) ||
+            navigator.userAgent.match(/iPad/i) ||
+            navigator.userAgent.match(/iPod/i) ||
+            navigator.userAgent.match(/BlackBerry/i) ||
+            navigator.userAgent.match(/Windows Phone/i)
+  }, 
   
    /**
    * Attiva il full screen, usa la libreria fullscreen.js nella directory assets

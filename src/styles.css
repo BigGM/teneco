@@ -17,6 +17,15 @@ body, html {
    background-size: cover;
 }
 
+.home-background-mobile {
+   background: -moz-linear-gradient(-45deg, rgba(195,217,234,1) 0%, rgba(255,255,255,1) 100%);
+background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(195,217,234,1)), color-stop(100%, rgba(255,255,255,1)));
+background: -webkit-linear-gradient(-45deg, rgba(195,217,234,1) 0%, rgba(255,255,255,1) 100%);
+background: -o-linear-gradient(-45deg, rgba(195,217,234,1) 0%, rgba(255,255,255,1) 100%);
+background: -ms-linear-gradient(-45deg, rgba(195,217,234,1) 0%, rgba(255,255,255,1) 100%);
+background: linear-gradient(135deg, rgba(195,217,234,1) 0%, rgba(255,255,255,1) 100%);
+}
+
 router-outlet ~ * {
     position: absolute;
     top:75px;
