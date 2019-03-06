@@ -104,12 +104,12 @@
       style="border-radius:4px;margin:0">
       
       <div *ngFor="let app of apps_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
-            <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break my-pointer">
+            <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break my-pointer" (click)=openApp(app)>
                <img [src]="app.url_snapshot" class="img-fluid">
                <p>
                <table class="w-100"><tr>
                <td class="descr-media text-white">{{app.descr}}</td>
-               <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(app)"></i></td>
+               <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia($event,app)"></i></td>
                </tr></table>
             </div>
       </div>

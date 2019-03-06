@@ -128,7 +128,11 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
    * Cancella dal database e dal file sistem il documento specificato.
    * @param media
    */
-  confermaCancellaMedia(media:RecordMediaEsercizio) {
+  confermaCancellaMedia(event:MouseEvent,media:RecordMediaEsercizio) {
+    console.log(event)
+    event.stopPropagation();
+    event.preventDefault();
+    
     let self = this
 
       let msg= "<h6 style='line-height:1.6'>Conferma rimozione di<br><label style='word-break:break-all;color:rgb(180,0,0);'>\""+NeuroApp.fileName(media.url)+"\"&nbsp;?</label></h6>";
@@ -269,6 +273,13 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
     let img: any = document.getElementById("img-exercice")
     img.src = image.url
   }
+
+  openApp(app:RecordMediaEsercizio) {
+    let url_app = app.url
+    console.log(url_app)
+    window.open(url_app,"","fullscreen=yes")
+  }
+  
 
 
   /**
