@@ -18,8 +18,6 @@
 	background: inherit;
 	overflow: hidden;
 	border: 0.07rem solid rgba(255, 255, 255, 0.22);
-	/*border-bottom-left-radius: 1rem;
-	border-top-right-radius: 1rem;*/
 	border-radius:0.2rem;
 }
 
@@ -33,7 +31,7 @@
 	right: 0;
 	bottom: 0;
   /*box-shadow: inset 0 0 2000px rgb(104,180,241);*/
-	-webkit-filter: blur(10px);
-	        filter: blur(10px);
+	-webkit-filter: blur(10px) grayscale(20%);
+	        filter: blur(10px) grayscale(20%);
 	margin: -20px;
 }
