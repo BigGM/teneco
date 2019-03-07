@@ -31,7 +31,7 @@
 	right: 0;
 	bottom: 0;
   /*box-shadow: inset 0 0 2000px rgb(104,180,241);*/
-	-webkit-filter: blur(10px) grayscale(20%);
-	        filter: blur(10px) grayscale(20%);
+	-webkit-filter: blur(20px) grayscale(16%);
+	        filter: blur(20px) grayscale(16%);
 	margin: -20px;
 }
