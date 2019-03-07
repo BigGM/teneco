@@ -117,10 +117,8 @@
    top: 80px;
    left: 10px;
    z-index:200;
-   /*max-height:286px;
-   border-radius: 4px;*/
-   background-color:rgba(22,70,120,1.0);
-   padding:8px 5px;
+   background-color:rgba(22,79,138,1.0);
+   padding: 12px 6px;
 }
 .action-media {
    cursor:pointer;
@@ -223,4 +221,8 @@
     padding:0;
     border-top:0;
     background-color: white;
+ }
+
+ .my-mb-3 {
+   margin-bottom: 0.8rem !important;
  }
