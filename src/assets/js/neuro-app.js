@@ -167,8 +167,11 @@ var NeuroAppJS = {
     * @param {*} id_popover 
     */
    closePopover: function(id_popover)  {
-      console.log("closePopover", id_popover, NeuroAppJS.gloss_anchor[id_popover])
+      console.log("closePopover", id_popover)
       $(NeuroAppJS.gloss_anchor[id_popover]).popover('hide');
+      $(NeuroAppJS.video_anchor[id_popover]).popover('hide');
+      $(NeuroAppJS.audio_anchor[id_popover]).popover('hide');
+      $(NeuroAppJS.image_anchor[id_popover]).popover('hide');
    },
   
   
@@ -228,6 +231,7 @@ var NeuroAppJS = {
    
    
    video_popovers : [],
+   video_anchor : [],
    prepareVideoPopover: function (_anchor_, url_video, descr_video) { 
       console.log('prepareVideoPopover');
       //console.log(_anchor_);
@@ -235,9 +239,16 @@ var NeuroAppJS = {
       if  ( NeuroAppJS.DEVELOP_ENV )
          url_video = NeuroAppJS.G_URL_ROOT + "/" +  url_video;
       
+      id_popover = "this-popover-video-"+ Date.now()
+
+      close_btn =
+            "<button type='button' class='close' aria-label='Close' style='margin: -6px -18px;' " +
+            "onclick=\"NeuroAppJS.closePopover('"+id_popover+"')\">" +
+            "<span aria-hidden='true'>&times;</span></button>";
+
       this_content = 
          "<div class='voce-video'><video style='width:100%' controls> <source src='"+url_video+"'></video></div>"+
-         "<div class='popover-video-descr'>"+NeuroAppJS.html_to_plain(descr_video)+"</div>";
+         "<div class='popover-video-descr'>"+NeuroAppJS.html_to_plain(descr_video)+close_btn+"</div>";
    
       $(_anchor_).popover({
          //container: 'body', 
@@ -250,6 +261,8 @@ var NeuroAppJS = {
          template: '<div class="popover my-popover-video" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body my-popover-body"></div></div>'
       });
       
+      NeuroAppJS.video_anchor [id_popover] = _anchor_
+
       if ( !(_anchor_ in NeuroAppJS.video_popovers) ) {
          NeuroAppJS.video_popovers[_anchor_] = 1;
          $(_anchor_).trigger('click');
@@ -258,17 +271,25 @@ var NeuroAppJS = {
    
    
    audio_popovers : [],
+   audio_anchor : [],
    prepareAudioPopover: function (_anchor_, url_audio, descr_audio) { 
       console.log('prepareAudioPopover');
       //console.log(_anchor_);
 
       if ( NeuroAppJS.DEVELOP_ENV )
          url_audio = NeuroAppJS.G_URL_ROOT + "/" +  url_audio;
+
+      id_popover = "this-popover-audio-"+ Date.now()
+
+      close_btn =
+            "<button type='button' class='close' aria-label='Close' style='margin: -6px -18px;' " +
+            "onclick=\"NeuroAppJS.closePopover('"+id_popover+"')\">" +
+            "<span aria-hidden='true'>&times;</span></button>";
       
       this_content = 
          //"<label class='voce-audio'><i>Audio:</i></label><br>" +
          "<div class='voce-audio'><audio style='width:100%' controls> <source src='"+url_audio+"'></audio></div>"+
-         "<div class='popover-audio-descr'>"+NeuroAppJS.html_to_plain(descr_audio)+"</div>";
+         "<div class='popover-audio-descr'>"+NeuroAppJS.html_to_plain(descr_audio)+close_btn+"</div>";
    
       $(_anchor_).popover({
          //container: 'body', 
@@ -278,9 +299,11 @@ var NeuroAppJS = {
          html: true, 
          animation: true, 
          trigger: 'click',
-         template: '<div class="popover my-popover-audio" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+         template: '<div class="popover my-popover-audio" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body my-popover-body"></div></div>'
       });
       
+      NeuroAppJS.audio_anchor [id_popover] = _anchor_
+
       if ( !(_anchor_ in NeuroAppJS.audio_popovers) ) {
          NeuroAppJS.audio_popovers[_anchor_] = 1;
          $(_anchor_).trigger('click');
@@ -290,16 +313,24 @@ var NeuroAppJS = {
    
    
    image_popovers : [],
+   image_anchor : [],
    prepareImagePopover: function (_anchor_, url_image, descr_image) { 
       //console.log('prepareIMagePopover');
       console.log(_anchor_);
 
       if ( NeuroAppJS.DEVELOP_ENV )
-         url_audio = NeuroAppJS.G_URL_ROOT + "/" +  url_image;
-      
+         url_image = NeuroAppJS.G_URL_ROOT + "/" +  url_image;
+
+      id_popover = "this-popover-image-"+ Date.now()
+
+      close_btn =
+            "<button type='button' class='close' aria-label='Close' style='margin: -6px -18px;' " +
+            "onclick=\"NeuroAppJS.closePopover('"+id_popover+"')\">" +
+            "<span aria-hidden='true'>&times;</span></button>";
+   
       this_content = 
-         "<div class='voce-image'><img src='"+url_audio+"' class='img-fluid'></div>"+
-         "<div class='popover-image-descr'>"+NeuroAppJS.html_to_plain(descr_image)+"</div>";
+         "<div class='voce-image'><img src='"+url_image+"' class='img-fluid'></div>"+
+         "<div class='popover-image-descr'>"+NeuroAppJS.html_to_plain(descr_image)+close_btn+"</div>";
    
       $(_anchor_).popover({
          //container: 'body', 
@@ -309,9 +340,11 @@ var NeuroAppJS = {
          html: true, 
          animation: true, 
          trigger: 'click',
-         template: '<div class="popover my-popover-image" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+         template: '<div class="popover my-popover-image" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body my-popover-body"></div></div>'
       });
-      
+
+      NeuroAppJS.image_anchor [id_popover] = _anchor_
+
       if ( !(_anchor_ in NeuroAppJS.image_popovers) ) {
          NeuroAppJS.image_popovers[_anchor_] = 1;
          $(_anchor_).trigger('click');

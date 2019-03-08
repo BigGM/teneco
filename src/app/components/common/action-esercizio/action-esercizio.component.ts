@@ -6,7 +6,7 @@ import { ListaEserciziComponent } from '../lista-esercizi/lista-esercizi.compone
 import { Subscription } from 'rxjs';
 import { RecordEsercizio } from '../../../classes/record-esercizio'
 import { Gruppo } from '../../../classes/gruppo'
-
+import { NgForm } from '@angular/forms';
 
 // questo e' per jQuery
 declare var $: any;
@@ -268,8 +268,9 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
    * Ripulisce i campi della form.
    * @param form 
    */
-  reset(form) {
+  reset(form:NgForm) {
     console.log("reset", this.esercizio)
+    let nome_esercizio = this.esercizio.nome
     form.reset()
     this.esercizio.reset()
     NeuroApp.removePopover()
@@ -279,13 +280,18 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
     $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
     $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
     $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
+
+    if (this.azione=='modifica_esercizio') {
+      this.esercizio.nome = nome_esercizio
+      form.controls['nome_ex'].setValue(nome_esercizio)
+    }
   }
 
 
   /**
    * Riassegna all'esercizio  (this.eserczio) i valori iniziali.
    */
-  reloadEntryEsercizio() {
+  reload() {
     // Rimuove eventuali popover aperti
     NeuroApp.removePopover()
     this.esercizio.copy(this.entryEsercizio)

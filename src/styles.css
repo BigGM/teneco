@@ -193,15 +193,17 @@ router-outlet ~ * {
  * ====================================================================================
  **/
 .my-popover-body {
-   padding: 8px;
+   padding: 0px;
 }
 
 a {
    font-weight: bold;
-   color: rgb(255,245,130);
+   color: rgb(236, 0, 0);
    text-decoration: none;
-   padding: 1px 6px;
-   border-radius:6px;
+   padding: 2px 6px;
+   background-color: rgb(233,236,246);
+   border-radius:3px;
+   cursor:pointer;
 }
 
 /**
@@ -209,10 +211,12 @@ a {
  */
 a:not([href]):not([tabindex]) {
    font-weight: bold;
-   color: rgb(255,245,130);
+   color: rgb(236, 0, 0);
    text-decoration: none;
-   padding: 1px 6px;
-   border-radius:6px;
+   padding: 2px 6px;
+   background-color: rgb(233,236,246);
+   border-radius:3px;
+   cursor:pointer;
 }
 a:not([href]):not([tabindex]):hover {
    text-decoration: underline;
@@ -267,9 +271,9 @@ a:not([href]):not([tabindex]):hover {
 .voce-video {
    width:100%;
    font-weight:normal;
-   background-color:rgb(6, 82, 157);
+   background-color:rgb(26, 58, 81);
    color:white;
-   padding:8px 12px;
+   /*padding:8px 12px;*/
 }
 /**
  * Questo per il div in basso con la descrizione del video
@@ -300,7 +304,7 @@ a:not([href]):not([tabindex]):hover {
  .voce-audio {
    width:100%;
    font-weight:normal;
-   background-color:rgb(6, 82, 157);
+   background-color:rgb(96, 125, 139);
    color:white;
    padding:8px 12px;
 }
@@ -334,9 +338,9 @@ a:not([href]):not([tabindex]):hover {
  .voce-image {
    width:100%;
    font-weight:normal;
-   background-color:rgb(6, 82, 157);
+   background-color:rgb(96, 125, 139);
    color:white;
-   padding:8px 12px;
+   /*padding:8px 12px;*/
 }
 /**
  * Questo per il div in basso con la descrizione dell'immagine
@@ -370,14 +374,6 @@ a:not([href]):not([tabindex]):hover {
    background-color: rgb(245,245,250);
    font-size:16px;
 }
-
-/*
- */
-.glass-effect {
-   -webkit-filter: blur(4px);
-      -moz-filter: blur(4px);
-           filter: blur(4px);
- }
 
 .cursor-pointer {
    cursor:pointer;

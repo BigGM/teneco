@@ -8,6 +8,7 @@ import { PacchettiFormazioneComponent } from '../../formazione/pacchetti-formazi
 import { PacchettiCognitiviComponent } from '../../riabil-cognitiva/pacchetti-cognitivi/pacchetti-cognitivi.component';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
 import { RecordMedia } from '../../../classes/record-media'
+import { NgForm } from '@angular/forms';
 
 // questo e' per jQuery
 declare var $: any;
@@ -34,7 +35,7 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   ambito    : number
   pacchetto : RecordPacchetto
   pktSubscr : Subscription
-  azione    : string;         // azione richiesta: nuovo_esercizio, modifica_esercizio
+  azione    : string;         // azione richiesta: nuovo_pacchetto, modifica_pacchetto
   titolo    : string;         // questo e' il titolo da inserire nella finestra modale
 
   /** La lista degli elementi multimediali non collegati all'esercizio */
@@ -185,15 +186,21 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   * Richiama il metodo corrispondente della superclasse.
   * @param form 
   */
-  reset(form) {
+  reset(form: NgForm) {
     // NB. il metodo reset() della form mette a null i campi del modello,
     // per questo motivo il metodo reset del pacchetto viene chiamato dopo.
+    let nome_pacchetto = this.pacchetto.nome
     form.reset()
     this.pacchetto.reset()
     NeuroApp.removePopover()
     $('#summernote-actpkt-descr').summernote('reset')
     $('#summernote-actpkt-prereq').summernote('reset')
     $('#summernote-actpkt-prereq-comp').summernote('reset')
+    
+    if (this.azione=='modifica_pacchetto') {
+      this.pacchetto.nome = nome_pacchetto
+      form.controls['nome_pkt'].setValue(nome_pacchetto)
+    }
   }
 
 
@@ -379,7 +386,4 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
     event.stopPropagation()
     window.open(scheda.url_media)
   }
-
-  
-
 }
