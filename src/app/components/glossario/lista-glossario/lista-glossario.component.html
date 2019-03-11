@@ -14,7 +14,7 @@
             
              <tr *ngFor="let rec of glossario">
                 
-                <td (click)="viewVoce(rec)"><strong>{{rec.voce}}:</strong></td>
+                <td (click)="viewVoce(rec)" class="text-capitalize"><strong>{{rec.voce}}:</strong></td>
                 <td (click)="viewVoce(rec)">{{rec.def | truncate:100}}</td>                
                 <td class="nowrap">
                    <i (click)="formModifVoceGlossario(rec)" class="fas fa-edit my-icon-color my-icon-size-26 font-weight-normal mr-2"></i>

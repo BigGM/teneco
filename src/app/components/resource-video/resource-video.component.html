@@ -91,10 +91,10 @@
          <div class='modal-content shadow-lg'>
             <div class='modal-header'>
                <h4 class='modal-title'>{{curr_video.descr_media}}</h4>
-               <button type='button' class='close' (click)="closeModalVideo()">&times;</button>
+               <button type='button' class='close icon-close' (click)="closeModalVideo()">&times;</button>
             </div>
    
-            <div class='modal-body col-12 text-center'>
+            <div class='modal-body col-12 text-center p-0'>
                <div class="embed-responsive embed-responsive-16by9">
                   <video controls> <source class="embed-responsive-item" [src]="curr_video.url_media"></video>
                </div>

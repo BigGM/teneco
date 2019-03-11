@@ -157,18 +157,26 @@ export class ResourceDocsComponent implements OnInit {
     this.loadDocs()
   }
 
+  /**
+  * Apre il documento specificato tramite url in una nuova finestra.
+  * @param url 
+  */
+  open(url:string) {
+    window.open(url,"","fullscreen=yes")
+  }
+
 
   /**
    * Nome del documento dalla url in input
    */
-  docName(url) {
+  docName(url:string) {
     return NeuroApp.fileName(url)
   }
 
   /**
   * Estensione del documento (compreso il '.') dalla url in input
   */
-  docExt(url) {
+  docExt(url:string) {
     return NeuroApp.fileExt(url)
   }
 
@@ -177,7 +185,7 @@ export class ResourceDocsComponent implements OnInit {
    * Restituise l'icona da inserire sulla pagina html in base all'estensione del documento. 
    * @param url
    */
-  docIcon(url) {
+  docIcon(url:string) {
     if ( NeuroApp.icons[NeuroApp.fileExt(url)] == undefined )
       return NeuroApp.ROOT_ICONS + "/generic-doc-icon.png"
     else

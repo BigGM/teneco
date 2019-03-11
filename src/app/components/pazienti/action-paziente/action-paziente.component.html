@@ -68,7 +68,7 @@
            
           <!-- NOME/COGNOME * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
-              <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm  font-weight-bold">Nome/Cognome</label>
+              <label for="nome_paz" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Nome/Cognome*</label>
                 <div class="col-sm-4">
                   <input required type="text" class="form-control" id="nome_paz" name="nome_paz" placeholder="Nome"
                   [(ngModel)]="paziente.nome"></div>
@@ -80,12 +80,12 @@
 
           <!-- CF/SESSO * -->
            <div *ngIf="azione=='nuovo'" class="form-group row" >
-            <label for="CF" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Codice fiscale</label>
+            <label for="CF" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Codice fiscale*</label>
               <div class="col-sm-5">
                 <input required type="text" class="form-control" id="CF" name="CF" placeholder="Codice fiscale"
                  [(ngModel)]="paziente.cf"></div>
 
-                 <label for="sesso" class="col-sm-1 col-form-label col-form-label-sm font-weight-bold">Sesso</label>
+                 <label for="sesso" class="col-sm-1 col-form-label col-form-label-sm font-weight-bold my-label-required">Sesso*</label>
                  <div class="col-sm-3">
                     <select required class="form-control" id="sesso" name="sesso" [(ngModel)]="paziente.sesso">
                         <option value='M'>Maschio</option>
@@ -96,7 +96,7 @@
 
           <!-- Luogo e data nascita * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
-            <label for="nascita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Citt&agrave; e data di nascita</label>
+            <label for="nascita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Citt&agrave; e data di nascita*</label>
               <div class="col-sm-5">
                 <input required type="text" class="form-control" id="luogo_nascita" name="luogo_nascita" placeholder="Città di nascita"
                  [(ngModel)]="paziente.luogo_nascita"></div>
@@ -108,7 +108,7 @@
 
           <!-- Nazionalita * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
-            <label for="nazionalita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Nazionalit&agrave;</label>
+            <label for="nazionalita" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Nazionalit&agrave;*</label>
               <div class="col-sm-9">
                 <input required type="text" class="form-control" id="nazionalita" name="nazionalita" placeholder="Nazionalità"
                 [(ngModel)]="paziente.nazionalita"></div>
@@ -116,7 +116,7 @@
 
            <!-- Residenza * -->
           <div class="form-group row" >
-            <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Residenza</label>
+            <label for="residenza" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Residenza*</label>
               <div class="col-sm-9">
                 <input required type="text" class="form-control" id="residenza" name="residenza" placeholder="Residenza"
                 [(ngModel)]="paziente.residenza"></div>
@@ -124,7 +124,7 @@
 
           <!-- Indirizzo * -->
           <div class="form-group row" >
-            <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Indirizzo</label>
+            <label for="indirizzo" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Indirizzo*</label>
               <div class="col-sm-9">
                 <input required type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo"
                 [(ngModel)]="paziente.indirizzo"></div>
@@ -132,7 +132,7 @@
 
           <!-- Email * -->
           <div class="form-group row" >
-            <label for="email" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold">Email</label>
+            <label for="email" class="col-sm-3 col-form-label col-form-label-sm font-weight-bold my-label-required">Email*</label>
               <div class="col-sm-9">
                 <input required type="email" class="form-control" id="email" name="email" placeholder="Email"
                 [(ngModel)]="paziente.email"></div> 

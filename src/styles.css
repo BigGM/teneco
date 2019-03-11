@@ -88,7 +88,7 @@ router-outlet ~ * {
    background-color:rgb(24, 58, 83);
 }
 
- .my-trash {
+.my-trash {
    position:absolute;
    bottom:9px;
    right:22px;
@@ -97,7 +97,6 @@ router-outlet ~ * {
    font-weight:normal;
    color:white;
 }
-
 .my-trash-dark {
    position:absolute;
    bottom:7px;
@@ -108,11 +107,9 @@ router-outlet ~ * {
    color: rgb(30,50,100)
 }
 
-
 .navbar-brand {
-    padding: 0px;
+   padding: 0px;
 }
-
 
 
 /**

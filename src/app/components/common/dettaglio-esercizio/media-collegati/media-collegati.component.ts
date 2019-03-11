@@ -260,7 +260,7 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
   * @param url 
   */
   open(url:string) {
-    window.open(url)
+    window.open(url,"","fullscreen=yes")
   }
 
 
