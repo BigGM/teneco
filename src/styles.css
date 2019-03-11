@@ -54,12 +54,14 @@ router-outlet ~ * {
 /* Ridefinisce il color di fondo */
 .card-header {
    background-color: rgb(240,240,248);
-   border-bottom: 1px solid rgba(0,0,0,.125)
+   border-bottom: 1px solid rgba(0,0,0,.125);
+   border-radius: 0 !important;
 }
 
 .card-footer {
    background-color: rgb(240,240,248);
-   border-bottom: 1px solid rgba(0,0,0,.125)
+   border-top: 1px solid rgba(0, 0, 0, 0.1);
+   border-radius: 0 !important;
 }
 
 .my-icon-color {

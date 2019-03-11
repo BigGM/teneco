@@ -194,7 +194,7 @@
 
         </div>
         <div class='modal-body mx-3'>
-          <div class="row mb-1 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+          <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
 				
             <div class="col-sm-9 pt-2 word-break">
                 <label class="checkbox-container">&nbsp;
@@ -231,7 +231,7 @@
             </div>
             <div class='modal-body mx-3'>
           
-                <div class="row mb-1 text-white my-bg-dark-2" *ngFor="let media of listaMediaDisponibili">
+                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
 						<div class="col-sm-8 pt-2 word-break">
                             <label class="checkbox-container">&nbsp;
                                     <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
@@ -299,7 +299,7 @@
 				</div>
             </div>
             <div class='modal-body mx-3'>
-                <div class="row mb-1 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
                     <div class="col-sm-11 p-3 my-pointer" (click)="open(media.url_media)">
                         <img [src]="docIcon(media.url_media)" style="width:42px;margin-right:10px">{{media.descr_media | truncate}}
                     </div>

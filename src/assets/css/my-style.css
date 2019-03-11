@@ -42,6 +42,7 @@
 
 .modal .modal-content { 
    border:none;
+   border-radius:0;
 }
 
 /* mod. bootstrap */
@@ -65,11 +66,14 @@
    /*background-color:rgb(222,33,33) !important;*/
    background-color:rgb(21,60,95) !important;
    border-bottom: 0px;
+   border-radius:0;
 }
 
 /* mod. bootstrap */
 .modal-footer {
-    background-color:rgba(246,246,248,1.0);
+    background-color:rgba(240,240,248,1.0);
+    border-radius:0;
+    border-top: 1px solid rgb(219,221,222) !important;
 }
  
 .close {
