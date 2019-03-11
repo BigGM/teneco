@@ -131,6 +131,13 @@ export class ActionPazienteComponent implements OnInit {
       return
     }
 
+    // Controllo indirizzo di email
+    if ( ! NeuroAppJS.validateEmail(this.paziente.email)  ) {
+      NeuroApp.custom_error("Indirizzo di e-mail non valido !","Errore")
+      return
+    }
+
+
     // Codifica i caratteri speciali
     let encoded_p = this.paziente.encode()
     let php_script = "salva_modifiche_paziente.php"
@@ -172,18 +179,21 @@ export class ActionPazienteComponent implements OnInit {
         this.checkMandatory(this.paziente.sesso) &&
         this.checkMandatory(this.paziente.email);
 
+
     // Manca qualche campo => messaggio di errore ed esce
     if (outcome == false) {
       NeuroApp.custom_error("Controllare i campi obbligatori !","Errore")
       return
     }
 
-    if ( this.paziente.email.indexOf("@") == -1 ) {
+
+    // Controllo formale indirizzo posta
+    if ( ! NeuroAppJS.validateEmail(this.paziente.email)  ) {
       NeuroApp.custom_error("Indirizzo di e-mail non valido !","Errore")
       return
     }
 
-    // Codifica i caratteri speciali
+    // Codifica i caratteri speciali prima della chiamata alla funzione di servizio
     let encoded_p = this.paziente.encode()
     let php_script = "salva_paziente.php"
     let db_proc    = "NeuroApp.salva_paziente"

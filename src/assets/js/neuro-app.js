@@ -139,6 +139,15 @@ var NeuroAppJS = {
          return s;
       }
    },
+
+   /**
+    * Validazione formale di un indirizzo di email.
+    * @param {*} email - la stringa dell'indirizzo di posta.
+    * @returns boolean
+    */
+   validateEmail : function (email) {
+      return ( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) )
+   },
    
    
    /**

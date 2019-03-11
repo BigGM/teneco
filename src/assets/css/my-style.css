@@ -12,6 +12,12 @@
    border-color: #63a6c9;
 }
 
+.alert-danger {
+   background-color: rgb(243,90,104);
+   color:white;
+   border-color: rgb(202,23,42);
+}
+
 /****
  * Ver.0.1
  * Personalizzazione di alcuni stili bootstrap e aggiunta di nuovi stili.
@@ -116,9 +122,6 @@ button.close2 {
 
 
 /* mod. bootstrap */
-.panel-default {
-}
-
 .panel-heading {
     /*background-color:rgb(18,104,140);*/
     background-color:rgba(240,240,248,1.0) !important;
@@ -181,20 +184,9 @@ button.close2 {
    border-color: transparent;
 }
 
-.btn-primary {
-  /*color:rgb(100,200,255);*/
-  /*background-color: rgb(31,81,118) !important;*/
-  
-}
-.btn-primary:hover {
-   /*background-color: rgb(85,125,191);*/
-}
-
 .btn-info {
   background-color: rgb(0,193,234);
   border-color: rgb(0,167,202);
-  /*padding-top:3px;
-  padding-bottom:3px;*/
 }
 .btn-info:hover {
   color: white; 
