@@ -198,7 +198,7 @@ var NeuroAppJS = {
          id_popover = "this-popover-glossario-"+ Date.now()
 
          close_btn =
-            "<button type='button' class='close' aria-label='Close' " +
+            "<button type='button' class='close' aria-label='Close' style='margin-top:5px'" +
             "onclick=\"NeuroAppJS.closePopover('"+id_popover+"')\">" +
             "<span aria-hidden='true'>&times;</span></button>";
 
