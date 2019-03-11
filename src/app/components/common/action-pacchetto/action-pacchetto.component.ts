@@ -187,19 +187,20 @@ export class ActionPacchettoComponent implements OnInit, OnDestroy {
   * @param form 
   */
   reset(form: NgForm) {
+    NeuroApp.removePopover()
     // NB. il metodo reset() della form mette a null i campi del modello,
     // per questo motivo il metodo reset del pacchetto viene chiamato dopo.
     let nome_pacchetto = this.pacchetto.nome
-    form.reset()
+    //form.reset()
     this.pacchetto.reset()
-    NeuroApp.removePopover()
+    
     $('#summernote-actpkt-descr').summernote('reset')
     $('#summernote-actpkt-prereq').summernote('reset')
     $('#summernote-actpkt-prereq-comp').summernote('reset')
     
     if (this.azione=='modifica_pacchetto') {
       this.pacchetto.nome = nome_pacchetto
-      form.controls['nome_pkt'].setValue(nome_pacchetto)
+      //form.controls['nome_pkt'].setValue(nome_pacchetto)
     }
   }
 

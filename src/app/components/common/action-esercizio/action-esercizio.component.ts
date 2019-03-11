@@ -271,7 +271,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
   reset(form:NgForm) {
     console.log("reset", this.esercizio)
     let nome_esercizio = this.esercizio.nome
-    form.reset()
+    //form.reset()
     this.esercizio.reset()
     NeuroApp.removePopover()
     
@@ -283,7 +283,7 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
 
     if (this.azione=='modifica_esercizio') {
       this.esercizio.nome = nome_esercizio
-      form.controls['nome_ex'].setValue(nome_esercizio)
+      //form.controls['nome_ex'].setValue(nome_esercizio)
     }
   }
 
@@ -295,10 +295,10 @@ export class ActionEsercizioComponent implements OnInit, OnDestroy {
     // Rimuove eventuali popover aperti
     NeuroApp.removePopover()
     this.esercizio.copy(this.entryEsercizio)
-    this.esercizio.descr = $('#summernote-actex-descr').summernote('code')
-    this.esercizio.testo = $('#summernote-actex-testo').summernote('code')
-    this.esercizio.alert = $('#summernote-actex-alert').summernote('code')
-    this.esercizio.limitazioni = $('#summernote-actex-limit').summernote('code')
+    $('#summernote-actex-descr').summernote('code', this.esercizio.descr)
+    $('#summernote-actex-testo').summernote('code', this.esercizio.testo)
+    $('#summernote-actex-alert').summernote('code', this.esercizio.alert)
+    $('#summernote-actex-limit').summernote('code', this.esercizio.limitazioni)
   }
 
 
