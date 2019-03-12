@@ -169,6 +169,12 @@ button.close2 {
    border-top:none;
 }
 
+.btn {
+   border-radius: 0.7rem;
+   border-top-left-radius: 0.1rem;
+   border-bottom-right-radius: 0.1rem;
+}
+
 .btn-navbar {
   font-size:16px !important;
   background-color: rgb(1,83,143) !important;
