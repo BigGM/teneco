@@ -27,11 +27,13 @@
            <span aria-hidden="true">&times;</span>
         </button>
      </div>
-
      
-     <div class="modal-body" style="height:500px;overflow:auto;">
+     <div class="modal-body p-0" style="overflow:hidden;">
 
-      <div *ngIf="azione=='modifica'" class="px-3 py-2 mb-3" style="background-color:ghostwhite; border-radius:4px;border:1px solid rgba(0,0,0,0.07)">
+      <div *ngIf="azione=='modifica'"
+            style="background-color:ghostwhite;
+                   padding:14px;
+                   border-bottom:1px solid rgba(0,0,40,0.08)">
         <div class="row">
           <div class="col-sm-4 col-form-label col-form-label-sm font-weight-bold">Nome</div>
           <div class="col-sm-4">{{paziente.nome}}</div>
@@ -64,7 +66,8 @@
       </div>
       
     
-        <form #actPazForm="ngForm" class="form-horizontal" role="form" novalidate>
+        <form #actPazForm="ngForm" class="form-horizontal" role="form" novalidate
+          style="background-color: white;padding: 14px; padding-bottom:0px">
            
           <!-- NOME/COGNOME * -->
           <div *ngIf="azione=='nuovo'" class="form-group row" >
