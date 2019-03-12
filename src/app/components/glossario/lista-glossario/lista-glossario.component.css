@@ -28,6 +28,12 @@
 
   .def-glossario {
     font-family: 'Niramit', sans-serif;
-    font-size:22px;
-    color:rgb(34,67,136);
+    font-size:24px;
+    /*color:rgb(34,67,136);*/
+    color: white;
+    padding: 2rem !important;
+    background-color: rgb(142,162,204);
+    background-image:  url(/assets/images/biof-2.jpg);
+    background-position: left;
+    text-shadow: 0px 1px 1px black;
   }
