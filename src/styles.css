@@ -270,7 +270,7 @@ a:not([href]):not([tabindex]):hover {
 .voce-video {
    width:100%;
    font-weight:normal;
-   background-color:rgb(26, 58, 81);
+   background-color:rgb(30, 94, 140);
    color:white;
    /*padding:8px 12px;*/
 }
@@ -279,7 +279,7 @@ a:not([href]):not([tabindex]):hover {
  */
 .popover-video-descr {
    width:100%;
-   background-color:rgb(26, 58, 81);
+   background-color:rgb(30, 94, 140);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
@@ -303,7 +303,7 @@ a:not([href]):not([tabindex]):hover {
  .voce-audio {
    width:100%;
    font-weight:normal;
-   background-color:rgb(54, 120, 155);
+   background-color:rgb(70, 150, 200);
    color:white;
    padding:8px 12px;
 }
@@ -312,7 +312,7 @@ a:not([href]):not([tabindex]):hover {
  */
 .popover-audio-descr {
    width:100%;
-   background-color:rgb(26, 58, 81);
+   background-color:rgb(30, 94, 140);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
@@ -346,7 +346,7 @@ a:not([href]):not([tabindex]):hover {
  */
 .popover-image-descr {
    width:100%;
-   background-color:rgb(26, 58, 81);
+   background-color:rgb(30, 94, 140);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
