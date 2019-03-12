@@ -29,11 +29,32 @@
   .def-glossario {
     font-family: 'Niramit', sans-serif;
     font-size:24px;
-    /*color:rgb(34,67,136);*/
     color: white;
-    padding: 2rem !important;
-    background-color: rgb(142,162,204);
     background-image:  url(/assets/images/biof-2.jpg);
     background-position: left;
-    text-shadow: 0px 1px 1px black;
+    text-shadow: 1px 1px 1px black;
+    min-height: 160px;
+  }
+
+  .glass-container {
+    /*box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);*/
+    position: relative;
+    z-index: 1;
+    background: inherit;
+    overflow: hidden;
+    min-height: 160px;
+  }  
+  .glass-container:before {
+    content: "";
+    position: absolute;
+    background: inherit;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /*box-shadow: inset 0 0 2000px rgb(104,180,241);*/
+    -webkit-filter: blur(15px) grayscale(25%);
+            filter: blur(15px) grayscale(25%);
+    margin: -20px;
   }
