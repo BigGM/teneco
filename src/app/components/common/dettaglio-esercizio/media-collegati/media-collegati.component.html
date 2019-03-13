@@ -193,8 +193,8 @@
 		  </div>
 
         </div>
-        <div class='modal-body mx-3'>
-          <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+        <div class='modal-body'>
+          <div class="row mx-minus-6 mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
 				
             <div class="col-sm-9 pt-2 word-break">
                 <label class="checkbox-container">&nbsp;
@@ -211,7 +211,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer"></div>
+        <!--<div class="modal-footer"></div> -->
     </div></div></div>
  
 
@@ -229,9 +229,9 @@
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('audio')"></i>
 				  </div>
             </div>
-            <div class='modal-body mx-3'>
+            <div class='modal-body'>
           
-                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+                <div class="row mx-minus-6 mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
 						<div class="col-sm-8 pt-2 word-break">
                             <label class="checkbox-container">&nbsp;
                                     <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
@@ -246,7 +246,7 @@
                   </div>
                 </div>
               </div>
-              <div class="modal-footer"></div>
+              <!--<div class="modal-footer"></div> -->
         </div></div></div>
 
 
@@ -265,8 +265,8 @@
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('image')"></i>
 				</div>
             </div>
-            <div class='modal-body mx-3'>
-                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+            <div class='modal-body'>
+                <div class="row mx-minus-6 mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
                     <div class="col-sm-9 pt-2 word-break">
                         <label class="checkbox-container">&nbsp;
                             <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
@@ -279,7 +279,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"></div>
+            <!--<div class="modal-footer"></div> -->
         </div></div></div>
 
 
@@ -298,8 +298,8 @@
                     <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('doc')"></i>
 				</div>
             </div>
-            <div class='modal-body mx-3'>
-                <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+            <div class='modal-body'>
+                <div class="row mx-minus-6 mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
                     <div class="col-sm-11 p-3 my-pointer" (click)="open(media.url_media)">
                         <img [src]="docIcon(media.url_media)" style="width:42px;margin-right:10px">{{media.descr_media | truncate}}
                     </div>
@@ -311,7 +311,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer"></div>
+            <!--<div class="modal-footer"></div> -->
     </div></div></div>
 
 
@@ -331,8 +331,8 @@
                   <i *ngIf="countChecked()>0" class="fas fa-plus  close" (click)="aggiungiMediaEsercizio('app')"></i>
                </div>
             </div>
-            <div class='modal-body mx-3'>
-               <div class="row mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
+            <div class='modal-body'>
+               <div class="row mx-minus-6 mb-2 text-white my-bg-dark-2 my-shadow-sm" *ngFor="let media of listaMediaDisponibili">
                   <div class="col-sm-9 pt-2 word-break">
                         <label class="checkbox-container">&nbsp;
                            <input type="checkbox" [(ngModel)]="media_checked[media.id_media]">
@@ -345,7 +345,7 @@
                   </div>
                </div>
             </div>
-            <div class="modal-footer"></div>
+            <!--<div class="modal-footer"></div> -->
    </div></div></div>
 
   </div>

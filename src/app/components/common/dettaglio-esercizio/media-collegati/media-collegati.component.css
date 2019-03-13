@@ -214,6 +214,7 @@
 .modal-body {
    max-height: 80vh; /* max 80% of the viewport height */
    overflow-y: auto;
+   border-bottom: 1px solid whitesmoke;
  }
 
  .modal-footer {
@@ -223,10 +224,15 @@
     background-color: white;
  }
 
- .my-mb-3 {
+.my-mb-3 {
    margin-bottom: 0.8rem !important;
- }
+}
 
 .my-icon-close {
     top:-4px !important;
- }
+}
+
+.mx-minus-6 {
+   margin-left: -6px !important;
+   margin-right: -6px !important;
+}
