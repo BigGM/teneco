@@ -45,7 +45,7 @@
     overflow: hidden;
     min-height: 160px;
     border-radius:3px;
-    border: 2px solid rgb(183, 210, 247, 0.4);
+    border: 2px solid rgba(183, 210, 247, 0.4);
   }
 
   /* Scommentare per ottenere l'effetto sfocatura del background*/
