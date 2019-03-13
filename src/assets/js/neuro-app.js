@@ -1,3 +1,4 @@
+
 var NeuroAppJS = {
 
   //G_URL_ROOT : "http://81.29.176.113:51000/",   // per il sito visibile dai medici
@@ -5,7 +6,6 @@ var NeuroAppJS = {
   G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
-
 
   /* Flag per Mostrare/Nascondere la label del debug. Il valore viene
    * cambiato cliccando sull'immagine a sinistra nella barra del menu .
@@ -176,7 +176,7 @@ var NeuroAppJS = {
     * @param {*} id_popover 
     */
    closePopover: function(id_popover)  {
-      console.log("closePopover", id_popover)
+      //console.log("closePopover", id_popover)
       $(NeuroAppJS.gloss_anchor[id_popover]).popover('hide');
       $(NeuroAppJS.video_anchor[id_popover]).popover('hide');
       $(NeuroAppJS.audio_anchor[id_popover]).popover('hide');
@@ -319,13 +319,15 @@ var NeuroAppJS = {
       }   
    }, // prepareAudioPopover()
    
-   
-   
+
    image_popovers : [],
    image_anchor : [],
    prepareImagePopover: function (_anchor_, url_image, descr_image) { 
       //console.log('prepareIMagePopover');
-      console.log(_anchor_);
+      //console.log(_anchor_);
+
+      //let id = $(_anchor_).attr('aria-describedby')
+      //console.log(id);
 
       if ( NeuroAppJS.DEVELOP_ENV )
          url_image = NeuroAppJS.G_URL_ROOT + "/" +  url_image;

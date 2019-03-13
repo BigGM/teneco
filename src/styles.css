@@ -223,15 +223,13 @@ a:not([href]):not([tabindex]):hover {
 
 /**
  * Stili aggiuntivi per il popup del glossario. 
- * NB. !!! Questa prima classe e' usata anche pe rimuovere i popover aperti !!!
+ * NB. !!! Questa prima classe e' usata anche per rimuovere i popover aperti !!!
  */
 .my-popover-glossario {
    max-width:360px !important;
-   border: 1px solid rgba(150,150,150,0.1) !important;
 }
 /** 
- * Stile del titolo del popover che presenta
- * una voce del glossario
+ * Stile del titolo del popover che presenta una voce del glossario.
  */
 .voce-glossario {
    width:100%;
@@ -255,31 +253,28 @@ a:not([href]):not([tabindex]):hover {
    color: white;
 }
 
-
 /**
  * Stili aggiuntivi per il popover del video.
- * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
+ * NB. !!! Questa prima classe e' usata anche per rimuovere i popover aperti !!!
  */
 .my-popover-video {
    max-width: 450px !important;
-   border: 1px solid rgba(150,150,150,0.1) !important;
 }
 /**
- * Questo per il div con i video
+ * Questo per il div con i video.
  */
 .voce-video {
    width:100%;
    font-weight:normal;
-   background-color:rgb(30, 94, 140);
+   background-color:rgb(20, 120, 190);
    color:white;
-   /*padding:8px 12px;*/
 }
 /**
- * Questo per il div in basso con la descrizione del video
+ * Questo per il div in basso con la descrizione del video.
  */
 .popover-video-descr {
    width:100%;
-   background-color:rgb(30, 94, 140);
+   background-color:rgb(20, 120, 190);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
@@ -287,18 +282,16 @@ a:not([href]):not([tabindex]):hover {
    font-weight:normal;
 }
 
-
 /**
  * Stili aggiuntivi per il popover dei file audio.
- * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
+ * NB. !!! Questa prima classe e' usata anche per rimuovere i popover aperti !!!
  */
 .my-popover-audio {
    width: 340px !important;
-   max-width: 340px !important;
-   border: 1px solid rgba(150,150,150,0.1) !important;
+   max-width: 340px !important;  
 }
 /**
- * Questo per il div che riproduce l'audio
+ * Questo per il div che riproduce l'audio.
  */
  .voce-audio {
    width:100%;
@@ -308,11 +301,11 @@ a:not([href]):not([tabindex]):hover {
    padding:8px 12px;
 }
 /**
- * Questo per il div in basso con la descrizione dell'audio
+ * Questo per il div in basso con la descrizione dell'audio.
  */
 .popover-audio-descr {
    width:100%;
-   background-color:rgb(30, 94, 140);
+   background-color:rgb(20, 120, 190);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
@@ -322,31 +315,38 @@ a:not([href]):not([tabindex]):hover {
 
 /**
  * Stili aggiuntivi per il popover con le immagini.
- * NB. !!! Questa prima classe e' usata anche pe rimuovere i popopver aperti !!!
+ * NB. !!! Questa prima classe e' usata anche per rimuovere i popover aperti !!!
  */
 .my-popover-image {
-   width: 380px !important;
-   max-width: 380px !important;
-   border: 1px solid rgba(150,150,150,0.1) !important;
-   /*box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25) !important;*/
+   width: 400px !important;
+   max-width: 400px !important;
+}
+/**
+ * Questo per il div che contiene l'immagine.
+ */
+.voce-image {
+   width:100%;
+   font-weight:normal;
+   background-color:rgb(20, 120, 190);
+   color:white;
+   overflow:hidden;
+}
+/* zoom dell'immagine all'ingresso del mouse */
+.voce-image img {
+   transition: all 0.3s linear;
+}
+.voce-image:hover img {
+   -moz-transform: scale(1.2);
+   -webkit-transform: scale(1.2);
+   transform: scale(1.2);
 }
 
 /**
- * Questo per il div che contiene l'immagine
- */
- .voce-image {
-   width:100%;
-   font-weight:normal;
-   background-color:rgb(96, 125, 139);
-   color:white;
-   /*padding:8px 12px;*/
-}
-/**
- * Questo per il div in basso con la descrizione dell'immagine
+ * Questo per il div in basso con la descrizione dell'immagine.
  */
 .popover-image-descr {
    width:100%;
-   background-color:rgb(30, 94, 140);
+   background-color:rgb(20, 120, 190);
    color:white;
    padding: 8px 24px;
    font-family: Tahoma,verdana,san serif;
@@ -355,7 +355,7 @@ a:not([href]):not([tabindex]):hover {
 }
 
 /**
- * Variazione di stili per l'oggetto popover bootstrap.
+ * Variazione di stili per la classe popover di bootstrap.
  */
 .popover {
    box-shadow: 0 1rem 3rem rgba(0,0,0,.2)!important;
