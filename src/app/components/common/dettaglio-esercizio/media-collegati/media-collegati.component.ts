@@ -90,9 +90,10 @@ export class MediaCollegatiComponent implements OnInit, OnDestroy {
          console.log(result)
           this.listaMediaCollegati = result
           if (NeuroAppJS.DEVELOP_ENV ) {
-            this.listaMediaCollegati.map (item => {
-              item.url = NeuroAppJS.G_URL_ROOT + "/" + item.url
-              item.url_snapshot = NeuroAppJS.G_URL_ROOT + "/" + item.url_snapshot
+            this.listaMediaCollegati.map (media => {
+              RecordMediaEsercizio.decode(media)
+              media.url = NeuroAppJS.G_URL_ROOT + "/" + media.url
+              media.url_snapshot = NeuroAppJS.G_URL_ROOT + "/" + media.url_snapshot
             })
           }
           NeuroApp.hideWait()

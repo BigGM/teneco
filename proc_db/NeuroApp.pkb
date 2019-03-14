@@ -664,7 +664,7 @@ BEGIN
     select  GCA_PACCHETTI_ESERCIZI.id_pacchetto   id_pacchetto,
             GCA_PACCHETTI_ESERCIZI.id_esercizio   id_esercizio,
             nvl(GCA_MULTIMEDIA.id_media,-1)       id_media,
-            GCA_MULTIMEDIA.url                    url,
+            decode(GCA_MULTIMEDIA.URL_PARAM,null, GCA_MULTIMEDIA.url,GCA_MULTIMEDIA.url||'?'||GCA_MULTIMEDIA.url_param)   url,
             GCA_MULTIMEDIA.tipo                   tipo,
             GCA_MULTIMEDIA.descr_media            descr_media,
             GCA_MULTIMEDIA.url_snapshot           url_snapshot
@@ -1167,8 +1167,10 @@ PROCEDURE controllaAccesso(p_id_login  in varchar2,
 IS
     esiste_rec      integer := 0;
     lIdPaziente     integer := 0;
-    lPasswd         varchar2(50); 
+    lPasswd         varchar2(128); 
     lUltimoAccesso  varchar2(50);
+    lStep           varchar2(120);
+    
 BEGIN
     p_outcome := 'OK';
 
@@ -1187,15 +1189,24 @@ BEGIN
 
     -- Controlla se utente gia' registrato
     begin
-        select passwd, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
-        into   lPasswd , lUltimoAccesso
+        select passwd, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, step
+        into   lPasswd , lUltimoAccesso, lStep
         from GCA_LOGIN_UTENTE 
         where id_utente = lIdPaziente;
 
         -- Controllo password
-        if ( lPasswd = p_passwd) then 
+        if ( lPasswd = p_passwd ) then 
+        
+            --
+            -- Quando sarà il momento: gestire ulteriori stati (es: CHANGE_PSW...)
+            -- 
+            if ( lStep = 'FIRST_ACCESS') then
+                lStep:= 'REGISTRED';
+            end if;
+            
             update GCA_LOGIN_UTENTE
-            set  ultimo_accesso=sysdate
+            set  ultimo_accesso=sysdate,
+                 step=lStep
             where id_utente = lIdPaziente;
             commit;
             
@@ -1225,56 +1236,74 @@ EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
 END controllaAccesso;                             
 
-
 PROCEDURE registraLogin(p_id_login  in varchar2,
                         p_passwd in varchar2,
                         p_outcome in out varchar2, 
                         p_cursor OUT SYS_REFCURSOR)
 IS
-    esiste_rec  integer := 0;
+    lEsisteRec  integer := 0;
     lIdPaziente integer := 0;
-    lPasswd     varchar2(50);
+    lPasswd     varchar2(128);
+    lEmail      varchar2(255);
+    lStep       varchar2(120);
+    
 BEGIN
     p_outcome := 'OK';
 
     begin
-        select id_paziente into lIdPaziente
+        select id_paziente, email 
+                into lIdPaziente,lEmail
         from    GCA_ANAGRAFICA_PAZIENTI 
         where   codice_fiscale = p_id_login;
     exception
         when no_data_found then    
             OPEN p_cursor FOR
-                select -2 id_esito , -1 id_utente, null ultimo_accesso
+                select -2 id_esito , -1 id_utente, null ultimo_accesso, null step, null email
                 from dual;
             return;                                
     end;
 
 
-    -- Controlla se gia' esiste il target
-    select count('x') into esiste_rec
-    from GCA_LOGIN_UTENTE 
-    where id_utente = lIdPaziente;
+    lEsisteRec:=0;
+    -- Controlla se gia' esiste il record
+    begin
+        select  passwd, step 
+        into    lPasswd, lStep
+        from    GCA_LOGIN_UTENTE 
+        where   id_utente = lIdPaziente;
 
-    -- Controlla se utente gia' registrato
-    if (esiste_rec > 0) then 
+        lEsisteRec:=1;
+
+        -- Utente già registrato. Nessuna operazione eseguita
         OPEN p_cursor FOR
-            select 0 id_esito , -1 id_utente, null ultimo_accesso
+            select 0 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
             from dual;
-        return;                
-    else
+        return;                                
+
+    exception
+        when no_data_found then
+            lEsisteRec:=0;   
+    end;
+    
+    if (lEsisteRec = 0) then
         -- Utente non ancora registrato
+        -- Eseguo pre-registrazione
         INSERT INTO GCA_LOGIN_UTENTE (
            ID_UTENTE, 
            PASSWD,
            DATA_CREAZIONE,
-           ULTIMO_ACCESSO
+           ULTIMO_ACCESSO,
+           STEP
         ) 
-        select lIdPaziente , p_passwd, sysdate, null from dual;
+        select lIdPaziente , p_passwd, sysdate, null , 'FIRST_ACCESS' from dual;
                 
         commit;
 
         OPEN p_cursor FOR
-            select 1 id_esito, lIdPaziente id_utente, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
+            select 1 id_esito, lIdPaziente id_utente, 
+                    to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, 
+                    nvl(step,'') step,
+                    lEmail                     
             from GCA_LOGIN_UTENTE 
             where id_utente = lIdPaziente;
     end if;
@@ -1285,6 +1314,107 @@ EXCEPTION
 END registraLogin; 
 
 
+/* Versione 1 
+PROCEDURE registraLogin(p_id_login  in varchar2,
+                        p_passwd in varchar2,
+                        p_outcome in out varchar2, 
+                        p_cursor OUT SYS_REFCURSOR)
+IS
+    lEsisteRec  integer := 0;
+    lIdPaziente integer := 0;
+    lPasswd     varchar2(128);
+    lEmail      varchar2(255);
+    lStep       varchar2(120);
+    
+BEGIN
+    p_outcome := 'OK';
+
+    begin
+        select id_paziente, email 
+                into lIdPaziente,lEmail
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso, null step, null email
+                from dual;
+            return;                                
+    end;
+
+
+    lEsisteRec:=0;
+    -- Controlla se gia' esiste il record
+    begin
+        select  passwd, step 
+        into    lPasswd, lStep
+        from    GCA_LOGIN_UTENTE 
+        where   id_utente = lIdPaziente;
+
+        lEsisteRec:=1;
+
+        if (lStep = 'FIRST_ACCESS' ) then
+            if (lPasswd = p_passwd) then
+                update GCA_LOGIN_UTENTE
+                set  ultimo_accesso=sysdate,
+                     PASSWD=p_passwd,
+                     step = 'REGISTRED'
+                where id_utente = lIdPaziente;
+                commit;
+
+                OPEN p_cursor FOR
+                    select 1 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), 'REGISTRED' , lEmail
+                    from dual;
+                return;
+            else
+                -- Registrazione negata. <p_passwd> non coincide con quella generata
+                OPEN p_cursor FOR
+                    select -1 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
+                    from dual;
+                return;                                
+            end if;                
+        else
+            -- Utente già registrato. Nessuna operazione eseguita
+            OPEN p_cursor FOR
+                select 0 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
+                from dual;
+            return;                                
+        end if;
+
+    exception
+        when no_data_found then
+            lEsisteRec:=0;   
+    end;
+    
+    if (lEsisteRec = 0) then
+        -- Utente non ancora registrato
+        -- Eseguo pre-registrazione
+        INSERT INTO GCA_LOGIN_UTENTE (
+           ID_UTENTE, 
+           PASSWD,
+           DATA_CREAZIONE,
+           ULTIMO_ACCESSO,
+           STEP
+        ) 
+        select lIdPaziente , p_passwd, sysdate, null , 'FIRST_ACCESS' from dual;
+                
+        commit;
+
+        OPEN p_cursor FOR
+            select 1 id_esito, lIdPaziente id_utente, 
+                    to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, 
+                    nvl(step,'') step,
+                    lEmail                     
+            from GCA_LOGIN_UTENTE 
+            where id_utente = lIdPaziente;
+    end if;
+
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END registraLogin; 
+
+*/
 
 PROCEDURE lista_pazienti(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR)
 IS
