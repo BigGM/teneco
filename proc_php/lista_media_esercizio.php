@@ -119,10 +119,10 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
       $outp .= '{"id_pkt":'  . $row[0] . 
                ',"id_ex":'   . $row[1] .
                ',"id":'      . $row[2] .
-               ',"url":"'    . $row[3] .'"'.
-               ',"tipo":"'   . $row[4] .'"'.
-               ',"descr":"'  . $row[5] .'"'.
-               ',"url_snapshot":"'  . $row[6] .'"}';
+               ',"url":"'    . rawurlencode($row[3]) .'"'.
+               ',"tipo":"'   . rawurlencode($row[4]) .'"'.
+               ',"descr":"'  . rawurlencode($row[5]) .'"'.
+               ',"url_snapshot":"' . rawurlencode($row[6]) .'"}';
 }
 $outp .="]";
 echo($outp);
