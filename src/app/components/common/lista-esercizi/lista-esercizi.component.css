@@ -1,14 +1,17 @@
 .this-anchor {
     font-family: Calibri,Tahoma,Arial;
-    font-size:20px;
+    font-size:24px;
     font-weight: bold;
-    color: rgb(12, 98, 160);
-    background-color:transparent;
+    color: rgb(12, 114, 173);
+    border-radius: 0;
+    /*background-color:transparent;*/
  }
  .collapse2 {
     font-family: Calibri,Tahoma,Arial;
     font-size:20px;
     margin-left:24px;
+    background-color: rgb(250,250,254);
+    padding: 1rem;
  }
 
  .thead-dark th {
