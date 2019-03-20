@@ -1,5 +1,5 @@
 
-<div class="shadow-lg px-3 py-1 mb-5 w-100"
+<div class="shadow-lg px-0 py-0 mb-5 w-100"
   (mouseover)="show_debug=true" (mouseleave)="show_debug=false"
 >
 
@@ -34,8 +34,8 @@
  
      <!-- Presentazione a griglia -->
      <div id="div-view-images-as-grid"
-       class="row py-3 px-1 my-bg-secondary" 
-       style="border-radius:4px;">
+       class="row py-3 my-bg-secondary"
+       >
          <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
              <div class="thumbnail thumbnail-image p-2 word-break">
                  <img [src]="image.url" class="img-fluid">
