@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Router } from "@angular/router";
 import { NeuroApp } from './neuro-app'
 import { NeuroAppService } from './services/neuro-app.service'
 import { Gruppo } from './classes/gruppo'
@@ -8,6 +9,7 @@ import { fadeAnimation } from './animations';
 // il modulo in puro javascript dell'applicazione
 declare var NeuroAppJS:any;
 declare var screenfull:any;
+declare var $:any;
 
 
 @Component({
@@ -18,19 +20,17 @@ declare var screenfull:any;
 })
 export class AppComponent implements OnInit {
   
-  title = 'TENECO GCA';
-  
+  title:string = "TENECO GCA"
   fullScreen: string = "off"
+  subscr: Subscription
+  debug     : boolean = NeuroAppJS.DEBUG
+  show_debug: boolean = false
 
-  subscr: Subscription;
-
-  debug : boolean = NeuroAppJS.DEBUG;
-  show_debug:boolean;
-
-  constructor(private neuroService : NeuroAppService) {
+  constructor(private neuroService : NeuroAppService,
+              private router: Router) {
     // Controlla la connesione internet ogni 25 secondi.
     window.setInterval( NeuroAppJS.checkServerConnection, 25000);
-    this.loadGruppi()
+    this.loadGruppi();
   }
   
   
@@ -43,6 +43,17 @@ export class AppComponent implements OnInit {
             this.fullScreen = "on"
          else 
             this.fullScreen = "off"
+      })**/
+
+      /**
+      let self = this;
+      $('body').click(function(ev) {
+        self.nc++;
+        if (self.nc >= 40) {
+          //self.router.navigate(["/",""])
+          self.router.navigateByUrl("/")
+          NeuroApp.hideWait()
+        }
       })**/
   }
 
@@ -98,4 +109,5 @@ export class AppComponent implements OnInit {
         }
       )
   } // loadGruppi()
+  nc:number=0
 }
