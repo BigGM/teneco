@@ -12,7 +12,7 @@
   <div class="w-100" *ngIf="filter('video'); let video_list">
   <label class="label-media" >Video ({{video_list.length}})</label>
   <div id="video-esercizio" class="row py-3 px-1 my-bg-secondary" 
-      style="border-radius:4px;margin:0">
+      style="margin:0">
   
       <div *ngFor="let video of video_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
         <div class="thumbnail thumbnail-media my-bg-dark p-2">
@@ -35,7 +35,7 @@
 	<div class="w-100" *ngIf="filter('audio'); let lista_audio">
 		<label class="label-media" >Audio ({{lista_audio.length}})</label>
 		<div id="doc-esercizio" class="row py-3 px-1 my-bg-secondary" 
-			style="border-radius:4px;margin:0">
+			style="margin:0">
 
 			<div *ngFor="let audio of lista_audio" class="col-sm-6 col-md-4 mb-3">
 				<div class="thumbnail thumbnail-media my-bg-dark p-2 word-break">
@@ -56,7 +56,7 @@
   <div class="w-100" *ngIf="filter('image'); let image_list">
   <label class="label-media" >Immagini ({{image_list.length}})</label>
   <div id="images-esercizio" class="row py-3 px-1 my-bg-secondary" 
-   style="border-radius:4px;margin:0">
+   style="margin:0">
    
      <div *ngFor="let image of image_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
          <div class="thumbnail thumbnail-media my-bg-dark p-2 word-break my-pointer">
@@ -78,7 +78,7 @@
  <div class="w-100" *ngIf="filter('doc'); let lista_docs">
     <label class="label-media" >Documenti ({{lista_docs.length}})</label>
     <div id="doc-esercizio" class="row py-3 px-1 my-bg-secondary" 
-      style="border-radius:4px;margin:0"
+      style="margin:0"
       >
         <div *ngFor="let doc of lista_docs" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-4 word-break">
           <div class="thumbnail thumbnail-docs p-2 word-break">
@@ -101,7 +101,7 @@
  <div class="w-100" *ngIf="filter( 'app' ); let apps_list">
    <label class="label-media" >Applicazioni ({{apps_list.length}})</label>
    <div id="apps-esercizio" class="row py-3 px-1 my-bg-secondary" 
-      style="border-radius:4px;margin:0">
+      style="margin:0">
       
       <div *ngFor="let app of apps_list" class="col-sm-6 col-md-4 col-lg-3 mb-3">
             <div class="thumbnail thumbnail-media my-bg-dark p-3 word-break my-pointer" (click)=openApp(app)>

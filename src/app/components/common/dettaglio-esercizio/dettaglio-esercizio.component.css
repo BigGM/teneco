@@ -27,15 +27,17 @@
     font-family: Calibri, Verdana, Geneva, Tahoma, sans-serif;
     font-size: 26px;
     font-weight: bold;
-    color: rgb(20,40,90);
+    color: #435577;
     margin:0;
     padding:0;
+    padding-left:23px;
+    background-color:#94b1ca;
  }
 
  .content-dettaglio {
-    background-color:rgb(70,140,200);
-    color:white;
-    border-radius: 4px;
+    background-color:#e6ebf5c2;
+    color:#06305d;
+    border-radius: 0;
     font-family: Calibri, Taho, Verdana, Geneva, sans-serif;
     font-size: 20px;
     margin-left:0px;
