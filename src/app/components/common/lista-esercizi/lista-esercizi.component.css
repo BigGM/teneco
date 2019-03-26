@@ -4,13 +4,13 @@
     font-weight: bold;
     color: #435577;
     border-radius: 0;
-    background-color:#e6ebf5;
+    background-color:rgb(230,235,248);
  }
  .collapse2 {
     font-family: Calibri,Tahoma,Arial;
     font-size:20px;
-    margin-left:24px;
-    background-color: rgb(250,250,254);
+    /*margin-left:24px;*/
+    background-color: rgb(242,246,253);
     padding: 1rem;
  }
 
