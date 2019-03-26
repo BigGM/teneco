@@ -22,7 +22,7 @@
             <p>
             <table class="w-100"><tr>
             <td class="descr-media text-white">{{video.descr}}</td>
-            <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(video)"></i></td>
+            <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia($event,video)"></i></td>
             </tr></table>
         </div>
       </div>
@@ -43,7 +43,7 @@
               <p>
                   <table class="w-100"><tr>
                   <td class="descr-media text-white">{{audio.descr}}</td>
-                  <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(audio)"></i></td>
+                  <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia($event,audio)"></i></td>
                   </tr></table>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
              <p>
              <table class="w-100"><tr>
              <td class="descr-media text-white">{{image.descr}}</td>
-             <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia(image)"></i></td>
+             <td style="width:24px;"><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaMedia($event,image)"></i></td>
              </tr></table>
            </div>
      </div>
@@ -89,7 +89,7 @@
                 <p>{{doc.descr}}</p>
             </div>
             </div>
-            <p><i class="my-trash-dark fas fa-trash-alt" (click)="confermaCancellaMedia(doc)"></i></p>
+            <p><i class="my-trash-dark fas fa-trash-alt" (click)="confermaCancellaMedia($event,doc)"></i></p>
           </div>
         </div>
     </div>
