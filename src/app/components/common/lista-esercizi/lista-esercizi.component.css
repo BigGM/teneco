@@ -4,13 +4,12 @@
     font-weight: bold;
     color: #435577;
     border-radius: 0;
-    background-color:rgb(230,235,248);
+    background-color:#cad3ee;
  }
  .collapse2 {
     font-family: Calibri,Tahoma,Arial;
     font-size:20px;
-    /*margin-left:24px;*/
-    background-color: rgb(242,246,253);
+    background-color: #edf1fa;
     padding: 1rem;
  }
 
