@@ -51,8 +51,17 @@
     <div id="neuromotoria"  class="container tab-pane active">
 
       <div *ngFor="let p of eserciziAmbito1">
-        <div style="border-top-left-radius:8px;" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >
-          {{p.nome_pacchetto}}</div>
+        
+        <div class="d-flex row pacchetto" style="border-top-left-radius:8px;">
+          <div style="width:calc(100% - 25px)" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto" data-toggle="collapse" >
+            {{p.nome_pacchetto}}
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" [attr.id]="'input_pkt_'+p.id_pacchetto" (click)="togglePkt(p.id_pacchetto)">
+            <label class="custom-control-label" [attr.for]="'input_pkt_'+p.id_pacchetto"></label>
+          </div>
+        </div>
+
         <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
           
           <table class="tablePacchettiEsercizi">
@@ -74,7 +83,17 @@
     <div id="cognitiva"  class="container tab-pane fade">
 
         <div *ngFor="let p of eserciziAmbito2">
-            <div style="border-top-left-radius:8px;" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto"  data-toggle="collapse" class="row pacchetto" >{{p.nome_pacchetto}}</div>
+
+            <div class="d-flex row pacchetto" style="border-top-left-radius:8px;">
+              <div style="width:calc(100% - 25px)" [attr.id]="'pkt_'+p.id_pacchetto" [attr.data-target]="'#target_'+p.id_pacchetto" data-toggle="collapse"  >
+                {{p.nome_pacchetto}}
+              </div>
+              <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" [attr.id]="'input_pkt_'+p.id_pacchetto" (click)="togglePkt(p.id_pacchetto)">
+                  <label class="custom-control-label" [attr.for]="'input_pkt_'+p.id_pacchetto"></label>
+                </div>
+           </div>
+            
             <div [attr.id]="'target_'+p.id_pacchetto" class="collapse show esercizi row">
               
               <table class="tablePacchettiEsercizi">

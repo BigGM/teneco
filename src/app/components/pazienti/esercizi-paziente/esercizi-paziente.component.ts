@@ -37,8 +37,11 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
   /** lista degli esercizi cognitivi per il paziente */
   eserciziAmbito2 : Array<EserciziPaziente>
 
-  // Attiva o disattiva tutti i checkbox degli esercizi
+  /** Attiva o disattiva tutti i checkbox degli esercizi */
   toggleSelection : boolean;
+
+  /** un flag che segnala per ogni pacchetto l'assegnazione di tutti gli esercizi */
+  pkt_assegnato : { [key: string]: boolean; }
 
   view_visible : boolean;
 
@@ -49,6 +52,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     this.eserciziAmbito1 = new Array<EserciziPaziente>()
     this.eserciziAmbito2 = new Array<EserciziPaziente>()
     this.toggleSelection = true;
+    this.pkt_assegnato = {};
     this.view_visible = false;
   }
 
@@ -60,8 +64,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
      * p == null  => nascondi questa vista
      */
     this.listaPazienti.eserciziPaziente.subscribe (p => {
-      console.log("EserciziPazienteComponent", p)
-
+      //console.log("EserciziPazienteComponent", p)
       if (p) {
         this.paziente.copy(p)
         this.loadEserciziPaziente(p)
@@ -80,14 +83,13 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     this.closeThisView()
   }
 
-
   /**
    * Carica tutti i campi del paziente in input.
    * @param p - il paziente richiesto, qui sono valorizzati solo i campi
    *            nome, cognome e data di nascita.
    */
   loadEserciziPaziente(p:Paziente) {
-    console.log("PazientiComponent.loadEserciziPaziente")
+    //console.log("PazientiComponent.loadEserciziPaziente")
     NeuroApp.showWait();
     let serv = this.pazientiService.loadEserciziPaziente(p)
     this.pazientiSubscr = serv.subscribe (
@@ -97,6 +99,10 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
           this.eserciziAmbito2 = result.filter( item => item.id_ambito==2 )
           this.eserciziAmbito1.forEach (e => EserciziPaziente.decode(e) )
           this.eserciziAmbito2.forEach (e => EserciziPaziente.decode(e) )
+
+          // inizializza a false la mappa dei pacchetti selezionati
+          this.pkt_assegnato = {};
+          this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach(item =>this.pkt_assegnato[item.id_pacchetto]=false)
 
           //console.log(this.eserciziAmbito1)
           this.pazientiSubscr.unsubscribe()
@@ -111,6 +117,9 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
       )
   } // loadEserciziPaziente()
 
+  /**
+   * Ricarica la vista con i valori iniziali.
+   */
   reload() {
     this.loadEserciziPaziente(this.paziente)
     this.toggleSelection = true;
@@ -134,10 +143,9 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
       self.view_visible = false;
       $('#arrow-paz-ese').css({opacity:0})
     });
-
   }
 
-  setPopover(){
+  setPopover() {
     this.eserciziAmbito1.concat(this.eserciziAmbito2).forEach( item => {
       //let id_elem = "#pkt_"+item.id_pacchetto;
       //$(id_elem).popover({title: item.nome_pacchetto, content: item.descr_pacchetto, trigger: "hover", html:true, boundary:"window"}); 
@@ -158,18 +166,34 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     })
   }
 
-
   /**
-   * Seleziona tutti gli esercizi
+   * Seleziona o deseleziona tutti gli esercizi.
    */
   toggle() {
     let allEsercizi =  this.eserciziAmbito1.concat(this.eserciziAmbito2)
     allEsercizi.forEach( item => {
+      $('#input_pkt_'+item.id_pacchetto).prop('checked',this.toggleSelection)
+      this.pkt_assegnato[item.id_pacchetto] = this.toggleSelection
       item.esercizi.forEach (e => {
         e.assegnato = this.toggleSelection
       })
     })
     this.toggleSelection = !this.toggleSelection;
+  }
+
+  /**
+   * Seleziona o deseleziona gli esercizi di uno specifico pacchetto.
+   * @param id_pkt id del pacchetto
+   */
+  togglePkt(id_pkt:number) {
+    //console.log("assegnaPkt", id_pkt);
+    let allEsercizi =  this.eserciziAmbito1.concat(this.eserciziAmbito2)
+    allEsercizi.forEach( item => {
+      if (item.id_pacchetto==id_pkt) {
+        this.pkt_assegnato[id_pkt] = !this.pkt_assegnato[id_pkt]
+        item.esercizi.forEach (ex => ex.assegnato=this.pkt_assegnato[id_pkt] )
+      }
+    })
   }
 
   /**
@@ -189,7 +213,7 @@ export class EserciziPazienteComponent implements OnInit, OnDestroy {
     })
 
     id_esercizi = id_esercizi.trim().split(" ").join(",")
-    console.log(id_esercizi);
+    //console.log(id_esercizi);
 
     let serv = this.pazientiService.assegnaEsercizi(this.paziente.id_paziente, id_esercizi)
     this.pazientiSubscr = serv.subscribe (
