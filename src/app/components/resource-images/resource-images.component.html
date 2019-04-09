@@ -43,8 +43,8 @@
     <div id="div-view-images-as-grid" *ngIf="view_images_as=='grid'" 
       class="row py-3 my-bg-secondary"
       >
-        <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
-            <div class="thumbnail thumbnail-image p-2 word-break">
+        <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="thumbnail thumbnail-image word-break" style="border-radius:0">
                 <img [src]="image.url_media" class="img-fluid"
                     data-toggle="modal"
                     data-target="#modalImageList" 
@@ -52,8 +52,8 @@
                     style="cursor:pointer"
                 >
                 <p>
-                <table ><tr>
-                <td class="descr-image">{{image.descr_media}}</td>
+                <table><tr>
+                <td class="descr-image px-1">{{image.descr_media}}</td>
                 <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaImage(image)"></i></td>
                 </tr></table>
               </div>
@@ -66,7 +66,7 @@
       class="row py-3 my-bg-secondary"
     >
           <div *ngFor="let image of lista_images" class="col-12 mb-3 word-break">
-            <div class="thumbnail thumbnail-image p-1 my-bg-dark">
+            <div class="thumbnail thumbnail-image my-bg-dark" style="border-radius:0">
                 <table style="width:100%">
                   <tr>
                     <td class="descr-image-on-lista"
@@ -87,7 +87,7 @@
    <!-- 
      -- Finestra modale per inserire una immagine allargata
      -->
-   <div *ngIf="curr_image" id='modalImageList' class='modal fade' role='dialog' data-backdrop="static">
+   <div *ngIf="curr_image" id='modalImageList' class='modal fade' role='dialog'>
       <div class='modal-dialog modal-dialog-centered modal-lg'>
       <div class='modal-content shadow-lg'>
          <div class='modal-header'>

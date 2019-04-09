@@ -27,11 +27,11 @@
 
  .thumbnail-image {
     /*border: 1px solid #ddd;*/
-    border-radius: 4px;
+    border-radius: 0px;
     background-color:rgb(22, 63, 95);
-    -webkit-box-shadow: 0px 8px 30px -13px rgba(0,0,0,1);
-       -moz-box-shadow: 0px 8px 30px -13px rgba(0,0,0,1);
-            box-shadow: 0px 8px 30px -13px rgba(0,0,0,1);
+    -webkit-box-shadow: 0px 8px 20px -13px rgba(0,0,0,1);
+       -moz-box-shadow: 0px 8px 20px -13px rgba(0,0,0,1);
+            box-shadow: 0px 8px 20px -13px rgba(0,0,0,1);
  }
   
  .word-break {
@@ -43,10 +43,10 @@
  
  .my-trash {
     position:absolute;
-    bottom:10px;
-    right:30px;
+    /*bottom:10px;*/
+    right:19px;
     cursor:pointer;
-    font-size:26px;
+    font-size:24px;
     font-weight:normal;
     color:white;
  }
@@ -89,14 +89,14 @@
      margin-right:20px;
  }
 
-.my-bg-secondary {
+ .my-bg-secondary {
     background-color:  rgb(233, 236, 244);
-}
+ }
 
-.my-bg-dark {
+ .my-bg-dark {
     background-color:rgb(22, 63, 95) ;
-}
+ }
 
-.icon-close {
+ .icon-close {
     top: -4px;
  }

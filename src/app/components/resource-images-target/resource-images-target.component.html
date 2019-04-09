@@ -36,12 +36,12 @@
      <div id="div-view-images-as-grid"
        class="row py-3 my-bg-secondary"
        >
-         <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-3">
-             <div class="thumbnail thumbnail-image p-2 word-break">
+         <div *ngFor="let image of lista_images" class="col-sm-6 col-md-4 col-lg-3 mb-4">
+             <div class="thumbnail thumbnail-image word-break" style="border-radius:0">
                  <img [src]="image.url" class="img-fluid">
 
-                 <table ><tr>
-                    <td class="descr-image">{{image.nome}}<br>
+                 <table><tr>
+                    <td class="descr-image p-1">{{image.nome}}<br>
                       {{image.categoria}}<br>
                       {{image.descr}}</td>
                     <td><i class="my-trash fas fa-trash-alt" (click)="confermaCancellaTarget(image)"></i></td>

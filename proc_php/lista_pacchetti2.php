@@ -116,7 +116,7 @@ while ($row=oci_fetch_array($refcur, OCI_BOTH+OCI_RETURN_NULLS) )
    $outp .= '{'.
               '"id":'          . rawurlencode($row[0]) . ','  .
               '"nome":"'       . rawurlencode($row[1]) . '",' .
-              '"descr":"'      . rawurlencode($row[2]!=null ? $row[2]->load() : $row[3]) . '",' .
+              '"descr":"'      . rawurlencode($row[2]!=null ? $row[2]->load() : $row[2]) . '",' .
               '"contro_ind":"' . rawurlencode($row[3]!=null ? $row[3]->load() : $row[3]) . '",' .
               '"pre_req":"'    . rawurlencode($row[4]!=null ? $row[4]->load() : $row[4]) . '",' .
               '"alert_msg":"'  . rawurlencode($row[5]!=null ? $row[5]->load() : $row[5]) . '",' .

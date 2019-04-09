@@ -3,7 +3,8 @@ var NeuroAppJS = {
 
   //G_URL_ROOT : "http://81.29.176.113:51000/",   // per il sito visibile dai medici
   //G_URL_ROOT : "http://192.168.2.63:47000/",    // per il sito interno 
-  G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
+  //G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
+  G_URL_ROOT : "http://localhost:8080/apache2/",     // per il sito interno
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
 
@@ -52,6 +53,8 @@ var NeuroAppJS = {
         timeout: 20000,
         // il valore appeso allo script php serve a fare in modo che il browser non utilizzi la cache
         url: NeuroAppJS.G_URL_ROOT + "/cgi-bin/internet_conn.php?rand=" + Math.round(Math.random() * 100000),
+        //url: "script/internet_conn.php?rand=" + Math.round(Math.random() * 100000),
+        
         success: function(message, text, response) {
            NeuroAppJS.showAlertConnection('hide');
         },

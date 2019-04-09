@@ -228,7 +228,7 @@ export class NeuroAppService {
   loadGruppi() : Observable<Gruppo[]> {
     let db_proc = "NeuroApp.lista_gruppi"
     let url = this.G_URL_ROOT+"/cgi-bin/lista_gruppi2.php?proc="+db_proc;
-    
+    //let url = "script/lista_gruppi2.php?proc="+db_proc;
     console.log("** NeuroAppService loadGruppi: ", url)
     
     return this.http.get<out_gruppo>(url)
