@@ -70,7 +70,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     this.view_esercizi_visible = false
     this.exSubscr = null
     this.id_esercizio_selected = -1
-    this.schedaValutazione = new RecordMedia()
+    this.schedaValutazione = null
   }
 
 
@@ -105,6 +105,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     console.log( "ListaEserciziComponent => onDestroy" )
     this.pacchetto = null
     this.esercizi = null
+    this.schedaValutazione = null
     if ( this.exSubscr) 
       this.exSubscr.unsubscribe()
   }
@@ -197,7 +198,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
     let id_scheda = this.pacchetto.id_scheda_val
     if (id_scheda==-1) {
-      this.schedaValutazione = new RecordMedia
+      this.schedaValutazione = null;
       return
     }
 
@@ -207,6 +208,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     schedaSubscr = serv.subscribe (
       result => {
         schedaSubscr.unsubscribe()
+        this.schedaValutazione = new RecordMedia
         this.schedaValutazione.copy(result)
         RecordMedia.decode(this.schedaValutazione)
         console.log(this.schedaValutazione)
