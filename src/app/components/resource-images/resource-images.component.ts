@@ -256,4 +256,13 @@ export class ResourceImagesComponent implements OnInit, OnDestroy {
           this.curr_image = null
       })
     } // openModalImage
+
+
+    showTrashcan(id_media:number) {
+      console.log("showTrashcan", id_media)
+      $('#'+id_media).animate({opacity:1}, 400)
+    }
+    hideTrashcan(id_media:number) {
+      $('#'+id_media).animate({opacity:0}, 400)
+    }
 }

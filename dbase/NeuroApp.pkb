@@ -261,8 +261,7 @@ BEGIN
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
 END def_glossario;        
-
-                  
+            
 
 
 PROCEDURE lista_gruppi(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
@@ -274,11 +273,16 @@ BEGIN
         OPEN p_cursor FOR
         SELECT id_ambito, id_gruppo, nome_gruppo, nvl(desc_gruppo,'') as descr 
         from GCA_GRUPPI
-        where id_ambito = p_ambito;
+        where id_ambito = p_ambito
+        order by id_gruppo asc;
+        
+        --  and id_gruppo <> -1;
     else
         OPEN p_cursor FOR
         SELECT id_ambito, id_gruppo, nome_gruppo, nvl(desc_gruppo,'') as descr 
-        from GCA_GRUPPI;
+        from GCA_GRUPPI
+        order by id_ambito, id_gruppo asc; 
+        -- where id_gruppo <> -1;
     end if;    
     
 EXCEPTION
@@ -348,7 +352,7 @@ END lista_video;
 
 
 PROCEDURE lista_media(p_tipo_media in varchar2,
-                      p_lista_video_id in varchar2,
+                      p_lista_media_id in varchar2,
                       p_outcome in out varchar2, 
                       p_cursor OUT SYS_REFCURSOR)
 IS
@@ -356,11 +360,11 @@ BEGIN
     p_outcome := 'OK';
     
     OPEN p_cursor FOR
-    'SELECT id_media, url, nvl(descr_media,'''') as descr, NeuroApp.media_collegato(id_media)' ||
+    'SELECT id_media, url, nvl(descr_media,'''') as descr, NeuroApp.media_collegato(id_media), url_snapshot, url_param' ||
     '  from GCA_MULTIMEDIA ' ||
-    '  where tipo='''||p_tipo_media||''' ' ||
-    '    and id_media not in ('||p_lista_video_id||')';
-    
+    '  where tipo like '''||p_tipo_media||'%'' ' ||
+    '    and id_media not in ('||p_lista_media_id||') order by tipo, upper(descr)';
+
     return;
     
 EXCEPTION
@@ -383,6 +387,24 @@ end count_esercizi;
 
 
 
+FUNCTION count_media (p_id_pacchetto in integer, p_id_esercizio in integer) return integer
+IS
+  num_es integer;
+BEGIN
+    num_es := 0;  
+    select count('x') into num_es
+      from GCA_ESERCIZIO_MEDIA 
+     where id_pacchetto = p_id_pacchetto 
+       and id_esercizio = p_id_esercizio;
+       
+    return num_es;
+EXCEPTION
+    when others then return -1;
+end count_media;
+
+
+
+
 PROCEDURE lista_pacchetti(p_ambito in varchar2, p_outcome in out varchar2, p_cursor OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -396,11 +418,12 @@ BEGIN
            replace(bibliografia,'"','"\'),
            replace(patologie_secondarie,'"','"\'),
            replace(valutazione,'"','"\'),
-           count_esercizi(id_pacchetto)
-           --nvl(GCA_PACCHETTI.id_ambito,-1) id_ambito,
-           --trim(nvl(GCA_AMBITO.ambito,'')) ambito,
-           --nvl(GCA_PACCHETTI.id_patologia,-1) id_patologia,  
-           --trim(nvl(GCA_PATOLOGIE.PATOLOGIA,'')) patologia,
+           count_esercizi(id_pacchetto),
+           note,
+           CONTROINDICAZIONI_ASS, 
+           PREREQUISITI_COMP,
+           COME_VALUTARE,
+           ID_SCHEDA_VALUTAZIONE
     from GCA_PACCHETTI
         left outer join GCA_AMBITO on 
             GCA_AMBITO.id_ambito=GCA_PACCHETTI.id_ambito
@@ -464,18 +487,18 @@ END get_scheda_valutazione;
 
 
 PROCEDURE salva_pacchetto(p_nome in varchar2, 
-                          p_descr in varchar2,
-                          p_prerequisiti in varchar2,
-                          p_controindicazioni in varchar2,
-                          p_alert in varchar2,
-                          p_alert_visibile in varchar2,
-                          p_bibliografia in varchar2,
-                          p_patologie_secondarie in varchar2,
-                          p_valutazione in varchar2,
-                          p_note in varchar2,
-                          p_controindicazioni_ass in varchar2,
-                          p_prerequisiti_comp in varchar2,
-                          p_come_valutare in varchar2,
+                          p_descr in clob,
+                          p_prerequisiti in clob,
+                          p_controindicazioni in clob,
+                          p_alert in clob,
+                          p_alert_visibile in clob,
+                          p_bibliografia in clob,
+                          p_patologie_secondarie in clob,
+                          p_valutazione in clob,
+                          p_note in clob,                          
+                          p_controindicazioni_ass in clob,
+                          p_prerequisiti_comp in clob,
+                          p_come_valutare in clob,
                           p_ambito in varchar2,
                           p_id_scheda_val in varchar2,
                           p_outcome in out varchar2)
@@ -526,20 +549,21 @@ EXCEPTION
 END;
 
 
-PROCEDURE salva_pacchetto_modificato(p_id_pacchetto in varchar2,
+PROCEDURE salva_pacchetto_modificato (
+                          p_id_pacchetto in varchar2,
                           p_nome in varchar2, 
-                          p_descr in varchar2, 
-                          p_prerequisiti in varchar2,
-                          p_controindicazioni in varchar2,
-                          p_alert in varchar2,
-                          p_alert_visibile in varchar2,
-                          p_bibliografia in varchar2,
-                          p_patologie_secondarie in varchar2,
-                          p_valutazione in varchar2,
-                          p_note in varchar2,
-                          p_controindicazioni_ass in varchar2,
-                          p_prerequisiti_comp in varchar2,
-                          p_come_valutare in varchar2,
+                          p_descr in clob, 
+                          p_prerequisiti in clob,
+                          p_controindicazioni in clob,
+                          p_alert in clob,                          
+                          p_alert_visibile in clob,
+                          p_bibliografia in clob,
+                          p_patologie_secondarie in clob,
+                          p_valutazione in clob,
+                          p_note in clob,
+                          p_controindicazioni_ass in clob,
+                          p_prerequisiti_comp in clob,
+                          p_come_valutare in clob,
                           p_id_scheda_val in varchar2,
                           p_outcome in out varchar2)
 IS
@@ -596,7 +620,7 @@ BEGIN
     commit;
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
-END;
+END cancella_pacchetto;
 
 
 
@@ -607,40 +631,26 @@ BEGIN
     
     open p_cursor for
     select  GCA_PACCHETTI_ESERCIZI.id_pacchetto   id_pacchetto,
+            GCA_PACCHETTI.id_ambito id_ambito,
             GCA_PACCHETTI_ESERCIZI.id_esercizio   id_esercizio,
             GCA_PACCHETTI_ESERCIZI.nome_esercizio nome_esercizio,
-            trim(GCA_PACCHETTI_ESERCIZI.desc_esercizio) desc_esercizio,
-            trim(GCA_PACCHETTI_ESERCIZI.testo_esercizio) testo_esercizio,
-            trim(GCA_PACCHETTI_ESERCIZI.alert_esercizio) alert_esercizio,
-            trim(GCA_PACCHETTI_ESERCIZI.limitazioni_esercizio) limitazioni_esercizio,            
-            decode(GCA_GRUPPI.id_gruppo,null,-1,GCA_GRUPPI.id_gruppo)  id_gruppo,
-            GCA_GRUPPI.nome_gruppo                nome_gruppo,
-            count(GCA_ESERCIZIO_MEDIA.id_media)   num_media
-    from GCA_PACCHETTI_ESERCIZI
-        left outer join GCA_GRUPPI
-        on gca_gruppi.id_gruppo = GCA_PACCHETTI_ESERCIZI.id_gruppo 
-        left outer join GCA_ESERCIZIO_MEDIA
-        on GCA_ESERCIZIO_MEDIA.id_esercizio = GCA_PACCHETTI_ESERCIZI.id_esercizio and 
-           GCA_ESERCIZIO_MEDIA.id_pacchetto = GCA_PACCHETTI_ESERCIZI.id_pacchetto
-        left outer join GCA_PACCHETTI 
-        on gca_gruppi.id_ambito = GCA_PACCHETTI.id_ambito           
+            GCA_PACCHETTI_ESERCIZI.desc_esercizio desc_esercizio,
+            GCA_PACCHETTI_ESERCIZI.testo_esercizio testo_esercizio,
+            GCA_PACCHETTI_ESERCIZI.alert_esercizio alert_esercizio,
+            GCA_PACCHETTI_ESERCIZI.limitazioni_esercizio limitazioni_esercizio,            
+            GCA_GRUPPI.id_gruppo        id_gruppo,
+            GCA_GRUPPI.nome_gruppo      nome_gruppo,
+            NeuroApp.count_media(GCA_PACCHETTI_ESERCIZI.id_pacchetto,GCA_PACCHETTI_ESERCIZI.id_esercizio) num_media
+    from  GCA_GRUPPI, GCA_PACCHETTI, GCA_PACCHETTI_ESERCIZI
     where  GCA_PACCHETTI_ESERCIZI.id_pacchetto = p_id_pacchetto  and
-           GCA_PACCHETTI.ID_PACCHETTO =  GCA_PACCHETTI_ESERCIZI.id_pacchetto              
-    group by GCA_PACCHETTI_ESERCIZI.id_pacchetto ,
-            GCA_PACCHETTI_ESERCIZI.id_esercizio ,
-            GCA_PACCHETTI_ESERCIZI.nome_esercizio ,
-            GCA_PACCHETTI_ESERCIZI.desc_esercizio ,
-            GCA_PACCHETTI_ESERCIZI.testo_esercizio ,
-            GCA_PACCHETTI_ESERCIZI.alert_esercizio,
-            GCA_PACCHETTI_ESERCIZI.limitazioni_esercizio,            
-            decode(GCA_GRUPPI.id_gruppo,null,-1,GCA_GRUPPI.id_gruppo ),
-            GCA_GRUPPI.nome_gruppo 
-    order by 1,2,3, 8;       
-    
+           GCA_PACCHETTI_ESERCIZI.id_pacchetto = GCA_PACCHETTI.ID_PACCHETTO and 
+           GCA_PACCHETTI_ESERCIZI.id_gruppo = gca_gruppi.id_gruppo and 
+           GCA_PACCHETTI.id_ambito = gca_gruppi.id_ambito
+    order by 1,4;   
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
-   
-END;
+END lista_esercizi;
+
 
 PROCEDURE lista_dettaglio_esercizio(p_id_pacchetto in varchar2,
                                     p_id_esercizio in varchar2,
@@ -654,9 +664,10 @@ BEGIN
     select  GCA_PACCHETTI_ESERCIZI.id_pacchetto   id_pacchetto,
             GCA_PACCHETTI_ESERCIZI.id_esercizio   id_esercizio,
             nvl(GCA_MULTIMEDIA.id_media,-1)       id_media,
-            GCA_MULTIMEDIA.url                    url,
+            decode(GCA_MULTIMEDIA.URL_PARAM,null, GCA_MULTIMEDIA.url,GCA_MULTIMEDIA.url||'?'||GCA_MULTIMEDIA.url_param)   url,
             GCA_MULTIMEDIA.tipo                   tipo,
-            GCA_MULTIMEDIA.descr_media            descr_media                                    
+            GCA_MULTIMEDIA.descr_media            descr_media,
+            GCA_MULTIMEDIA.url_snapshot           url_snapshot
     from GCA_PACCHETTI_ESERCIZI
         left outer join GCA_ESERCIZIO_MEDIA
         on GCA_ESERCIZIO_MEDIA.id_esercizio = GCA_PACCHETTI_ESERCIZI.id_esercizio and 
@@ -673,13 +684,12 @@ EXCEPTION
 END;
 
 
-
 PROCEDURE salva_esercizio(p_id_pacchetto in varchar2, 
                           p_nome_esercizio in varchar2,
-                          p_desc_esercizio in varchar2,
-                          p_testo_esercizio in varchar2,
-                          p_alert_esercizio in varchar2,
-                          p_limitazioni_esercizio in varchar2,
+                          p_desc_esercizio in clob,
+                          p_testo_esercizio in clob,
+                          p_alert_esercizio in clob,
+                          p_limitazioni_esercizio in clob,
                           p_id_gruppo in varchar2,
                           p_outcome in out varchar2)                          
 IS
@@ -698,11 +708,7 @@ BEGIN
       return;
     end if;
     
-    gruppo := p_id_gruppo;
-    if p_id_gruppo = '-1' then
-        gruppo := null;        
-    end if;
-    
+   
     insert into GCA_PACCHETTI_ESERCIZI
                 (id_pacchetto,
                  id_esercizio,
@@ -719,7 +725,7 @@ BEGIN
                   p_testo_esercizio,
                   p_alert_esercizio,
                   p_limitazioni_esercizio,
-                  gruppo);
+                  p_id_gruppo);
     commit;
     
 EXCEPTION
@@ -729,22 +735,17 @@ END salva_esercizio;
 
 PROCEDURE salva_esercizio_modificato(p_id_pacchetto in varchar2,
                           p_id_esercizio in varchar2,
-                          p_desc_esercizio in varchar2,
-                          p_testo_esercizio in varchar2,
-                          p_alert_esercizio in varchar2,
-                          p_limitazioni_esercizio in varchar2,                         
+                          p_desc_esercizio in clob,
+                          p_testo_esercizio in clob,
+                          p_alert_esercizio in clob,
+                          p_limitazioni_esercizio in clob,
                           p_id_gruppo in varchar2,
-                          p_outcome in out varchar2)                          
+                          p_outcome in out varchar2)                      
 IS
     gruppo varchar2(100);
 BEGIN
     p_outcome := 'OK';
-    
-    gruppo := p_id_gruppo;
-    if p_id_gruppo = '-1' then
-        gruppo := null;        
-    end if;
-    
+      
     update GCA_PACCHETTI_ESERCIZI
        set desc_esercizio = p_desc_esercizio,
            testo_esercizio = p_testo_esercizio,
@@ -845,7 +846,8 @@ BEGIN
     SELECT id_voce, 
            voce, 
            trim(nvl(definizione,'')) as definizione 
-    from GCA_GLOSSARIO;
+    from GCA_GLOSSARIO
+    order by upper(voce);
     
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;   
@@ -1084,12 +1086,11 @@ BEGIN
        URL_TARGET,
        NOME_TARGET,
        LEN_NOME_TARGET,
-       CATEGORIA,
        DESCR_TARGET,
        ID_CAT
     ) 
     select S_GCA_TARGET_ATTIVITA_ID.nextval,
-           p_url, p_nome_target, length(p_nome_target), p_categoria, p_descrizione, id_cat
+           p_url, p_nome_target, length(p_nome_target), p_descrizione, id_cat
       from gca_categoria
      where upper(GCA_CATEGORIA.categoria) = upper(p_categoria);
      
@@ -1115,6 +1116,477 @@ BEGIN
 EXCEPTION
     WHEN others then p_outcome:='Exception:' || sqlerrm;
 END cancella_target;
+
+
+PROCEDURE salva_dati_app(p_id_user  in varchar2,
+                         p_appl_name in varchar2,
+                         p_config_app in varchar2,
+                         p_result_app in varchar2,                         
+                         p_outcome in out varchar2) 
+IS
+    esiste_rec integer := 0;
+BEGIN
+    p_outcome:= 'OK';
+
+    -- Controlla se gia' esiste il target
+    select count('x') into esiste_rec
+      from GCA_RESULT_APP 
+     where ID_USER = p_id_user 
+       and APP_NAME = p_appl_name;
+      
+    if esiste_rec > 0 then
+
+        UPDATE GCA_RESULT_APP 
+        SET CONFIG_APP = p_config_app, 
+            RESULT_APP = p_result_app,
+            DATE_APP = sysdate
+        WHERE ID_USER = p_id_user 
+          AND APP_NAME = p_appl_name;    
+    else
+        INSERT INTO GCA_RESULT_APP (
+           ID_USER, 
+           APP_NAME,
+           CONFIG_APP,
+           RESULT_APP,
+           DATE_APP
+        ) VALUES (p_id_user , p_appl_name, p_config_app,p_result_app, sysdate );
+        
+    end if;
+
+    commit;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END salva_dati_app;
+
+
+PROCEDURE controllaAccesso(p_id_login  in varchar2,
+                           p_passwd  in varchar2,
+                           p_outcome in out varchar2, 
+                           p_cursor OUT SYS_REFCURSOR)
+IS
+    esiste_rec      integer := 0;
+    lIdPaziente     integer := 0;
+    lPasswd         varchar2(128); 
+    lUltimoAccesso  varchar2(50);
+    lStep           varchar2(120);
+    
+BEGIN
+    p_outcome := 'OK';
+
+    begin
+        select id_paziente into lIdPaziente
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+        
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso
+                from dual;
+            return;                                
+    end;
+
+    -- Controlla se utente gia' registrato
+    begin
+        select passwd, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, step
+        into   lPasswd , lUltimoAccesso, lStep
+        from GCA_LOGIN_UTENTE 
+        where id_utente = lIdPaziente;
+
+        -- Controllo password
+        if ( lPasswd = p_passwd ) then 
+        
+            --
+            -- Quando sarà il momento: gestire ulteriori stati (es: CHANGE_PSW...)
+            -- 
+            if ( lStep = 'FIRST_ACCESS') then
+                lStep:= 'REGISTRED';
+            end if;
+            
+            update GCA_LOGIN_UTENTE
+            set  ultimo_accesso=sysdate,
+                 step=lStep
+            where id_utente = lIdPaziente;
+            commit;
+            
+            OPEN p_cursor FOR
+                select 1 id_esito, lIdPaziente id_utente, to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso
+                from GCA_LOGIN_UTENTE 
+                where id_utente = lIdPaziente;     
+            return;                
+        else
+            OPEN p_cursor FOR
+                select -1 id_esito , lIdPaziente id_utente, lUltimoAccesso ultimo_accesso                
+                from dual;
+            return;                            
+        end if;
+
+    exception
+        when no_data_found then    
+            -- Utente non ancora registrato
+            OPEN p_cursor FOR
+                select 0 id_esito , -1 id_utente, null ultimo_accesso
+                from dual;
+            return;                
+    end;
+
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END controllaAccesso;                             
+
+PROCEDURE registraLogin(p_id_login  in varchar2,
+                        p_passwd in varchar2,
+                        p_outcome in out varchar2, 
+                        p_cursor OUT SYS_REFCURSOR)
+IS
+    lEsisteRec  integer := 0;
+    lIdPaziente integer := 0;
+    lPasswd     varchar2(128);
+    lEmail      varchar2(255);
+    lStep       varchar2(120);
+    
+BEGIN
+    p_outcome := 'OK';
+
+    begin
+        select id_paziente, email 
+                into lIdPaziente,lEmail
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso, null step, null email
+                from dual;
+            return;                                
+    end;
+
+
+    lEsisteRec:=0;
+    -- Controlla se gia' esiste il record
+    begin
+        select  passwd, step 
+        into    lPasswd, lStep
+        from    GCA_LOGIN_UTENTE 
+        where   id_utente = lIdPaziente;
+
+        lEsisteRec:=1;
+
+        -- Utente già registrato. Nessuna operazione eseguita
+        OPEN p_cursor FOR
+            select 0 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
+            from dual;
+        return;                                
+
+    exception
+        when no_data_found then
+            lEsisteRec:=0;   
+    end;
+    
+    if (lEsisteRec = 0) then
+        -- Utente non ancora registrato
+        -- Eseguo pre-registrazione
+        INSERT INTO GCA_LOGIN_UTENTE (
+           ID_UTENTE, 
+           PASSWD,
+           DATA_CREAZIONE,
+           ULTIMO_ACCESSO,
+           STEP
+        ) 
+        select lIdPaziente , p_passwd, sysdate, null , 'FIRST_ACCESS' from dual;
+                
+        commit;
+
+        OPEN p_cursor FOR
+            select 1 id_esito, lIdPaziente id_utente, 
+                    to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, 
+                    nvl(step,'') step,
+                    lEmail                     
+            from GCA_LOGIN_UTENTE 
+            where id_utente = lIdPaziente;
+    end if;
+
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END registraLogin; 
+
+
+/* Versione 1 
+PROCEDURE registraLogin(p_id_login  in varchar2,
+                        p_passwd in varchar2,
+                        p_outcome in out varchar2, 
+                        p_cursor OUT SYS_REFCURSOR)
+IS
+    lEsisteRec  integer := 0;
+    lIdPaziente integer := 0;
+    lPasswd     varchar2(128);
+    lEmail      varchar2(255);
+    lStep       varchar2(120);
+    
+BEGIN
+    p_outcome := 'OK';
+
+    begin
+        select id_paziente, email 
+                into lIdPaziente,lEmail
+        from    GCA_ANAGRAFICA_PAZIENTI 
+        where   codice_fiscale = p_id_login;
+    exception
+        when no_data_found then    
+            OPEN p_cursor FOR
+                select -2 id_esito , -1 id_utente, null ultimo_accesso, null step, null email
+                from dual;
+            return;                                
+    end;
+
+
+    lEsisteRec:=0;
+    -- Controlla se gia' esiste il record
+    begin
+        select  passwd, step 
+        into    lPasswd, lStep
+        from    GCA_LOGIN_UTENTE 
+        where   id_utente = lIdPaziente;
+
+        lEsisteRec:=1;
+
+        if (lStep = 'FIRST_ACCESS' ) then
+            if (lPasswd = p_passwd) then
+                update GCA_LOGIN_UTENTE
+                set  ultimo_accesso=sysdate,
+                     PASSWD=p_passwd,
+                     step = 'REGISTRED'
+                where id_utente = lIdPaziente;
+                commit;
+
+                OPEN p_cursor FOR
+                    select 1 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), 'REGISTRED' , lEmail
+                    from dual;
+                return;
+            else
+                -- Registrazione negata. <p_passwd> non coincide con quella generata
+                OPEN p_cursor FOR
+                    select -1 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
+                    from dual;
+                return;                                
+            end if;                
+        else
+            -- Utente già registrato. Nessuna operazione eseguita
+            OPEN p_cursor FOR
+                select 0 id_esito , -1 id_utente, to_char(sysdate,'DD/MM/YYYY HH24:MI:SS'), lStep , lEmail
+                from dual;
+            return;                                
+        end if;
+
+    exception
+        when no_data_found then
+            lEsisteRec:=0;   
+    end;
+    
+    if (lEsisteRec = 0) then
+        -- Utente non ancora registrato
+        -- Eseguo pre-registrazione
+        INSERT INTO GCA_LOGIN_UTENTE (
+           ID_UTENTE, 
+           PASSWD,
+           DATA_CREAZIONE,
+           ULTIMO_ACCESSO,
+           STEP
+        ) 
+        select lIdPaziente , p_passwd, sysdate, null , 'FIRST_ACCESS' from dual;
+                
+        commit;
+
+        OPEN p_cursor FOR
+            select 1 id_esito, lIdPaziente id_utente, 
+                    to_char(ultimo_accesso,'DD/MM/YYYY HH24:MI:SS') ultimo_accesso, 
+                    nvl(step,'') step,
+                    lEmail                     
+            from GCA_LOGIN_UTENTE 
+            where id_utente = lIdPaziente;
+    end if;
+
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END registraLogin; 
+
+*/
+
+PROCEDURE lista_pazienti(p_outcome in out varchar2,p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    OPEN p_cursor FOR
+    select id_paziente, nome, cognome, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita
+      from GCA_ANAGRAFICA_PAZIENTI 
+      order by cognome,nome;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_pazienti;
+
+
+PROCEDURE dettaglio_paziente(p_id_paziente in varchar2, 
+                             p_outcome in out varchar2, 
+                             p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    OPEN p_cursor FOR
+    select id_paziente, nome, cognome, codice_fiscale, sesso, to_char(data_nascita,'dd/mm/YYYY') data_nascita, luogo_nascita, nazionalita, 
+           luogo_residenza, indirizzo_domicilio, email, note
+      from GCA_ANAGRAFICA_PAZIENTI
+      where GCA_ANAGRAFICA_PAZIENTI.ID_PAZIENTE = p_id_paziente;
+    
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END dettaglio_paziente;                             
+
+
+-- ==============================================================================
+-- Restituisce se un esercizio di un pacchetto e' assegnato a un paziente.
+--  p_id_paziente  - id del paziente
+--  p_id_pacchetto - id del pacchetto di esercizi
+--  p_id_esercizio - id dell'esercizio
+--  Return: 'S' o 'N'
+-- ==============================================================================
+FUNCTION esercizioAssegnato(p_id_paziente in varchar2, p_id_pacchetto in varchar2, p_id_esercizio in varchar2) return varchar2
+IS
+   assegnato integer;
+BEGIN
+   select count('x') into assegnato
+     from gca_pazienti_esercizi
+    where id_paziente = p_id_paziente
+      and id_pacchetto = p_id_pacchetto
+      and id_esercizio = p_id_esercizio;
+      
+      if assegnato=0 then
+        return 'N';
+      else
+        return 'S';
+      end if;
+
+EXCEPTION
+    WHEN others then return 'N';
+END esercizioAssegnato;
+
+
+-- ============================================================================================
+-- Dato un paziente in input restituisce la lista di tutti i pacchetti e di tutti gli esercizi
+-- dell'ambito indicato, specificando per ogni esercizio se e' assegnao o meno al paziente.
+-- ============================================================================================
+PROCEDURE lista_pacchetti_esercizi(p_id_paziente in varchar2, 
+                                   p_outcome in out varchar2,
+                                   p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    p_outcome := 'OK';
+
+     OPEN p_cursor FOR
+     Select gca_pacchetti.id_pacchetto,
+            gca_pacchetti_esercizi.id_esercizio,
+            nome_pacchetto,
+            descr_pacchetto,
+            nome_esercizio,
+            desc_esercizio,
+            esercizioAssegnato(p_id_paziente, gca_pacchetti.id_pacchetto, gca_pacchetti_esercizi.id_esercizio) assegnato,
+            gca_pacchetti.id_ambito
+      from gca_pacchetti, gca_pacchetti_esercizi
+     where gca_pacchetti.id_ambito in (1,2)
+       and gca_pacchetti.id_pacchetto = gca_pacchetti_esercizi.id_pacchetto
+      order by gca_pacchetti.id_ambito, nome_pacchetto, nome_esercizio;
+
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END lista_pacchetti_esercizi;
+
+
+procedure associa_esercizi_paziente(p_id_paziente in varchar2, p_id_esercizi in varchar2, p_outcome in out varchar2)
+IS 
+  CURSOR C1 IS
+     select regexp_substr(p_id_esercizi,'[^,]+', 1, level) id_esercizio from dual
+     connect by regexp_substr(p_id_esercizi, '[^,]+', 1, level) is not null;
+BEGIN       
+    p_outcome := 'OK';
+    
+    delete gca_pazienti_esercizi where id_paziente = p_id_paziente;
+    
+    for c1rec in c1 loop
+       insert into gca_pazienti_esercizi (id_paziente, id_esercizio, id_pacchetto)
+       select p_id_paziente, c1rec.id_esercizio, id_pacchetto
+        from gca_pacchetti_esercizi
+       where gca_pacchetti_esercizi.id_esercizio = c1rec.id_esercizio;
+    end loop;
+ 
+    COMMIT;
+   
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;   
+END associa_esercizi_paziente;
+
+
+PROCEDURE salva_paziente(p_nome in varchar2, p_cognome in varchar2,
+                         p_cf   in varchar2, p_sesso in varchar2, 
+                         p_luogo_nascita in varchar2, p_data_nascita in varchar2,
+                         p_residenza in varchar2, p_indirizzo in varchar2,
+                         p_nazionalita in varchar2, p_email in varchar2, 
+                         p_note in varchar2,
+                         p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    Insert into GCA_ANAGRAFICA_PAZIENTI
+   (ID_PAZIENTE, CODICE_FISCALE, COGNOME, NOME, SESSO, 
+    DATA_NASCITA, LUOGO_NASCITA, LUOGO_RESIDENZA, INDIRIZZO_DOMICILIO, NAZIONALITA,
+    EMAIL, NOTE) 
+ Values
+   (S_GCA_ANAGRAFICA_PAZIENTI.nextval, p_cf, p_cognome, p_nome, p_sesso, 
+    TO_DATE(p_data_nascita, 'YYYY/MM/DD'), p_luogo_nascita, p_residenza, p_indirizzo, p_nazionalita, p_email, p_note);
+    
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END salva_paziente;
+
+
+PROCEDURE salva_modifiche_paziente(p_id_paziente in varchar2,
+                         p_residenza in varchar2, p_indirizzo in varchar2,
+                         p_email in varchar2, p_note in varchar2,
+                         p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    
+    update GCA_ANAGRAFICA_PAZIENTI
+        set LUOGO_RESIDENZA = p_residenza,
+            INDIRIZZO_DOMICILIO = p_indirizzo,
+            email = p_email,
+            NOTE = p_note
+    where id_paziente = p_id_paziente;
+    
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END salva_modifiche_paziente;
+                         
+
+
+PROCEDURE cancella_paziente(p_id_paziente in varchar2,p_outcome in out varchar2)
+IS
+BEGIN
+    p_outcome := 'OK';
+    DELETE GCA_ANAGRAFICA_PAZIENTI where id_paziente = p_id_paziente;
+    COMMIT;
+EXCEPTION
+    WHEN others then p_outcome:='Exception:' || sqlerrm;
+END cancella_paziente;
 
 END NeuroApp;
 /

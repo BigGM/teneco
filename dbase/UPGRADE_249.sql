@@ -1,0 +1,95 @@
+-- ESEGUIRE SULLA VM 249
+-- DA TESTARE
+-- Portare cgi-bin/*.php aggiornati
+-- Portare bind html/js
+
+
+-- Rinomina i campi Varchar2
+alter table GCA_PACCHETTI rename column DESCR_PACCHETTO to DESCR_PACCHETTO_VC ; 
+alter table GCA_PACCHETTI rename column CONTROINDICAZIONI to CONTROINDICAZIONI_VC ; 
+alter table GCA_PACCHETTI rename column PREREQUISITI to PREREQUISITI_VC ; 
+alter table GCA_PACCHETTI rename column ALERT to ALERT_VC ; 
+alter table GCA_PACCHETTI rename column ALERT_VISIBILE to ALERT_VISIBILE_VC ; 
+alter table GCA_PACCHETTI rename column BIBLIOGRAFIA to BIBLIOGRAFIA_VC ; 
+alter table GCA_PACCHETTI rename column VALUTAZIONE to VALUTAZIONE_VC ; 
+alter table GCA_PACCHETTI rename column NOTE to NOTE_VC ; 
+alter table GCA_PACCHETTI rename column CONTROINDICAZIONI_ASS to CONTROINDICAZIONI_ASS_VC ; 
+alter table GCA_PACCHETTI rename column PREREQUISITI_COMP to PREREQUISITI_COMP_VC ; 
+alter table GCA_PACCHETTI rename column COME_VALUTARE to COME_VALUTARE_VC ; 
+alter table GCA_PACCHETTI rename column PATOLOGIE_SECONDARIE to PATOLOGIE_SECONDARIE_VC ; 
+
+-- Crea campi CLOB corrispondenti a quelli Varchar2
+alter table GCA_PACCHETTI add ( DESCR_PACCHETTO CLOB ); 
+alter table GCA_PACCHETTI add ( CONTROINDICAZIONI CLOB ); 
+alter table GCA_PACCHETTI add ( PREREQUISITI CLOB ); 
+alter table GCA_PACCHETTI add ( ALERT CLOB ); 
+alter table GCA_PACCHETTI add ( ALERT_VISIBILE CLOB ); 
+alter table GCA_PACCHETTI add ( BIBLIOGRAFIA CLOB ); 
+alter table GCA_PACCHETTI add ( VALUTAZIONE CLOB ); 
+alter table GCA_PACCHETTI add ( NOTE CLOB ); 
+alter table GCA_PACCHETTI add ( CONTROINDICAZIONI_ASS CLOB ); 
+alter table GCA_PACCHETTI add ( PREREQUISITI_COMP CLOB ); 
+alter table GCA_PACCHETTI add ( COME_VALUTARE CLOB ); 
+alter table GCA_PACCHETTI add ( PATOLOGIE_SECONDARIE CLOB ); 
+
+-- Copia contenuto campi varchar2 in quelli tipo CLOB
+update GCA_PACCHETTI set
+    DESCR_PACCHETTO = DESCR_PACCHETTO_VC,
+    CONTROINDICAZIONI = CONTROINDICAZIONI_VC,
+    PREREQUISITI = PREREQUISITI_VC,
+    ALERT = ALERT_VC,
+    ALERT_VISIBILE = ALERT_VISIBILE_VC,
+    BIBLIOGRAFIA = BIBLIOGRAFIA_VC,
+    VALUTAZIONE = VALUTAZIONE_VC,
+    NOTE = NOTE_VC,
+    CONTROINDICAZIONI_ASS = CONTROINDICAZIONI_ASS_VC,
+    PREREQUISITI_COMP = PREREQUISITI_COMP_VC,
+    COME_VALUTARE = COME_VALUTARE_VC,
+    PATOLOGIE_SECONDARIE = PATOLOGIE_SECONDARIE_VC;
+commit;    
+
+-- Rimuovere le colonne _VC
+/*
+alter table GCA_PACCHETTI drop column DESCR_PACCHETTO_VC;
+alter table GCA_PACCHETTI drop column CONTROINDICAZIONI_VC;
+alter table GCA_PACCHETTI drop column PREREQUISITI_VC;
+alter table GCA_PACCHETTI drop column ALERT_VC;
+alter table GCA_PACCHETTI drop column ALERT_VISIBILE_VC;
+alter table GCA_PACCHETTI drop column BIBLIOGRAFIA_VC;
+alter table GCA_PACCHETTI drop column VALUTAZIONE_VC;
+alter table GCA_PACCHETTI drop column NOTE_VC;
+alter table GCA_PACCHETTI drop column CONTROINDICAZIONI_ASS_VC;
+alter table GCA_PACCHETTI drop column PREREQUISITI_COMP_VC;
+alter table GCA_PACCHETTI drop column COME_VALUTARE_VC;
+alter table GCA_PACCHETTI drop column PATOLOGIE_SECONDARIE_VC;
+*/
+
+-- Rinomina i campi Varchar2
+alter table GCA_PACCHETTI_ESERCIZI rename column DESC_ESERCIZIO to DESC_ESERCIZIO_VC ; 
+alter table GCA_PACCHETTI_ESERCIZI rename column ALERT_ESERCIZIO to ALERT_ESERCIZIO_VC ; 
+alter table GCA_PACCHETTI_ESERCIZI rename column LIMITAZIONI_ESERCIZIO to LIMITAZIONI_ESERCIZIO_VC ; 
+alter table GCA_PACCHETTI_ESERCIZI rename column TESTO_ESERCIZIO to TESTO_ESERCIZIO_VC ; 
+
+
+-- Crea campi CLOB corrispondenti a quelli Varchar2
+alter table GCA_PACCHETTI_ESERCIZI add ( DESC_ESERCIZIO CLOB ); 
+alter table GCA_PACCHETTI_ESERCIZI add ( ALERT_ESERCIZIO CLOB ); 
+alter table GCA_PACCHETTI_ESERCIZI add ( LIMITAZIONI_ESERCIZIO CLOB ); 
+alter table GCA_PACCHETTI_ESERCIZI add ( TESTO_ESERCIZIO CLOB ); 
+
+-- Copia contenuto campi varchar2 in quelli tipo CLOB
+update GCA_PACCHETTI_ESERCIZI set
+    DESC_ESERCIZIO = DESC_ESERCIZIO_VC,
+    ALERT_ESERCIZIO = ALERT_ESERCIZIO_VC,
+    LIMITAZIONI_ESERCIZIO = LIMITAZIONI_ESERCIZIO_VC,
+    TESTO_ESERCIZIO = TESTO_ESERCIZIO_VC;
+commit;
+
+-- Rimuovere le colonne _VC
+/*
+alter table GCA_PACCHETTI_ESERCIZI drop column DESC_ESERCIZIO_VC;
+alter table GCA_PACCHETTI_ESERCIZI drop column ALERT_ESERCIZIO_VC;
+alter table GCA_PACCHETTI_ESERCIZI drop column LIMITAZIONI_ESERCIZIO_VC;
+alter table GCA_PACCHETTI_ESERCIZI drop column TESTO_ESERCIZIO_VC;
+*/
+

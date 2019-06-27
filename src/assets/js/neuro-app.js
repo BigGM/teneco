@@ -1,15 +1,20 @@
 
 var NeuroAppJS = {
 
-  //G_URL_ROOT : "http://81.29.176.113:51000/",   // per il sito visibile dai medici
-  //G_URL_ROOT : "http://192.168.2.63:47000/",    // per il sito interno 
-  //G_URL_ROOT : "http://81.29.176.113:47000/",     // per il sito interno
-  G_URL_ROOT : "http://localhost:8080/apache2/",     // per il sito interno
+  //G_URL_ROOT : "http://5.158.168.233:51000/",       // visibile dall'esterno
+  //G_URL_ROOT : "http://5.158.168.233:47000/",       // visibile dall'esterno
+  G_URL_ROOT : "http://192.168.2.63:47000/",          // ambiente di sviluppo su cristal
+  //G_URL_ROOT : "http://localhost:8080/apache2/",    // per il sito interno su chiavetta usb
+
+
+  // Cosi' dovrebbe funzionare per tutti i casi poiche' window.location.origin conterra'
+  // l'indirizzo digitato sul browser cioe' uno di quelli scritti sopra
+  //G_URL_ROOT : window.location.origin,
   
   DEVELOP_ENV : true,      // true: sono in ambiente locale di sviluppo
 
   /* Flag per Mostrare/Nascondere la label del debug. Il valore viene
-   * cambiato cliccando sull'immagine a sinistra nella barra del menu .
+   * cambiato cliccando sull'immagine a sinistra nella barra del menu.
    */
   DEBUG : false,
 
@@ -17,11 +22,11 @@ var NeuroAppJS = {
   /**
    * Controlla se l'ambiente di esecuzione del sito e' un device mobile
    */
-  isMobileDevice: function () {
+  isMobileDevice: function() {
    return   navigator.userAgent.match(/Android/i) ||
             navigator.userAgent.match(/webOS/i) ||
             navigator.userAgent.match(/iPhone/i) ||
-            navigator.userAgent.match(/iPad/i) ||
+            navigator.userAgent.match(/iPad/i) || 
             navigator.userAgent.match(/iPod/i) ||
             navigator.userAgent.match(/BlackBerry/i) ||
             navigator.userAgent.match(/Windows Phone/i)
@@ -45,8 +50,8 @@ var NeuroAppJS = {
    /**
     * Controlla periodicamente la connessione col server
     */
-   checkServerConnection : function () {
-     $.ajax({
+   checkServerConnection: function() {
+      $.ajax({
         type: "HEAD",
         cache: false,
         async: true,
@@ -54,21 +59,20 @@ var NeuroAppJS = {
         // il valore appeso allo script php serve a fare in modo che il browser non utilizzi la cache
         url: NeuroAppJS.G_URL_ROOT + "/cgi-bin/internet_conn.php?rand=" + Math.round(Math.random() * 100000),
         //url: "script/internet_conn.php?rand=" + Math.round(Math.random() * 100000),
-        
-        success: function(message, text, response) {
-           NeuroAppJS.showAlertConnection('hide');
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-           NeuroAppJS.showAlertConnection('show');
-        }
-     })
-   } ,
+      })
+      .done(function(message) {
+         NeuroAppJS.showAlertConnection('hide');
+      })
+      .fail(function(message) {
+         NeuroAppJS.showAlertConnection('show');
+      })
+   },
    
    
    /**
     * Mostra il messaggio di connesione persa o lo nasconde quando la connessione e' di nuovo funzionante.
     **/
-   showAlertConnection : function (value) {
+   showAlertConnection: function (value) {
      var opacity = $('#div-lost-internet').css('opacity');
      
      if (value=='show' && opacity==0) {
@@ -84,7 +88,7 @@ var NeuroAppJS = {
   /**
    * Popup per i messaggi di errore
    **/
-   custom_error : function(output_msg, title_msg) { 
+   custom_error: function(output_msg, title_msg) { 
        if (!title_msg) 
          title_msg = 'Error'; 
        bootbox.alert({  
@@ -99,7 +103,7 @@ var NeuroAppJS = {
   /**
    * Una popup per i messaggi di successo
    **/
-   custom_success : function (output_msg) { 
+   custom_success: function (output_msg) { 
       bootbox.alert({  
          size: 'medium', 
          title: '<H3 style="color:white;">Success</H3>', 
@@ -112,7 +116,7 @@ var NeuroAppJS = {
   /**
    * Una popup per i messaggi di info
    **/
-   custom_info : function(output_msg) { 
+   custom_info: function(output_msg) { 
       bootbox.alert({  
          size: 'medium', 
          title: '<H3 style="color:white;">Info</H3>', 
@@ -135,7 +139,7 @@ var NeuroAppJS = {
    /**
     * Tronca la stringa 's' a 'max_chars' caratteri e aggiunge tre puntini alla fine.
     */
-   truncString : function(s,max_chars) {
+   truncString: function(s,max_chars) {
       if (s!=null && s.length > max_chars-3) {
          return s.substring(0,max_chars) + "...";
       } else {
@@ -148,7 +152,7 @@ var NeuroAppJS = {
     * @param {*} email - la stringa dell'indirizzo di posta.
     * @returns boolean
     */
-   validateEmail : function (email) {
+   validateEmail: function (email) {
       return ( /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) )
    },
    
@@ -156,7 +160,7 @@ var NeuroAppJS = {
    /**
     * Scrolla la pagina alla posizione dell'elemento specificato.
     */
-   scrollTo : function(id) {
+   scrollTo: function(id) {
       $('html,body').animate({
          scrollTop: $('#'+id).offset().top
       },'slow');

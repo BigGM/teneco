@@ -230,6 +230,7 @@ export class NeuroAppService {
     let url = this.G_URL_ROOT+"/cgi-bin/lista_gruppi2.php?proc="+db_proc;
     //let url = "script/lista_gruppi2.php?proc="+db_proc;
     console.log("** NeuroAppService loadGruppi: ", url)
+    console.log("** NeuroAppService window.location: ", window.location)
     
     return this.http.get<out_gruppo>(url)
     .pipe(

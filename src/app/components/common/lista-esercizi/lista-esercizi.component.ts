@@ -7,6 +7,7 @@ import { PacchettiFormazioneComponent } from '../../formazione/pacchetti-formazi
 import { PacchettiCognitiviComponent } from '../../riabil-cognitiva/pacchetti-cognitivi/pacchetti-cognitivi.component';
 import { RecordPacchetto } from '../../../classes/record-pacchetto'
 import { RecordEsercizio } from '../../../classes/record-esercizio'
+import { RecordMedia } from 'src/app/classes/record-media';
 
 declare var $ : any;
 declare var NeuroAppJS : any;
@@ -34,6 +35,12 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
   /** Id dell'esercizio selezionato per il dettaglio */
   id_esercizio_selected: number
+
+  /** Scheda di valutazione associata al pacchetto */
+  schedaValutazione?: RecordMedia
+
+  /** Icona da inserire sulla voce Scheda di Valutazione */
+  schedaIcon = NeuroApp.ROOT_ICONS + "/generic-doc-icon.png"
 
   
   /* Sottoscrizione al servizio RiabilNeuromotoriaService */
@@ -63,6 +70,7 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     this.view_esercizi_visible = false
     this.exSubscr = null
     this.id_esercizio_selected = -1
+    this.schedaValutazione = new RecordMedia()
   }
 
 
@@ -78,8 +86,10 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
         this.pacchetto.copy(pkt)
         console.log(this.pacchetto)
         this.loadEserciziPacchetto()
-      } else {
-          this.view_esercizi_visible = false
+        this.getSchedaValutazione()
+      }
+      else {
+        this.view_esercizi_visible = false
       }
       // Qualora fosse aperta la vista di dettaglio esercizio
       // richiede al componente di nascondersi
@@ -176,6 +186,46 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
     this.esercizi = []
     this.loadEserciziPacchetto(callback);
     this.hideDettaglioEsercizio()
+  }
+
+
+  /**
+   * Ottiene dal DB la scheda di valutazione per questo pacchetto, se esiste.
+   * @param id_scheda id della scheda di valutazione
+   */
+  getSchedaValutazione() {
+
+    let id_scheda = this.pacchetto.id_scheda_val
+    if (id_scheda==-1) {
+      this.schedaValutazione = new RecordMedia
+      return
+    }
+
+    let schedaSubscr : Subscription
+    let serv = this.exService.getSchedaValutazione(id_scheda)
+
+    schedaSubscr = serv.subscribe (
+      result => {
+        schedaSubscr.unsubscribe()
+        this.schedaValutazione.copy(result)
+        RecordMedia.decode(this.schedaValutazione)
+        console.log(this.schedaValutazione)
+      },
+      error => {
+        schedaSubscr.unsubscribe()
+      }
+    )
+  }
+
+
+  /**
+  * Apre la scheda di valutazione.
+  * @param url 
+  */
+  openScheda(ev:MouseEvent) {
+    ev.preventDefault()
+    ev.stopPropagation()
+    window.open(NeuroApp.G_URL_ROOT + "/" + this.schedaValutazione.url_media)
   }
   
   

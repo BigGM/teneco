@@ -1,0 +1,14 @@
+SET DEFINE OFF;
+Insert into GCA_AMBITO
+   (ID_AMBITO, AMBITO)
+ Values
+   (1, 'RIABILITATIVO');
+Insert into GCA_AMBITO
+   (ID_AMBITO, AMBITO)
+ Values
+   (2, 'COGNITIVO');
+Insert into GCA_AMBITO
+   (ID_AMBITO, AMBITO)
+ Values
+   (3, 'OPERAZIONALE');
+COMMIT;

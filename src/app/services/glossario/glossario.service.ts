@@ -89,6 +89,7 @@ export class GlossarioService {
     let db_proc = "NeuroApp.lista_glossario"
     //let url = this.G_URL_ROOT+"/cgi2-bin/lista_glossario.php?proc="+db_proc
     let url = this.G_URL_ROOT+"/cgi-bin/lista_glossario2.php?proc="+db_proc
+    //let url = "http://localhost:9090/gca/glossario"
     
     console.log("** loadGlossario: ", url)
     
@@ -97,6 +98,7 @@ export class GlossarioService {
         retry(1),
         //catchError( this.handleError('fetchAll',[]) )
         map ( records => {
+          
           let outcome = <Outcome>records
           if ( outcome.status==="exception") {
               throw new Error(`Exception: ${outcome.message}`)

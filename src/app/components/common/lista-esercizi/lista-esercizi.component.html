@@ -76,7 +76,15 @@
                <div id="come_valutare" class="collapse collapse2">
                   <span [innerHTML]="pacchetto.come_valutare | safe:'html'"></span>
                </div>
-            </div>
+         </div>
+
+         <!-- SCHEDA DI VALUTAZIONE -->
+         <div  class="card-body px-3 py-2" style="overflow:auto;" >
+               <a class="this-anchor" data-toggle="collapse" data-target="#scheda_valutazione" href="#">Scheda di valutazione&nbsp;<i *ngIf="schedaValutazione.id_media>0" class="fas fa-caret-down"></i></a>
+               <div id="scheda_valutazione" class="collapse collapse2" *ngIf="schedaValutazione.id_media>0">
+                  <span style="cursor:pointer" (click)="openScheda($event)"><img [src]="schedaIcon" style="width:42px;margin-right:10px">{{schedaValutazione.descr_media}}</span>
+               </div>
+         </div>
 
 
          <!-- BIBLIOGRAFIA -->
