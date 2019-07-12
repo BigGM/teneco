@@ -133,14 +133,17 @@ export class ListaEserciziComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
   /**
-   * aggiorna il numero dei multimedia associati all'esericizio selezionato (id_esercizio_selected)
+   * Aggiorna il numero dei multimedia associati all'esercizio selezionato (id_esercizio_selected)
    * @param new_count il valore aggiornato
    */
   updateCountMultimedia(new_count:number) {
+    /*
     this.esercizi.forEach (ex => {
       if (ex.id_ex==this.id_esercizio_selected)
         ex.count_media = new_count
-    })
+    })*/
+    let ex = this.esercizi.filter( ex => ex.id_ex==this.id_esercizio_selected )[0]
+    ex.count_media = new_count
   }
 
 
